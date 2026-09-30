@@ -9,7 +9,15 @@
 
 ## About
 
-LotusCraft is a student project. More details will be added as the project develops.
+LotusCraft is a student project for a **UI design class**. The assignment is to
+rebuild an existing niche website with the help of AI tools, getting as close as
+possible to the original's look and feel.
+
+This is a **learning exercise in recreating UI**. It is not the original site, it is
+not affiliated with the original site's owners, and it is not meant to replace
+or compete with it. All original branding and content belong to their respective owners.
+
+The site is built step by step and runs locally.
 
 ## Status
 
