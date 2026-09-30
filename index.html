@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LotusCraft – Student Rebuild</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Student project notice: this page is a UI-class rebuild, not the real shop. -->
+  <div class="student-note">🎓 Student project – UI class rebuild, not the real Lotuscrafts shop.</div>
+
+  <!-- Trust bar -->
+  <div class="trustbar">
+    <div class="container trustbar__inner">
+      <div class="trustbar__item">
+        <span class="stars" aria-label="4.8 von 5 Sternen">
+          <svg viewBox="0 0 20 20"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.1 6-5.3-3-5.3 3 1.1-6L1.4 7.7l6-.7z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.1 6-5.3-3-5.3 3 1.1-6L1.4 7.7l6-.7z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.1 6-5.3-3-5.3 3 1.1-6L1.4 7.7l6-.7z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.1 6-5.3-3-5.3 3 1.1-6L1.4 7.7l6-.7z"/></svg>
+          <svg viewBox="0 0 20 20"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.1 6-5.3-3-5.3 3 1.1-6L1.4 7.7l6-.7z"/></svg>
+        </span>
+        <span class="small">(3231) <strong>4.80</strong> / 5.00</span>
+      </div>
+      <div class="trustbar__item hide-sm">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>
+        <p class="small">Von Yoga-Lehrer:innen empfohlen</p>
+      </div>
+      <div class="trustbar__item hide-sm">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M12 3.5l2.5 5.3 5.8.7-4.3 4 1.1 5.7L12 16.4l-5.1 2.8 1.1-5.7-4.3-4 5.8-.7z"/></svg>
+        <p class="small">Zeitloses Design</p>
+      </div>
+      <div class="trustbar__item hide-md">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M12 3l8 4v10l-8 4-8-4V7zM4 7l8 4 8-4M12 11v10"/></svg>
+        <p class="small">Gratis Versand ab 69€</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container header__inner">
+      <button class="icon-btn menu-toggle" aria-label="Menü öffnen">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+
+      <a href="#" class="logo" aria-label="LotusCraft Startseite">
+        <span class="logo__mark">
+          <svg viewBox="0 0 32 32" aria-hidden="true">
+            <circle cx="16" cy="16" r="16" fill="var(--gold)"/>
+            <path d="M16 8c2 2.5 3 5 3 7.5S18 20 16 22c-2-2-3-4-3-6.5S14 10.5 16 8z" fill="#fff"/>
+            <path d="M8 13c3 .5 5.5 2.5 6.8 5.4.5 1.2.8 2.4.9 3.6-3-.3-5.4-1.6-6.7-3.8C8.2 16.8 7.9 15 8 13zM24 13c-3 .5-5.5 2.5-6.8 5.4-.5 1.2-.8 2.4-.9 3.6 3-.3 5.4-1.6 6.7-3.8.8-1.4 1.1-3.2 1-5.2z" fill="#fff" opacity=".9"/>
+          </svg>
+        </span>
+        <span class="logo__text">
+          <span class="logo__name">LOTUSCRAFT</span>
+          <span class="logo__tag">Student Rebuild</span>
+        </span>
+      </a>
+
+      <nav class="nav" aria-label="Hauptnavigation">
+        <a href="#">Yoga</a>
+        <a href="#">Meditation</a>
+        <a href="#">Bekleidung</a>
+        <a href="#">Geschenke</a>
+        <a href="#">Sale</a>
+      </nav>
+
+      <div class="header__actions">
+        <button class="icon-btn" aria-label="Suche">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+        </button>
+        <a href="#" class="icon-btn hide-sm" aria-label="Konto">
+          <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-3.5 3.6-5.5 7-5.5s6.2 2 7 5.5"/></svg>
+        </a>
+        <a href="#" class="icon-btn" aria-label="Warenkorb">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6zM9 8V6.5a3 3 0 0 1 6 0V8"/></svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero__image placeholder placeholder--hero" role="img" aria-label="Platzhalter: Person meditiert auf einer Yogamatte"></div>
+      <div class="container hero__content">
+        <h1 class="hero__title">Einatmen. Ausatmen. <em>Ankommen.</em></h1>
+        <p class="hero__subtitle">Alles was du für deine Yoga-Routine brauchst</p>
+        <div class="hero__buttons">
+          <a href="#" class="btn btn--primary">Yogamatten</a>
+          <a href="#" class="btn btn--secondary">Yoga-Sets</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured collections -->
+    <section class="section">
+      <div class="container collections">
+        <a href="#" class="collection">
+          <div class="collection__image placeholder placeholder--1" role="img" aria-label="Platzhalter: Yogamatte"></div>
+          <h3 class="collection__title">Yogamatten</h3>
+        </a>
+        <a href="#" class="collection">
+          <div class="collection__image placeholder placeholder--2" role="img" aria-label="Platzhalter: Meditationskissen"></div>
+          <h3 class="collection__title">Meditation</h3>
+        </a>
+        <a href="#" class="collection">
+          <div class="collection__image placeholder placeholder--3" role="img" aria-label="Platzhalter: Yoga-Kleidung"></div>
+          <h3 class="collection__title">Yoga-Kleidung</h3>
+        </a>
+        <a href="#" class="collection">
+          <div class="collection__image placeholder placeholder--4" role="img" aria-label="Platzhalter: Yoga-Set"></div>
+          <h3 class="collection__title">Yoga-Sets</h3>
+        </a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
