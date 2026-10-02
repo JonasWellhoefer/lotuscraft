@@ -15,8 +15,11 @@
 
   <!-- Trust bar -->
   <div class="trustbar">
-    <div class="container trustbar__inner">
-      <div class="trustbar__item">
+    <div class="container trustbar__inner" aria-live="polite">
+      <button class="trustbar__arrow trustbar__arrow--prev" aria-label="Vorheriger Hinweis">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <div class="trustbar__item is-current">
         <span class="stars" aria-label="4.8 von 5 Sternen">
           <svg viewBox="0 0 20 20"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.1 6-5.3-3-5.3 3 1.1-6L1.4 7.7l6-.7z"/></svg>
           <svg viewBox="0 0 20 20"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.1 6-5.3-3-5.3 3 1.1-6L1.4 7.7l6-.7z"/></svg>
@@ -38,6 +41,9 @@
         <svg class="icon" viewBox="0 0 24 24"><path d="M12 3l8 4v10l-8 4-8-4V7zM4 7l8 4 8-4M12 11v10"/></svg>
         <p class="small">Gratis Versand ab 69€</p>
       </div>
+      <button class="trustbar__arrow trustbar__arrow--next" aria-label="Nächster Hinweis">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
     </div>
   </div>
 

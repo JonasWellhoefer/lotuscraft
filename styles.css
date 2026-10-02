@@ -70,6 +70,8 @@ button { font: inherit; background: none; border: 0; padding: 0; cursor: pointer
 .trustbar__item { display: flex; align-items: center; gap: 12px; }
 .trustbar__item .icon { color: var(--text-muted); }
 .stars { display: flex; gap: 2px; }
+.trustbar__arrow { display: none; padding: 8px; }
+.trustbar__arrow .icon { color: var(--text); }
 .stars svg { width: 20px; height: 20px; fill: var(--text); }
 
 /* ---------- Header ---------- */
@@ -678,12 +680,16 @@ body:has(.drawer[open]) { overflow: hidden; }
 @media (max-width: 600px) {
   :root { --gutter: 16px; }
   .hide-sm { display: none; }
-  .trustbar__inner { justify-content: center; }
+  /* Trust bar: one hint at a time with arrows, like the original */
+  .trustbar__arrow { display: inline-flex; }
+  .trustbar .trustbar__item { display: none; }
+  .trustbar .trustbar__item.is-current { display: flex; }
   .logo__name { font-size: 20px; }
-  .hero { height: 460px; }
-  .hero__content { padding-bottom: 40px; }
-  .hero__title { font-size: 26px; }
+  .hero { height: 585px; }
+  .hero__content { padding-bottom: 48px; text-align: center; }
   .hero__subtitle { font-size: 17px; }
+  .hero__buttons { justify-content: center; }
+  .hero__buttons .btn { min-width: 159px; }
   .section { padding: 40px 0; }
   .collections,
   .product-grid { gap: 12px; }

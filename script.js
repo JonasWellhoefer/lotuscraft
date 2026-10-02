@@ -2,6 +2,20 @@
 const CORK = "#c7a27a";
 const COTTON = "#ebe5d6";
 
+// ---------- Trust bar ----------
+// On phones only one hint shows at a time; the arrows step through them.
+const trustItems = [...document.querySelectorAll(".trustbar__item")];
+let trustIndex = 0;
+
+function showTrustItem(step) {
+  trustItems[trustIndex].classList.remove("is-current");
+  trustIndex = (trustIndex + step + trustItems.length) % trustItems.length;
+  trustItems[trustIndex].classList.add("is-current");
+}
+
+document.querySelector(".trustbar__arrow--prev").addEventListener("click", () => showTrustItem(-1));
+document.querySelector(".trustbar__arrow--next").addEventListener("click", () => showTrustItem(1));
+
 // ---------- Bestseller data ----------
 // Product names and prices mirror the original shop (as of Oct 2026).
 // `shape` picks a placeholder illustration instead of the original photo.
