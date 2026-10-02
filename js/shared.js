@@ -79,6 +79,26 @@ const roundCushion = (height, embroidered) => (c) => {
           <path d="M90 ${top + height + 10}c-3-3-3-7 0-10 3 3 3 7 0 10zm0 0c-4-1-7 1-8 3 3 1 6 0 8-3zm0 0c4-1 7 1 8 3-3 1-6 0-8-3z" fill="rgba(255,255,255,.6)"/>` : ""}`;
 };
 
+// Empty cushion covers lying flat: the side band grows with the cushion's
+// height. Like on the original, the embroidered covers close with a
+// drawstring, the others with a zip.
+const roundCover = (band, embroidered) => (c) => {
+  const top = 98 - band / 2;
+  const bottom = top + band + 24;
+  const knot = bottom - band / 2;
+  const zipY = top + band / 2 + 16.5;
+  const closure = embroidered
+    ? `<path d="M90 ${knot}c-5-4-12-4-12 0s7 4 12 0zm0 0c5-4 12-4 12 0s-7 4-12 0zm0 0l-5 ${band / 2 + 7}m5-${band / 2 + 7}l4 ${band / 2 + 7}" fill="none" stroke="rgba(0,0,0,.32)" stroke-width="1.6" stroke-linecap="round"/>`
+    : `<path d="M42 ${zipY}A66 24 0 0 0 138 ${zipY}" fill="none" stroke="rgba(0,0,0,.28)" stroke-width="2" stroke-dasharray="3 2"/>
+          <rect x="135" y="${zipY - 4}" width="6" height="9" rx="1.5" fill="#8b8b8b"/>`;
+  return `<ellipse cx="90" cy="${bottom + 2}" rx="60" ry="7" fill="rgba(0,0,0,.08)"/>
+          <path d="M24 ${top}v${band}a66 24 0 0 0 132 0v-${band}z" fill="${c}"/>
+          <ellipse cx="90" cy="${top}" rx="66" ry="24" fill="${c}"/>
+          <ellipse cx="90" cy="${top}" rx="66" ry="24" fill="rgba(255,255,255,.12)"/>${embroidered ? `
+          <path d="M90 ${top + 6}c-3-3-3-7 0-10 3 3 3 7 0 10zm0 0c-4-1-7 1-8 3 3 1 6 0 8-3zm0 0c4-1 7 1 8 3-3 1-6 0-8-3z" fill="rgba(255,255,255,.6)"/>` : ""}
+          ${closure}`;
+};
+
 // Pieces for the set pictures (180×180): a small item on top, the main one below.
 const setPiece = {
   towelRoll: (c) => `<rect x="58" y="14" width="64" height="26" rx="13" fill="${c}"/>
@@ -120,6 +140,36 @@ const shapes = {
                    <rect x="22" y="80" width="136" height="16" rx="8" fill="${c}" opacity=".75"/>`,
   zabutonThick: (c) => `<rect x="22" y="76" width="136" height="42" rx="10" fill="${c}"/>
                         <rect x="22" y="68" width="136" height="16" rx="8" fill="${c}" opacity=".75"/>`,
+  // Covers on their own (see roundCover); the zafu's has pleats on top.
+  lotusCover10: roundCover(8, true),
+  lotusCover15: roundCover(11, true),
+  lotusCover20: roundCover(14, true),
+  plainCover: roundCover(11, false),
+  zafuCover: (c) => `${roundCover(11, false)(c)}
+                     <path d="${Array.from({ length: 12 }, (_, i) => {
+                       const angle = (i / 12) * Math.PI * 2;
+                       const point = (r) => `${(90 + 66 * r * Math.cos(angle)).toFixed(1)} ${(92.5 + 24 * r * Math.sin(angle)).toFixed(1)}`;
+                       return `M${point(0.45)}L${point(0.85)}`;
+                     }).join("")}" stroke="rgba(0,0,0,.12)" stroke-width="2"/>`,
+  crescentCover: (c) => `<ellipse cx="90" cy="126" rx="62" ry="6" fill="rgba(0,0,0,.08)"/>
+                         <path d="M22 122c2-28 30-46 68-46s66 18 68 46c-16-12-40-18-68-18s-52 6-68 18z" fill="${c}"/>
+                         <path d="M38 106c12-10 30-15 52-15s40 5 52 15" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="2"/>
+                         <path d="M34 110c15-8 36-12 56-12s41 4 56 12" fill="none" stroke="rgba(0,0,0,.28)" stroke-width="2" stroke-dasharray="3 2"/>
+                         <rect x="143" y="106" width="6" height="9" rx="1.5" fill="#8b8b8b" transform="rotate(-25 146 110)"/>`,
+  zabutonCover: (c) => `<ellipse cx="90" cy="120" rx="70" ry="5" fill="rgba(0,0,0,.06)"/>
+                        <path d="M34 70h112l16 34H18z" fill="${c}"/>
+                        <path d="M34 70h112l16 34H18z" fill="rgba(255,255,255,.12)"/>
+                        <path d="M18 104h144v8a4 4 0 0 1-4 4H22a4 4 0 0 1-4-4z" fill="${c}"/>
+                        <path d="M26 110h124" stroke="rgba(0,0,0,.28)" stroke-width="2" stroke-dasharray="3 2"/>
+                        <rect x="150" y="105.5" width="6" height="9" rx="1.5" fill="#8b8b8b"/>`,
+  // Kneeling bench: a sloping beech seat with a pad in the fabric colour.
+  bench: (c) => `<ellipse cx="90" cy="138" rx="60" ry="5" fill="rgba(0,0,0,.08)"/>
+                 <path d="M42 98h11l-1 38h-9zM128 90h11l-1 46h-9z" fill="#c9a77e"/>
+                 <g transform="rotate(-5 90 96)">
+                   <rect x="26" y="88" width="128" height="9" rx="2" fill="#dcc09a"/>
+                   <rect x="24" y="72" width="132" height="17" rx="8" fill="${c}"/>
+                   <rect x="24" y="72" width="132" height="6" rx="3" fill="rgba(255,255,255,.14)"/>
+                 </g>`,
   leggings: (c) => `<path d="M62 30h56l6 130h-22l-12-96-12 96H56z" fill="${c}"/>`,
   top: (c) => `<path d="M58 52l14-18h36l14 18v58H58z" fill="${c}" stroke="#d5d0c7"/>`,
   sweater: (c) => `<path d="M58 38l32-8 32 8 22 18 10 86-16 2-12-70v80H54V74l-12 70-16-2 10-86z" fill="${c}"/>`,
@@ -482,18 +532,26 @@ const rollCover = { name: "Bezug für Yogarolle COVER Ø24 cm", price: 29.95, sh
 ] };
 
 // "Yogamatten Zubehör" (the original's name for the add-ons page) also has
-// malas and spelt husks for refilling cushions.
+// malas and spelt husks for refilling cushions; both come back under
+// "Meditation Zubehör".
 const stickers = yogaAccessories.filter((item) => item.shape === "sticker");
-const matAddOns = [
-  ...accessoriesNamed("Bio Yogamatten Spray"),
-  singleCorkBlock,
+const malas = [
   { name: "Rosenholz Mala (Dunkles Rosenholz)", price: 22.95, shape: "mala", tint: "#6b3a2c", material: "Rotes Sandelholz", soldOut: true },
   { name: "Tulsi Mala", price: 24.95, shape: "mala", tint: "#c8a77a", material: "Tulsi", soldOut: true },
   { name: "Rudraksha Mala", price: 19.95, shape: "mala", tint: "#7a4a32", material: "Rudraksha", soldOut: true },
-  stickers[0],
+];
+const speltHusks = [
   { name: "Bio Dinkelspelzen - Dinkelspreu (kbA) 2kg", price: 14.95, shape: "husks", tint: "#d9c69e" },
-  stickers[1],
   { name: "Bio Dinkelspelzen -Dinkelspreu (kbA) 1kg", price: 9.95, shape: "husks", tint: "#d9c69e" },
+];
+const matAddOns = [
+  ...accessoriesNamed("Bio Yogamatten Spray"),
+  singleCorkBlock,
+  ...malas,
+  stickers[0],
+  speltHusks[0],
+  stickers[1],
+  speltHusks[1],
   stickers[2],
   stickers[3],
 ];
@@ -528,6 +586,7 @@ const CUSHION_TONES = {
   "Light Taupe": { hex: "#c4b6a6", family: "Beige" },
   "Indigo Dust": { hex: "#6b7c95", family: "Blau" },
   "Marine Blue": { hex: "#2f4361", family: "Blau" },
+  "Midnight Blue": { hex: "#2f3a5c", family: "Blau" },
   "Anthrazit": { hex: "#3d3d3f", family: "Schwarz" },
   "Schwarz": { hex: "#1f1e1c", family: "Schwarz" },
   "Kurkuma": { hex: "#d4913b", family: "Terra" },
@@ -605,6 +664,46 @@ const giftShortcuts = (first) => [
   { label: "Geschenke unter 100€", icon: "gift" },
   { label: "Geschenke unter 120€", icon: "gift" },
 ];
+
+// ---------- Covers and the meditation bench ----------
+// Covers sold on their own, one card per colour the original shows (in its
+// variant order). `height` feeds its "Sitzhöhe" filter; like there, only one
+// half-moon cover has its form set.
+const coverFor = (name, shape, extra, variants) => ({ name: `Bezug für ${name}`, price: 19.95, shape, badge: "NUR BEZUG", ...extra, variants });
+const coverSoldOut = { soldOut: true };
+const cushionCovers = [
+  coverFor("Meditationskissen Lotus (H: 15cm)", "lotusCover15", { height: "15", form: "Rund" }, [
+    cushionColor("Anthrazit"), cushionColor("Aubergine", coverSoldOut), cushionColor("Balsam Green"), cushionColor("Schwarz"),
+    cushionColor("Indigo Dust"), cushionColor("Kurkuma"), cushionColor("Light Taupe"), cushionColor("Natur"),
+  ]),
+  coverFor("Meditationskissen Lotus (H: 15cm) - Ohne Bestickung", "plainCover", { height: "15", form: "Rund" }, [
+    cushionColor("Anthrazit"), cushionColor("Aubergine", coverSoldOut), cushionColor("Indigo Dust"), cushionColor("Lavender Fog"),
+    cushionColor("Light Taupe"), cushionColor("Natur"), cushionColor("Balsam Green"),
+  ]),
+  coverFor("Zafu-Meditationskissen Zen", "zafuCover", { height: "15", form: "Zafu" }, [
+    cushionColor("Anthrazit", coverSoldOut), cushionColor("Light Taupe"), cushionColor("Indigo Dust"), cushionColor("Balsam Green"),
+    cushionColor("Kurkuma"), cushionColor("Natur"),
+  ]),
+  coverFor("Halbmond Kissen", "crescentCover", { height: "15" }, [
+    cushionColor("Anthrazit", { form: "Halbrund" }), cushionColor("Aubergine", coverSoldOut), cushionColor("Balsam Green"), cushionColor("Indigo Dust"),
+    cushionColor("Light Taupe"), cushionColor("Natur"), cushionColor("Midnight Blue"),
+  ]),
+  coverFor("Meditationskissen Lotus KLEIN (H: 10 cm)", "lotusCover10", { height: "10", form: "Rund" }, [
+    cushionColor("Anthrazit"), cushionColor("Aubergine", coverSoldOut), cushionColor("Balsam Green", coverSoldOut), cushionColor("Indigo Dust"),
+    cushionColor("Kurkuma"), cushionColor("Light Taupe"), cushionColor("Marine Blue", coverSoldOut), cushionColor("Natur"),
+  ]),
+  coverFor("Meditationskissen Lotus HOCH (H: 20cm)", "lotusCover20", { height: "20", form: "Rund" }, [
+    cushionColor("Balsam Green"), cushionColor("Indigo Dust"), cushionColor("Natur"), cushionColor("Anthrazit"),
+    cushionColor("Aubergine", coverSoldOut), cushionColor("Kurkuma"), cushionColor("Light Taupe"),
+  ]),
+];
+const zabutonCover = coverFor("Zabuton", "zabutonCover", { price: 39.95 }, [
+  cushionColor("Anthrazit"), cushionColor("Aubergine", coverSoldOut), cushionColor("Bordeaux"), cushionColor("Indigo Dust"),
+  cushionColor("Light Taupe"), cushionColor("Natur"), cushionColor("Balsam Green"), cushionColor("Schwarz"),
+]);
+const meditationBench = { name: "Meditationsbank DHARMA Standard", price: 74.95, shape: "bench", variants: [
+  cushionColor("Natur"), cushionColor("Anthrazit"), cushionColor("Indigo Dust", { badge: "New in" }), cushionColor("Aubergine", { badge: "New in" }),
+] };
 
 // "Almost Perfect" mats: second-quality, 15% off. Only the colours the
 // original shows as cards; like there, only some have a material set.
@@ -813,6 +912,48 @@ const categories = {
     models: meditationSets,
     description: "Kissen und Zabuton passend kombiniert: Mit einem Meditations-Set sitzt du von Anfang an bequem und sparst 10 % gegenüber den einzelnen Teilen. Ein schönes Geschenk für alle, die mit dem Meditieren beginnen.",
   },
+  "meditation-zubehor": {
+    title: "Meditation Zubehör",
+    nav: ["Meditation"],
+    shortcuts: [],
+    models: [...accessoriesNamed("Augenkissen"), ...malas, ...speltHusks],
+    description: "Kleine Helfer rund ums Sitzen: ein Augenkissen für die Entspannung danach, eine Mala zum Zählen der Atemzüge und Bio-Dinkelspelz, mit dem du dein Meditationskissen wieder auffüllst.",
+  },
+  augenkissen: {
+    title: "Augenkissen",
+    nav: ["Meditation"],
+    shortcuts: [],
+    models: accessoriesNamed("Augenkissen"),
+    description: "Mit Leinsamen und Lavendel gefüllt, liegt das Augenkissen angenehm schwer auf den Augen und hält das Licht fern – schön für Savasana oder eine kurze Pause zwischendurch.",
+  },
+  "dinkelspelz-fullung": {
+    title: "Dinkelspelz Füllung",
+    nav: ["Meditation"],
+    shortcuts: [],
+    models: speltHusks,
+    description: "Mit der Zeit gibt jede Füllung etwas nach. Mit Bio-Dinkelspelz füllst du dein Kissen einfach wieder auf und bestimmst selbst, wie hoch und fest du sitzen möchtest.",
+  },
+  // Brown, yellow and wood grain come from sold-out covers the original hides.
+  "bezug-meditationskissen": {
+    title: "Bezug Meditationskissen",
+    nav: ["Meditation"],
+    shortcuts: [],
+    models: cushionCovers,
+    filterValues: { colors: ["Beige", "Blau", "Rot", "Grün", "Terra", "Schwarz", "Rosa", "Braun", "Gelb", "Wood Grain"] },
+  },
+  "bezug-meditationsmatte": {
+    title: "Bezug Meditationsmatte",
+    nav: ["Meditation"],
+    shortcuts: [],
+    models: [zabutonCover],
+  },
+  meditationsbank: {
+    title: "Meditationsbänke",
+    nav: ["Meditation"],
+    shortcuts: [],
+    models: [meditationBench],
+    description: "Auf der Meditationsbank sitzt du im Kniesitz, ohne dass Knie und Füße das Gewicht tragen. Die leicht schräge Sitzfläche kippt das Becken nach vorn, so bleibt der Rücken von selbst aufrecht. Die Ausführung „Standard“ passt bis etwa 180 cm Körpergröße.",
+  },
   "bezug-yogabolster": {
     title: "Bezug Yogarolle",
     shortcuts: [],
@@ -878,6 +1019,12 @@ const sitePages = [
   { title: "Halbmondkissen", href: "kategorie.html?k=yogakissen-halbmond", keywords: "meditationskissen halbmond kissen kategorie" },
   { title: "Meditationsmatten", href: "kategorie.html?k=meditationsmatten", keywords: "meditation meditationsmatte matten zabuton kategorie" },
   { title: "Meditationskissen Set", href: "kategorie.html?k=meditations-sets", keywords: "meditation set sets meditationsset geschenk kategorie" },
+  { title: "Meditation Zubehör", href: "kategorie.html?k=meditation-zubehor", keywords: "meditation zubehör zubehoer augenkissen mala dinkelspelz kategorie" },
+  { title: "Augenkissen", href: "kategorie.html?k=augenkissen", keywords: "augenkissen augenmaske entspannung lavendel kategorie" },
+  { title: "Dinkelspelz Füllung", href: "kategorie.html?k=dinkelspelz-fullung", keywords: "dinkelspelz dinkelspelzen füllung füllmaterial nachfüllen kategorie" },
+  { title: "Bezug Meditationskissen", href: "kategorie.html?k=bezug-meditationskissen", keywords: "bezug bezüge meditationskissen kissenbezug cover kategorie" },
+  { title: "Bezug Meditationsmatte", href: "kategorie.html?k=bezug-meditationsmatte", keywords: "bezug bezüge meditationsmatte zabuton cover kategorie" },
+  { title: "Meditationsbänke", href: "kategorie.html?k=meditationsbank", keywords: "meditation meditationsbank bank bänke kniebank hocker kategorie" },
   { title: "Startseite", href: "index.html", keywords: "start home lotuscraft bestseller sets" },
 ];
 
@@ -1017,6 +1164,13 @@ const menuLinks = {
   "Meditations-Set": "kategorie.html?k=meditations-sets",
   "Meditations-Sets": "kategorie.html?k=meditations-sets",
   "Alle Meditations-Sets": "kategorie.html?k=meditations-sets",
+  "Alles in Meditation-Zubehör": "kategorie.html?k=meditation-zubehor",
+  "Augenkissen": "kategorie.html?k=augenkissen",
+  "Dinkelspelz Füllmaterial": "kategorie.html?k=dinkelspelz-fullung",
+  "Bezüge Meditationskissen": "kategorie.html?k=bezug-meditationskissen",
+  "Bezüge Meditationsmatten": "kategorie.html?k=bezug-meditationsmatte",
+  "Meditationsbänke": "kategorie.html?k=meditationsbank",
+  "Alle Meditationsbänke": "kategorie.html?k=meditationsbank",
 };
 
 // Desktop dropdown links that get a more specific icon than their column.

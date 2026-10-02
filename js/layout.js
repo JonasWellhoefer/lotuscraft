@@ -295,7 +295,7 @@ function renderMenu(direction) {
     }
     return item.children
       ? `<li><button class="drawer__link" data-index="${i}">${menuIcon(item.icon)}<span>${item.label}</span>${chevron("right")}</button></li>`
-      : `<li><a href="#" class="drawer__link">${menuIcon(item.icon)}<span>${item.label}</span></a></li>`;
+      : `<li><a href="${menuLinks[item.label] || "#"}" class="drawer__link">${menuIcon(item.icon)}<span>${item.label}</span></a></li>`;
   }).join("");
 
   drawerNav.innerHTML = `${back}<ul>${list}</ul>`;

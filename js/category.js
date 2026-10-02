@@ -1,11 +1,12 @@
-// Category page: shortcut circles, filters (colour, material, availability),
-// sorting, the product grid and a short text below it. Which category is
-// shown comes from the URL, e.g. kategorie.html?k=yogamatten or
-// kategorie.html?k=reise-yogamatte. The category data itself is in shared.js
-// (the search and the menus use it too).
+// Category page: shortcut circles, filters (colour, seat height, form,
+// material, filling, availability), sorting, the product grid and a short
+// text below it. Which category is shown comes from the URL, e.g.
+// kategorie.html?k=yogamatten or kategorie.html?k=reise-yogamatte. The
+// category data itself is in shared.js (the search and the menus use it too).
 
 // Filter options, in the original's order (swatch colours measured from its
-// filter). "Align" is a cork print.
+// filter; "Bezug Meditationskissen" shows Braun before Gelb). "Align" is a
+// cork print.
 const colorFamilies = [
   { name: "Beige", swatch: "#fcfaf5" },
   { name: "Blau", swatch: "#44709c" },
@@ -15,8 +16,8 @@ const colorFamilies = [
   { name: "Schwarz", swatch: "#000" },
   { name: "Grau", swatch: "#b7abae" },
   { name: "Rosa", swatch: "#c69a98" },
-  { name: "Gelb", swatch: "#d1a128" },
   { name: "Braun", swatch: "#9b6e55" },
+  { name: "Gelb", swatch: "#d1a128" },
   { name: "Align", swatch: "repeating-linear-gradient(135deg, #c9a77e 0 5px, #b48f63 5px 7px)" },
   // The original shows a photo of wood grain here; this is a drawn stand-in.
   { name: "Wood Grain", swatch: "repeating-linear-gradient(100deg, #ded6c9 0 3px, #cbc1b0 3px 5px, #d7cebf 5px 9px)" },
@@ -24,6 +25,7 @@ const colorFamilies = [
 const materials = ["Bio-Baumwolle (kbA)", "Naturkautschuk", "Polyester", "PU (Polyurethan)", "PVC (Polyvinylchlorid)", "Naturkork", "Schurwolle", "Rotes Sandelholz", "Tulsi", "Rudraksha", "Polymere Klebefolie mit UV-Schutz"];
 const fillings = ["Bio-Dinkelspelz (kbA)", "Kapokwolle"];
 const forms = ["Rund", "Halbrund", "Zafu"];
+const seatHeights = { 10: "10 cm (niedrig)", 15: "15 cm (standard)", 20: "20 cm (hoch)" };
 const availabilities = ["Verfügbar", "Nicht verfügbar"];
 
 // The original sorts most pages by "meistverkauft". Its sales ranking (as
@@ -89,6 +91,31 @@ const bestSellingRanking = [
   "Meditationsmatte Zabuton / Anthrazit / 7 cm", "Meditationsmatte Zabuton / Bordeaux / 4 cm", "Meditationsmatte Zabuton / Bordeaux / 7 cm",
   "Meditationsmatte Zabuton / Schwarz / 4 cm", "Meditationsmatte Zabuton / Schwarz / 7 cm", "Meditationsmatte Zabuton / Aubergine / 4 cm",
   "Meditationsmatte Zabuton / Aubergine / 7 cm",
+  // Covers and the bench
+  "Bezug für Meditationskissen Lotus (H: 15cm) / Light Taupe", "Bezug für Meditationskissen Lotus (H: 15cm) / Natur",
+  "Bezug für Zafu-Meditationskissen Zen / Light Taupe", "Bezug für Meditationskissen Lotus (H: 15cm) / Balsam Green",
+  "Bezug für Meditationskissen Lotus (H: 15cm) / Anthrazit", "Bezug für Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Indigo Dust",
+  "Bezug für Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Lavender Fog", "Bezug für Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Balsam Green",
+  "Bezug für Halbmond Kissen / Light Taupe", "Bezug für Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Light Taupe",
+  "Bezug für Meditationskissen Lotus KLEIN (H: 10 cm) / Light Taupe", "Bezug für Meditationskissen Lotus KLEIN (H: 10 cm) / Natur",
+  "Bezug für Zafu-Meditationskissen Zen / Anthrazit", "Bezug für Zafu-Meditationskissen Zen / Natur", "Bezug für Halbmond Kissen / Natur",
+  "Bezug für Meditationskissen Lotus (H: 15cm) / Indigo Dust", "Bezug für Meditationskissen Lotus (H: 15cm) / Kurkuma",
+  "Bezug für Zafu-Meditationskissen Zen / Indigo Dust", "Bezug für Halbmond Kissen / Balsam Green", "Bezug für Meditationskissen Lotus (H: 15cm) / Schwarz",
+  "Bezug für Meditationskissen Lotus HOCH (H: 20cm) / Indigo Dust", "Bezug für Meditationskissen Lotus HOCH (H: 20cm) / Kurkuma",
+  "Bezug für Halbmond Kissen / Anthrazit", "Bezug für Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Anthrazit",
+  "Bezug für Meditationskissen Lotus HOCH (H: 20cm) / Balsam Green", "Bezug für Meditationskissen Lotus HOCH (H: 20cm) / Natur",
+  "Bezug für Meditationskissen Lotus HOCH (H: 20cm) / Anthrazit", "Bezug für Meditationskissen Lotus KLEIN (H: 10 cm) / Anthrazit",
+  "Bezug für Meditationskissen Lotus KLEIN (H: 10 cm) / Indigo Dust", "Bezug für Meditationskissen Lotus KLEIN (H: 10 cm) / Kurkuma",
+  "Bezug für Halbmond Kissen / Midnight Blue", "Bezug für Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Aubergine",
+  "Bezug für Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Natur", "Bezug für Meditationskissen Lotus HOCH (H: 20cm) / Aubergine",
+  "Bezug für Meditationskissen Lotus HOCH (H: 20cm) / Light Taupe", "Bezug für Meditationskissen Lotus KLEIN (H: 10 cm) / Balsam Green",
+  "Bezug für Meditationskissen Lotus KLEIN (H: 10 cm) / Marine Blue", "Bezug für Zafu-Meditationskissen Zen / Balsam Green",
+  "Bezug für Zafu-Meditationskissen Zen / Kurkuma", "Bezug für Halbmond Kissen / Aubergine", "Bezug für Halbmond Kissen / Indigo Dust",
+  "Bezug für Meditationskissen Lotus (H: 15cm) / Aubergine", "Bezug für Meditationskissen Lotus KLEIN (H: 10 cm) / Aubergine",
+  "Bezug für Zabuton / Light Taupe", "Bezug für Zabuton / Natur", "Bezug für Zabuton / Anthrazit", "Bezug für Zabuton / Indigo Dust",
+  "Bezug für Zabuton / Aubergine", "Bezug für Zabuton / Bordeaux", "Bezug für Zabuton / Schwarz", "Bezug für Zabuton / Balsam Green",
+  "Meditationsbank DHARMA Standard / Indigo Dust", "Meditationsbank DHARMA Standard / Natur", "Meditationsbank DHARMA Standard / Anthrazit",
+  "Meditationsbank DHARMA Standard / Aubergine",
   // "Almost Perfect"
   "Almost Perfect Yogamatte MUDRA / Indigo Dust", "Almost Perfect Yogamatte MUDRA / Light Taupe", "Almost Perfect Yogamatte MUDRA / Balsam Green",
   "Almost Perfect Yogamatte MUDRA PRO / Anthrazit", "Almost Perfect Yogamatte PURE / Light Taupe", "Almost Perfect Yogamatte MUDRA PRO / Light Taupe",
@@ -126,9 +153,9 @@ function filterPanel(key, label, options) {
         </details>`;
 }
 
-function checkboxList(values) {
+function checkboxList(values, labels = {}) {
   return `<div class="filter__options">${values.map((value) => `
-              <label class="filter__check"><input type="checkbox" value="${value}">${value}</label>`).join("")}
+              <label class="filter__check"><input type="checkbox" value="${value}">${labels[value] || value}</label>`).join("")}
             </div>`;
 }
 
@@ -152,6 +179,7 @@ function categoryMarkup(category) {
     ? category.filterValues[filterKey].includes(value)
     : offered(key, value)));
   const families = colorFamilies.filter((family) => options("family", "colors", [family.name]).length);
+  const heightOptions = options("height", "heights", Object.keys(seatHeights));
   const formOptions = options("form", "forms", forms);
   const materialOptions = options("material", "materials", materials);
   const fillingOptions = options("filling", "fillings", fillings);
@@ -175,7 +203,7 @@ function categoryMarkup(category) {
       <h1 class="category__title">${category.title}</h1>
 
       <div class="filters">
-        <div class="filters__group">${families.length > 1 ? filterPanel("colors", "Farbe", swatches) : ""}${formOptions.length > 1 ? filterPanel("forms", "Form", checkboxList(formOptions)) : ""}${materialOptions.length > 1 ? filterPanel("materials", "Material", checkboxList(materialOptions)) : ""}${fillingOptions.length > 1 ? filterPanel("fillings", "Füllung", checkboxList(fillingOptions)) : ""}${filterPanel("availability", "Verfügbarkeit", checkboxList(availabilities))}
+        <div class="filters__group">${families.length > 1 ? filterPanel("colors", "Farbe", swatches) : ""}${heightOptions.length > 1 ? filterPanel("heights", "Sitzhöhe", checkboxList(heightOptions, seatHeights)) : ""}${formOptions.length > 1 ? filterPanel("forms", "Form", checkboxList(formOptions)) : ""}${materialOptions.length > 1 ? filterPanel("materials", "Material", checkboxList(materialOptions)) : ""}${fillingOptions.length > 1 ? filterPanel("fillings", "Füllung", checkboxList(fillingOptions)) : ""}${filterPanel("availability", "Verfügbarkeit", checkboxList(availabilities))}
         </div>
         <details class="filter filter--sort" name="filters">
           <summary class="filter__toggle">Sortierung${sortIcon}</summary>
@@ -235,7 +263,8 @@ if (!category) {
       compareAt: model.compareAt,
       material: variant.material ?? model.material,
       filling: variant.filling ?? model.filling,
-      form: model.form,
+      height: variant.height ?? model.height,
+      form: variant.form ?? model.form,
       shape: variant.shape || model.shape || "mat",
       variant: variant.color,
       tint: variant.hex,
@@ -245,7 +274,7 @@ if (!category) {
     })) : [{ ...model, soldOut: Boolean(model.soldOut) }]))
     .map((card, order) => ({ ...card, order }));
 
-  const filters = { colors: new Set(), forms: new Set(), materials: new Set(), fillings: new Set(), availability: new Set() };
+  const filters = { colors: new Set(), heights: new Set(), forms: new Set(), materials: new Set(), fillings: new Set(), availability: new Set() };
   let sortKey = defaultSort(category);
 
   const grid = categoryRoot.querySelector(".category__grid");
@@ -257,6 +286,7 @@ if (!category) {
   function matches(card) {
     const availability = card.soldOut ? "Nicht verfügbar" : "Verfügbar";
     return (!filters.colors.size || filters.colors.has(card.family))
+      && (!filters.heights.size || filters.heights.has(card.height))
       && (!filters.forms.size || filters.forms.has(card.form))
       && (!filters.materials.size || filters.materials.has(card.material))
       && (!filters.fillings.size || filters.fillings.has(card.filling))
