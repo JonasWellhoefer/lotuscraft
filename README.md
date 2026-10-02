@@ -109,7 +109,7 @@ Die Startseite wird Abschnitt für Abschnitt in der Reihenfolge des Originals na
 - [x] Set-Angebote mit Tabs (Yoga- / Meditation-Bundles)
 - [x] Community-Inspiration
 - [x] Verkaufsargumente
-- [ ] Footer mit Newsletter
+- [x] Footer mit Newsletter (Demo-Formular, sendet nichts)
 - [ ] Mobiles Menü & Dropdowns
 
 ## Hinweis

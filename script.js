@@ -236,6 +236,17 @@ function setPaused(paused) {
 pauseButton.addEventListener("click", () => setPaused(autoplay !== null));
 setPaused(reducedMotion);
 
+// ---------- Newsletter (demo) ----------
+// This is a student project: the form never sends or stores the address.
+const newsletterForm = document.querySelector(".newsletter__form");
+
+newsletterForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  newsletterForm.querySelector(".newsletter__status").textContent =
+    "Danke! Das ist nur eine Demo – in diesem Studentenprojekt wird nichts gesendet oder gespeichert.";
+  newsletterForm.reset();
+});
+
 // ---------- Tabs ----------
 // Each tab list only controls its own panels, so several tab groups
 // (bestsellers, set offers) can live on the same page.
