@@ -93,6 +93,14 @@ const shapes = {
                  <path d="M44 124C40 52 140 52 136 124" fill="none" stroke="${c}" stroke-width="10" stroke-linecap="round"/>
                  <rect x="33" y="118" width="22" height="16" rx="3" fill="none" stroke="#8b8b8b" stroke-width="3"/>
                  <rect x="125" y="118" width="22" height="16" rx="3" fill="none" stroke="#8b8b8b" stroke-width="3"/>`,
+  towel: (c) => `<rect x="32" y="56" width="116" height="78" rx="12" fill="${c}"/>
+                 <path d="M32 82h116M32 108h116" stroke="rgba(0,0,0,.12)" stroke-width="2"/>
+                 <path d="M46 134v7M60 134v7M74 134v7M88 134v7M102 134v7M116 134v7M130 134v7" stroke="${c}" stroke-width="2.5" stroke-linecap="round"/>`,
+  spray: (c) => `<rect x="66" y="74" width="48" height="82" rx="10" fill="${c}" stroke="rgba(0,0,0,.12)"/>
+                 <rect x="80" y="58" width="20" height="17" rx="2" fill="#8b8b8b"/>
+                 <path d="M74 38h30a6 6 0 0 1 6 6v14H74z" fill="#5b5b5b"/>
+                 <path d="M74 45H60" stroke="#5b5b5b" stroke-width="5" stroke-linecap="round"/>
+                 <rect x="74" y="98" width="32" height="34" rx="3" fill="rgba(255,255,255,.7)"/>`,
 
   // Bundles: several products in one picture.
   matSet: (c, a) => `<rect x="46" y="16" width="88" height="26" rx="13" fill="${a}"/>
@@ -211,7 +219,7 @@ const categories = {
         { color: "Dark Cranberry", hex: "#7a2a3a", family: "Rot" },
         { color: "Midnight Blue", hex: "#2f3a5c", family: "Blau" },
       ] },
-      { name: "Yogamatte ARISE Travel", price: 59.95, material: "Naturkautschuk", variants: [
+      { name: "Yogamatte ARISE Travel", slug: "yogamatte-arise-travel", price: 59.95, material: "Naturkautschuk", variants: [
         { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
         { color: "Graphite", hex: "#4a4b4d", family: "Schwarz" },
         { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },

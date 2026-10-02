@@ -12,6 +12,8 @@
 const accessories = {
   bag: { name: "Yogatasche PUNE", price: 29.95, shape: "bag", tint: "#c9bcae" },
   strap: { name: "Yogamatten Tragegurt", price: 14.95, shape: "strap", tint: COTTON },
+  towel: { name: "Yoga Handtuch", price: 29.95, shape: "towel", tint: "#8f9a8c" },
+  spray: { name: "Bio Yogamatten Spray", price: 12.95, shape: "spray", tint: "#e6e1d6" },
 };
 
 // The ARISE mats are two-tone: the underside is a lighter shade of the top.
@@ -169,7 +171,74 @@ const productDetails = {
       accessories.bag,
       { name: "„Almost Perfect“ Yogamatte ARISE", price: 76.46, compareAt: 89.95, shape: "mat", tint: "#5d7366" },
       accessories.strap,
-      { name: "Yogamatte ARISE Travel", price: 59.95, shape: "mat", tint: "#5d7366" },
+      { name: "Yogamatte ARISE Travel", slug: "yogamatte-arise-travel", price: 59.95, shape: "mat", tint: "#5d7366" },
+    ],
+  },
+
+  "yogamatte-arise-travel": {
+    name: "Yogamatte ARISE Travel",
+    subtitle: "Die Ultraleichte - Extrem rutschfest und ideal für Reisen - Made in Spain",
+    price: 59.95,
+    rating: 4.46,
+    reviewCount: 169,
+    ratingScales: [
+      ["Rutschfestigkeit", 4.76],
+      ["Dämpfung", 3.48],
+      ["Qualität und Langlebigkeit", 4.5],
+    ],
+    specs: { material: "Naturkautschuk", short: "Naturkautschuk", length: 185, width: 65, mm: 1.3, weight: "1,0 kg", origin: "Spanien" },
+    // Wild Ginger and Midnight Blue are sold out and hidden, as on the original.
+    colors: ariseColors("Balsam Green", "Graphite", "Indigo Dust", "Dark Cranberry"),
+    gallery: ["folded", "rolled", "top", "beach", "park", "seated"],
+    description: `
+        <p>Die ARISE Travel ist die Reiseversion der ARISE: nur 1,3 mm dünn und rund 1 kg leicht. Statt sie zu rollen, faltest du sie einfach – so passt sie in Koffer, Rucksack oder Handgepäck.</p>
+        <p>Trotz der geringen Dicke hält der Naturkautschuk sicher auf dem Boden, ob im Hotelzimmer, im Park oder auf einem Retreat. Beide Seiten sind nutzbar. Hergestellt wird sie in Spanien, ohne PVC.</p>
+        <p>Gedacht ist sie für deine eigene Praxis – für Studios sind MUDRA und MUDRA PRO die bessere Wahl.</p>`,
+    care: `
+        <p>Mit einer weichen Bürste oder einem Tuch und einer Mischung aus Wasser und Apfelessig (1:1) reinigen. Keine Seife verwenden und nicht in die Waschmaschine geben.</p>
+        <p>Feucht nicht zusammenfalten, sondern erst trocknen lassen. Vor direkter Sonne und großer Hitze schützen. Der typische Gummigeruch ist am Anfang stärker und lässt mit der Zeit nach.</p>`,
+    sustainability: `
+        <p><strong>Hergestellt in Spanien</strong> – kurze Wege innerhalb der EU.</p>
+        <p><strong>Schadstoffgeprüft</strong> nach OEKO-TEX® STANDARD 100.</p>`,
+    features: [
+      {
+        title: "Gefaltet statt gerollt",
+        text: "Mit 1 kg und nur 1,3 mm Dicke lässt sich die ARISE Travel falten wie ein Handtuch. Sie liegt flach im Koffer oder steckt in der Seitentasche vom Rucksack und braucht kaum mehr Platz als ein Pullover.",
+        picture: "folded",
+      },
+      {
+        title: "Hält auf jedem Boden",
+        text: "Ob Parkett im Hotel, Fliesen im Ferienhaus oder Gras im Park: Der Naturkautschuk greift auf glatten wie auf unebenen Flächen. Im Studio kannst du sie auch über eine Leihmatte legen und auf deiner eigenen Oberfläche üben.",
+        picture: "park",
+      },
+      {
+        title: "Naturkautschuk aus Spanien",
+        text: "Die Matte besteht aus Naturkautschuk und kommt ohne PVC aus. Hergestellt wird sie in Spanien, auf Schadstoffe geprüft ist sie nach OEKO-TEX® STANDARD 100.",
+        picture: "layers",
+      },
+      {
+        title: "Yoga, wo immer du bist",
+        text: "Am Strand, auf dem Balkon oder im Retreat: Die Travel ist schnell ausgebreitet und genauso schnell wieder verstaut. Weil sie so dünn ist, spürst du den Boden gut – wer mehr Polster mag, legt eine Decke darunter.",
+        picture: "beach",
+      },
+    ],
+    reviews: [
+      { name: "Lena", place: "Köln, DE", color: "Balsam Green", stars: 5, days: 1, text: "War mit im Urlaub und hat gefaltet locker in den Koffer gepasst. Rutscht auch auf Fliesen nicht." },
+      { name: "Ben", place: "Wien, AT", color: "Graphite", stars: 4, days: 3, text: "Super leicht und griffig. Für die Knie ist sie natürlich sehr dünn, da lege ich ein Handtuch unter." },
+      { name: "Anonym", place: "", color: "Indigo Dust", stars: 5, days: 4, text: "Ich lege sie im Studio über die Leihmatten – so habe ich immer meine eigene Oberfläche dabei." },
+      { name: "Carla", place: "Freiburg, DE", color: "Dark Cranberry", stars: 3, days: 7, text: "Der Grip ist top, aber nach dem Falten bleiben anfangs Knicke, die sich erst nach ein paar Minuten glätten." },
+      { name: "Miriam", place: "Luzern, CH", color: "Balsam Green", stars: 5, days: 9, text: "Perfekt für Yoga im Park. Wiegt fast nichts und ist schnell wieder eingepackt." },
+      { name: "Stefan", place: "Bonn, DE", color: "Graphite", stars: 2, days: 12, text: "Für mich zu dünn – auf hartem Boden tun mir die Knie weh. Als Reisematte trotzdem gut verarbeitet." },
+      { name: "Ida", place: "Klagenfurt, AT", color: "Indigo Dust", stars: 5, days: 15, text: "Habe sie im Handgepäck mit auf ein Retreat genommen. Genau dafür ist sie gemacht." },
+      { name: "Noah", place: "Leipzig, DE", color: "Dark Cranberry", stars: 4, days: 19, text: "Leicht, rutschfest, schöne Farbe. Der Gummigeruch war am Anfang deutlich, ist inzwischen aber weg." },
+      { name: "Pia", place: "Mainz, DE", color: "Balsam Green", stars: 5, days: 23, text: "Endlich eine Matte, die ich mit dem Rad mitnehmen kann. Zusammengefaltet passt sie in meine Fahrradtasche." },
+      { name: "Elias", place: "Zürich, CH", color: "Graphite", stars: 4, days: 28, text: "Für unterwegs ideal. Zu Hause nutze ich trotzdem lieber meine dickere Matte." },
+    ],
+    related: [
+      accessories.towel,
+      bestsellers.yoga[2], // Yogamatte ARISE
+      accessories.spray,
+      { name: "„Almost Perfect“ Yogamatte ARISE Travel", price: 50.95, compareAt: 59.95, shape: "mat", tint: "#5d7366" },
     ],
   },
 };
@@ -252,6 +321,22 @@ function layersPicture(color, specs) {
     </svg>`;
 }
 
+// Folded like a towel (the travel mat folds instead of rolling up):
+// the stacked folds show top and underside in turn.
+function foldedPicture(color) {
+  const folds = [0, 1, 2, 3].map((i) => `
+      <rect x="34" y="${150 + i * 7}" width="124" height="7" rx="3.5" fill="${i % 2 ? color.hex : underside(color)}"/>`).join("");
+  return `
+    <svg viewBox="0 0 200 250" aria-hidden="true">
+      <rect width="200" height="250" fill="${PHOTO_BG}"/>
+      <ellipse cx="104" cy="182" rx="80" ry="8" fill="rgba(0,0,0,.07)"/>
+      <path d="M34 150L56 104H180L158 150Z" fill="${color.hex}"/>
+      <path d="M158 150L180 104V132L158 178Z" fill="${color.hex}"/>
+      <path d="M158 150L180 104V132L158 178Z" fill="rgba(0,0,0,.2)"/>${folds}
+      <ellipse cx="107" cy="127" rx="8" ry="6" fill="none" stroke="rgba(0,0,0,.22)" stroke-width="1.2"/>
+    </svg>`;
+}
+
 const scenePicture = (color, pose, wall, floor) => sceneSvg({ pose, wall, floor, mat: color.hex });
 
 // Wide pictures for the info rows (840×515 on the original).
@@ -304,6 +389,24 @@ function reversibleWidePicture(color) {
     </svg>`;
 }
 
+// The folded travel mat next to a backpack.
+function foldedWidePicture(color, specs) {
+  const folds = [0, 1, 2, 3].map((i) => `
+      <rect x="36" y="${112 + i * 6}" width="130" height="6" rx="3" fill="${i % 2 ? color.hex : underside(color)}"/>`).join("");
+  return `
+    <svg viewBox="0 0 330 202" aria-hidden="true">
+      <rect width="330" height="202" fill="${PHOTO_BG}"/>
+      <ellipse cx="170" cy="138" rx="146" ry="7" fill="rgba(0,0,0,.06)"/>
+      <path d="M36 112L56 76H186L166 112Z" fill="${color.hex}"/>
+      <path d="M166 112L186 76V100L166 136Z" fill="${color.hex}"/>
+      <path d="M166 112L186 76V100L166 136Z" fill="rgba(0,0,0,.2)"/>${folds}
+      <path d="M236 52V44a16 16 0 0 1 32 0V52" fill="none" stroke="#8a7d6b" stroke-width="5"/>
+      <rect x="212" y="52" width="80" height="84" rx="14" fill="#a89a86"/>
+      <rect x="226" y="90" width="52" height="34" rx="6" fill="rgba(0,0,0,.1)"/>
+      <text x="165" y="176" text-anchor="middle" font-size="11" fill="#5f5c52" font-family="Hanken Grotesk, sans-serif">Gefaltet · ${specs.weight} · ${decimal(specs.mm)} mm</text>
+    </svg>`;
+}
+
 // A wide crop of a drawn scene (the scene backdrop reaches past its frame).
 const wideScene = (color, pose, wall, floor) => sceneSvg({ pose, wall, floor, mat: color.hex }, "-40 -2 180 110");
 
@@ -315,6 +418,9 @@ const featurePictures = {
   styles: { label: () => "Figur im Baum auf der Matte", draw: (color) => wideScene(color, "tree", "#dcdcd2", "#9c8a74") },
   reversible: { label: () => "Matte mit umgeschlagener Ecke: Ober- und Unterseite", draw: reversibleWidePicture },
   forest: { label: () => "Figur im Sitzen auf der Matte im Wald", draw: (color) => wideScene(color, "seated", "#b4bea6", "#86735a") },
+  folded: { label: (specs) => `Gefaltete Matte neben einem Rucksack, ${specs.weight}`, draw: foldedWidePicture },
+  park: { label: () => "Figur im Krieger auf der Matte im Park", draw: (color) => wideScene(color, "warrior", "#d8e4d2", "#93a874") },
+  beach: { label: () => "Figur im Baum auf der Matte am Strand", draw: (color) => wideScene(color, "tree", "#cfe0e8", "#e2d2b0") },
 };
 
 const galleryPictures = {
@@ -326,6 +432,10 @@ const galleryPictures = {
   warrior: { label: "beim Üben im Krieger", draw: (color) => scenePicture(color, "warrior", "#dcdcd2", "#9c8a74") },
   forestWarrior: { label: "beim Üben im Wald", draw: (color) => scenePicture(color, "warrior", "#a8b49c", "#7d6a52") },
   forestTree: { label: "im Baum im Wald", draw: (color) => scenePicture(color, "tree", "#b4bea6", "#86735a") },
+  folded: { label: "gefaltet", draw: foldedPicture },
+  beach: { label: "im Baum am Strand", draw: (color) => scenePicture(color, "tree", "#cfe0e8", "#e2d2b0") },
+  park: { label: "im Krieger im Park", draw: (color) => scenePicture(color, "warrior", "#d8e4d2", "#93a874") },
+  seated: { label: "im Sitzen", draw: (color) => scenePicture(color, "seated", "#e8e1d6", "#b49a7e") },
 };
 
 // ---------- Small line icons for the buy box ----------
