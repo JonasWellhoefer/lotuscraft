@@ -95,7 +95,7 @@ lotuscraft/
 │   ├── shared.js   # Gemeinsame Daten & Helfer: Produkte, Kategorien, Menü, Suchindex, Zeichnungen
 │   ├── layout.js   # Header, Menüs (Handy + Desktop), Suche, Footer, Warenkorb (Demo)
 │   ├── home.js     # Startseite: Produkt-Tabs, Community, Bewertungs-Karussell
-│   ├── product.js  # Produktseite: Daten, Galerie, Farbauswahl, Warenkorb-Button
+│   ├── product.js  # Produktseiten: Daten aller Matten, Zeichnungen, Galerie, Farbauswahl, Warenkorb-Button
 │   └── category.js # Kategorieseite: Filter (Farbe, Material, Verfügbarkeit), Sortierung
 └── README.md
 ```
@@ -124,7 +124,7 @@ die Werte stammen direkt aus dem CSS des Originals.
 - [x] Mobiles Menü (3 Ebenen, per Tastatur bedienbar)
 - [x] Desktop-Dropdowns (Mega-Menü mit Werbekacheln, per Tastatur bedienbar)
 
-**Produktseite** (Yogamatte PURE – Klick auf die Karte bei den Bestsellern):
+**Produktseiten** (Klick auf eine Matte bei den Bestsellern oder in der Kategorie):
 
 - [x] Galerie (Desktop: Raster, Handy: Wisch-Galerie mit Vorschaubildern)
 - [x] Kaufbox: Preis, Bewertung, Farbauswahl (zeichnet die Bilder neu), Warenkorb-Button (Demo)
@@ -132,12 +132,13 @@ die Werte stammen direkt aus dem CSS des Originals.
 - [x] Infobereich zu Material & Grip (4 Zeilen im Zickzack)
 - [x] Bewertungen (Beispieldaten, sortierbar, mit Seiten)
 - [x] Verwandte Produkte
+- [x] Yogamatte PURE und Yogamatte ARISE – alle Seiten nutzen dieselbe Vorlage, Maße und Material stehen in den Daten
 
 **Kategorieseite „Yogamatten“** (Hero-Button „Yogamatten“ oder Menü → „Alle Yogamatten“):
 
 - [x] Unterkategorien als Kreise, Titel, 31 Karten (eine pro Farbe, wie im Original)
 - [x] Filter Farbe, Material, Verfügbarkeit (kombinierbar) und Sortierung
-- [x] Klick auf eine PURE-Karte öffnet die Produktseite gleich in der richtigen Farbe
+- [x] Klick auf eine Karte mit eigener Produktseite (PURE, ARISE) öffnet sie gleich in der richtigen Farbe
 
 **Warenkorb** (Icon oben rechts oder „In den Warenkorb“ auf der Produktseite):
 

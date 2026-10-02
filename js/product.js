@@ -3,8 +3,27 @@
 // To add another product page, add an entry here and a `slug` to its card data.
 
 // ---------- Product data ----------
-// Name, price, colours and ratings mirror the original shop. The texts are
-// written for this student project (not copied from the original).
+// Name, price, colours, specs and ratings mirror the original shop. The texts
+// are written for this student project (not copied from the original).
+// `specs` also label the drawn pictures; `gallery` and each feature's
+// `picture` pick drawings from `galleryPictures` / `featurePictures` below.
+
+// Accessories under "Verwandte Produkte" (prices from the shop).
+const accessories = {
+  bag: { name: "Yogatasche PUNE", price: 29.95, shape: "bag", tint: "#c9bcae" },
+  strap: { name: "Yogamatten Tragegurt", price: 14.95, shape: "strap", tint: COTTON },
+};
+
+// The ARISE mats are two-tone: the underside is a lighter shade of the top.
+const ARISE_TONES = {
+  "Balsam Green": { hex: "#5d7366", underside: "#8fae9b" },
+  "Indigo Dust": { hex: "#6b7c95", underside: "#9cabc0" },
+  "Graphite": { hex: "#4a4b4d", underside: "#8b8d95" },
+  "Dark Cranberry": { hex: "#7a2a3a", underside: "#b06a80" },
+  "Midnight Blue": { hex: "#2f3a5c", underside: "#6f8db0" },
+};
+const ariseColors = (...names) => names.map((name) => ({ name, ...ARISE_TONES[name] }));
+
 const productDetails = {
   "yogamatte-pure": {
     name: "Yogamatte PURE",
@@ -17,6 +36,8 @@ const productDetails = {
       ["Dämpfung", 4.54],
       ["Qualität und Langlebigkeit", 4.47],
     ],
+    // `short` is the material in a few words, for picture labels; `mm` the thickness.
+    specs: { material: "PU-Oberfläche, Unterseite aus Naturkautschuk", short: "PU + Naturkautschuk", length: 183, width: 66, mm: 4, weight: "2,7 kg", origin: "China" },
     // `matte` colours have a structured surface and an underside in the same
     // colour; the others are smooth with a black underside (as on the original).
     colors: [
@@ -27,23 +48,15 @@ const productDetails = {
       { name: "Indigo Dust", hex: "#6b7c95" },
       { name: "Anthrazit", hex: "#3d3d3f" },
     ],
-    accordion: [
-      ["Beschreibung", `
+    gallery: ["rolled", "top", "standing", "layers", "lunge", "warrior"],
+    description: `
         <p>Die PURE ist für dynamische Yogastile gemacht: Ihre Oberfläche aus PU (Polyurethan) gibt dir auch dann sicheren Halt, wenn du ins Schwitzen kommst – ideal für Vinyasa und Power Yoga.</p>
-        <p>Die Unterseite aus Naturkautschuk liegt fest auf dem Boden und dämpft angenehm. Dark Cranberry und Balsam Green haben eine fein strukturierte, matte Oberfläche und eine Unterseite im gleichen Farbton. Alle anderen Farben sind glatt und haben eine schwarze Unterseite.</p>`],
-      ["Details", `
-        <dl class="facts">
-          <dt>Material</dt><dd>PU-Oberfläche, Unterseite aus Naturkautschuk</dd>
-          <dt>Maße (L × B)</dt><dd>183 × 66 cm</dd>
-          <dt>Dicke</dt><dd>0,4 cm</dd>
-          <dt>Hinweis</dt><dd>Nachbau für ein Studentenprojekt – kein echtes Produkt, daher keine Hersteller- oder Bestellangaben.</dd>
-        </dl>`],
-      ["Pflege", `
+        <p>Die Unterseite aus Naturkautschuk liegt fest auf dem Boden und dämpft angenehm. Dark Cranberry und Balsam Green haben eine fein strukturierte, matte Oberfläche und eine Unterseite im gleichen Farbton. Alle anderen Farben sind glatt und haben eine schwarze Unterseite.</p>`,
+    care: `
         <p>Am besten mit einem weichen Tuch und einer Mischung aus Wasser und Apfelessig (1:1) abwischen. Keine Seife verwenden und nicht in die Waschmaschine geben.</p>
-        <p>Vor direkter Sonne und großer Hitze schützen und nach dem Reinigen trocknen lassen, bevor du die Matte aufrollst. Cremes und Öle auf der Haut hinterlassen Flecken und verringern den Grip.</p>`],
-      ["Nachhaltigkeit", `
-        <p><strong>Plastikfreie Verpackung</strong> – ohne PVC und ohne erdölbasierte Kunststoffe.</p>`],
-    ],
+        <p>Vor direkter Sonne und großer Hitze schützen und nach dem Reinigen trocknen lassen, bevor du die Matte aufrollst. Cremes und Öle auf der Haut hinterlassen Flecken und verringern den Grip.</p>`,
+    sustainability: `
+        <p><strong>Plastikfreie Verpackung</strong> – ohne PVC und ohne erdölbasierte Kunststoffe.</p>`,
     // Info rows below the details, alternating text and picture.
     features: [
       {
@@ -85,10 +98,78 @@ const productDetails = {
     ],
     // "Verwandte Produkte", as on the original (prices from the shop).
     related: [
-      { name: "Yogatasche PUNE", price: 29.95, shape: "bag", tint: "#c9bcae" },
-      { name: "Yogamatten Tragegurt", price: 14.95, shape: "strap", tint: COTTON },
+      accessories.bag,
+      accessories.strap,
       { name: "„Almost Perfect“ Yogamatte PURE", price: 67.95, compareAt: 79.95, shape: "mat", tint: "#7a2a3a" },
       bestsellers.yoga[0], // Yogablock Kork 2er Set
+    ],
+  },
+
+  "yogamatte-arise": {
+    name: "Yogamatte ARISE",
+    subtitle: "Die Rutschfeste: Maximaler Grip in allen Posen - Made in Spain",
+    price: 89.95,
+    rating: 4.71,
+    reviewCount: 320,
+    ratingScales: [
+      ["Rutschfestigkeit", 4.9],
+      ["Dämpfung", 4.57],
+      ["Qualität und Langlebigkeit", 4.65],
+    ],
+    specs: { material: "Naturkautschuk mit 15 % Recycling-Latex", short: "Naturkautschuk", length: 185, width: 65, mm: 4, weight: "2,0 kg", origin: "Spanien" },
+    // Wild Ginger is sold out and, as on the original, not offered at all.
+    colors: ariseColors("Balsam Green", "Indigo Dust", "Graphite", "Dark Cranberry", "Midnight Blue"),
+    gallery: ["rolled", "standing", "layers", "top", "forestWarrior", "forestTree"],
+    description: `
+        <p>Die ARISE ist die Matte für alle, die maximalen Halt suchen. Ihre Oberfläche aus Naturkautschuk bleibt auch dann griffig, wenn du ins Schwitzen kommst – ideal für Vinyasa, Power Yoga und Ashtanga.</p>
+        <p>Ober- und Unterseite sind aus Naturkautschuk, du kannst die Matte also wenden. Im Kern stecken 15 % recyceltes Latex, das sie formstabil macht. Hergestellt wird sie in Spanien.</p>
+        <p>Naturkautschuk ist ein Naturmaterial: Mit der Zeit zeigen sich Gebrauchsspuren und leichte Farbveränderungen. Die ARISE ist für die eigene Praxis gedacht – für Studios sind MUDRA und MUDRA PRO die bessere Wahl.</p>`,
+    care: `
+        <p>Am besten mit einer weichen Bürste oder einem Tuch und einer Mischung aus Wasser und Apfelessig (1:1) reinigen. Keine Seife verwenden und nicht in die Waschmaschine geben.</p>
+        <p>Eine feuchte Matte erst trocknen lassen, dann aufrollen. Vor direkter Sonne schützen und am besten in einer Tasche oder im Schrank aufbewahren. Der typische Gummigeruch ist am Anfang stärker und lässt mit der Zeit nach.</p>`,
+    sustainability: `
+        <p><strong>Hergestellt in Spanien</strong> – kurze Wege innerhalb der EU.</p>
+        <p><strong>Ohne PVC</strong> – Naturkautschuk mit 15 % recyceltem Latex.</p>
+        <p><strong>Schadstoffgeprüft</strong> nach OEKO-TEX® STANDARD 100.</p>`,
+    features: [
+      {
+        title: "Halt, auch wenn es schweißtreibend wird",
+        text: "Naturkautschuk greift von Natur aus. Auf der ARISE bleiben Hände und Füße auch im schnellen Flow dort, wo du sie hinsetzt – kein Nachrutschen, kein Zurechtrücken. So bleibt deine Aufmerksamkeit bei Atem und Bewegung.",
+        picture: "grip",
+      },
+      {
+        title: "Zwei Seiten, eine robuste Matte",
+        text: "Ober- und Unterseite sind aus Naturkautschuk, du kannst also beide nutzen – zum Beispiel eine Seite drinnen und eine draußen. Im Kern stecken 15 % recyceltes Latex. Das macht die Matte formstabil und verlängert ihre Lebensdauer.",
+        picture: "reversible",
+      },
+      {
+        title: "In Spanien gefertigt und geprüft",
+        text: "Die ARISE wird in Spanien hergestellt und ist nach OEKO-TEX® STANDARD 100 auf Schadstoffe geprüft. Sie kommt ohne PVC aus und ist angenehm auf der Haut – eine gute Wahl, wenn dir natürliche Materialien wichtig sind.",
+        picture: "forest",
+      },
+      {
+        title: "Weich genug, fest genug",
+        text: "4 mm Naturkautschuk polstern Knie und Handgelenke, ohne dass du in Balancehaltungen wackelst. Mit 185 × 65 cm bietet die Matte genug Fläche für weite Schritte und ruhige Momente am Ende der Stunde.",
+        picture: "size",
+      },
+    ],
+    reviews: [
+      { name: "Hannah", place: "Bremen, DE", color: "Balsam Green", stars: 5, days: 1, text: "So rutschfest war noch keine meiner Matten. Selbst im Power Yoga bleiben die Hände genau da, wo sie hingehören." },
+      { name: "Clara", place: "Dresden, DE", color: "Midnight Blue", stars: 5, days: 2, text: "Das Blau sieht in echt noch schöner aus als auf den Bildern. Grip und Dämpfung passen für mich perfekt." },
+      { name: "Anonym", place: "", color: "Indigo Dust", stars: 5, days: 4, text: "Dass man beide Seiten nutzen kann, finde ich praktisch – die hellere Unterseite nehme ich für Yoga im Garten." },
+      { name: "Felix", place: "Bern, CH", color: "Graphite", stars: 3, days: 5, text: "Der Gummigeruch war anfangs sehr stark. Nach zwei Wochen auf dem Balkon ist es deutlich besser geworden." },
+      { name: "Marie", place: "Stuttgart, DE", color: "Dark Cranberry", stars: 5, days: 7, text: "Beim Vinyasa sind mir bisher ständig die Hände weggerutscht. Auf der ARISE ist das vorbei." },
+      { name: "Sophie", place: "Linz, AT", color: "Balsam Green", stars: 5, days: 9, text: "Fühlt sich weich und trotzdem stabil an. Meine Knie freuen sich über die 4 mm." },
+      { name: "David", place: "Hannover, DE", color: "Graphite", stars: 4, days: 13, text: "Top Qualität. Mit 2 kg ist sie mir für den Weg ins Studio etwas schwer, zu Hause ist sie perfekt." },
+      { name: "Laura", place: "Nürnberg, DE", color: "Indigo Dust", stars: 5, days: 17, text: "Schön, dass sie in Europa hergestellt wird. Verarbeitung und Grip sind erstklassig." },
+      { name: "Tim", place: "Basel, CH", color: "Dark Cranberry", stars: 2, days: 22, text: "Für meinen Geschmack zu schwer und zu fest. Für dynamisches Yoga sicher super, für mich leider nicht das Richtige." },
+      { name: "Nora", place: "Graz, AT", color: "Midnight Blue", stars: 5, days: 26, text: "Liegt flach, rollt sich an den Ecken nicht auf und hält bombenfest. Jeden Cent wert." },
+    ],
+    related: [
+      accessories.bag,
+      { name: "„Almost Perfect“ Yogamatte ARISE", price: 76.46, compareAt: 89.95, shape: "mat", tint: "#5d7366" },
+      accessories.strap,
+      { name: "Yogamatte ARISE Travel", price: 59.95, shape: "mat", tint: "#5d7366" },
     ],
   },
 };
@@ -99,7 +180,19 @@ const productDetails = {
 const PHOTO_BG = "#f1f0ee";
 let patternCount = 0; // keeps SVG pattern ids unique on the page
 
-const underside = (color) => (color.matte ? color.hex : "#2b2a28");
+const decimal = (value) => String(value).replace(".", ",");
+const cm = (mm) => `${decimal(mm / 10)} cm`;
+
+// Explicit `underside`, else PURE's rule: matte colours match, smooth ones are black.
+const underside = (color) => color.underside || (color.matte ? color.hex : "#2b2a28");
+
+// Fine grain over a matte surface (`path` = the visible top of the mat).
+function texture(color, path) {
+  if (!color.matte) return "";
+  const id = `grain-${++patternCount}`;
+  return `<defs><pattern id="${id}" width="4" height="4" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".6" fill="rgba(255,255,255,.14)"/></pattern></defs>
+       <path d="${path}" fill="url(#${id})"/>`;
+}
 
 function rolledPicture(color) {
   return `
@@ -121,6 +214,7 @@ function topPicture(color) {
     <svg viewBox="0 0 200 250" aria-hidden="true">
       <rect width="200" height="250" fill="${PHOTO_BG}"/>
       <rect x="52" y="22" width="96" height="180" rx="3" fill="${color.hex}"/>
+      ${texture(color, "M52 22h96v180H52z")}
       <circle cx="100" cy="54" r="8" fill="none" stroke="rgba(0,0,0,.22)" stroke-width="1.2"/>
       <rect x="48" y="196" width="104" height="30" rx="15" fill="${underside(color)}"/>
       <rect x="54" y="199" width="92" height="7" rx="3.5" fill="rgba(255,255,255,.1)"/>
@@ -140,82 +234,99 @@ function standingPicture(color) {
     </svg>`;
 }
 
-function layersPicture(color) {
-  const id = `grain-${++patternCount}`;
-  const grain = color.matte
-    ? `<defs><pattern id="${id}" width="4" height="4" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".6" fill="rgba(255,255,255,.14)"/></pattern></defs>
-       <path d="M28 92H172L192 160H8Z" fill="url(#${id})"/>`
-    : "";
+// Cut edge of the mat: the side gets thicker with `specs.mm`
+// (top layer darkened, underside in its own colour).
+function layersPicture(color, specs) {
+  const side = Math.max(4, Math.round(specs.mm * 4));
+  const top = Math.round(side * 0.44);
   return `
     <svg viewBox="0 0 200 250" aria-hidden="true">
       <rect width="200" height="250" fill="${PHOTO_BG}"/>
       <path d="M28 92H172L192 160H8Z" fill="${color.hex}"/>
-      ${grain}
-      <rect x="8" y="160" width="184" height="7" fill="${color.hex}"/>
-      <rect x="8" y="160" width="184" height="7" fill="rgba(0,0,0,.2)"/>
-      <rect x="8" y="167" width="184" height="9" fill="${underside(color)}"/>
-      <path d="M196 160V176M193 160H199M193 176H199" stroke="#5f5c52"/>
-      <text x="100" y="204" text-anchor="middle" font-size="11" fill="#5f5c52" font-family="Hanken Grotesk, sans-serif">0,4 cm · PU + Naturkautschuk</text>
+      ${texture(color, "M28 92H172L192 160H8Z")}
+      <rect x="8" y="160" width="184" height="${top}" fill="${color.hex}"/>
+      <rect x="8" y="160" width="184" height="${top}" fill="rgba(0,0,0,.2)"/>
+      <rect x="8" y="${160 + top}" width="184" height="${side - top}" fill="${underside(color)}"/>
+      <path d="M196 160V${160 + side}M193 160H199M193 ${160 + side}H199" stroke="#5f5c52"/>
+      <text x="100" y="204" text-anchor="middle" font-size="11" fill="#5f5c52" font-family="Hanken Grotesk, sans-serif">${cm(specs.mm)} · ${specs.short}</text>
     </svg>`;
 }
 
 const scenePicture = (color, pose, wall, floor) => sceneSvg({ pose, wall, floor, mat: color.hex });
 
 // Wide pictures for the info rows (840×515 on the original).
-function sizeWidePicture(color) {
+function sizeWidePicture(color, specs) {
+  const height = Math.round((222 * specs.width) / specs.length);
+  const y = 96 - height / 2;
   return `
     <svg viewBox="0 0 330 202" aria-hidden="true">
       <rect width="330" height="202" fill="${PHOTO_BG}"/>
-      <rect x="40" y="56" width="222" height="80" rx="3" fill="${color.hex}"/>
+      <rect x="40" y="${y}" width="222" height="${height}" rx="3" fill="${color.hex}"/>
+      ${texture(color, `M40 ${y}h222v${height}H40z`)}
       <circle cx="66" cy="96" r="7" fill="none" stroke="rgba(0,0,0,.22)" stroke-width="1.2"/>
       <g stroke="#5f5c52" fill="none">
-        <path d="M276 56V136M272 56H280M272 136H280"/>
+        <path d="M276 ${y}V${y + height}M272 ${y}H280M272 ${y + height}H280"/>
         <path d="M40 152H262M40 148V156M262 148V156"/>
       </g>
       <g font-size="11" fill="#5f5c52" font-family="Hanken Grotesk, sans-serif">
-        <text x="286" y="100">66 cm</text>
-        <text x="151" y="172" text-anchor="middle">183 cm</text>
+        <text x="286" y="100">${specs.width} cm</text>
+        <text x="151" y="172" text-anchor="middle">${specs.length} cm</text>
       </g>
     </svg>`;
 }
 
-function layersWidePicture(color) {
-  const id = `grain-${++patternCount}`;
-  const grain = color.matte
-    ? `<defs><pattern id="${id}" width="4" height="4" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".6" fill="rgba(255,255,255,.14)"/></pattern></defs>
-       <path d="M50 56H250L286 128H14Z" fill="url(#${id})"/>`
-    : "";
+function layersWidePicture(color, specs) {
+  const side = Math.max(5, Math.round(specs.mm * 5));
+  const top = Math.round(side * 0.4);
   return `
     <svg viewBox="0 0 330 202" aria-hidden="true">
       <rect width="330" height="202" fill="${PHOTO_BG}"/>
       <path d="M50 56H250L286 128H14Z" fill="${color.hex}"/>
-      ${grain}
-      <rect x="14" y="128" width="272" height="8" fill="${color.hex}"/>
-      <rect x="14" y="128" width="272" height="8" fill="rgba(0,0,0,.2)"/>
-      <rect x="14" y="136" width="272" height="12" fill="${underside(color)}"/>
-      <path d="M296 128V148M292 128H300M292 148H300" stroke="#5f5c52"/>
-      <text x="150" y="176" text-anchor="middle" font-size="11" fill="#5f5c52" font-family="Hanken Grotesk, sans-serif">PU-Oberfläche · Naturkautschuk · 4 mm</text>
+      ${texture(color, "M50 56H250L286 128H14Z")}
+      <rect x="14" y="128" width="272" height="${top}" fill="${color.hex}"/>
+      <rect x="14" y="128" width="272" height="${top}" fill="rgba(0,0,0,.2)"/>
+      <rect x="14" y="${128 + top}" width="272" height="${side - top}" fill="${underside(color)}"/>
+      <path d="M296 128V${128 + side}M292 128H300M292 ${128 + side}H300" stroke="#5f5c52"/>
+      <text x="150" y="176" text-anchor="middle" font-size="11" fill="#5f5c52" font-family="Hanken Grotesk, sans-serif">${specs.material} · ${decimal(specs.mm)} mm</text>
+    </svg>`;
+}
+
+// The mat from above with one corner folded over, showing the other side.
+function reversibleWidePicture(color) {
+  return `
+    <svg viewBox="0 0 330 202" aria-hidden="true">
+      <rect width="330" height="202" fill="${PHOTO_BG}"/>
+      <path d="M34 52H250L296 98V144H34Z" fill="${color.hex}"/>
+      <circle cx="62" cy="98" r="7" fill="none" stroke="rgba(0,0,0,.22)" stroke-width="1.2"/>
+      <path d="M250 52L296 98L246 102Z" fill="rgba(0,0,0,.12)"/>
+      <path d="M250 52L296 98H250Z" fill="${underside(color)}"/>
+      <text x="165" y="176" text-anchor="middle" font-size="11" fill="#5f5c52" font-family="Hanken Grotesk, sans-serif">Ober- und Unterseite nutzbar</text>
     </svg>`;
 }
 
 // A wide crop of a drawn scene (the scene backdrop reaches past its frame).
 const wideScene = (color, pose, wall, floor) => sceneSvg({ pose, wall, floor, mat: color.hex }, "-40 -2 180 110");
 
+// `label` gets the product's specs and returns the picture's text alternative.
 const featurePictures = {
-  grip: { label: "Figur im herabschauenden Hund auf der Matte", draw: (color) => wideScene(color, "dog", "#e4ded5", "#b49a7e") },
-  size: { label: "Matte von oben, 183 × 66 cm", draw: sizeWidePicture },
-  layers: { label: "Schichtaufbau: PU-Oberfläche und Naturkautschuk, 4 mm", draw: layersWidePicture },
-  styles: { label: "Figur im Baum auf der Matte", draw: (color) => wideScene(color, "tree", "#dcdcd2", "#9c8a74") },
+  grip: { label: () => "Figur im herabschauenden Hund auf der Matte", draw: (color) => wideScene(color, "dog", "#e4ded5", "#b49a7e") },
+  size: { label: (specs) => `Matte von oben, ${specs.length} × ${specs.width} cm`, draw: sizeWidePicture },
+  layers: { label: (specs) => `Schichtaufbau: ${specs.material}, ${decimal(specs.mm)} mm`, draw: layersWidePicture },
+  styles: { label: () => "Figur im Baum auf der Matte", draw: (color) => wideScene(color, "tree", "#dcdcd2", "#9c8a74") },
+  reversible: { label: () => "Matte mit umgeschlagener Ecke: Ober- und Unterseite", draw: reversibleWidePicture },
+  forest: { label: () => "Figur im Sitzen auf der Matte im Wald", draw: (color) => wideScene(color, "seated", "#b4bea6", "#86735a") },
 };
 
-const pictures = [
-  { label: "halb aufgerollt", draw: rolledPicture },
-  { label: "von oben", draw: topPicture },
-  { label: "aufgerollt", draw: standingPicture },
-  { label: "Materialaufbau", draw: layersPicture },
-  { label: "beim Üben im Ausfallschritt", draw: (color) => scenePicture(color, "lunge", "#e4ded5", "#b49a7e") },
-  { label: "beim Üben im Krieger", draw: (color) => scenePicture(color, "warrior", "#dcdcd2", "#9c8a74") },
-];
+const galleryPictures = {
+  rolled: { label: "halb aufgerollt", draw: rolledPicture },
+  top: { label: "von oben", draw: topPicture },
+  standing: { label: "aufgerollt", draw: standingPicture },
+  layers: { label: "Materialaufbau", draw: layersPicture },
+  lunge: { label: "beim Üben im Ausfallschritt", draw: (color) => scenePicture(color, "lunge", "#e4ded5", "#b49a7e") },
+  warrior: { label: "beim Üben im Krieger", draw: (color) => scenePicture(color, "warrior", "#dcdcd2", "#9c8a74") },
+  forestWarrior: { label: "beim Üben im Wald", draw: (color) => scenePicture(color, "warrior", "#a8b49c", "#7d6a52") },
+  forestTree: { label: "im Baum im Wald", draw: (color) => scenePicture(color, "tree", "#b4bea6", "#86735a") },
+};
 
 // ---------- Small line icons for the buy box ----------
 const buyboxIcons = {
@@ -236,13 +347,28 @@ const buyboxUsps = [
 
 // ---------- Page markup ----------
 function galleryItems(product, color) {
-  return pictures.map((picture) => `
-          <div class="gallery__item" role="img" aria-label="${product.name} in ${color.name}, ${picture.label}">${picture.draw(color)}</div>`).join("");
+  return product.gallery.map((key) => {
+    const picture = galleryPictures[key];
+    return `
+          <div class="gallery__item" role="img" aria-label="${product.name} in ${color.name}, ${picture.label}">${picture.draw(color, product.specs)}</div>`;
+  }).join("");
 }
 
-function galleryThumbs(color, current = 0) {
-  return pictures.map((picture, i) => `
-          <button class="gallery__thumb" data-index="${i}" aria-label="Bild ${i + 1} von ${pictures.length} zeigen"${i === current ? ' aria-current="true"' : ""}>${picture.draw(color)}</button>`).join("");
+function galleryThumbs(product, color, current = 0) {
+  return product.gallery.map((key, i) => `
+          <button class="gallery__thumb" data-index="${i}" aria-label="Bild ${i + 1} von ${product.gallery.length} zeigen"${i === current ? ' aria-current="true"' : ""}>${galleryPictures[key].draw(color, product.specs)}</button>`).join("");
+}
+
+function detailsMarkup(specs) {
+  return `
+        <dl class="facts">
+          <dt>Material</dt><dd>${specs.material}</dd>
+          <dt>Maße (L × B)</dt><dd>${specs.length} × ${specs.width} cm</dd>
+          <dt>Dicke</dt><dd>${cm(specs.mm)}</dd>
+          <dt>Gewicht</dt><dd>${specs.weight}</dd>
+          <dt>Herkunft</dt><dd>${specs.origin}</dd>
+          <dt>Hinweis</dt><dd>Nachbau für ein Studentenprojekt – kein echtes Produkt, daher keine Hersteller- oder Bestellangaben.</dd>
+        </dl>`;
 }
 
 function productMarkup(product) {
@@ -258,7 +384,12 @@ function productMarkup(product) {
   const usps = buyboxUsps.map(([icon, text]) => `
             <li><svg class="buybox__usp-icon" viewBox="0 0 24 24" aria-hidden="true">${buyboxIcons[icon]}</svg>${text}</li>`).join("");
 
-  const accordion = product.accordion.map(([title, body]) => `
+  const accordion = [
+    ["Beschreibung", product.description],
+    ["Details", detailsMarkup(product.specs)],
+    ["Pflege", product.care],
+    ["Nachhaltigkeit", product.sustainability],
+  ].map(([title, body]) => `
           <details class="accordion__item">
             <summary class="accordion__summary">${title}<svg class="accordion__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path class="accordion__icon-v" d="M12 5v14"/></svg></summary>
             <div class="accordion__content">${body}</div>
@@ -276,7 +407,7 @@ function productMarkup(product) {
         <span class="gallery__badge"${color.matte ? "" : " hidden"}>Matte Oberfläche</span>
         <div class="gallery__track" tabindex="0" aria-label="Produktbilder">${galleryItems(product, color)}
         </div>
-        <div class="gallery__thumbs">${galleryThumbs(color)}
+        <div class="gallery__thumbs">${galleryThumbs(product, color)}
         </div>
       </div>
 
@@ -340,7 +471,7 @@ function featureRows(product, color) {
           <h2 class="feature__title">${feature.title}</h2>
           <p>${feature.text}</p>
         </div>
-        <div class="feature__media" role="img" aria-label="${picture.label}" data-picture="${feature.picture}">${picture.draw(color)}</div>
+        <div class="feature__media" role="img" aria-label="${picture.label(product.specs)}" data-picture="${feature.picture}">${picture.draw(color, product.specs)}</div>
       </div>`;
   }).join("");
 }
@@ -495,9 +626,9 @@ if (!product) {
     colorValue.textContent = color.name;
     badge.hidden = !color.matte;
     track.innerHTML = galleryItems(product, color);
-    thumbs.innerHTML = galleryThumbs(color, currentPicture());
+    thumbs.innerHTML = galleryThumbs(product, color, currentPicture());
     productRoot.querySelectorAll(".feature__media").forEach((media) => {
-      media.innerHTML = featurePictures[media.dataset.picture].draw(color);
+      media.innerHTML = featurePictures[media.dataset.picture].draw(color, product.specs);
     });
   });
 

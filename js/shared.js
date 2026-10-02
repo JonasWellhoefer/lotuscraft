@@ -33,7 +33,7 @@ const bestsellers = {
   yoga: [
     { name: "Yogablock Kork 2er Set", price: 29.95, shape: "block", tint: CORK },
     { name: "Yogamatte PURE", slug: "yogamatte-pure", price: 79.95, shape: "mat", tint: "#7a2a3a", badge: "Matte Oberfläche" },
-    { name: "Yogamatte ARISE", price: 89.95, shape: "mat", tint: "#3f5550" },
+    { name: "Yogamatte ARISE", slug: "yogamatte-arise", price: 89.95, shape: "mat", tint: "#3f5550" },
     { name: "Yogamatte MUDRA", price: 39.95, shape: "mat", tint: "#55695f" },
   ],
   meditation: [
@@ -204,7 +204,7 @@ const categories = {
         { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
         { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
       ] },
-      { name: "Yogamatte ARISE", price: 89.95, material: "Naturkautschuk", variants: [
+      { name: "Yogamatte ARISE", slug: "yogamatte-arise", price: 89.95, material: "Naturkautschuk", variants: [
         { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
         { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
         { color: "Graphite", hex: "#4a4b4d", family: "Schwarz" },
