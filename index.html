@@ -119,6 +119,28 @@
         </a>
       </div>
     </section>
+
+    <!-- Bestsellers (tabbed product grid) -->
+    <section class="section bestsellers">
+      <div class="container">
+        <header class="section-header">
+          <h2 class="section-header__title">Unsere Bestseller</h2>
+          <p class="section-header__subtitle">Yogamatten, Yoga-Zubehör und Meditationskissen geliebt von unserer Community</p>
+        </header>
+
+        <div class="tabs" role="tablist" aria-label="Bestseller-Kategorien">
+          <button class="tab is-active" role="tab" id="tab-yoga" aria-controls="panel-yoga" aria-selected="true">Yoga</button>
+          <button class="tab" role="tab" id="tab-meditation" aria-controls="panel-meditation" aria-selected="false" tabindex="-1">Meditation</button>
+          <button class="tab" role="tab" id="tab-bekleidung" aria-controls="panel-bekleidung" aria-selected="false" tabindex="-1">Bekleidung</button>
+        </div>
+
+        <div class="product-grid" role="tabpanel" id="panel-yoga" aria-labelledby="tab-yoga" data-category="yoga"></div>
+        <div class="product-grid" role="tabpanel" id="panel-meditation" aria-labelledby="tab-meditation" data-category="meditation" hidden></div>
+        <div class="product-grid" role="tabpanel" id="panel-bekleidung" aria-labelledby="tab-bekleidung" data-category="bekleidung" hidden></div>
+      </div>
+    </section>
   </main>
+
+  <script src="script.js"></script>
 </body>
 </html>

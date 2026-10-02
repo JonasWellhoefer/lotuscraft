@@ -1,0 +1,100 @@
+// ---------- Bestseller data ----------
+// Product names and prices mirror the original shop (as of Oct 2026).
+// `shape` picks a placeholder illustration instead of the original photo.
+const bestsellers = {
+  yoga: [
+    { name: "Yogablock Kork 2er Set", price: 29.95, shape: "block", tint: "#c7a27a" },
+    { name: "Yogamatte PURE", price: 79.95, shape: "mat", tint: "#7a2a3a", badge: "Matte Oberfläche" },
+    { name: "Yogamatte ARISE", price: 89.95, shape: "mat", tint: "#3f5550" },
+    { name: "Yogamatte MUDRA", price: 39.95, shape: "mat", tint: "#55695f" },
+  ],
+  meditation: [
+    { name: "Meditationskissen Lotus (H: 15cm)", price: 39.95, shape: "cushion", tint: "#8b7d6b" },
+    { name: "Meditationsmatte Zabuton", price: 59.95, shape: "zabuton", tint: "#6f6a62" },
+    { name: "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung", price: 34.95, shape: "cushion", tint: "#a39a8c" },
+    { name: "Meditationskissen Lotus KLEIN (H: 10 cm)", price: 37.95, shape: "cushion", tint: "#5d6b73" },
+  ],
+  bekleidung: [
+    { name: "BECCA Leggings", price: 55.95, compareAt: 69.95, shape: "leggings", tint: "#5f6062" },
+    { name: "MIKO Bralette", price: 31.49, compareAt: 44.95, shape: "top", tint: "#ebe7e0" },
+    { name: "NIA Womens Sweater", price: 62.99, compareAt: 89.95, shape: "sweater", tint: "#56595a" },
+    { name: "FEND Mens Sweater", price: 44.99, compareAt: 89.95, shape: "sweater", tint: "#9aa6aa" },
+  ],
+};
+
+// Simple SVG silhouettes so each card reads as the right kind of product.
+const shapes = {
+  mat: (c) => `<rect x="20" y="70" width="140" height="38" rx="6" fill="${c}" transform="rotate(-18 90 89)"/>
+               <ellipse cx="38" cy="112" rx="14" ry="19" fill="${c}" transform="rotate(-18 90 89)"/>
+               <ellipse cx="38" cy="112" rx="6" ry="9" fill="rgba(0,0,0,.25)" transform="rotate(-18 90 89)"/>`,
+  block: (c) => `<rect x="38" y="62" width="62" height="88" rx="4" fill="${c}"/>
+                 <rect x="78" y="48" width="62" height="88" rx="4" fill="${c}" opacity=".85"/>
+                 <rect x="78" y="80" width="62" height="26" fill="rgba(255,255,255,.55)"/>`,
+  cushion: (c) => `<ellipse cx="90" cy="118" rx="62" ry="16" fill="rgba(0,0,0,.12)"/>
+                   <path d="M28 82c0-14 28-22 62-22s62 8 62 22v26c0 10-28 18-62 18s-62-8-62-18z" fill="${c}"/>
+                   <ellipse cx="90" cy="82" rx="62" ry="20" fill="${c}" opacity=".8"/>`,
+  zabuton: (c) => `<rect x="22" y="88" width="136" height="30" rx="8" fill="${c}"/>
+                   <rect x="22" y="80" width="136" height="16" rx="8" fill="${c}" opacity=".75"/>`,
+  leggings: (c) => `<path d="M62 30h56l6 130h-22l-12-96-12 96H56z" fill="${c}"/>`,
+  top: (c) => `<path d="M58 52l14-18h36l14 18v58H58z" fill="${c}" stroke="#d5d0c7"/>`,
+  sweater: (c) => `<path d="M58 38l32-8 32 8 22 18 10 86-16 2-12-70v80H54V74l-12 70-16-2 10-86z" fill="${c}"/>`,
+};
+
+const formatPrice = (value) => "€" + value.toFixed(2).replace(".", ",");
+
+function productCard(product) {
+  const discount = product.compareAt
+    ? Math.round((1 - product.price / product.compareAt) * 100)
+    : 0;
+
+  const tag = discount
+    ? `<span class="product-card__tag product-card__tag--sale">-${discount}%</span>`
+    : product.badge
+      ? `<span class="product-card__tag">${product.badge}</span>`
+      : "";
+
+  const price = product.compareAt
+    ? `<span class="price price--compare">${formatPrice(product.compareAt)}</span>
+       <span class="price price--sale">${formatPrice(product.price)}</span>`
+    : `<span class="price">${formatPrice(product.price)}</span>`;
+
+  return `
+    <a href="#" class="product-card">
+      <div class="product-card__media">
+        <svg viewBox="0 0 180 180" role="img" aria-label="Platzhalter: ${product.name}">
+          ${shapes[product.shape](product.tint)}
+        </svg>
+        ${tag}
+      </div>
+      <h3 class="product-card__title">${product.name}</h3>
+      <p class="product-card__price">${price}</p>
+    </a>`;
+}
+
+document.querySelectorAll(".product-grid").forEach((grid) => {
+  grid.innerHTML = bestsellers[grid.dataset.category].map(productCard).join("");
+});
+
+// ---------- Tabs ----------
+const tabs = [...document.querySelectorAll(".tab")];
+
+function selectTab(tab) {
+  tabs.forEach((t) => {
+    const active = t === tab;
+    t.classList.toggle("is-active", active);
+    t.setAttribute("aria-selected", active);
+    t.tabIndex = active ? 0 : -1;
+    document.getElementById(t.getAttribute("aria-controls")).hidden = !active;
+  });
+}
+
+tabs.forEach((tab, i) => {
+  tab.addEventListener("click", () => selectTab(tab));
+  tab.addEventListener("keydown", (e) => {
+    const step = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+    if (!step) return;
+    const next = tabs[(i + step + tabs.length) % tabs.length];
+    selectTab(next);
+    next.focus();
+  });
+});
