@@ -167,6 +167,114 @@ function productCard(product) {
     </a>`;
 }
 
+// ---------- Category data ----------
+// Models, prices, colours, materials and which variant is sold out mirror the
+// original "Yogamatten" category (Oct 2026). Every colour gets its own card,
+// as on the original. `family` is the colour group used by the colour filter.
+const categories = {
+  yogamatten: {
+    title: "Yogamatten",
+    shortcuts: [
+      { label: "Yogamatten für Zuhause", icon: "house" },
+      { label: "Rutschfeste Yogamatte", icon: "mat" },
+      { label: "Studio Yogamatte", icon: "studio" },
+      { label: "Reise Yogamatte", icon: "suitcase" },
+    ],
+    models: [
+      { name: "Yogamatte MUDRA", price: 39.95, material: "PVC (Polyvinylchlorid)", variants: [
+        { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
+        { color: "Lavender Fog", hex: "#b7a3b6", family: "Rosa" },
+        { color: "Light Taupe", hex: "#c4b6a6", family: "Beige" },
+        { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
+        { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz" },
+        { color: "Aubergine", hex: "#8d5a6f", family: "Rot", soldOut: true },
+        { color: "Dark Cranberry", hex: "#7a2a3a", family: "Rot", badge: "New in" },
+      ] },
+      { name: "Yogamatte PURE", slug: "yogamatte-pure", price: 79.95, material: "PU (Polyurethan)", variants: [
+        { color: "Dark Cranberry", hex: "#7a2a3a", family: "Rot", badge: "Matte Oberfläche" },
+        { color: "Balsam Green", hex: "#5d7366", family: "Grün", badge: "Matte Oberfläche" },
+        { color: "Light Taupe", hex: "#c4b6a6", family: "Beige" },
+        { color: "Aubergine", hex: "#8d5a6f", family: "Rot" },
+        { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
+        { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz" },
+      ] },
+      // The original has no material set for this one, so material filters hide it.
+      { name: "Yogamatte Mudra XL", price: 44.95, material: null, variants: [
+        { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz" },
+        { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
+        { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
+      ] },
+      { name: "Yogamatte ARISE", price: 89.95, material: "Naturkautschuk", variants: [
+        { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
+        { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
+        { color: "Graphite", hex: "#4a4b4d", family: "Schwarz" },
+        { color: "Dark Cranberry", hex: "#7a2a3a", family: "Rot" },
+        { color: "Midnight Blue", hex: "#2f3a5c", family: "Blau" },
+      ] },
+      { name: "Yogamatte ARISE Travel", price: 59.95, material: "Naturkautschuk", variants: [
+        { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
+        { color: "Graphite", hex: "#4a4b4d", family: "Schwarz" },
+        { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
+        { color: "Dark Cranberry", hex: "#7a2a3a", family: "Rot" },
+      ] },
+      { name: "Yogamatte ARISE CORK", price: 99.95, material: "Naturkork", variants: [
+        { color: "Align", hex: "#c9a77e", family: "Align" },
+        { color: "Lotus", hex: "#b8916a", family: "Braun" },
+      ] },
+      { name: "Yogamatte MUDRA PRO", price: 99.95, material: "Polyester", variants: [
+        { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz" },
+        { color: "Light Taupe", hex: "#c4b6a6", family: "Beige" },
+        { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
+      ] },
+      { name: "Yogamatte WOOL aus Schurwolle", price: 119.95, material: "Schurwolle", variants: [
+        { color: null, hex: "#e7e1d6", family: null },
+      ] },
+    ],
+  },
+};
+
+// ---------- Search index ----------
+// Everything the header search can find: one entry per mat model (with its
+// material, colours and colour groups as extra search words) plus the
+// bestsellers and set offers. Same names are merged into one entry.
+const searchIndex = (() => {
+  const byName = new Map();
+  Object.values(categories).forEach((category) => {
+    category.models.forEach((model) => byName.set(model.name, {
+      name: model.name,
+      slug: model.slug,
+      price: model.price,
+      shape: "mat",
+      tint: model.variants[0].hex,
+      keywords: [category.title, model.material, ...model.variants.flatMap((v) => [v.color, v.family])].filter(Boolean).join(" "),
+    }));
+  });
+  [...Object.values(bestsellers), ...Object.values(bundles)].flat().forEach((item) => {
+    const known = byName.get(item.name);
+    byName.set(item.name, known ? { ...known, ...item, keywords: known.keywords } : item);
+  });
+  return [...byName.values()];
+})();
+
+// Pages the search can suggest besides products.
+const sitePages = [
+  { title: "Yogamatten", href: "kategorie.html?k=yogamatten", keywords: "yoga yogamatte yogamatten matte matten kategorie" },
+  { title: "Startseite", href: "index.html", keywords: "start home lotuscraft bestseller sets" },
+];
+
+// Lower case without accents, so "grun" finds "Grün" and "Grün" finds "grun".
+const searchText = (text) => text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+// Every word of the query has to appear somewhere in the entry.
+function matchesQuery(query, text) {
+  const words = searchText(query).split(/\s+/).filter(Boolean);
+  const haystack = searchText(text);
+  return words.length > 0 && words.every((word) => haystack.includes(word));
+}
+
+const searchProducts = (query) => searchIndex.filter((item) => matchesQuery(query, `${item.name} ${item.keywords || ""}`));
+const searchPages = (query) => sitePages.filter((page) => matchesQuery(query, `${page.title} ${page.keywords}`));
+
 // Stick-figure poses in a 100×100 scene: `body` is drawn as one thick stroke.
 const poses = {
   lunge: { head: [39, 36], body: "M20 84H34L44 66L62 64L64 84M44 66L40 44M40 44L33 24" },

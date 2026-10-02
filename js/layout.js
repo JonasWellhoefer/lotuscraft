@@ -74,7 +74,7 @@ document.getElementById("site-header").outerHTML = `
     </nav>
 
     <div class="header__actions">
-      <button class="icon-btn" aria-label="Suche">
+      <button class="icon-btn search-toggle" type="button" aria-label="Suche öffnen" aria-controls="search-dialog" aria-haspopup="dialog" aria-expanded="false">
         <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
       </button>
       <a href="#" class="icon-btn hide-sm" aria-label="Konto">
@@ -228,6 +228,23 @@ document.getElementById("site-footer").outerHTML = `
     </button>
   </div>
   <div class="cart-drawer__body"></div>
+</dialog>
+
+<!-- Search (finds products from the shared data while typing) -->
+<dialog class="search" id="search-dialog" aria-label="Suche">
+  <button class="icon-btn search__close" type="button" aria-label="Suche schließen">
+    <svg class="icon" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></svg>
+  </button>
+  <form class="search__form" role="search">
+    <label class="visually-hidden" for="search-input">Produkte suchen</label>
+    <svg class="search__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+    <input class="search__input" id="search-input" type="search" placeholder="Suche..." autocomplete="off" autofocus>
+    <button class="search__clear" type="button" aria-label="Eingabe löschen" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17"/></svg>
+    </button>
+  </form>
+  <p class="visually-hidden" role="status" id="search-status"></p>
+  <div class="search__results"></div>
 </dialog>
 `;
 
@@ -433,6 +450,105 @@ megaItems.forEach((item) => {
 // A page can name its section, e.g. <body data-nav="Yoga">, to highlight it.
 const currentNav = document.querySelector(`.nav__item[data-menu="${document.body.dataset.nav}"] .nav__link`);
 if (currentNav) currentNav.classList.add("is-current");
+
+// ---------- Search ----------
+// Shows matching products while you type (first four, like the original).
+// "Alle anzeigen" and Enter show every match here, since this rebuild has
+// no separate results page.
+const SEARCH_PREVIEW = 4;
+const searchDialog = document.getElementById("search-dialog");
+const searchToggle = document.querySelector(".search-toggle");
+const searchForm = searchDialog.querySelector(".search__form");
+const searchInput = searchDialog.querySelector(".search__input");
+const searchClear = searchDialog.querySelector(".search__clear");
+const searchResults = searchDialog.querySelector(".search__results");
+const searchStatus = searchDialog.querySelector("#search-status");
+let searchTimer = null;
+let showAllResults = false;
+
+// The query is typed by the visitor, so escape it before showing it.
+const escapeHtml = (text) => text.replace(/[&<>"']/g, (ch) => `&#${ch.charCodeAt(0)};`);
+
+function renderSearch() {
+  const query = searchInput.value.trim();
+  searchClear.hidden = !searchInput.value;
+
+  if (!query) {
+    searchResults.innerHTML = "";
+    searchStatus.textContent = "";
+    return;
+  }
+
+  const products = searchProducts(query);
+  const pages = searchPages(query);
+  const countText = `${products.length} ${products.length === 1 ? "Suchergebnis" : "Suchergebnisse"}`;
+  searchStatus.textContent = products.length || pages.length ? countText : "Keine Ergebnisse";
+
+  if (!products.length && !pages.length) {
+    searchResults.innerHTML = `<p class="search__empty">Keine Ergebnisse für „${escapeHtml(query)}“.</p>`;
+    return;
+  }
+
+  const shown = showAllResults ? products : products.slice(0, SEARCH_PREVIEW);
+  const productBlock = products.length ? `
+      <div class="search__head">
+        <p>${countText}</p>
+        ${products.length > shown.length ? `<button type="button" class="search__all">Alle anzeigen</button>` : ""}
+      </div>
+      <div class="search__grid">${shown.map(productCard).join("")}</div>` : "";
+  const pageBlock = pages.length ? `
+      <p class="search__label">Seiten</p>
+      <ul class="search__pages">${pages.map((page) => `<li><a href="${page.href}">${page.title}</a></li>`).join("")}</ul>` : "";
+  searchResults.innerHTML = productBlock + pageBlock;
+}
+
+searchInput.addEventListener("input", () => {
+  showAllResults = false;
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(renderSearch, 120);
+});
+
+searchForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  showAllResults = true;
+  renderSearch();
+});
+
+searchClear.addEventListener("click", () => {
+  searchInput.value = "";
+  showAllResults = false;
+  renderSearch();
+  searchInput.focus();
+});
+
+searchResults.addEventListener("click", (e) => {
+  if (!e.target.closest(".search__all")) return;
+  showAllResults = true;
+  renderSearch();
+  // The button is gone now: continue with the first newly shown product.
+  searchResults.querySelectorAll(".product-card")[SEARCH_PREVIEW]?.focus();
+});
+
+searchToggle.addEventListener("click", () => {
+  searchDialog.showModal(); // focuses the input (autofocus)
+  searchToggle.setAttribute("aria-expanded", "true");
+  searchInput.select();
+});
+
+searchDialog.querySelector(".search__close").addEventListener("click", () => searchDialog.close());
+
+// Close on a click outside the box (on the dark backdrop).
+searchDialog.addEventListener("click", (e) => {
+  if (e.target !== searchDialog) return;
+  const box = searchDialog.getBoundingClientRect();
+  const outside = e.clientX < box.left || e.clientX > box.right || e.clientY < box.top || e.clientY > box.bottom;
+  if (outside) searchDialog.close();
+});
+
+searchDialog.addEventListener("close", () => {
+  searchToggle.setAttribute("aria-expanded", "false");
+  searchToggle.focus();
+});
 
 // ---------- Cart (demo) ----------
 // The cart remembers items in this browser (localStorage) so they survive

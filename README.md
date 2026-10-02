@@ -92,11 +92,11 @@ lotuscraft/
 ├── kategorie.html  # Kategorieseite mit Filtern, z. B. kategorie.html?k=yogamatten
 ├── styles.css      # Gestaltung: Farben, Schriften, Layout, Mobilansicht
 ├── js/
-│   ├── shared.js   # Gemeinsame Daten & Helfer: Produkte, Menü, Icons, Zeichnungen
-│   ├── layout.js   # Header, Menüs (Handy + Desktop), Footer, Warenkorb (Demo)
+│   ├── shared.js   # Gemeinsame Daten & Helfer: Produkte, Kategorien, Menü, Suchindex, Zeichnungen
+│   ├── layout.js   # Header, Menüs (Handy + Desktop), Suche, Footer, Warenkorb (Demo)
 │   ├── home.js     # Startseite: Produkt-Tabs, Community, Bewertungs-Karussell
 │   ├── product.js  # Produktseite: Daten, Galerie, Farbauswahl, Warenkorb-Button
-│   └── category.js # Kategorieseite: Daten, Filter (Farbe, Material, Verfügbarkeit), Sortierung
+│   └── category.js # Kategorieseite: Filter (Farbe, Material, Verfügbarkeit), Sortierung
 └── README.md
 ```
 
@@ -144,6 +144,12 @@ die Werte stammen direkt aus dem CSS des Originals.
 - [x] Seitenleiste wie im Original, mit leerem Zustand
 - [x] Artikel mit Menge (− / +), Entfernen, Zwischensumme und Balken bis „kostenloser Versand ab 69 €“
 - [x] Bleibt beim Seitenwechsel erhalten (nur in diesem Browser gespeichert) – „Zur Kasse“ ist nur eine Demo, es wird nichts bestellt
+
+**Suche** (Lupe oben rechts):
+
+- [x] Suchfenster wie im Original, Ergebnisse schon beim Tippen (erste vier, „Alle anzeigen“ zeigt alle)
+- [x] Findet Produkte auch über Material, Farbname und Farbgruppe (z. B. „grün“, „kork“), ohne Rücksicht auf Groß-/Kleinschreibung und Umlaute
+- [x] Passende Seiten (z. B. „Yogamatten“); Escape leert erst das Feld, das zweite Escape schließt
 
 ## Hinweis
 

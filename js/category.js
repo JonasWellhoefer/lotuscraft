@@ -1,72 +1,7 @@
 // Category page: shortcut circles, filters (colour, material, availability),
 // sorting and the product grid. Which category is shown comes from the URL,
-// e.g. kategorie.html?k=yogamatten.
-
-// ---------- Category data ----------
-// Models, prices, colours, materials and which variant is sold out mirror the
-// original "Yogamatten" category (Oct 2026). Every colour gets its own card,
-// as on the original. `family` is the colour group used by the colour filter.
-const categories = {
-  yogamatten: {
-    title: "Yogamatten",
-    shortcuts: [
-      { label: "Yogamatten für Zuhause", icon: "house" },
-      { label: "Rutschfeste Yogamatte", icon: "mat" },
-      { label: "Studio Yogamatte", icon: "studio" },
-      { label: "Reise Yogamatte", icon: "suitcase" },
-    ],
-    models: [
-      { name: "Yogamatte MUDRA", price: 39.95, material: "PVC (Polyvinylchlorid)", variants: [
-        { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
-        { color: "Lavender Fog", hex: "#b7a3b6", family: "Rosa" },
-        { color: "Light Taupe", hex: "#c4b6a6", family: "Beige" },
-        { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
-        { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz" },
-        { color: "Aubergine", hex: "#8d5a6f", family: "Rot", soldOut: true },
-        { color: "Dark Cranberry", hex: "#7a2a3a", family: "Rot", badge: "New in" },
-      ] },
-      { name: "Yogamatte PURE", slug: "yogamatte-pure", price: 79.95, material: "PU (Polyurethan)", variants: [
-        { color: "Dark Cranberry", hex: "#7a2a3a", family: "Rot", badge: "Matte Oberfläche" },
-        { color: "Balsam Green", hex: "#5d7366", family: "Grün", badge: "Matte Oberfläche" },
-        { color: "Light Taupe", hex: "#c4b6a6", family: "Beige" },
-        { color: "Aubergine", hex: "#8d5a6f", family: "Rot" },
-        { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
-        { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz" },
-      ] },
-      // The original has no material set for this one, so material filters hide it.
-      { name: "Yogamatte Mudra XL", price: 44.95, material: null, variants: [
-        { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz" },
-        { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
-        { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
-      ] },
-      { name: "Yogamatte ARISE", price: 89.95, material: "Naturkautschuk", variants: [
-        { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
-        { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
-        { color: "Graphite", hex: "#4a4b4d", family: "Schwarz" },
-        { color: "Dark Cranberry", hex: "#7a2a3a", family: "Rot" },
-        { color: "Midnight Blue", hex: "#2f3a5c", family: "Blau" },
-      ] },
-      { name: "Yogamatte ARISE Travel", price: 59.95, material: "Naturkautschuk", variants: [
-        { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
-        { color: "Graphite", hex: "#4a4b4d", family: "Schwarz" },
-        { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
-        { color: "Dark Cranberry", hex: "#7a2a3a", family: "Rot" },
-      ] },
-      { name: "Yogamatte ARISE CORK", price: 99.95, material: "Naturkork", variants: [
-        { color: "Align", hex: "#c9a77e", family: "Align" },
-        { color: "Lotus", hex: "#b8916a", family: "Braun" },
-      ] },
-      { name: "Yogamatte MUDRA PRO", price: 99.95, material: "Polyester", variants: [
-        { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz" },
-        { color: "Light Taupe", hex: "#c4b6a6", family: "Beige" },
-        { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
-      ] },
-      { name: "Yogamatte WOOL aus Schurwolle", price: 119.95, material: "Schurwolle", variants: [
-        { color: null, hex: "#e7e1d6", family: null },
-      ] },
-    ],
-  },
-};
+// e.g. kategorie.html?k=yogamatten. The category data itself is in shared.js
+// (the search uses it too).
 
 // Filter options, in the original's order. "Align" is a cork print.
 const colorFamilies = [
