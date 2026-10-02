@@ -87,11 +87,18 @@ Beenden mit **Strg + C** im Terminal.
 
 ```
 lotuscraft/
-├── index.html   # Seitenaufbau (alle Abschnitte)
-├── styles.css   # Gestaltung: Farben, Schriften, Layout, Mobilansicht
-├── script.js    # Produktdaten, Tabs, Karussell, Community, Menü, Newsletter-Demo
+├── index.html      # Startseite (nur der Inhalt zwischen Header und Footer)
+├── styles.css      # Gestaltung: Farben, Schriften, Layout, Mobilansicht
+├── js/
+│   ├── shared.js   # Gemeinsame Daten & Helfer: Produkte, Menü, Icons, Zeichnungen
+│   ├── layout.js   # Header, Menüs (Handy + Desktop), Footer, Warenkorb-Zähler
+│   └── home.js     # Startseite: Produkt-Tabs, Community, Bewertungs-Karussell
 └── README.md
 ```
+
+Header, Menüs und Footer sind auf allen Seiten gleich. Deshalb stehen sie nur einmal in
+`js/layout.js` und werden beim Laden in `<div id="site-header">` und `<div id="site-footer">`
+eingesetzt. Wer den Header ändern will, ändert also nur diese eine Datei.
 
 Farben und Schriften sind oben in `styles.css` als Variablen gesammelt (`--gold`, `--text` …) –
 die Werte stammen direkt aus dem CSS des Originals.

@@ -1,20 +1,12 @@
+// Shared data and helpers, used by every page.
+// Loaded first; layout.js and the page scripts build on it.
+
 // Placeholder colours for materials that appear in several products.
 const CORK = "#c7a27a";
 const COTTON = "#ebe5d6";
 
-// ---------- Trust bar ----------
-// On phones only one hint shows at a time; the arrows step through them.
-const trustItems = [...document.querySelectorAll(".trustbar__item")];
-let trustIndex = 0;
-
-function showTrustItem(step) {
-  trustItems[trustIndex].classList.remove("is-current");
-  trustIndex = (trustIndex + step + trustItems.length) % trustItems.length;
-  trustItems[trustIndex].classList.add("is-current");
-}
-
-document.querySelector(".trustbar__arrow--prev").addEventListener("click", () => showTrustItem(-1));
-document.querySelector(".trustbar__arrow--next").addEventListener("click", () => showTrustItem(1));
+// Star outline shared by ratings and reviews.
+const STAR_PATH = "M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.1 6-5.3-3-5.3 3 1.1-6L1.4 7.7l6-.7z";
 
 // ---------- Bestseller data ----------
 // Product names and prices mirror the original shop (as of Oct 2026).
@@ -22,7 +14,7 @@ document.querySelector(".trustbar__arrow--next").addEventListener("click", () =>
 const bestsellers = {
   yoga: [
     { name: "Yogablock Kork 2er Set", price: 29.95, shape: "block", tint: CORK },
-    { name: "Yogamatte PURE", price: 79.95, shape: "mat", tint: "#7a2a3a", badge: "Matte Oberfläche" },
+    { name: "Yogamatte PURE", slug: "yogamatte-pure", price: 79.95, shape: "mat", tint: "#7a2a3a", badge: "Matte Oberfläche" },
     { name: "Yogamatte ARISE", price: 89.95, shape: "mat", tint: "#3f5550" },
     { name: "Yogamatte MUDRA", price: 39.95, shape: "mat", tint: "#55695f" },
   ],
@@ -128,8 +120,11 @@ function productCard(product) {
        </span>`
     : "";
 
+  // Products with their own page (`slug`) link to it; the rest are placeholders.
+  const href = product.slug ? `produkt.html?p=${product.slug}` : "#";
+
   return `
-    <a href="#" class="product-card">
+    <a href="${href}" class="product-card">
       <div class="product-card__media${swatches ? " product-card__media--swatches" : ""}">
         <svg viewBox="0 0 180 180" role="img" aria-label="Platzhalter: ${product.name}">
           ${shapes[product.shape](product.tint, product.accent)}
@@ -141,23 +136,6 @@ function productCard(product) {
       <p class="product-card__price">${price}</p>
     </a>`;
 }
-
-const collections = { ...bestsellers, ...bundles };
-
-document.querySelectorAll(".product-grid").forEach((grid) => {
-  grid.innerHTML = collections[grid.dataset.category].map(productCard).join("");
-});
-
-// ---------- Community inspiration ----------
-// The original shows real Instagram posts. Here: invented "Musterfrau"-style
-// accounts and small drawn yoga scenes instead of other people's photos.
-const communityPosts = [
-  { handle: "erika.musterfrau", pose: "lunge", wall: "#d9d2c7", floor: "#a88b6a", mat: "#4f5a4f" },
-  { handle: "max.mustermann", pose: "legRaise", wall: "#8a8178", floor: "#5f554b", mat: "#2f3a35" },
-  { handle: "yoga.beispiel", pose: "supported", wall: "#e4e0d9", floor: "#cbbfae", mat: "#b8ad9c" },
-  { handle: "flow.demo", pose: "warrior", wall: "#b9c4b0", floor: "#7f8582", mat: "#2f3b3a" },
-  { handle: "om.platzhalter", pose: "seated", wall: "#ece9e3", floor: "#c9b293", mat: "#8b7d6b" },
-];
 
 // Stick-figure poses in a 100×100 scene: `body` is drawn as one thick stroke.
 const poses = {
@@ -183,91 +161,6 @@ function sceneSvg({ pose: poseName, wall, floor, mat, figure = "#3a3530" }, view
         <circle cx="${pose.head[0]}" cy="${pose.head[1]}" r="5" fill="${figure}"/>
       </svg>`;
 }
-
-function communityTile(post) {
-  return `
-    <a href="#" class="community-tile" aria-label="Beitrag von @${post.handle} (Platzhalter)">
-      ${sceneSvg(post)}
-      <span class="community-tile__handle">${post.handle}</span>
-    </a>`;
-}
-
-document.querySelector(".community-row").innerHTML = communityPosts.map(communityTile).join("");
-
-// ---------- Testimonials ----------
-// Invented sample reviews: the original shows real customers' names and
-// towns, which don't belong in a public student repo.
-const reviews = [
-  { name: "Lena", stars: 5, product: "Yogamatte ARISE", text: "Super rutschfest, auch wenn es mal schweißtreibend wird. Die Farbe ist in echt noch schöner.", meta: "vor 2 Stunden" },
-  { name: "Markus", stars: 5, product: "Yogablock Kork 2er Set", text: "Stabil, angenehm griffig und riecht nicht. Genau das, was ich gesucht habe.", meta: "vor 5 Stunden" },
-  { name: "Sophie", stars: 4, product: "Meditationskissen Lotus (H: 15cm)", text: "Sehr bequem und gut verarbeitet. Für mich hätte es einen Tick höher sein dürfen, sonst perfekt.", meta: "vor 9 Stunden" },
-  { name: "Jana", stars: 5, product: "Yogamatte PURE", text: "Die matte Oberfläche fühlt sich toll an. Lieferung ging schnell und die Verpackung war plastikfrei.", meta: "vor einem Tag" },
-  { name: "Anonym", stars: 5, product: "Meditationsmatte Zabuton", text: "Ergänzt mein Kissen perfekt, die Knie danken es mir. Klare Empfehlung.", meta: "vor einem Tag" },
-  { name: "Tobias", stars: 4, product: "FEND Mens Sweater", text: "Weich und gemütlich, fällt etwas größer aus. Nach dem Waschen immer noch in Form.", meta: "vor 2 Tagen" },
-  { name: "Clara", stars: 5, product: "Yogamatte MUDRA", text: "Für den Preis eine richtig gute Einsteigermatte. Leicht genug, um sie zum Kurs mitzunehmen.", meta: "vor 3 Tagen" },
-];
-
-const star = (filled) =>
-  `<svg viewBox="0 0 20 20" class="${filled ? "is-filled" : ""}"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.1 6-5.3-3-5.3 3 1.1-6L1.4 7.7l6-.7z"/></svg>`;
-
-function reviewCard(review) {
-  const stars = Array.from({ length: 5 }, (_, i) => star(i < review.stars)).join("");
-  return `
-    <article class="review">
-      <div class="review__head">
-        <span class="review__name">${review.name}</span>
-        <span class="review__stars" aria-label="${review.stars} von 5 Sternen">${stars}</span>
-      </div>
-      <p class="review__badge">
-        <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.4"/></svg>
-        Verifizierter Kauf
-      </p>
-      <p class="review__product">${review.product}</p>
-      <p class="review__text">${review.text}</p>
-      <p class="review__meta">${review.meta}</p>
-    </article>`;
-}
-
-const track = document.querySelector(".carousel__track");
-track.innerHTML = reviews.map(reviewCard).join("");
-
-function scrollByCard(direction) {
-  const card = track.querySelector(".review");
-  const step = card.offsetWidth + parseFloat(getComputedStyle(track).columnGap);
-  const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
-  if (direction > 0 && atEnd) track.scrollTo({ left: 0, behavior: "smooth" });
-  else track.scrollBy({ left: direction * step, behavior: "smooth" });
-}
-
-document.querySelector(".carousel__arrow--prev").addEventListener("click", () => scrollByCard(-1));
-document.querySelector(".carousel__arrow--next").addEventListener("click", () => scrollByCard(1));
-
-// Autoplay like the original, with a pause button. Respects reduced motion.
-const pauseButton = document.querySelector(".carousel__pause");
-const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-let autoplay = null;
-
-function setPaused(paused) {
-  clearInterval(autoplay);
-  autoplay = paused ? null : setInterval(() => scrollByCard(1), 5000);
-  pauseButton.setAttribute("aria-pressed", paused);
-  pauseButton.querySelector("span").textContent = paused ? "Abspielen" : "Pause";
-  pauseButton.querySelector("path").setAttribute("d", paused ? "M8 5l11 7-11 7z" : "M9 6v12M15 6v12");
-}
-
-pauseButton.addEventListener("click", () => setPaused(autoplay !== null));
-setPaused(reducedMotion);
-
-// ---------- Newsletter (demo) ----------
-// This is a student project: the form never sends or stores the address.
-const newsletterForm = document.querySelector(".newsletter__form");
-
-newsletterForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  newsletterForm.querySelector(".newsletter__status").textContent =
-    "Danke! Das ist nur eine Demo – in diesem Studentenprojekt wird nichts gesendet oder gespeichert.";
-  newsletterForm.reset();
-});
 
 // ---------- Menu data (mobile drawer + desktop dropdowns) ----------
 // Same three-level structure as the original. A string is a plain link,
@@ -346,205 +239,5 @@ const linkIcons = {
   "Tanktops": "top",
 };
 
-// ---------- Mobile menu ----------
-const drawer = document.getElementById("menu-drawer");
-const drawerNav = drawer.querySelector(".drawer__nav");
-const menuToggle = document.querySelector(".menu-toggle");
-const trail = []; // the panels opened so far, e.g. [Yoga, Yogamatten]
-
 const menuIcon = (name, className = "drawer__icon") =>
   `<svg class="${className}" viewBox="0 0 24 24" aria-hidden="true">${menuIcons[name]}</svg>`;
-const chevron = (direction) =>
-  `<svg class="drawer__chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="${direction === "left" ? "M15 5l-7 7 7 7" : "M9 5l7 7-7 7"}"/></svg>`;
-
-function renderMenu(direction) {
-  const parent = trail[trail.length - 1];
-  const items = parent ? parent.children : menu;
-
-  const back = parent
-    ? `<button class="drawer__back" data-action="back">${chevron("left")}<span>${parent.label}</span></button>`
-    : "";
-  const list = items.map((item, i) => {
-    if (typeof item === "string") {
-      return `<li><a href="#" class="drawer__link drawer__link--plain">${item}</a></li>`;
-    }
-    return item.children
-      ? `<li><button class="drawer__link" data-index="${i}">${menuIcon(item.icon)}<span>${item.label}</span>${chevron("right")}</button></li>`
-      : `<li><a href="#" class="drawer__link">${menuIcon(item.icon)}<span>${item.label}</span></a></li>`;
-  }).join("");
-
-  drawerNav.innerHTML = `${back}<ul>${list}</ul>`;
-
-  // Restart the slide-in animation in the direction we're moving.
-  drawerNav.dataset.direction = direction;
-  drawerNav.classList.remove("is-sliding");
-  void drawerNav.offsetWidth;
-  drawerNav.classList.add("is-sliding");
-
-  if (drawer.open) drawerNav.querySelector("button, a").focus();
-}
-
-drawerNav.addEventListener("click", (e) => {
-  const button = e.target.closest("button");
-  if (!button) return;
-  if (button.dataset.action === "back") {
-    const closed = trail.pop();
-    renderMenu("back");
-    // Return focus to the item we came from, not just the top of the list.
-    const items = trail.length ? trail[trail.length - 1].children : menu;
-    drawerNav.querySelector(`[data-index="${items.indexOf(closed)}"]`).focus();
-  } else {
-    const items = trail.length ? trail[trail.length - 1].children : menu;
-    trail.push(items[button.dataset.index]);
-    renderMenu("forward");
-  }
-});
-
-menuToggle.addEventListener("click", () => {
-  trail.length = 0;
-  renderMenu("none");
-  drawer.showModal();
-  menuToggle.setAttribute("aria-expanded", "true");
-  drawerNav.querySelector("button, a").focus();
-});
-
-drawer.querySelector(".drawer__close").addEventListener("click", () => drawer.close());
-// Safari doesn't focus buttons on click, so hand focus back explicitly.
-drawer.addEventListener("close", () => {
-  menuToggle.setAttribute("aria-expanded", "false");
-  menuToggle.focus();
-});
-
-// The desktop navigation takes over above 1100px, so close the drawer there.
-window.matchMedia("(min-width: 1101px)").addEventListener("change", (e) => {
-  if (e.matches && drawer.open) drawer.close();
-});
-
-// ---------- Desktop mega menu ----------
-// Hovering a nav item (after a short pause, so sweeping across the nav
-// doesn't flicker) or tabbing onto it opens its full-width dropdown.
-// Escape closes it again.
-const header = document.querySelector(".header");
-const megaItems = [...document.querySelectorAll(".nav__item[data-menu]")];
-let openMegaItem = null;
-let megaTimer = null;
-let suppressFocusOpen = false;
-
-function megaColumn(category, column) {
-  // An entry without children (e.g. "Yoga-Sets") becomes one "Alle …" link.
-  const links = column.children || [`Alle ${column.label}`];
-  const items = links.map((label, i) => {
-    const icon = column.children && i === 0 ? category.icon : linkIcons[label] || column.icon;
-    return `<li><a href="#" class="mega__link">${menuIcon(icon, "mega__icon")}<span>${label}</span></a></li>`;
-  }).join("");
-  return `
-        <div class="mega__column">
-          <p class="mega__heading">${column.label}</p>
-          <ul class="mega__links">${items}</ul>
-        </div>`;
-}
-
-function megaPromo({ kicker, title, scene, product }) {
-  // Extra room below the figure keeps it clear of the label at the bottom.
-  const art = scene
-    ? sceneSvg(scene, "0 -20 100 160", "xMidYMax")
-    : `<svg viewBox="0 0 180 225" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-         <rect width="180" height="225" fill="#f1f0ee"/>
-         <g transform="translate(0 20)">${shapes[product](COTTON)}</g>
-       </svg>`;
-  return `
-        <a href="#" class="mega__promo">
-          ${art}
-          <span class="mega__promo-details">
-            <span class="mega__promo-kicker">${kicker}</span>
-            <span class="mega__promo-title">${title}</span>
-          </span>
-        </a>`;
-}
-
-function setMegaOpen(item) {
-  if (openMegaItem === item) return;
-  if (openMegaItem) {
-    openMegaItem.classList.remove("is-open");
-    openMegaItem.querySelector(".nav__link").setAttribute("aria-expanded", "false");
-  }
-  openMegaItem = item;
-  if (item) {
-    item.classList.add("is-open");
-    item.querySelector(".nav__link").setAttribute("aria-expanded", "true");
-  }
-  header.classList.toggle("has-open-menu", Boolean(item));
-}
-
-megaItems.forEach((item) => {
-  const category = menu.find((entry) => entry.label === item.dataset.menu);
-  const columns = category.children
-    .filter((column) => !column.mobileOnly)
-    .map((column) => megaColumn(category, column))
-    .join("");
-  const id = `mega-${category.label.toLowerCase()}`;
-
-  item.insertAdjacentHTML("beforeend", `
-    <div class="mega" id="${id}">
-      <div class="mega__grid">${columns}${category.promo ? megaPromo(category.promo) : ""}
-      </div>
-    </div>`);
-
-  const link = item.querySelector(".nav__link");
-  link.setAttribute("aria-expanded", "false");
-  link.setAttribute("aria-controls", id);
-
-  item.addEventListener("mouseenter", () => {
-    clearTimeout(megaTimer);
-    // Switch at once when moving between items, wait a moment otherwise.
-    megaTimer = setTimeout(() => setMegaOpen(item), openMegaItem ? 0 : 80);
-  });
-  item.addEventListener("mouseleave", () => {
-    clearTimeout(megaTimer);
-    megaTimer = setTimeout(() => setMegaOpen(null), 150);
-  });
-  item.addEventListener("focusin", () => {
-    if (suppressFocusOpen) return;
-    clearTimeout(megaTimer);
-    setMegaOpen(item);
-  });
-  item.addEventListener("focusout", (e) => {
-    if (!item.contains(e.relatedTarget) && openMegaItem === item) setMegaOpen(null);
-  });
-  item.addEventListener("keydown", (e) => {
-    if (e.key !== "Escape" || openMegaItem !== item) return;
-    setMegaOpen(null);
-    // Put focus back on the nav link without the focus reopening the menu.
-    suppressFocusOpen = true;
-    link.focus();
-    suppressFocusOpen = false;
-  });
-});
-
-// ---------- Tabs ----------
-// Each tab list only controls its own panels, so several tab groups
-// (bestsellers, set offers) can live on the same page.
-document.querySelectorAll('[role="tablist"]').forEach((tablist) => {
-  const tabs = [...tablist.querySelectorAll('[role="tab"]')];
-
-  function selectTab(tab) {
-    tabs.forEach((t) => {
-      const active = t === tab;
-      t.classList.toggle("is-active", active);
-      t.setAttribute("aria-selected", active);
-      t.tabIndex = active ? 0 : -1;
-      document.getElementById(t.getAttribute("aria-controls")).hidden = !active;
-    });
-  }
-
-  tabs.forEach((tab, i) => {
-    tab.addEventListener("click", () => selectTab(tab));
-    tab.addEventListener("keydown", (e) => {
-      const step = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
-      if (!step) return;
-      const next = tabs[(i + step + tabs.length) % tabs.length];
-      selectTab(next);
-      next.focus();
-    });
-  });
-});

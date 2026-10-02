@@ -1,0 +1,459 @@
+// Site layout shared by every page: header, menus and footer.
+// The markup lives here once and replaces <div id="site-header"> and
+// <div id="site-footer">. A plain <script> keeps this working when a page
+// is opened by double-click (fetch() can't load local files there).
+
+document.getElementById("site-header").outerHTML = `
+<!-- Student project notice: this page is a UI-class rebuild, not the real shop. -->
+<div class="student-note">🎓 Student project – UI class rebuild, not the real Lotuscrafts shop.</div>
+
+<!-- Trust bar -->
+<div class="trustbar">
+  <div class="container trustbar__inner" aria-live="polite">
+    <button class="trustbar__arrow trustbar__arrow--prev" aria-label="Vorheriger Hinweis">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <div class="trustbar__item is-current">
+      <span class="stars" aria-label="4.8 von 5 Sternen">
+        <svg viewBox="0 0 20 20"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.1 6-5.3-3-5.3 3 1.1-6L1.4 7.7l6-.7z"/></svg>
+        <svg viewBox="0 0 20 20"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.1 6-5.3-3-5.3 3 1.1-6L1.4 7.7l6-.7z"/></svg>
+        <svg viewBox="0 0 20 20"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.1 6-5.3-3-5.3 3 1.1-6L1.4 7.7l6-.7z"/></svg>
+        <svg viewBox="0 0 20 20"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.1 6-5.3-3-5.3 3 1.1-6L1.4 7.7l6-.7z"/></svg>
+        <svg viewBox="0 0 20 20"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.1 6-5.3-3-5.3 3 1.1-6L1.4 7.7l6-.7z"/></svg>
+      </span>
+      <span class="small">(3231) <strong>4.80</strong> / 5.00</span>
+    </div>
+    <div class="trustbar__item hide-sm">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>
+      <p class="small">Von Yoga-Lehrer:innen empfohlen</p>
+    </div>
+    <div class="trustbar__item hide-sm">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M12 3.5l2.5 5.3 5.8.7-4.3 4 1.1 5.7L12 16.4l-5.1 2.8 1.1-5.7-4.3-4 5.8-.7z"/></svg>
+      <p class="small">Zeitloses Design</p>
+    </div>
+    <div class="trustbar__item hide-md">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M12 3l8 4v10l-8 4-8-4V7zM4 7l8 4 8-4M12 11v10"/></svg>
+      <p class="small">Gratis Versand ab 69€</p>
+    </div>
+    <button class="trustbar__arrow trustbar__arrow--next" aria-label="Nächster Hinweis">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- Header -->
+<header class="header">
+  <div class="container header__inner">
+    <button class="icon-btn menu-toggle" aria-label="Menü öffnen" aria-controls="menu-drawer" aria-expanded="false">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+
+    <a href="index.html" class="logo" aria-label="LotusCraft Startseite">
+      <span class="logo__mark">
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <circle cx="16" cy="16" r="16" fill="var(--gold)"/>
+          <path d="M16 8c2 2.5 3 5 3 7.5S18 20 16 22c-2-2-3-4-3-6.5S14 10.5 16 8z" fill="#fff"/>
+          <path d="M8 13c3 .5 5.5 2.5 6.8 5.4.5 1.2.8 2.4.9 3.6-3-.3-5.4-1.6-6.7-3.8C8.2 16.8 7.9 15 8 13zM24 13c-3 .5-5.5 2.5-6.8 5.4-.5 1.2-.8 2.4-.9 3.6 3-.3 5.4-1.6 6.7-3.8.8-1.4 1.1-3.2 1-5.2z" fill="#fff" opacity=".9"/>
+        </svg>
+      </span>
+      <span class="logo__text">
+        <span class="logo__name">LOTUSCRAFT</span>
+        <span class="logo__tag">Student Rebuild</span>
+      </span>
+    </a>
+
+    <!-- Items with data-menu get their dropdown panel below -->
+    <nav class="nav" aria-label="Hauptnavigation">
+      <ul class="nav__list">
+        <li class="nav__item" data-menu="Yoga"><a href="#" class="nav__link">Yoga</a></li>
+        <li class="nav__item" data-menu="Meditation"><a href="#" class="nav__link">Meditation</a></li>
+        <li class="nav__item" data-menu="Bekleidung"><a href="#" class="nav__link">Bekleidung</a></li>
+        <li class="nav__item" data-menu="Geschenke"><a href="#" class="nav__link">Geschenke</a></li>
+        <li class="nav__item"><a href="#" class="nav__link">Sale</a></li>
+      </ul>
+    </nav>
+
+    <div class="header__actions">
+      <button class="icon-btn" aria-label="Suche">
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
+      </button>
+      <a href="#" class="icon-btn hide-sm" aria-label="Konto">
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-3.5 3.6-5.5 7-5.5s6.2 2 7 5.5"/></svg>
+      </a>
+      <a href="#" class="icon-btn cart-link" aria-label="Warenkorb">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6zM9 8V6.5a3 3 0 0 1 6 0V8"/></svg>
+        <span class="cart-count" hidden>0</span>
+      </a>
+    </div>
+  </div>
+</header>
+`;
+
+document.getElementById("site-footer").outerHTML = `
+<footer class="footer">
+  <!-- Newsletter (demo only: nothing is sent or stored) -->
+  <div class="newsletter">
+    <div class="container">
+      <h2 class="newsletter__title">Bleib inspiriert!</h2>
+      <p class="newsletter__text">Melde dich für unseren Newsletter an und erhalte 10% Rabatt auf deine Bestellung. Erhalte zusätzlich exklusive Angebote, Produkt-Updates und spannende Beiträge zu Yoga und Meditation.</p>
+      <form class="newsletter__form">
+        <label class="visually-hidden" for="newsletter-email">E-Mail-Adresse</label>
+        <input class="newsletter__input" type="email" id="newsletter-email" placeholder="Deine E-Mail-Adresse" autocomplete="off" required>
+        <button class="newsletter__button" type="submit">Jetzt anmelden</button>
+        <p class="newsletter__status" role="status"></p>
+      </form>
+    </div>
+  </div>
+
+  <div class="container footer__links">
+    <nav class="footer__col" aria-labelledby="footer-service">
+      <h3 class="footer__heading" id="footer-service">Kundenservice</h3>
+      <ul>
+        <li><a href="#">Hilfe &amp; Kontakt</a></li>
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">Retouren &amp; Umtausch</a></li>
+        <li><a href="#">Versandkosten</a></li>
+        <li><a href="#">Widerrufsbelehrung</a></li>
+        <li><a href="#">Vertrag widerrufen</a></li>
+        <li><a href="#">AGB</a></li>
+        <li><a href="#">Datenschutz</a></li>
+        <li><a href="#">Cookie Einstellungen</a></li>
+        <li><a href="#">Impressum</a></li>
+      </ul>
+    </nav>
+    <nav class="footer__col" aria-labelledby="footer-about">
+      <h3 class="footer__heading" id="footer-about">Über uns &amp; Inspiration</h3>
+      <ul>
+        <li><a href="#">Über Uns</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Nachhaltigkeit</a></li>
+        <li><a href="#">Store Wien</a></li>
+        <li><a href="#">Jobs @ LotusCraft</a></li>
+        <li><a href="#">Online Yogakurse</a></li>
+      </ul>
+    </nav>
+    <nav class="footer__col" aria-labelledby="footer-products">
+      <h3 class="footer__heading" id="footer-products">Produkte &amp; Beratung</h3>
+      <ul>
+        <li><a href="#">Yogamatten im Vergleich</a></li>
+        <li><a href="#">Yogamatten Quiz - Finde die richtige Matte</a></li>
+        <li><a href="#">Produktguide – Meditationskissen</a></li>
+        <li><a href="#">Produktguide – Yogabolster</a></li>
+        <li><a href="#">Rabatt für Yoga-Studios</a></li>
+        <li><a href="#">Rabatt für B2B &amp; Gewerbekunden</a></li>
+      </ul>
+    </nav>
+    <div class="footer__col">
+      <h3 class="footer__heading">We inspire to practice!</h3>
+      <div class="socials">
+        <a href="#" aria-label="Facebook (Platzhalter)">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="8"/><path d="M8.9 13V8.6h1.5l.2-1.7H8.9V5.8c0-.5.1-.8.8-.8h.9V3.5a12 12 0 0 0-1.3-.1c-1.3 0-2.2.8-2.2 2.3v1.2H5.6v1.7h1.5V13z" fill="#fff"/></svg>
+        </a>
+        <a href="#" aria-label="Instagram (Platzhalter)">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="8"/><rect x="4" y="4" width="8" height="8" rx="2.4" fill="none" stroke="#fff" stroke-width="1.2"/><circle cx="8" cy="8" r="1.9" fill="none" stroke="#fff" stroke-width="1.2"/><circle cx="10.4" cy="5.6" r=".6" fill="#fff"/></svg>
+        </a>
+        <a href="#" aria-label="Pinterest (Platzhalter)">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="8"/><path d="M7.6 9.6 7 12.6M6.2 7.6c0-1.6 1-2.6 2.3-2.6 1.4 0 2.1 1 2.1 2.1 0 1.5-.8 2.6-1.9 2.6-.7 0-1.1-.5-1-1.1" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </a>
+        <a href="#" aria-label="YouTube (Platzhalter)">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="8"/><rect x="3.5" y="5" width="9" height="6" rx="1.6" fill="#fff"/><path d="M7.2 6.6v2.8L9.6 8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container footer__bottom">
+    <p class="footer__copyright">© 2026 LotusCraft · Studentenprojekt</p>
+
+    <div class="payments" role="img" aria-label="Zahlungsarten (neutrale Platzhalter-Icons)">
+      <svg viewBox="0 0 30 24" aria-hidden="true"><rect x=".5" y=".5" width="29" height="23" rx="3.5"/><path d="M7 9h16M7 15h6"/></svg>
+      <svg viewBox="0 0 30 24" aria-hidden="true"><rect x=".5" y=".5" width="29" height="23" rx="3.5"/><path d="M8 10l7-4 7 4zM10 11v6M15 11v6M20 11v6M8 18h14"/></svg>
+      <svg viewBox="0 0 30 24" aria-hidden="true"><rect x=".5" y=".5" width="29" height="23" rx="3.5"/><path d="M8 8h13a1 1 0 0 1 1 1v8H8zM8 8l10-2v2M18 12.5h4"/></svg>
+      <svg viewBox="0 0 30 24" aria-hidden="true"><rect x=".5" y=".5" width="29" height="23" rx="3.5"/><rect x="11" y="5" width="8" height="14" rx="1.5"/><path d="M14 16.5h2"/></svg>
+      <svg viewBox="0 0 30 24" aria-hidden="true"><rect x=".5" y=".5" width="29" height="23" rx="3.5"/><path d="M10 5h7l3 3v11H10zM13 11h4M13 14h4"/></svg>
+    </div>
+
+    <div class="language">
+      <svg class="language__flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="7" fill="#000"/><rect y="6.6" width="30" height="6.8" fill="#dd0000"/><rect y="13.3" width="30" height="6.7" fill="#ffce00"/></svg>
+      <label class="visually-hidden" for="language-select">Sprache</label>
+      <select class="language__select" id="language-select">
+        <option>Deutsch</option>
+        <option>English</option>
+      </select>
+      <svg class="language__chevron" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg>
+    </div>
+  </div>
+</footer>
+
+<!-- Mobile menu (opened by the menu button below 1100px) -->
+<dialog class="drawer" id="menu-drawer" aria-label="Menü">
+  <div class="drawer__top">
+    <a href="index.html" class="logo" aria-label="LotusCraft Startseite">
+      <span class="logo__mark">
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <circle cx="16" cy="16" r="16" fill="var(--gold)"/>
+          <path d="M16 8c2 2.5 3 5 3 7.5S18 20 16 22c-2-2-3-4-3-6.5S14 10.5 16 8z" fill="#fff"/>
+          <path d="M8 13c3 .5 5.5 2.5 6.8 5.4.5 1.2.8 2.4.9 3.6-3-.3-5.4-1.6-6.7-3.8C8.2 16.8 7.9 15 8 13zM24 13c-3 .5-5.5 2.5-6.8 5.4-.5 1.2-.8 2.4-.9 3.6 3-.3 5.4-1.6 6.7-3.8.8-1.4 1.1-3.2 1-5.2z" fill="#fff" opacity=".9"/>
+        </svg>
+      </span>
+      <span class="logo__text">
+        <span class="logo__name">LOTUSCRAFT</span>
+        <span class="logo__tag">Student Rebuild</span>
+      </span>
+    </a>
+    <button class="icon-btn drawer__close" aria-label="Menü schließen">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></svg>
+    </button>
+  </div>
+
+  <nav class="drawer__nav" aria-label="Mobile Navigation"></nav>
+
+  <div class="drawer__footer">
+    <a href="#">Kontakt &amp; Hilfe</a>
+    <a href="#">Account</a>
+    <a href="#">Über Uns</a>
+    <div class="language">
+      <svg class="language__flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="7" fill="#000"/><rect y="6.6" width="30" height="6.8" fill="#dd0000"/><rect y="13.3" width="30" height="6.7" fill="#ffce00"/></svg>
+      <label class="visually-hidden" for="drawer-language-select">Sprache</label>
+      <select class="language__select" id="drawer-language-select">
+        <option>Deutsch</option>
+        <option>English</option>
+      </select>
+      <svg class="language__chevron" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg>
+    </div>
+  </div>
+</dialog>
+`;
+
+// ---------- Trust bar ----------
+// On phones only one hint shows at a time; the arrows step through them.
+const trustItems = [...document.querySelectorAll(".trustbar__item")];
+let trustIndex = 0;
+
+function showTrustItem(step) {
+  trustItems[trustIndex].classList.remove("is-current");
+  trustIndex = (trustIndex + step + trustItems.length) % trustItems.length;
+  trustItems[trustIndex].classList.add("is-current");
+}
+
+document.querySelector(".trustbar__arrow--prev").addEventListener("click", () => showTrustItem(-1));
+document.querySelector(".trustbar__arrow--next").addEventListener("click", () => showTrustItem(1));
+
+// ---------- Newsletter (demo) ----------
+// This is a student project: the form never sends or stores the address.
+const newsletterForm = document.querySelector(".newsletter__form");
+
+newsletterForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  newsletterForm.querySelector(".newsletter__status").textContent =
+    "Danke! Das ist nur eine Demo – in diesem Studentenprojekt wird nichts gesendet oder gespeichert.";
+  newsletterForm.reset();
+});
+
+// ---------- Mobile menu ----------
+const drawer = document.getElementById("menu-drawer");
+const drawerNav = drawer.querySelector(".drawer__nav");
+const menuToggle = document.querySelector(".menu-toggle");
+const trail = []; // the panels opened so far, e.g. [Yoga, Yogamatten]
+
+const chevron = (direction) =>
+  `<svg class="drawer__chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="${direction === "left" ? "M15 5l-7 7 7 7" : "M9 5l7 7-7 7"}"/></svg>`;
+
+function renderMenu(direction) {
+  const parent = trail[trail.length - 1];
+  const items = parent ? parent.children : menu;
+
+  const back = parent
+    ? `<button class="drawer__back" data-action="back">${chevron("left")}<span>${parent.label}</span></button>`
+    : "";
+  const list = items.map((item, i) => {
+    if (typeof item === "string") {
+      return `<li><a href="#" class="drawer__link drawer__link--plain">${item}</a></li>`;
+    }
+    return item.children
+      ? `<li><button class="drawer__link" data-index="${i}">${menuIcon(item.icon)}<span>${item.label}</span>${chevron("right")}</button></li>`
+      : `<li><a href="#" class="drawer__link">${menuIcon(item.icon)}<span>${item.label}</span></a></li>`;
+  }).join("");
+
+  drawerNav.innerHTML = `${back}<ul>${list}</ul>`;
+
+  // Restart the slide-in animation in the direction we're moving.
+  drawerNav.dataset.direction = direction;
+  drawerNav.classList.remove("is-sliding");
+  void drawerNav.offsetWidth;
+  drawerNav.classList.add("is-sliding");
+
+  if (drawer.open) drawerNav.querySelector("button, a").focus();
+}
+
+drawerNav.addEventListener("click", (e) => {
+  const button = e.target.closest("button");
+  if (!button) return;
+  if (button.dataset.action === "back") {
+    const closed = trail.pop();
+    renderMenu("back");
+    // Return focus to the item we came from, not just the top of the list.
+    const items = trail.length ? trail[trail.length - 1].children : menu;
+    drawerNav.querySelector(`[data-index="${items.indexOf(closed)}"]`).focus();
+  } else {
+    const items = trail.length ? trail[trail.length - 1].children : menu;
+    trail.push(items[button.dataset.index]);
+    renderMenu("forward");
+  }
+});
+
+menuToggle.addEventListener("click", () => {
+  trail.length = 0;
+  renderMenu("none");
+  drawer.showModal();
+  menuToggle.setAttribute("aria-expanded", "true");
+  drawerNav.querySelector("button, a").focus();
+});
+
+drawer.querySelector(".drawer__close").addEventListener("click", () => drawer.close());
+// Safari doesn't focus buttons on click, so hand focus back explicitly.
+drawer.addEventListener("close", () => {
+  menuToggle.setAttribute("aria-expanded", "false");
+  menuToggle.focus();
+});
+
+// The desktop navigation takes over above 1100px, so close the drawer there.
+window.matchMedia("(min-width: 1101px)").addEventListener("change", (e) => {
+  if (e.matches && drawer.open) drawer.close();
+});
+
+// ---------- Desktop mega menu ----------
+// Hovering a nav item (after a short pause, so sweeping across the nav
+// doesn't flicker) or tabbing onto it opens its full-width dropdown.
+// Escape closes it again.
+const header = document.querySelector(".header");
+const megaItems = [...document.querySelectorAll(".nav__item[data-menu]")];
+let openMegaItem = null;
+let megaTimer = null;
+let suppressFocusOpen = false;
+
+function megaColumn(category, column) {
+  // An entry without children (e.g. "Yoga-Sets") becomes one "Alle …" link.
+  const links = column.children || [`Alle ${column.label}`];
+  const items = links.map((label, i) => {
+    const icon = column.children && i === 0 ? category.icon : linkIcons[label] || column.icon;
+    return `<li><a href="#" class="mega__link">${menuIcon(icon, "mega__icon")}<span>${label}</span></a></li>`;
+  }).join("");
+  return `
+        <div class="mega__column">
+          <p class="mega__heading">${column.label}</p>
+          <ul class="mega__links">${items}</ul>
+        </div>`;
+}
+
+function megaPromo({ kicker, title, scene, product }) {
+  // Extra room below the figure keeps it clear of the label at the bottom.
+  const art = scene
+    ? sceneSvg(scene, "0 -20 100 160", "xMidYMax")
+    : `<svg viewBox="0 0 180 225" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+         <rect width="180" height="225" fill="#f1f0ee"/>
+         <g transform="translate(0 20)">${shapes[product](COTTON)}</g>
+       </svg>`;
+  return `
+        <a href="#" class="mega__promo">
+          ${art}
+          <span class="mega__promo-details">
+            <span class="mega__promo-kicker">${kicker}</span>
+            <span class="mega__promo-title">${title}</span>
+          </span>
+        </a>`;
+}
+
+function setMegaOpen(item) {
+  if (openMegaItem === item) return;
+  if (openMegaItem) {
+    openMegaItem.classList.remove("is-open");
+    openMegaItem.querySelector(".nav__link").setAttribute("aria-expanded", "false");
+  }
+  openMegaItem = item;
+  if (item) {
+    item.classList.add("is-open");
+    item.querySelector(".nav__link").setAttribute("aria-expanded", "true");
+  }
+  header.classList.toggle("has-open-menu", Boolean(item));
+}
+
+megaItems.forEach((item) => {
+  const category = menu.find((entry) => entry.label === item.dataset.menu);
+  const columns = category.children
+    .filter((column) => !column.mobileOnly)
+    .map((column) => megaColumn(category, column))
+    .join("");
+  const id = `mega-${category.label.toLowerCase()}`;
+
+  item.insertAdjacentHTML("beforeend", `
+    <div class="mega" id="${id}">
+      <div class="mega__grid">${columns}${category.promo ? megaPromo(category.promo) : ""}
+      </div>
+    </div>`);
+
+  const link = item.querySelector(".nav__link");
+  link.setAttribute("aria-expanded", "false");
+  link.setAttribute("aria-controls", id);
+
+  item.addEventListener("mouseenter", () => {
+    clearTimeout(megaTimer);
+    // Switch at once when moving between items, wait a moment otherwise.
+    megaTimer = setTimeout(() => setMegaOpen(item), openMegaItem ? 0 : 80);
+  });
+  item.addEventListener("mouseleave", () => {
+    clearTimeout(megaTimer);
+    megaTimer = setTimeout(() => setMegaOpen(null), 150);
+  });
+  item.addEventListener("focusin", () => {
+    if (suppressFocusOpen) return;
+    clearTimeout(megaTimer);
+    setMegaOpen(item);
+  });
+  item.addEventListener("focusout", (e) => {
+    if (!item.contains(e.relatedTarget) && openMegaItem === item) setMegaOpen(null);
+  });
+  item.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape" || openMegaItem !== item) return;
+    setMegaOpen(null);
+    // Put focus back on the nav link without the focus reopening the menu.
+    suppressFocusOpen = true;
+    link.focus();
+    suppressFocusOpen = false;
+  });
+});
+
+// ---------- Cart count (demo) ----------
+// "In den Warenkorb" only counts items, nothing is ordered. The count is
+// kept in this browser so it survives switching pages.
+const CART_KEY = "lotuscraft-cart-count";
+
+function readCartCount() {
+  try {
+    return Number(localStorage.getItem(CART_KEY)) || 0;
+  } catch {
+    return 0;
+  }
+}
+
+function renderCartCount(count = readCartCount()) {
+  const badge = document.querySelector(".cart-count");
+  badge.textContent = count;
+  badge.hidden = count === 0;
+  document.querySelector(".cart-link").setAttribute(
+    "aria-label",
+    count ? `Warenkorb, ${count} Artikel` : "Warenkorb"
+  );
+}
+
+function addToCart(quantity = 1) {
+  const count = readCartCount() + quantity;
+  try {
+    localStorage.setItem(CART_KEY, count);
+  } catch {
+    // Storage can be blocked (private mode); the badge still updates.
+  }
+  renderCartCount(count);
+}
+
+renderCartCount();
