@@ -173,6 +173,24 @@
         </div>
       </div>
     </section>
+
+    <!-- Set offers (tabbed bundle grid) -->
+    <section class="section bundles" aria-labelledby="bundles-title">
+      <div class="container">
+        <header class="section-header">
+          <h2 class="section-header__title" id="bundles-title">Set Angebote</h2>
+          <p class="section-header__subtitle">Erhalte 10% Rabatt beim Kauf eines Bundles</p>
+        </header>
+
+        <div class="tabs" role="tablist" aria-label="Set-Kategorien">
+          <button class="tab is-active" role="tab" id="tab-yoga-bundles" aria-controls="panel-yoga-bundles" aria-selected="true">Yoga-Bundles</button>
+          <button class="tab" role="tab" id="tab-meditation-bundles" aria-controls="panel-meditation-bundles" aria-selected="false" tabindex="-1">Meditation-Bundles</button>
+        </div>
+
+        <div class="product-grid" role="tabpanel" id="panel-yoga-bundles" aria-labelledby="tab-yoga-bundles" data-category="yoga-bundles"></div>
+        <div class="product-grid" role="tabpanel" id="panel-meditation-bundles" aria-labelledby="tab-meditation-bundles" data-category="meditation-bundles" hidden></div>
+      </div>
+    </section>
   </main>
 
   <script src="script.js"></script>

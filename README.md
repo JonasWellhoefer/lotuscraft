@@ -89,7 +89,7 @@ Beenden mit **Strg + C** im Terminal.
 lotuscraft/
 ├── index.html   # Seitenaufbau (alle Abschnitte)
 ├── styles.css   # Gestaltung: Farben, Schriften, Layout, Mobilansicht
-├── script.js    # Produktdaten, Tabs und Bewertungs-Karussell
+├── script.js    # Produkt- und Set-Daten, Tabs, Bewertungs-Karussell
 └── README.md
 ```
 
@@ -106,7 +106,7 @@ Die Startseite wird Abschnitt für Abschnitt in der Reihenfolge des Originals na
 - [x] Kategorie-Kacheln
 - [x] Bestseller mit Tabs (Yoga / Meditation / Bekleidung)
 - [x] Kundenbewertungen (Karussell)
-- [ ] Set-Angebote
+- [x] Set-Angebote mit Tabs (Yoga- / Meditation-Bundles)
 - [ ] Community-Inspiration
 - [ ] Verkaufsargumente
 - [ ] Footer mit Newsletter
