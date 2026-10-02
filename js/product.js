@@ -505,12 +505,20 @@ if (!product) {
   const wanted = product.colors.findIndex((c) => c.name === new URLSearchParams(location.search).get("farbe"));
   if (wanted > 0) productRoot.querySelectorAll(".color-picker input")[wanted].click();
 
-  // Demo cart: counts up the badge in the header, nothing is ordered.
+  // Demo cart: adds the picked colour and opens the cart; nothing is ordered.
   const cartButton = productRoot.querySelector(".buybox__cart");
   const added = productRoot.querySelector(".buybox__added");
 
   cartButton.addEventListener("click", () => {
-    addToCart(1);
+    addToCart({
+      id: `${slug}:${color.name}`,
+      name: product.name,
+      variant: color.name,
+      hex: color.hex,
+      price: product.price,
+      href: `produkt.html?p=${slug}&farbe=${encodeURIComponent(color.name)}`,
+    });
+    openCart();
     added.textContent = `${product.name} (${color.name}) liegt im Warenkorb – nur eine Demo, es wird nichts bestellt.`;
     cartButton.textContent = "Hinzugefügt ✓";
     setTimeout(() => (cartButton.textContent = "In den Warenkorb"), 2000);

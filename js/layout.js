@@ -80,10 +80,10 @@ document.getElementById("site-header").outerHTML = `
       <a href="#" class="icon-btn hide-sm" aria-label="Konto">
         <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-3.5 3.6-5.5 7-5.5s6.2 2 7 5.5"/></svg>
       </a>
-      <a href="#" class="icon-btn cart-link" aria-label="Warenkorb">
+      <button class="icon-btn cart-link" type="button" aria-label="Warenkorb öffnen" aria-controls="cart-drawer" aria-haspopup="dialog" aria-expanded="false">
         <svg class="icon" viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6zM9 8V6.5a3 3 0 0 1 6 0V8"/></svg>
         <span class="cart-count" hidden>0</span>
-      </a>
+      </button>
     </div>
   </div>
 </header>
@@ -217,6 +217,17 @@ document.getElementById("site-footer").outerHTML = `
       <svg class="language__chevron" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg>
     </div>
   </div>
+</dialog>
+
+<!-- Cart drawer (demo: nothing is ever ordered) -->
+<dialog class="cart-drawer" id="cart-drawer" aria-labelledby="cart-title">
+  <div class="cart-drawer__header">
+    <p class="cart-drawer__title" id="cart-title">Warenkorb</p>
+    <button class="icon-btn cart-drawer__close" type="button" aria-label="Warenkorb schließen">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></svg>
+    </button>
+  </div>
+  <div class="cart-drawer__body"></div>
 </dialog>
 `;
 
@@ -423,37 +434,144 @@ megaItems.forEach((item) => {
 const currentNav = document.querySelector(`.nav__item[data-menu="${document.body.dataset.nav}"] .nav__link`);
 if (currentNav) currentNav.classList.add("is-current");
 
-// ---------- Cart count (demo) ----------
-// "In den Warenkorb" only counts items, nothing is ordered. The count is
-// kept in this browser so it survives switching pages.
-const CART_KEY = "lotuscraft-cart-count";
+// ---------- Cart (demo) ----------
+// The cart remembers items in this browser (localStorage) so they survive
+// switching pages. Nothing is ever ordered: "Zur Kasse" just ends the demo.
+const CART_KEY = "lotuscraft-cart";
+const FREE_SHIPPING_FROM = 69;
+const cartDrawer = document.getElementById("cart-drawer");
+const cartBody = cartDrawer.querySelector(".cart-drawer__body");
+const cartToggle = document.querySelector(".cart-link");
+let cartItems = loadCart();
+let cartOpener = null;
 
-function readCartCount() {
+function loadCart() {
   try {
-    return Number(localStorage.getItem(CART_KEY)) || 0;
+    return JSON.parse(localStorage.getItem(CART_KEY)) || [];
   } catch {
-    return 0;
+    return [];
   }
 }
 
-function renderCartCount(count = readCartCount()) {
+function saveCart() {
+  try {
+    localStorage.setItem(CART_KEY, JSON.stringify(cartItems));
+  } catch {
+    // Storage can be blocked (private mode); the cart then lasts for this page.
+  }
+  renderCart();
+}
+
+// `item` = { id, name, variant, hex, price, href }; the same id adds up.
+function addToCart(item) {
+  const existing = cartItems.find((entry) => entry.id === item.id);
+  if (existing) existing.qty += 1;
+  else cartItems.push({ ...item, qty: 1 });
+  saveCart();
+}
+
+function openCart() {
+  cartOpener = document.activeElement;
+  if (!cartDrawer.open) cartDrawer.showModal();
+  cartToggle.setAttribute("aria-expanded", "true");
+}
+
+function cartItemMarkup(item) {
+  const href = item.href || "#";
+  return `
+      <li class="cart-item">
+        <a href="${href}" class="cart-item__media" tabindex="-1" aria-hidden="true">
+          <svg viewBox="0 0 180 225"><rect width="180" height="225" fill="#f1f0ee"/><g transform="translate(0 22)">${shapes.mat(item.hex)}</g></svg>
+        </a>
+        <div class="cart-item__info">
+          <a href="${href}" class="cart-item__name">${item.name}</a>
+          ${item.variant ? `<p class="cart-item__variant">${item.variant}</p>` : ""}
+          <p class="cart-item__price">${formatPrice(item.price * item.qty)}</p>
+          <div class="cart-item__actions">
+            <div class="qty" role="group" aria-label="Menge: ${item.name}${item.variant ? ` (${item.variant})` : ""}">
+              <button class="qty__btn" type="button" data-action="dec" data-id="${item.id}" aria-label="Eins weniger">−</button>
+              <span class="qty__value">${item.qty}</span>
+              <button class="qty__btn" type="button" data-action="inc" data-id="${item.id}" aria-label="Eins mehr">+</button>
+            </div>
+            <button class="cart-item__remove" type="button" data-action="remove" data-id="${item.id}">Entfernen</button>
+          </div>
+        </div>
+      </li>`;
+}
+
+function renderCart() {
+  const count = cartItems.reduce((sum, item) => sum + item.qty, 0);
+  const total = cartItems.reduce((sum, item) => sum + item.price * item.qty, 0);
+
   const badge = document.querySelector(".cart-count");
   badge.textContent = count;
   badge.hidden = count === 0;
-  document.querySelector(".cart-link").setAttribute(
-    "aria-label",
-    count ? `Warenkorb, ${count} Artikel` : "Warenkorb"
-  );
-}
+  cartToggle.setAttribute("aria-label", count ? `Warenkorb öffnen, ${count} Artikel` : "Warenkorb öffnen");
 
-function addToCart(quantity = 1) {
-  const count = readCartCount() + quantity;
-  try {
-    localStorage.setItem(CART_KEY, count);
-  } catch {
-    // Storage can be blocked (private mode); the badge still updates.
+  if (!count) {
+    cartBody.innerHTML = `
+      <div class="cart-empty">
+        <p class="cart-empty__title">Dein Warenkorb ist leer</p>
+        <a href="kategorie.html?k=yogamatten" class="btn btn--primary">Jetzt shoppen</a>
+      </div>`;
+    return;
   }
-  renderCartCount(count);
+
+  const missing = FREE_SHIPPING_FROM - total;
+  const shippingText = missing > 0
+    ? `Noch <strong>${formatPrice(missing)}</strong> bis zum kostenlosen Versand`
+    : "Dein Versand ist kostenlos";
+
+  cartBody.innerHTML = `
+      <div class="cart-shipping">
+        <p>${shippingText}</p>
+        <div class="cart-shipping__bar"><span style="width: ${Math.min(100, (total / FREE_SHIPPING_FROM) * 100)}%"></span></div>
+      </div>
+      <ul class="cart-items">${cartItems.map(cartItemMarkup).join("")}
+      </ul>
+      <div class="cart-drawer__footer">
+        <p class="cart-total"><span>Zwischensumme</span><span>${formatPrice(total)}</span></p>
+        <p class="cart-note">Inkl. MwSt., zzgl. Versandkosten.</p>
+        <button class="btn btn--primary btn--block cart-checkout" type="button">Zur Kasse</button>
+        <p class="cart-checkout-note" role="status"></p>
+      </div>`;
 }
 
-renderCartCount();
+cartToggle.addEventListener("click", openCart);
+cartDrawer.querySelector(".cart-drawer__close").addEventListener("click", () => cartDrawer.close());
+
+// A click on the dark backdrop lands on the <dialog> itself: close it.
+cartDrawer.addEventListener("click", (e) => {
+  if (e.target === cartDrawer) cartDrawer.close();
+});
+
+// Give focus back to whatever opened the cart (Safari doesn't focus
+// buttons on click, so fall back to the cart button).
+cartDrawer.addEventListener("close", () => {
+  cartToggle.setAttribute("aria-expanded", "false");
+  const opener = cartOpener && cartOpener !== document.body && cartOpener.isConnected ? cartOpener : cartToggle;
+  opener.focus();
+});
+
+cartBody.addEventListener("click", (e) => {
+  if (e.target.closest(".cart-checkout")) {
+    cartBody.querySelector(".cart-checkout-note").textContent =
+      "Hier endet die Demo: In diesem Studentenprojekt gibt es keine Kasse, es wird nichts bestellt.";
+    return;
+  }
+
+  const button = e.target.closest("[data-action]");
+  if (!button) return;
+  const { action, id } = button.dataset;
+  const item = cartItems.find((entry) => entry.id === id);
+  if (action === "inc") item.qty += 1;
+  if (action === "dec") item.qty -= 1;
+  if (action === "remove" || item.qty < 1) cartItems = cartItems.filter((entry) => entry !== item);
+  saveCart();
+
+  // Keep keyboard focus on the same control, or on the close button if the item is gone.
+  const same = cartBody.querySelector(`[data-action="${action}"][data-id="${CSS.escape(id)}"]`);
+  (same || cartDrawer.querySelector(".cart-drawer__close")).focus();
+});
+
+renderCart();

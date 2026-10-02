@@ -93,7 +93,7 @@ lotuscraft/
 ├── styles.css      # Gestaltung: Farben, Schriften, Layout, Mobilansicht
 ├── js/
 │   ├── shared.js   # Gemeinsame Daten & Helfer: Produkte, Menü, Icons, Zeichnungen
-│   ├── layout.js   # Header, Menüs (Handy + Desktop), Footer, Warenkorb-Zähler
+│   ├── layout.js   # Header, Menüs (Handy + Desktop), Footer, Warenkorb (Demo)
 │   ├── home.js     # Startseite: Produkt-Tabs, Community, Bewertungs-Karussell
 │   ├── product.js  # Produktseite: Daten, Galerie, Farbauswahl, Warenkorb-Button
 │   └── category.js # Kategorieseite: Daten, Filter (Farbe, Material, Verfügbarkeit), Sortierung
@@ -138,6 +138,12 @@ die Werte stammen direkt aus dem CSS des Originals.
 - [x] Unterkategorien als Kreise, Titel, 31 Karten (eine pro Farbe, wie im Original)
 - [x] Filter Farbe, Material, Verfügbarkeit (kombinierbar) und Sortierung
 - [x] Klick auf eine PURE-Karte öffnet die Produktseite gleich in der richtigen Farbe
+
+**Warenkorb** (Icon oben rechts oder „In den Warenkorb“ auf der Produktseite):
+
+- [x] Seitenleiste wie im Original, mit leerem Zustand
+- [x] Artikel mit Menge (− / +), Entfernen, Zwischensumme und Balken bis „kostenloser Versand ab 69 €“
+- [x] Bleibt beim Seitenwechsel erhalten (nur in diesem Browser gespeichert) – „Zur Kasse“ ist nur eine Demo, es wird nichts bestellt
 
 ## Hinweis
 
