@@ -15,6 +15,7 @@ const colorFamilies = [
   { name: "Schwarz", swatch: "#000" },
   { name: "Grau", swatch: "#b7abae" },
   { name: "Rosa", swatch: "#c69a98" },
+  { name: "Gelb", swatch: "#d1a128" },
   { name: "Braun", swatch: "#9b6e55" },
   { name: "Align", swatch: "repeating-linear-gradient(135deg, #c9a77e 0 5px, #b48f63 5px 7px)" },
   // The original shows a photo of wood grain here; this is a drawn stand-in.
@@ -22,6 +23,7 @@ const colorFamilies = [
 ];
 const materials = ["Bio-Baumwolle (kbA)", "Naturkautschuk", "Polyester", "PU (Polyurethan)", "PVC (Polyvinylchlorid)", "Naturkork", "Schurwolle", "Rotes Sandelholz", "Tulsi", "Rudraksha", "Polymere Klebefolie mit UV-Schutz"];
 const fillings = ["Bio-Dinkelspelz (kbA)", "Kapokwolle"];
+const forms = ["Rund", "Halbrund", "Zafu"];
 const availabilities = ["Verfügbar", "Nicht verfügbar"];
 
 // The original sorts most pages by "meistverkauft". Its sales ranking (as
@@ -61,6 +63,25 @@ const bestSellingRanking = [
   "Yoga Bolster RESTORATIVE S / Dark Cranberry", "Yoga Bolster RESTORATIVE S / Grassland",
   "Bezug für Yogarolle COVER Ø24 cm / Light Taupe", "Bezug für Yogarolle COVER Ø24 cm / Natur", "Bezug für Yogarolle COVER Ø24 cm / Anthrazit",
   "Bezug für Yogarolle COVER Ø24 cm / Indigo Dust", "Bezug für Yogarolle COVER Ø24 cm / Dark Cranberry",
+  // Meditation cushions
+  "Meditationskissen Lotus (H: 15cm) / Balsam Green", "Meditationskissen Lotus (H: 15cm) / Natur", "Meditationskissen Lotus (H: 15cm) / Light Taupe",
+  "Yogakissen Halbmond Shanti / Light Taupe", "Meditationskissen Lotus (H: 15cm) / Indigo Dust", "Yogakissen Halbmond Shanti / Balsam Green",
+  "Meditationskissen Lotus HOCH (H: 20cm) / Balsam Green", "Yogakissen Halbmond Shanti / Indigo Dust", "Meditationskissen Lotus HOCH (H: 20cm) / Indigo Dust",
+  "Yogakissen Halbmond Shanti / Natur", "Zafu-Meditationskissen Zen / Natur", "Meditationskissen Lotus HOCH (H: 20cm) / Light Taupe",
+  "Zafu-Meditationskissen Zen / Indigo Dust", "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Balsam Green",
+  "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Light Taupe", "Zafu-Meditationskissen Zen / Light Taupe",
+  "Meditationskissen Lotus KLEIN (H: 10 cm) / Natur", "Meditationskissen Lotus HOCH (H: 20cm) / Natur", "Meditationskissen Lotus KLEIN (H: 10 cm) / Balsam Green",
+  "Meditationskissen Lotus HOCH (H: 20cm) / Bordeaux", "Meditationskissen Lotus HOCH (H: 20cm) / Anthrazit", "Meditationskissen Lotus (H: 15cm) / Anthrazit",
+  "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Indigo Dust", "Yogakissen Halbmond Shanti / Aubergine",
+  "Meditationskissen Lotus KLEIN (H: 10 cm) / Light Taupe", "Zafu-Meditationskissen Zen / Balsam Green", "Meditationskissen Lotus (H: 15cm) / Kurkuma",
+  "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Natur", "Yogakissen Halbmond Shanti / Anthrazit", "Meditationskissen Lotus KLEIN (H: 10 cm) / Indigo Dust",
+  "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Lavender Fog", "Meditationskissen Lotus (H: 15cm) / Schwarz", "Yogakissen Halbmond Shanti / Bordeaux",
+  "Zafu-Meditationskissen Zen / Anthrazit", "Zafu-Meditationskissen Zen / Kurkuma", "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Anthrazit",
+  "Zafu-Meditationskissen Zen Kapok / Anthrazit", "Meditationskissen Lotus HOCH (H: 20cm) / Kurkuma", "Meditationskissen Lotus KLEIN (H: 10 cm) / Kurkuma",
+  "Meditationskissen Lotus KLEIN (H: 10 cm) / Anthrazit", "Meditationskissen Lotus KLEIN (H: 10 cm) / Marine Blue",
+  "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Aubergine", "Meditationskissen Lotus KLEIN (H: 10 cm) / Aubergine",
+  "Meditationskissen Lotus HOCH (H: 20cm) / Aubergine", "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Grassland",
+  "Meditationskissen Lotus KLEIN (H: 10 cm) / Bordeaux",
   // "Almost Perfect"
   "Almost Perfect Yogamatte MUDRA / Indigo Dust", "Almost Perfect Yogamatte MUDRA / Light Taupe", "Almost Perfect Yogamatte MUDRA / Balsam Green",
   "Almost Perfect Yogamatte MUDRA PRO / Anthrazit", "Almost Perfect Yogamatte PURE / Light Taupe", "Almost Perfect Yogamatte MUDRA PRO / Light Taupe",
@@ -115,15 +136,18 @@ function categoryMarkup(category) {
           <span class="shortcut__label">${shortcut.label}</span>
         </a>`).join("");
 
-  // Like the original, filters only offer values that occur in this category
-  // (or the list it names in `colorFilter`), and a filter with a single value
-  // is left out. Availability always has both.
-  const families = colorFamilies.filter((family) => category.colorFilter
-    ? category.colorFilter.includes(family.name)
-    : category.models.some((model) => model.variants?.some((v) => v.family === family.name)));
+  // Like the original, filters only offer values that occur in this category,
+  // and a filter with a single value is left out. Availability always has
+  // both. Where the original also counts hidden sold-out products, the
+  // category lists its values in `filterValues`.
   const offered = (key, value) => category.models.some((model) => model[key] === value || model.variants?.some((v) => v[key] === value));
-  const materialOptions = materials.filter((material) => offered("material", material));
-  const fillingOptions = fillings.filter((filling) => offered("filling", filling));
+  const options = (key, filterKey, values) => values.filter((value) => (category.filterValues?.[filterKey]
+    ? category.filterValues[filterKey].includes(value)
+    : offered(key, value)));
+  const families = colorFamilies.filter((family) => options("family", "colors", [family.name]).length);
+  const formOptions = options("form", "forms", forms);
+  const materialOptions = options("material", "materials", materials);
+  const fillingOptions = options("filling", "fillings", fillings);
 
   const swatches = `<div class="filter__swatches">${families.map((family) => `
               <label class="filter-swatch" title="${family.name}">
@@ -144,7 +168,7 @@ function categoryMarkup(category) {
       <h1 class="category__title">${category.title}</h1>
 
       <div class="filters">
-        <div class="filters__group">${families.length > 1 ? filterPanel("colors", "Farbe", swatches) : ""}${materialOptions.length > 1 ? filterPanel("materials", "Material", checkboxList(materialOptions)) : ""}${fillingOptions.length > 1 ? filterPanel("fillings", "Füllung", checkboxList(fillingOptions)) : ""}${filterPanel("availability", "Verfügbarkeit", checkboxList(availabilities))}
+        <div class="filters__group">${families.length > 1 ? filterPanel("colors", "Farbe", swatches) : ""}${formOptions.length > 1 ? filterPanel("forms", "Form", checkboxList(formOptions)) : ""}${materialOptions.length > 1 ? filterPanel("materials", "Material", checkboxList(materialOptions)) : ""}${fillingOptions.length > 1 ? filterPanel("fillings", "Füllung", checkboxList(fillingOptions)) : ""}${filterPanel("availability", "Verfügbarkeit", checkboxList(availabilities))}
         </div>
         <details class="filter filter--sort" name="filters">
           <summary class="filter__toggle">Sortierung${sortIcon}</summary>
@@ -204,6 +228,7 @@ if (!category) {
       compareAt: model.compareAt,
       material: variant.material ?? model.material,
       filling: variant.filling ?? model.filling,
+      form: model.form,
       shape: model.shape || "mat",
       variant: variant.color,
       tint: variant.hex,
@@ -213,7 +238,7 @@ if (!category) {
     })) : [{ ...model, soldOut: Boolean(model.soldOut) }]))
     .map((card, order) => ({ ...card, order }));
 
-  const filters = { colors: new Set(), materials: new Set(), fillings: new Set(), availability: new Set() };
+  const filters = { colors: new Set(), forms: new Set(), materials: new Set(), fillings: new Set(), availability: new Set() };
   let sortKey = defaultSort(category);
 
   const grid = categoryRoot.querySelector(".category__grid");
@@ -225,6 +250,7 @@ if (!category) {
   function matches(card) {
     const availability = card.soldOut ? "Nicht verfügbar" : "Verfügbar";
     return (!filters.colors.size || filters.colors.has(card.family))
+      && (!filters.forms.size || filters.forms.has(card.form))
       && (!filters.materials.size || filters.materials.has(card.material))
       && (!filters.fillings.size || filters.fillings.has(card.filling))
       && (!filters.availability.size || filters.availability.has(availability));

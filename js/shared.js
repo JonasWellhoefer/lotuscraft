@@ -37,10 +37,10 @@ const bestsellers = {
     { name: "Yogamatte MUDRA", slug: "yogamatte-mudra-studio", price: 39.95, shape: "mat", tint: "#55695f" },
   ],
   meditation: [
-    { name: "Meditationskissen Lotus (H: 15cm)", price: 39.95, shape: "cushion", tint: "#8b7d6b" },
+    { name: "Meditationskissen Lotus (H: 15cm)", price: 39.95, shape: "lotusCushion15", tint: "#8b7d6b" },
     { name: "Meditationsmatte Zabuton", price: 59.95, shape: "zabuton", tint: "#6f6a62" },
-    { name: "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung", price: 34.95, shape: "cushion", tint: "#a39a8c" },
-    { name: "Meditationskissen Lotus KLEIN (H: 10 cm)", price: 37.95, shape: "cushion", tint: "#5d6b73" },
+    { name: "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung", price: 34.95, shape: "plainCushion", tint: "#a39a8c" },
+    { name: "Meditationskissen Lotus KLEIN (H: 10 cm)", price: 37.95, shape: "lotusCushion10", tint: "#5d6b73" },
   ],
   bekleidung: [
     { name: "BECCA Leggings", price: 55.95, compareAt: 69.95, shape: "leggings", tint: "#5f6062" },
@@ -68,6 +68,17 @@ const bundles = {
   ],
 };
 
+// Round meditation cushions: `height` is the side in px (10 / 15 / 20 cm);
+// embroidered ones get a small lotus on the front.
+const roundCushion = (height, embroidered) => (c) => {
+  const top = 112 - height;
+  return `<ellipse cx="90" cy="122" rx="62" ry="14" fill="rgba(0,0,0,.12)"/>
+          <path d="M28 ${top}v${height}c0 10 28 18 62 18s62-8 62-18v-${height}z" fill="${c}"/>
+          <ellipse cx="90" cy="${top}" rx="62" ry="20" fill="${c}"/>
+          <ellipse cx="90" cy="${top}" rx="62" ry="20" fill="rgba(255,255,255,.12)"/>${embroidered ? `
+          <path d="M90 ${top + height + 10}c-3-3-3-7 0-10 3 3 3 7 0 10zm0 0c-4-1-7 1-8 3 3 1 6 0 8-3zm0 0c4-1 7 1 8 3-3 1-6 0-8-3z" fill="rgba(255,255,255,.6)"/>` : ""}`;
+};
+
 // Pieces for the set pictures (180×180): a small item on top, the main one below.
 const setPiece = {
   towelRoll: (c) => `<rect x="58" y="14" width="64" height="26" rx="13" fill="${c}"/>
@@ -93,9 +104,18 @@ const shapes = {
   block: (c) => `<rect x="38" y="62" width="62" height="88" rx="4" fill="${c}"/>
                  <rect x="78" y="48" width="62" height="88" rx="4" fill="${c}" opacity=".85"/>
                  <rect x="78" y="80" width="62" height="26" fill="rgba(255,255,255,.55)"/>`,
-  cushion: (c) => `<ellipse cx="90" cy="118" rx="62" ry="16" fill="rgba(0,0,0,.12)"/>
-                   <path d="M28 82c0-14 28-22 62-22s62 8 62 22v26c0 10-28 18-62 18s-62-8-62-18z" fill="${c}"/>
-                   <ellipse cx="90" cy="82" rx="62" ry="20" fill="${c}" opacity=".8"/>`,
+  lotusCushion10: roundCushion(18, true),
+  lotusCushion15: roundCushion(26, true),
+  lotusCushion20: roundCushion(34, true),
+  plainCushion: roundCushion(26, false),
+  zafu: (c) => `<ellipse cx="90" cy="124" rx="56" ry="12" fill="rgba(0,0,0,.12)"/>
+                <path d="M34 72v40c0 10 25 16 56 16s56-6 56-16V72z" fill="${c}"/>
+                <ellipse cx="90" cy="72" rx="56" ry="18" fill="${c}"/>
+                <ellipse cx="90" cy="72" rx="56" ry="18" fill="rgba(255,255,255,.12)"/>
+                <path d="M48 88v28M62 90v32M76 91v35M90 91v37M104 91v35M118 90v32M132 88v28" stroke="rgba(0,0,0,.12)"/>`,
+  crescent: (c) => `<ellipse cx="90" cy="124" rx="64" ry="9" fill="rgba(0,0,0,.12)"/>
+                    <path d="M24 116c2-40 30-66 66-66s64 26 66 66c-16-16-38-24-66-24s-50 8-66 24z" fill="${c}"/>
+                    <path d="M40 98c14-10 30-14 50-14s36 4 50 14" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="2"/>`,
   zabuton: (c) => `<rect x="22" y="88" width="136" height="30" rx="8" fill="${c}"/>
                    <rect x="22" y="80" width="136" height="16" rx="8" fill="${c}" opacity=".75"/>`,
   leggings: (c) => `<path d="M62 30h56l6 130h-22l-12-96-12 96H56z" fill="${c}"/>`,
@@ -496,6 +516,67 @@ const accessoryShortcuts = [
   { label: "Yoga Blöcke", icon: "block", key: "yoga-block" },
 ];
 
+// ---------- Meditation cushions ----------
+// As on the original's "Meditationskissen" pages: the colours it shows as
+// cards (some sold-out ones included, others hidden). The filling sits on
+// single colours again; `form` feeds the original's "Form" filter.
+const CUSHION_TONES = {
+  "Balsam Green": { hex: "#5d7366", family: "Grün" },
+  "Natur": { hex: COTTON, family: "Beige" },
+  "Light Taupe": { hex: "#c4b6a6", family: "Beige" },
+  "Indigo Dust": { hex: "#6b7c95", family: "Blau" },
+  "Marine Blue": { hex: "#2f4361", family: "Blau" },
+  "Anthrazit": { hex: "#3d3d3f", family: "Schwarz" },
+  "Schwarz": { hex: "#1f1e1c", family: "Schwarz" },
+  "Kurkuma": { hex: "#d4913b", family: "Terra" },
+  "Aubergine": { hex: "#8d5a6f", family: "Rot" },
+  "Bordeaux": { hex: "#6e2b38", family: "Rot" },
+  "Lavender Fog": { hex: "#b7a3b6", family: "Rosa" },
+  "Grassland": { hex: GRASSLAND, family: "Wood Grain" },
+};
+const cushionColor = (color, extra = {}) => ({ color, ...CUSHION_TONES[color], ...extra });
+const spelt = { filling: SPELT };
+const speltSoldOut = { filling: SPELT, soldOut: true };
+
+const meditationCushions = [
+  { name: "Meditationskissen Lotus (H: 15cm)", price: 39.95, shape: "lotusCushion15", form: "Rund", variants: [
+    cushionColor("Balsam Green"), cushionColor("Natur", spelt), cushionColor("Anthrazit", spelt), cushionColor("Light Taupe", spelt),
+    cushionColor("Indigo Dust", spelt), cushionColor("Kurkuma"), cushionColor("Schwarz"),
+  ] },
+  { name: "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung", price: 34.95, shape: "plainCushion", form: "Rund", variants: [
+    cushionColor("Indigo Dust", spelt), cushionColor("Aubergine", speltSoldOut), cushionColor("Natur", spelt), cushionColor("Light Taupe", spelt),
+    cushionColor("Anthrazit", spelt), cushionColor("Lavender Fog"), cushionColor("Balsam Green"), cushionColor("Grassland"),
+  ] },
+  { name: "Meditationskissen Lotus HOCH (H: 20cm)", price: 44.95, shape: "lotusCushion20", form: "Rund", variants: [
+    cushionColor("Light Taupe", spelt), cushionColor("Natur", spelt), cushionColor("Indigo Dust", spelt), cushionColor("Bordeaux", speltSoldOut),
+    cushionColor("Anthrazit", spelt), cushionColor("Aubergine", speltSoldOut), cushionColor("Kurkuma", { badge: "New in" }), cushionColor("Balsam Green", { badge: "New in" }),
+  ] },
+  { name: "Zafu-Meditationskissen Zen", price: 39.95, shape: "zafu", form: "Zafu", variants: [
+    cushionColor("Balsam Green"), cushionColor("Light Taupe", spelt), cushionColor("Indigo Dust", spelt), cushionColor("Natur", spelt),
+    cushionColor("Anthrazit", spelt), cushionColor("Kurkuma"),
+  ] },
+  { name: "Yogakissen Halbmond Shanti", price: 39.95, shape: "crescent", form: "Halbrund", variants: [
+    cushionColor("Indigo Dust", spelt), cushionColor("Natur", spelt), cushionColor("Light Taupe", spelt), cushionColor("Anthrazit", spelt),
+    cushionColor("Balsam Green"), cushionColor("Bordeaux", speltSoldOut), cushionColor("Aubergine", speltSoldOut),
+  ] },
+  { name: "Meditationskissen Lotus KLEIN (H: 10 cm)", price: 37.95, shape: "lotusCushion10", form: "Rund", variants: [
+    cushionColor("Balsam Green"), cushionColor("Natur", spelt), cushionColor("Light Taupe", spelt), cushionColor("Aubergine", speltSoldOut),
+    cushionColor("Bordeaux", speltSoldOut), cushionColor("Indigo Dust", spelt), cushionColor("Anthrazit", spelt), cushionColor("Marine Blue", spelt),
+    cushionColor("Kurkuma"),
+  ] },
+  { name: "Zafu-Meditationskissen Zen Kapok", price: 44.95, shape: "zafu", form: "Zafu", variants: [
+    cushionColor("Anthrazit", { filling: KAPOK }),
+  ] },
+];
+const cushionsNamed = (...names) => meditationCushions.filter((cushion) => names.includes(cushion.name));
+const cushionShortcuts = [
+  { label: "Halbmondkissen", icon: "crescent", key: "yogakissen-halbmond" },
+  { label: "Rundkissen", icon: "cushion", key: "rundkissen" },
+  { label: "Zafu-Kissen", icon: "zafu", key: "zafu-kissen" },
+];
+// Colours of sold-out, hidden cushions still show up in the original's filters.
+const CUSHION_FILTER_COLORS = ["Beige", "Blau", "Rot", "Grün", "Terra", "Schwarz", "Rosa", "Gelb", "Wood Grain"];
+
 // "Almost Perfect" mats: second-quality, 15% off. Only the colours the
 // original shows as cards; like there, only some have a material set.
 const almostPerfectMats = [
@@ -589,7 +670,7 @@ const categories = {
     models: almostPerfectMats,
     // The original's colour filter also counts colours that are sold out and
     // hidden, so it offers "Rosa" (which then shows no products).
-    colorFilter: ["Beige", "Blau", "Rot", "Grün", "Schwarz", "Rosa", "Braun", "Align"],
+    filterValues: { colors: ["Beige", "Blau", "Rot", "Grün", "Schwarz", "Rosa", "Braun", "Align"] },
     description: `Diese Matten funktionieren einwandfrei, haben aber kleine optische Makel – etwa eine leicht abweichende Farbe oder einen winzigen Fleck. Deshalb gibt es sie 15 % günstiger: gut für dein Budget und gut für die Umwelt, weil keine Matte aussortiert wird. Die regulären Modelle findest du unter <a href="kategorie.html?k=yogamatten">Yogamatten</a>.`,
   },
   "yoga-zubehor": {
@@ -597,7 +678,7 @@ const categories = {
     shortcuts: accessoryShortcuts,
     models: yogaAccessories,
     // Grey comes from a belt colour that is sold out and hidden (as on the original).
-    colorFilter: ["Beige", "Blau", "Rot", "Grün", "Terra", "Schwarz", "Grau", "Rosa"],
+    filterValues: { colors: ["Beige", "Blau", "Rot", "Grün", "Terra", "Schwarz", "Grau", "Rosa"] },
     description: `Kleine Helfer, große Wirkung: Ein Block bringt den Boden näher, ein Gurt verlängert die Arme, eine Decke polstert Knie und Rücken. Das Zubehör ist meist aus Kork oder Bio-Baumwolle und farblich auf die Matten abgestimmt.`,
   },
   yogataschen: {
@@ -622,7 +703,7 @@ const categories = {
     title: "Yoga-Gurte",
     shortcuts: accessoryShortcuts.slice(0, 4),
     models: accessoriesNamed("Yogagurt 100% Bio-Baumwolle"),
-    colorFilter: ["Beige", "Blau", "Rot", "Grün", "Terra", "Schwarz", "Grau", "Rosa"],
+    filterValues: { colors: ["Beige", "Blau", "Rot", "Grün", "Terra", "Schwarz", "Grau", "Rosa"] },
     description: "Ein Gurt verlängert deine Arme: Er hilft dir, Dehnungen sanft zu vertiefen und Haltungen zu halten, in die du allein noch nicht hineinkommst.",
   },
   "yoga-block": {
@@ -662,12 +743,45 @@ const categories = {
     models: stickers,
     description: "Kleine Botschaften für deine Praxis: Die Sticker halten auf Matte, Trinkflasche oder Laptop und sind mit UV-Schutz bedruckt, damit sie lange schön bleiben.",
   },
+  meditationskissen: {
+    title: "Meditationskissen",
+    nav: ["Meditation"],
+    shortcuts: cushionShortcuts,
+    models: meditationCushions,
+    filterValues: { colors: CUSHION_FILTER_COLORS },
+    description: "Ein gutes Kissen hebt das Becken an, damit der Rücken ohne Anstrengung aufrecht bleibt. Rund, halbrund oder als Zafu, 10, 15 oder 20 cm hoch und mit Bio-Dinkelspelz oder Kapok gefüllt: Hier findest du das Kissen, das zu deiner Sitzhaltung passt.",
+  },
+  rundkissen: {
+    title: "Rundkissen",
+    nav: ["Meditation"],
+    shortcuts: cushionShortcuts,
+    models: cushionsNamed("Meditationskissen Lotus (H: 15cm)", "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung", "Meditationskissen Lotus HOCH (H: 20cm)", "Meditationskissen Lotus KLEIN (H: 10 cm)"),
+    filterValues: { colors: CUSHION_FILTER_COLORS },
+    description: "Die runden Lotus-Kissen gibt es in drei Höhen: 10 cm, wenn du gelenkig bist, 15 cm als Allrounder und 20 cm, wenn du mehr Unterstützung brauchst. Die Füllung aus Bio-Dinkelspelz passt sich deiner Sitzhaltung an.",
+  },
+  "zafu-kissen": {
+    title: "Zafu-Kissen",
+    nav: ["Meditation"],
+    shortcuts: cushionShortcuts,
+    models: cushionsNamed("Zafu-Meditationskissen Zen", "Zafu-Meditationskissen Zen Kapok"),
+    filterValues: { colors: ["Beige", "Blau", "Rot", "Grün", "Terra", "Schwarz"] },
+    description: "Gefaltete, besonders formstabile Rundkissen – gefüllt mit Dinkelspelz oder Kapok.",
+  },
+  // A sold-out (hidden) zafu in this collection adds "Zafu" to the form filter.
+  "yogakissen-halbmond": {
+    title: "Halbmondkissen",
+    nav: ["Meditation"],
+    shortcuts: cushionShortcuts,
+    models: cushionsNamed("Yogakissen Halbmond Shanti"),
+    filterValues: { colors: ["Beige", "Blau", "Rot", "Grün", "Terra", "Schwarz"], forms: ["Halbrund", "Zafu"] },
+    description: "Die Halbmondform lässt vorne Platz für die Beine: So kippt das Becken leicht nach vorn, und du sitzt lange bequem – gut, wenn deine Knie im Schneidersitz nicht bis zum Boden reichen.",
+  },
   "bezug-yogabolster": {
     title: "Bezug Yogarolle",
     shortcuts: [],
     models: [rollCover],
     // Wood Grain comes from a cover colour that is sold out and hidden.
-    colorFilter: ["Beige", "Blau", "Rot", "Schwarz", "Wood Grain"],
+    filterValues: { colors: ["Beige", "Blau", "Rot", "Schwarz", "Wood Grain"] },
   },
 };
 
@@ -721,6 +835,10 @@ const sitePages = [
   { title: "Yogamatten Spray", href: "kategorie.html?k=yogamatten-spray", keywords: "yogamatte spray reiniger reinigung kategorie" },
   { title: "Yogamatten-Sticker", href: "kategorie.html?k=yogamatten-sticker-1", keywords: "yogamatte sticker aufkleber kategorie" },
   { title: "Bezug Yogarolle", href: "kategorie.html?k=bezug-yogabolster", keywords: "bezug yogarolle cover bolster kategorie" },
+  { title: "Meditationskissen", href: "kategorie.html?k=meditationskissen", keywords: "meditation meditationskissen kissen sitzkissen kategorie" },
+  { title: "Rundkissen", href: "kategorie.html?k=rundkissen", keywords: "meditationskissen rund rundkissen lotus kissen kategorie" },
+  { title: "Zafu-Kissen", href: "kategorie.html?k=zafu-kissen", keywords: "meditationskissen zafu kissen kategorie" },
+  { title: "Halbmondkissen", href: "kategorie.html?k=yogakissen-halbmond", keywords: "meditationskissen halbmond kissen kategorie" },
   { title: "Startseite", href: "index.html", keywords: "start home lotuscraft bestseller sets" },
 ];
 
@@ -810,6 +928,8 @@ const menuIcons = {
   bolster: '<rect x="3" y="9" width="18" height="7" rx="3.5"/><path d="M7 9v7"/>',
   blanket: '<rect x="3" y="6" width="18" height="12" rx="1.5"/><path d="M3 10h18M3 14h18M6 18v2.5M10 18v2.5M14 18v2.5M18 18v2.5"/>',
   towel: '<path d="M6 4h12v13H6z"/><path d="M6 8h12M8 17v3M11 17v3M14 17v3M17 17v3"/>',
+  crescent: '<path d="M4 16.5c0-6 3.6-10.5 8-10.5s8 4.5 8 10.5c-2-2-4.8-3-8-3s-6 1-8 3z"/>',
+  zafu: '<ellipse cx="12" cy="8.5" rx="7" ry="2.5"/><path d="M5 8.5v7c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5v-7M8.5 11v6.5M12 11.5v6.5M15.5 11v6.5"/>',
   sticker: '<circle cx="12" cy="12" r="8.5"/><path d="M12 6.5c-1.2 1.4-1.2 3 0 4.4 1.2-1.4 1.2-3 0-4.4zM9 14.5h6M10 17h4"/>',
   bottle: '<path d="M10 3h4v3h-4zM9 6h6l1 3v12H8V9z"/>',
   set: '<rect x="3" y="11" width="9" height="9" rx="1"/><rect x="13" y="6" width="8" height="14" rx="1"/>',
@@ -850,6 +970,10 @@ const menuLinks = {
   "Yogamatten Reiniger": "kategorie.html?k=yogamatten-spray",
   "Yogamatten Sticker": "kategorie.html?k=yogamatten-sticker-1",
   "Bezüge Yogarolle": "kategorie.html?k=bezug-yogabolster",
+  "Alle Meditationskissen": "kategorie.html?k=meditationskissen",
+  "Rundkissen": "kategorie.html?k=rundkissen",
+  "Zafu-Kissen": "kategorie.html?k=zafu-kissen",
+  "Halbmondkissen": "kategorie.html?k=yogakissen-halbmond",
 };
 
 // Desktop dropdown links that get a more specific icon than their column.
