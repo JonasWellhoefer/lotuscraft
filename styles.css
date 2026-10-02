@@ -1023,6 +1023,8 @@ button { font: inherit; background: none; border: 0; padding: 0; cursor: pointer
 .shortcut[aria-current="page"] .shortcut__icon { outline: 1px solid var(--text); }
 .shortcut:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; border-radius: var(--radius); }
 
+/* Pages without circles ("Almost Perfect") start with the title */
+.category__title:first-child { margin-top: 14px; }
 .category__title {
   margin-top: 50px;
   font-family: var(--font-heading);
@@ -1486,6 +1488,7 @@ body:has(dialog[open]) { overflow: hidden; }
   .shortcuts::-webkit-scrollbar { display: none; }
   .shortcut { flex: none; width: 80px; }
   .category__title { margin-top: 32px; font-size: 25px; line-height: 34px; }
+  .category__title:first-child { margin-top: 0; }
   .filters { align-items: flex-start; margin-top: 24px; }
   .filters__group { gap: 0 16px; }
   /* Dropdowns span the whole bar so they never stick out of the screen */

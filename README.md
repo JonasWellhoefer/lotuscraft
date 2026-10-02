@@ -141,6 +141,8 @@ die Werte stammen direkt aus dem CSS des Originals.
 
 - [x] Unterkategorien als Kreise, Titel, eine Karte pro Farbe (31 bei „Yogamatten“, wie im Original)
 - [x] Vier Unterkategorien wie im Original: Für Zuhause (24 Karten), Rutschfest (16), Studio (13), Reise (4) – der aktuelle Kreis ist umrandet
+- [x] „Yoga-Sets“ (Menü → „Yogamatten-Set“ oder „Yoga-Sets“): alle 13 Sets mit „Set -10%“ und Farbpunkten; im Header sind wie im Original „Yoga“ und „Geschenke“ hervorgehoben
+- [x] „„Almost Perfect“ Yogamatten“: 17 Matten mit kleinen Schönheitsfehlern zu −15 %, Filter verhalten sich wie im Original
 - [x] Filter Farbe, Material, Verfügbarkeit (kombinierbar) und Sortierung – wie im Original nur mit Werten, die auf der Seite vorkommen
 - [x] Kurzer eigener Text unter dem Raster, mit Links zu den Produktseiten
 - [x] Jede Karte öffnet die passende Produktseite, gleich in der richtigen Farbe

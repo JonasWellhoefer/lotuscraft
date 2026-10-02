@@ -68,6 +68,22 @@ const bundles = {
   ],
 };
 
+// Pieces for the set pictures (180×180): a small item on top, the main one below.
+const setPiece = {
+  towelRoll: (c) => `<rect x="58" y="14" width="64" height="26" rx="13" fill="${c}"/>
+                     <rect x="83" y="14" width="14" height="26" fill="#d9c7a7"/>`,
+  beltRoll: (c) => `<rect x="62" y="20" width="52" height="16" rx="8" fill="${c}"/>
+                    <path d="M74 20v16M86 20v16" stroke="rgba(0,0,0,.12)"/>
+                    <circle cx="122" cy="28" r="7" fill="none" stroke="#8b8b8b" stroke-width="2.5"/>`,
+  // The travel mat folded flat, its lighter underside showing at the fold.
+  travelMat: (c) => `<rect x="36" y="54" width="108" height="76" rx="3" fill="${c}"/>
+                     <rect x="33" y="124" width="114" height="16" rx="8" fill="${c}"/>
+                     <rect x="33" y="124" width="114" height="16" rx="8" fill="rgba(255,255,255,.3)"/>`,
+  neckRoll: (c) => `<rect x="34" y="72" width="112" height="48" rx="24" fill="${c}"/>
+                    <path d="M60 72v48" stroke="rgba(0,0,0,.08)"/>
+                    <ellipse cx="134" cy="96" rx="11" ry="24" fill="rgba(255,255,255,.2)"/>`,
+};
+
 // Simple SVG silhouettes so each card reads as the right kind of product.
 // `c` is the product's main colour, `a` an optional accent (e.g. the mat bag).
 const shapes = {
@@ -124,6 +140,27 @@ const shapes = {
                          <ellipse cx="90" cy="44" rx="30" ry="11" fill="rgba(255,255,255,.14)"/>
                          <path d="M22 122l20-34h96l20 34c0 6-4 10-10 10H32c-6 0-10-4-10-10z" fill="${c}"/>
                          <path d="M22 122l20-34h96l20 34z" fill="rgba(255,255,255,.12)"/>`,
+  travelTowelSet: (c, a) => `${setPiece.towelRoll(a)}${setPiece.travelMat(c)}`,
+  travelBeltSet: (c, a) => `${setPiece.beltRoll(a)}${setPiece.travelMat(c)}`,
+  rollTowelSet: (c, a) => `${setPiece.towelRoll(a)}${setPiece.neckRoll(c)}`,
+  rollBeltSet: (c, a) => `${setPiece.beltRoll(a)}${setPiece.neckRoll(c)}`,
+  bagBeltSet: (c, a) => `${setPiece.beltRoll(a)}
+                         <path d="M46 84C60 46 120 46 134 84" fill="none" stroke="${c}" stroke-width="6" stroke-linecap="round"/>
+                         <rect x="26" y="80" width="128" height="44" rx="22" fill="${c}"/>
+                         <ellipse cx="141" cy="102" rx="9" ry="22" fill="rgba(0,0,0,.12)"/>`,
+  cleaningSet: (c) => `<rect x="44" y="22" width="104" height="14" rx="7" fill="${c}" stroke="rgba(0,0,0,.08)" transform="rotate(-10 96 29)"/>
+                       <circle cx="40" cy="40" r="8" fill="none" stroke="#8b8b8b" stroke-width="2.5"/>
+                       <rect x="28" y="72" width="64" height="58" rx="3" fill="${CORK}"/>
+                       <rect x="28" y="64" width="64" height="12" rx="3" fill="#d9b994"/>
+                       <rect x="110" y="80" width="36" height="54" rx="7" fill="#e6e1d6" stroke="rgba(0,0,0,.12)"/>
+                       <rect x="121" y="68" width="14" height="13" rx="2" fill="#8b8b8b"/>
+                       <path d="M116 54h22a4 4 0 0 1 4 4v10h-26z" fill="#5b5b5b"/>`,
+  bolsterBlanketSet: (c) => `<rect x="22" y="22" width="30" height="36" rx="3" fill="${CORK}"/>
+                             <rect x="56" y="22" width="30" height="36" rx="3" fill="${CORK}"/>
+                             <rect x="96" y="14" width="60" height="44" rx="4" fill="${COTTON}" stroke="rgba(0,0,0,.08)"/>
+                             <rect x="96" y="28" width="60" height="4" fill="#c9a96e"/>
+                             <rect x="26" y="78" width="128" height="50" rx="25" fill="${c}"/>
+                             <ellipse cx="141" cy="103" rx="10" ry="25" fill="rgba(255,255,255,.18)"/>`,
   bolsterSet: (c) => `<rect x="30" y="20" width="62" height="12" rx="6" fill="${COTTON}" stroke="rgba(0,0,0,.08)" transform="rotate(-14 61 26)"/>
                       <circle cx="30" cy="40" r="7" fill="none" stroke="#8b8b8b" stroke-width="2.5"/>
                       <rect x="102" y="16" width="52" height="42" rx="4" fill="${COTTON}" stroke="rgba(0,0,0,.08)"/>
@@ -138,7 +175,9 @@ function productCard(product) {
     ? Math.round((1 - product.price / product.compareAt) * 100)
     : 0;
 
-  const tag = discount
+  const tag = product.soldOut
+    ? `<span class="product-card__tag">Ausverkauft</span>`
+    : discount
     ? `<span class="product-card__tag product-card__tag--sale">${product.bundle ? "Set " : ""}-${discount}%</span>`
     : product.badge
       ? `<span class="product-card__tag">${product.badge}</span>`
@@ -246,6 +285,65 @@ const matsNamed = (...names) => yogaMats.filter((model) => names.includes(model.
 
 const productLink = (slug, text) => `<a href="produkt.html?p=${slug}">${text}</a>`;
 
+// The "Yoga-Sets" page: all set offers, one card each, in the original's
+// order. Five of them are on the home page already (`bundles`); the colour
+// dots of the others were read from the original's set pictures.
+const setNamed = (name) => Object.values(bundles).flat().find((set) => set.name === name);
+const yogaSets = [
+  setNamed("Yogamatte ARISE Set"),
+  { name: "Practice Anywhere Set", price: 80.91, compareAt: 89.9, bundle: true, shape: "travelTowelSet", tint: "#647892", accent: "#56697c", swatches: ["#505256", "#607c97", "#586666"] },
+  { name: "Restore Comfort Set", price: 58.41, compareAt: 64.9, bundle: true, shape: "rollTowelSet", tint: "#cdc4b6", accent: "#586666", swatches: ["#ad9f94", "#5f7d97", "#586666", "#a5939e"] },
+  { name: "Deep Release Set", price: 43.11, compareAt: 47.9, bundle: true, fromPrice: true, shape: "rollBeltSet", tint: "#cdc4b6", accent: "#586666", swatches: ["#ad9f92", "#5f7d97", "#586666", "#a593a0"] },
+  { name: "Travel Essentials Set", price: 65.61, compareAt: 72.9, bundle: true, fromPrice: true, shape: "travelBeltSet", tint: "#647a97", accent: "#576565", swatches: ["#505256", "#647a97", "#576565"] },
+  { name: "Yoga Tasche + Gurt Set", price: 38.61, compareAt: 42.9, bundle: true, fromPrice: true, shape: "bagBeltSet", tint: "#b3a596", accent: "#844657", swatches: ["#844657", "#697386", "#4d5156", "#ad9f94", "#6f7253", "#415d74"] },
+  { name: "Yoga Zubehör + Reinigungs Set", price: 50.27, compareAt: 55.85, bundle: true, fromPrice: true, shape: "cleaningSet", tint: COTTON, swatches: [COTTON, "#854858", "#6e7152", "#4d4a4e", "#677283"] },
+  { name: "Yogamatte MUDRA PRO Set", price: 116.91, compareAt: 129.9, bundle: true, fromPrice: true, shape: "matSet", tint: "#4e4c4f", accent: "#8f8c84", swatches: ["#ad9f92", "#4e4c4f"] },
+  setNamed("Yoga-Zubehör Set"),
+  setNamed("Yogarolle Set Yin Yoga"),
+  setNamed("Yoga Set Yin Yoga Restorative S"),
+  { name: "Yoga Bolster Set Yin Yoga", price: 110.57, compareAt: 122.85, bundle: true, fromPrice: true, shape: "bolsterBlanketSet", tint: "#667383", swatches: [COTTON, "#854856", "#4e4c4f", "#667383"] },
+  setNamed("Yogamatte PURE Set"),
+];
+
+// "Almost Perfect" mats: second-quality, 15% off. Only the colours the
+// original shows as cards; like there, only some have a material set.
+const almostPerfectMats = [
+  { name: "„Almost Perfect“ Yogamatte MUDRA PRO", price: 84.95, compareAt: 99.95, material: "Polyester", variants: [
+    { color: "Light Taupe", hex: "#c4b6a6", family: "Beige" },
+    { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz" },
+    { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
+  ] },
+  { name: "„Almost Perfect“ Yogamatte PURE", price: 67.95, compareAt: 79.95, material: null, variants: [
+    { color: "Light Taupe", hex: "#c4b6a6", family: "Beige" },
+    { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
+    { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
+  ] },
+  { name: "„Almost Perfect“ Yogamatte MUDRA", price: 33.95, compareAt: 39.95, material: null, variants: [
+    { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
+    { color: "Aubergine", hex: "#8d5a6f", family: "Rot" },
+    { color: "Light Taupe", hex: "#c4b6a6", family: "Beige" },
+    { color: "Bordeaux", hex: "#6e2b38", family: "Rot" },
+    { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
+  ] },
+  // The original's photo for this one shows a mauve mat.
+  { name: "„Almost Perfect“ Yogamatte ARISE Travel", price: 50.95, compareAt: 59.95, material: "Naturkautschuk", variants: [
+    { color: "Wild Ginger", hex: "#8c5769", family: "Rot" },
+  ] },
+  { name: "„Almost Perfect“ Yogamatte MUDRA XL", price: 36.5, compareAt: 42.95, material: null, variants: [
+    { color: "Balsam Green", hex: "#5d7366", family: "Grün", soldOut: true },
+  ] },
+  { name: "„Almost Perfect“ Yogamatte ARISE", price: 76.46, compareAt: 89.95, material: null, variants: [
+    { color: "Dark Cranberry", hex: "#7a2a3a", family: "Rot" },
+  ] },
+  { name: "„Almost Perfect“ Yogamatte ARISE Cork", price: 84.95, compareAt: 99.95, material: null, variants: [
+    { color: "Align", hex: "#c9a77e", family: "Align" },
+    { color: "Lotus", hex: "#b8916a", family: "Braun" },
+  ] },
+  { name: "„Almost Perfect“ Yogamatte MUDRA PRO XL", price: 106.29, compareAt: 124.95, material: "Polyester", variants: [
+    { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz" },
+  ] },
+];
+
 // Which mats each sub-category shows was read from the original. The
 // `description` (the paragraph below the grid) is our own short text.
 const categories = {
@@ -279,6 +377,31 @@ const categories = {
     models: matsNamed("Yogamatte ARISE Travel"),
     description: `Nur 1 kg leicht und faltbar: Die ${productLink("yogamatte-arise-travel", "ARISE Travel")} passt in jeden Koffer und begleitet dich ins Hotel, auf Retreats oder in den Park.`,
   },
+  // Also listed under "Geschenke", so the original highlights both sections
+  // and shows gift circles (their pages don't exist here yet).
+  "yoga-sets": {
+    title: "Yoga-Sets",
+    nav: ["Yoga", "Geschenke"],
+    shortcuts: [
+      { label: "Meditationskissen Set", icon: "cushion" },
+      { label: "Gutscheine", icon: "voucher" },
+      { label: "Geschenke unter 50€", icon: "gift" },
+      { label: "Geschenke unter 100€", icon: "gift" },
+      { label: "Geschenke unter 120€", icon: "gift" },
+    ],
+    models: yogaSets,
+    description: `Gut ausgestattet für jede Einheit: Die Sets kombinieren Matte, Tasche, Gurt, Block oder Bolster und kosten zusammen 10 % weniger als die Teile einzeln – ob für Yin Yoga, für unterwegs oder als Geschenk.`,
+  },
+  "unperfekte-produkte": {
+    title: "„Almost Perfect“ Yogamatten",
+    nav: [],
+    shortcuts: [],
+    models: almostPerfectMats,
+    // The original's colour filter also counts colours that are sold out and
+    // hidden, so it offers "Rosa" (which then shows no products).
+    colorFilter: ["Beige", "Blau", "Rot", "Grün", "Schwarz", "Rosa", "Braun", "Align"],
+    description: `Diese Matten funktionieren einwandfrei, haben aber kleine optische Makel – etwa eine leicht abweichende Farbe oder einen winzigen Fleck. Deshalb gibt es sie 15 % günstiger: gut für dein Budget und gut für die Umwelt, weil keine Matte aussortiert wird. Die regulären Modelle findest du unter <a href="kategorie.html?k=yogamatten">Yogamatten</a>.`,
+  },
 };
 
 // ---------- Search index ----------
@@ -290,10 +413,13 @@ const searchIndex = (() => {
   Object.values(categories).forEach((category) => {
     category.models.forEach((model) => {
       const known = byName.get(model.name);
-      byName.set(model.name, known ? { ...known, keywords: `${known.keywords} ${category.title}` } : {
+      if (known) byName.set(model.name, { ...known, keywords: `${known.keywords} ${category.title}` });
+      else if (!model.variants) byName.set(model.name, { ...model, keywords: category.title });
+      else byName.set(model.name, {
         name: model.name,
         slug: model.slug,
         price: model.price,
+        compareAt: model.compareAt,
         shape: "mat",
         tint: model.variants[0].hex,
         keywords: [category.title, model.material, ...model.variants.flatMap((v) => [v.color, v.family])].filter(Boolean).join(" "),
@@ -314,6 +440,8 @@ const sitePages = [
   { title: "Rutschfeste Yogamatte", href: "kategorie.html?k=rutschfeste-yogamatte", keywords: "yogamatte yogamatten matte rutschfest grip halt kategorie" },
   { title: "Studio Yogamatte", href: "kategorie.html?k=studio-yogamatte", keywords: "yogamatte yogamatten matte studio kategorie" },
   { title: "Reise Yogamatte", href: "kategorie.html?k=reise-yogamatte", keywords: "yogamatte yogamatten matte reise reisen travel faltbar kategorie" },
+  { title: "Yoga-Sets", href: "kategorie.html?k=yoga-sets", keywords: "yoga set sets bundle paket geschenk kategorie" },
+  { title: "„Almost Perfect“ Yogamatten", href: "kategorie.html?k=unperfekte-produkte", keywords: "almost perfect yogamatte yogamatten matte b-ware reduziert sale kategorie" },
   { title: "Startseite", href: "index.html", keywords: "start home lotuscraft bestseller sets" },
 ];
 
@@ -423,6 +551,10 @@ const menuLinks = {
   "Yogamatten für Zuhause": "kategorie.html?k=yogamatte-fur-zuhause",
   "Studio Yogamatten": "kategorie.html?k=studio-yogamatte",
   "Reise Yogamatten": "kategorie.html?k=reise-yogamatte",
+  "Yogamatten-Set": "kategorie.html?k=yoga-sets",
+  "Yoga-Sets": "kategorie.html?k=yoga-sets",
+  "Alle Yoga-Sets": "kategorie.html?k=yoga-sets",
+  "„Almost Perfect“ Yogamatten": "kategorie.html?k=unperfekte-produkte",
 };
 
 // Desktop dropdown links that get a more specific icon than their column.

@@ -49,15 +49,19 @@ function checkboxList(values) {
 }
 
 function categoryMarkup(category) {
+  // Circles without a `key` lead to pages this rebuild doesn't have yet.
   const shortcuts = category.shortcuts.map((shortcut) => `
-        <a href="kategorie.html?k=${shortcut.key}" class="shortcut"${shortcut.key === categoryKey ? ' aria-current="page"' : ""}>
+        <a href="${shortcut.key ? `kategorie.html?k=${shortcut.key}` : "#"}" class="shortcut"${shortcut.key === categoryKey ? ' aria-current="page"' : ""}>
           <span class="shortcut__icon">${menuIcon(shortcut.icon, "shortcut__svg")}</span>
           <span class="shortcut__label">${shortcut.label}</span>
         </a>`).join("");
 
-  // Like the original, filters only offer values that occur in this category,
-  // and a filter with a single value is left out. Availability always has both.
-  const families = colorFamilies.filter((family) => category.models.some((model) => model.variants.some((v) => v.family === family.name)));
+  // Like the original, filters only offer values that occur in this category
+  // (or the list it names in `colorFilter`), and a filter with a single value
+  // is left out. Availability always has both.
+  const families = colorFamilies.filter((family) => category.colorFilter
+    ? category.colorFilter.includes(family.name)
+    : category.models.some((model) => model.variants?.some((v) => v.family === family.name)));
   const materialOptions = materials.filter((material) => category.models.some((model) => model.material === material));
 
   const swatches = `<div class="filter__swatches">${families.map((family) => `
@@ -72,10 +76,10 @@ function categoryMarkup(category) {
               <label class="filter__check"><input type="radio" name="sort" value="${key}"${i === 0 ? " checked" : ""}>${sorter.label}</label>`).join("");
 
   return `
-    <div class="container">
+    <div class="container">${shortcuts ? `
       <nav class="shortcuts" aria-label="Unterkategorien">${shortcuts}
       </nav>
-
+` : ""}
       <h1 class="category__title">${category.title}</h1>
 
       <div class="filters">
@@ -119,20 +123,29 @@ if (!category) {
   document.title = `${category.title} – LotusCraft Student Rebuild`;
   categoryRoot.innerHTML = categoryMarkup(category);
 
+  // The header highlights the category's section(s), as on the original
+  // (mats: "Yoga"; the sets also "Geschenke"; "Almost Perfect" none).
+  document.querySelectorAll(".nav__link.is-current").forEach((link) => link.classList.remove("is-current"));
+  (category.nav || ["Yoga"]).forEach((section) => {
+    document.querySelector(`.nav__item[data-menu="${section}"] .nav__link`)?.classList.add("is-current");
+  });
+
   // One card per colour, keeping the original order for "Am relevantesten".
+  // Sets have no colour variants and get one card each.
   const cards = category.models
-    .flatMap((model) => model.variants.map((variant) => ({
+    .flatMap((model) => (model.variants ? model.variants.map((variant) => ({
       name: model.name,
       slug: model.slug,
       price: model.price,
+      compareAt: model.compareAt,
       material: model.material,
       shape: "mat",
       variant: variant.color,
       tint: variant.hex,
       family: variant.family,
       soldOut: Boolean(variant.soldOut),
-      badge: variant.soldOut ? "Ausverkauft" : variant.badge,
-    })))
+      badge: variant.badge,
+    })) : [{ ...model, soldOut: false }]))
     .map((card, order) => ({ ...card, order }));
 
   const filters = { colors: new Set(), materials: new Set(), availability: new Set() };
