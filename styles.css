@@ -549,6 +549,83 @@ button { font: inherit; background: none; border: 0; padding: 0; cursor: pointer
   pointer-events: none;
 }
 
+/* ---------- Mobile menu ---------- */
+.drawer {
+  /* Reset the browser's default <dialog> box to a full-screen panel */
+  margin: 0;
+  padding: 0;
+  border: 0;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  max-height: 100%;
+  background: var(--background);
+  color: var(--text);
+}
+.drawer[open] {
+  display: flex;
+  flex-direction: column;
+  animation: drawer-open .3s ease;
+}
+.drawer::backdrop { background: rgba(0, 0, 0, .3); }
+body:has(.drawer[open]) { overflow: hidden; }
+
+.drawer__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 60px;
+  padding: 0 var(--gutter);
+}
+.drawer__nav { padding-top: 16px; }
+.drawer__nav ul { list-style: none; margin: 0; padding: 0; }
+.drawer__link,
+.drawer__back {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  min-height: 64px;
+  padding: 0 var(--gutter);
+  text-align: left;
+  color: var(--text);
+}
+.drawer__link span { flex: 1; }
+.drawer__link--plain { min-height: 56px; color: var(--text-muted); }
+.drawer__back { min-height: 52px; gap: 8px; letter-spacing: 1.92px; }
+.drawer__icon,
+.drawer__chevron {
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.drawer__icon { width: 22px; height: 22px; stroke-width: 1.1; color: var(--text-muted); }
+.drawer__chevron { width: 18px; height: 18px; stroke-width: 2; }
+.drawer__link:focus-visible,
+.drawer__back:focus-visible,
+.drawer__close:focus-visible { outline: 2px solid var(--gold); outline-offset: -4px; }
+
+.drawer__footer {
+  margin-top: auto;
+  padding: 24px var(--gutter) 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.drawer__footer > a { padding: 12px 0; color: var(--text-muted); }
+
+.drawer__nav.is-sliding[data-direction="forward"] { animation: drawer-slide-left .25s ease; }
+.drawer__nav.is-sliding[data-direction="back"] { animation: drawer-slide-right .25s ease; }
+@keyframes drawer-open { from { transform: translateX(-100%); } }
+@keyframes drawer-slide-left { from { transform: translateX(32px); opacity: 0; } }
+@keyframes drawer-slide-right { from { transform: translateX(-32px); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .drawer[open],
+  .drawer__nav.is-sliding { animation: none; }
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;

@@ -89,7 +89,7 @@ Beenden mit **Strg + C** im Terminal.
 lotuscraft/
 ├── index.html   # Seitenaufbau (alle Abschnitte)
 ├── styles.css   # Gestaltung: Farben, Schriften, Layout, Mobilansicht
-├── script.js    # Produkt- und Set-Daten, Tabs, Bewertungs-Karussell
+├── script.js    # Produktdaten, Tabs, Karussell, Community, Menü, Newsletter-Demo
 └── README.md
 ```
 
@@ -110,7 +110,8 @@ Die Startseite wird Abschnitt für Abschnitt in der Reihenfolge des Originals na
 - [x] Community-Inspiration
 - [x] Verkaufsargumente
 - [x] Footer mit Newsletter (Demo-Formular, sendet nichts)
-- [ ] Mobiles Menü & Dropdowns
+- [x] Mobiles Menü (3 Ebenen, per Tastatur bedienbar)
+- [ ] Desktop-Dropdowns (Mega-Menü)
 
 ## Hinweis
 

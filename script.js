@@ -247,6 +247,128 @@ newsletterForm.addEventListener("submit", (e) => {
   newsletterForm.reset();
 });
 
+// ---------- Mobile menu ----------
+// Same three-level structure as the original. A string is a plain link,
+// an object with `children` opens its own panel.
+const menu = [
+  { label: "Yoga", icon: "yoga", children: [
+    { label: "Yogamatten", icon: "mat", children: ["Alle Yogamatten", "Rutschfeste Yogamatten", "Yogamatten für Zuhause", "Studio Yogamatten", "Reise Yogamatten", "Yogamatten-Set", "„Almost Perfect“ Yogamatten"] },
+    { label: "Yoga-Zubehör", icon: "block", children: ["Alles in Yoga-Zubehör", "Yogablöcke", "Yogataschen", "Yogadecken", "Yogagurte", "Yogahandtuch"] },
+    { label: "Yoga-Bolster", icon: "bolster", children: ["Alle Yoga-Bolster", "Yogabolster", "Yogarolle", "Yoga-Sets"] },
+    { label: "Yogamatten Add-Ons", icon: "bottle", children: ["Alle Yogamatten Add-Ons", "Yogamatten Reiniger", "Yogamatten Sticker", "Bezüge Yogarolle"] },
+    { label: "Yoga-Sets", icon: "set" },
+    { label: "Gutscheine", icon: "voucher" },
+  ] },
+  { label: "Meditation", icon: "meditation", children: [
+    { label: "Meditationskissen", icon: "cushion", children: ["Alle Meditationskissen", "Rundkissen", "Zafu-Kissen", "Halbmondkissen"] },
+    { label: "Meditationsmatten", icon: "mat", children: ["Alle Meditationsmatten", "Meditations-Set"] },
+    { label: "Meditation-Zubehör", icon: "block", children: ["Alles in Meditation-Zubehör", "Augenkissen", "Dinkelspelz Füllmaterial", "Bezüge Meditationskissen", "Bezüge Meditationsmatten"] },
+    { label: "Meditations-Sets", icon: "set" },
+    { label: "Meditationsbänke", icon: "bench" },
+    { label: "Gutscheine", icon: "voucher" },
+  ] },
+  { label: "Bekleidung", icon: "clothing", children: [
+    { label: "Damen", icon: "clothing", children: ["Alles in Damen-Kleidung", "Hosen", "Leggings", "Bra-Tops", "Shirts", "Overalls", "Pullover"] },
+    { label: "Herren", icon: "clothing", children: ["Alles in Herren-Kleidung", "Tanktops", "Trainingshosen", "Sweatshirts & Pullover"] },
+  ] },
+  { label: "Geschenke", icon: "gift", children: [
+    { label: "Geschenkideen", icon: "gift", children: ["Alle Geschenkideen", "Geschenkideen unter 50€", "Geschenkideen unter 100€", "Geschenkideen unter 120€"] },
+    { label: "Yoga-Sets", icon: "set" },
+    { label: "Meditations-Sets", icon: "set" },
+    { label: "Gutscheine", icon: "voucher" },
+  ] },
+  { label: "Sale", icon: "gift" },
+];
+
+// Small line icons (24×24) in the style of the original's menu icons.
+const menuIcons = {
+  yoga: '<circle cx="12" cy="4.5" r="1.6"/><path d="M4 9h16M12 9v5M12 14l-4 5M12 14l5 2.5.5 2.5M3 21h18"/>',
+  meditation: '<circle cx="12" cy="4.5" r="1.6"/><path d="M12 8v5M12 9.5l-4 4 3 1M12 9.5l4 4-3 1M5 18c2.5-2 11.5-2 14 0M4 21h16"/>',
+  clothing: '<path d="M9 4l3 1.5L15 4l4 3-1.5 3-1.5-1v11H8V9l-1.5 1L5 7z"/>',
+  gift: '<rect x="4" y="10" width="16" height="10" rx="1"/><path d="M3 10h18M12 10v10M12 10c-1.5-3-5.5-4-5.5-1.5S10.5 10 12 10zm0 0c1.5-3 5.5-4 5.5-1.5S13.5 10 12 10z"/>',
+  mat: '<rect x="3" y="13" width="14" height="6" rx="1"/><circle cx="18.5" cy="16" r="3"/>',
+  block: '<path d="M4 8.5l8-4 8 4v8l-8 4-8-4z"/><path d="M4 8.5l8 4 8-4M12 12.5v8"/>',
+  bolster: '<rect x="3" y="9" width="18" height="7" rx="3.5"/><path d="M7 9v7"/>',
+  bottle: '<path d="M10 3h4v3h-4zM9 6h6l1 3v12H8V9z"/>',
+  set: '<rect x="3" y="11" width="9" height="9" rx="1"/><rect x="13" y="6" width="8" height="14" rx="1"/>',
+  voucher: '<rect x="3" y="7" width="18" height="11" rx="1"/><path d="M9 7v11M3 12.5h6"/>',
+  cushion: '<path d="M4 12c0-2 3.6-3.5 8-3.5s8 1.5 8 3.5v3c0 2-3.6 3.5-8 3.5S4 17 4 15z"/><path d="M4 12c0 2 3.6 3.5 8 3.5s8-1.5 8-3.5"/>',
+  bench: '<path d="M4 10l1-2h14l1 2zM6 10v8M18 10v8"/>',
+};
+
+const drawer = document.getElementById("menu-drawer");
+const drawerNav = drawer.querySelector(".drawer__nav");
+const menuToggle = document.querySelector(".menu-toggle");
+const trail = []; // the panels opened so far, e.g. [Yoga, Yogamatten]
+
+const menuIcon = (name) =>
+  `<svg class="drawer__icon" viewBox="0 0 24 24" aria-hidden="true">${menuIcons[name]}</svg>`;
+const chevron = (direction) =>
+  `<svg class="drawer__chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="${direction === "left" ? "M15 5l-7 7 7 7" : "M9 5l7 7-7 7"}"/></svg>`;
+
+function renderMenu(direction) {
+  const parent = trail[trail.length - 1];
+  const items = parent ? parent.children : menu;
+
+  const back = parent
+    ? `<button class="drawer__back" data-action="back">${chevron("left")}<span>${parent.label}</span></button>`
+    : "";
+  const list = items.map((item, i) => {
+    if (typeof item === "string") {
+      return `<li><a href="#" class="drawer__link drawer__link--plain">${item}</a></li>`;
+    }
+    return item.children
+      ? `<li><button class="drawer__link" data-index="${i}">${menuIcon(item.icon)}<span>${item.label}</span>${chevron("right")}</button></li>`
+      : `<li><a href="#" class="drawer__link">${menuIcon(item.icon)}<span>${item.label}</span></a></li>`;
+  }).join("");
+
+  drawerNav.innerHTML = `${back}<ul>${list}</ul>`;
+
+  // Restart the slide-in animation in the direction we're moving.
+  drawerNav.dataset.direction = direction;
+  drawerNav.classList.remove("is-sliding");
+  void drawerNav.offsetWidth;
+  drawerNav.classList.add("is-sliding");
+
+  if (drawer.open) drawerNav.querySelector("button, a").focus();
+}
+
+drawerNav.addEventListener("click", (e) => {
+  const button = e.target.closest("button");
+  if (!button) return;
+  if (button.dataset.action === "back") {
+    const closed = trail.pop();
+    renderMenu("back");
+    // Return focus to the item we came from, not just the top of the list.
+    const items = trail.length ? trail[trail.length - 1].children : menu;
+    drawerNav.querySelector(`[data-index="${items.indexOf(closed)}"]`).focus();
+  } else {
+    const items = trail.length ? trail[trail.length - 1].children : menu;
+    trail.push(items[button.dataset.index]);
+    renderMenu("forward");
+  }
+});
+
+menuToggle.addEventListener("click", () => {
+  trail.length = 0;
+  renderMenu("none");
+  drawer.showModal();
+  menuToggle.setAttribute("aria-expanded", "true");
+  drawerNav.querySelector("button, a").focus();
+});
+
+drawer.querySelector(".drawer__close").addEventListener("click", () => drawer.close());
+// Safari doesn't focus buttons on click, so hand focus back explicitly.
+drawer.addEventListener("close", () => {
+  menuToggle.setAttribute("aria-expanded", "false");
+  menuToggle.focus();
+});
+
+// The desktop navigation takes over above 1100px, so close the drawer there.
+window.matchMedia("(min-width: 1101px)").addEventListener("change", (e) => {
+  if (e.matches && drawer.open) drawer.close();
+});
+
 // ---------- Tabs ----------
 // Each tab list only controls its own panels, so several tab groups
 // (bestsellers, set offers) can live on the same page.

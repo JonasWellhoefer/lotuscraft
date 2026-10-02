@@ -44,7 +44,7 @@
   <!-- Header -->
   <header class="header">
     <div class="container header__inner">
-      <button class="icon-btn menu-toggle" aria-label="Menü öffnen">
+      <button class="icon-btn menu-toggle" aria-label="Menü öffnen" aria-controls="menu-drawer" aria-expanded="false">
         <svg class="icon" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
       </button>
 
@@ -351,6 +351,45 @@
       </div>
     </div>
   </footer>
+
+  <!-- Mobile menu (opened by the menu button below 1100px) -->
+  <dialog class="drawer" id="menu-drawer" aria-label="Menü">
+    <div class="drawer__top">
+      <a href="#" class="logo" aria-label="LotusCraft Startseite">
+        <span class="logo__mark">
+          <svg viewBox="0 0 32 32" aria-hidden="true">
+            <circle cx="16" cy="16" r="16" fill="var(--gold)"/>
+            <path d="M16 8c2 2.5 3 5 3 7.5S18 20 16 22c-2-2-3-4-3-6.5S14 10.5 16 8z" fill="#fff"/>
+            <path d="M8 13c3 .5 5.5 2.5 6.8 5.4.5 1.2.8 2.4.9 3.6-3-.3-5.4-1.6-6.7-3.8C8.2 16.8 7.9 15 8 13zM24 13c-3 .5-5.5 2.5-6.8 5.4-.5 1.2-.8 2.4-.9 3.6 3-.3 5.4-1.6 6.7-3.8.8-1.4 1.1-3.2 1-5.2z" fill="#fff" opacity=".9"/>
+          </svg>
+        </span>
+        <span class="logo__text">
+          <span class="logo__name">LOTUSCRAFT</span>
+          <span class="logo__tag">Student Rebuild</span>
+        </span>
+      </a>
+      <button class="icon-btn drawer__close" aria-label="Menü schließen">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></svg>
+      </button>
+    </div>
+
+    <nav class="drawer__nav" aria-label="Mobile Navigation"></nav>
+
+    <div class="drawer__footer">
+      <a href="#">Kontakt &amp; Hilfe</a>
+      <a href="#">Account</a>
+      <a href="#">Über Uns</a>
+      <div class="language">
+        <svg class="language__flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="7" fill="#000"/><rect y="6.6" width="30" height="6.8" fill="#dd0000"/><rect y="13.3" width="30" height="6.7" fill="#ffce00"/></svg>
+        <label class="visually-hidden" for="drawer-language-select">Sprache</label>
+        <select class="language__select" id="drawer-language-select">
+          <option>Deutsch</option>
+          <option>English</option>
+        </select>
+        <svg class="language__chevron" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg>
+      </div>
+    </div>
+  </dialog>
 
   <script src="script.js"></script>
 </body>
