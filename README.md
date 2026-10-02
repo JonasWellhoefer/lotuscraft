@@ -137,15 +137,17 @@ die Werte stammen direkt aus dem CSS des Originals.
 - [x] Produkte mit nur einer Ausführung (WOOL) zeigen wie im Original keine Farbauswahl
 - [x] Längenauswahl wie im Original (MUDRA PRO: 180 / 200 cm mit eigenem Preis; Kombinationen, die es nicht gibt, werden ausgeblendet)
 
-**Kategorieseiten „Yogamatten“ und Unterkategorien** (Hero-Button „Yogamatten“, Menü → „Yoga“ → „Yogamatten“ oder die Kreise oben):
+**Kategorieseiten** (Hero-Button „Yogamatten“, Menü → „Yoga“ oder die Kreise oben):
 
 - [x] Unterkategorien als Kreise, Titel, eine Karte pro Farbe (31 bei „Yogamatten“, wie im Original)
 - [x] Vier Unterkategorien wie im Original: Für Zuhause (24 Karten), Rutschfest (16), Studio (13), Reise (4) – der aktuelle Kreis ist umrandet
 - [x] „Yoga-Sets“ (Menü → „Yogamatten-Set“ oder „Yoga-Sets“): alle 13 Sets mit „Set -10%“ und Farbpunkten; im Header sind wie im Original „Yoga“ und „Geschenke“ hervorgehoben
 - [x] „„Almost Perfect“ Yogamatten“: 17 Matten mit kleinen Schönheitsfehlern zu −15 %, Filter verhalten sich wie im Original
-- [x] Filter Farbe, Material, Verfügbarkeit (kombinierbar) und Sortierung – wie im Original nur mit Werten, die auf der Seite vorkommen
+- [x] „Yoga-Zubehör“ (36 Karten: Gurte, Taschen, Blöcke, Decke, Spray, Handtuch, Augenkissen, Sticker) mit den Unterseiten Yogataschen, Yogadecken, Yoga-Handtücher, Yoga-Gurte und Yoga Blöcke
+- [x] Filter Farbe, Material, Verfügbarkeit (kombinierbar) – wie im Original nur mit Werten, die auf der Seite vorkommen
+- [x] Sortierung wie im Original, voreingestellt „meistverkauft“ (Rangliste des Originals vom 2. Oktober 2026); dazu Relevanz, A–Z, Z–A und Preis
 - [x] Kurzer eigener Text unter dem Raster, mit Links zu den Produktseiten
-- [x] Jede Karte öffnet die passende Produktseite, gleich in der richtigen Farbe
+- [x] Jede Mattenkarte öffnet die passende Produktseite, gleich in der richtigen Farbe (Zubehör hat noch keine eigenen Produktseiten)
 
 **Warenkorb** (Icon oben rechts oder „In den Warenkorb“ auf der Produktseite):
 

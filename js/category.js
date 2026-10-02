@@ -4,23 +4,63 @@
 // kategorie.html?k=reise-yogamatte. The category data itself is in shared.js
 // (the search and the menus use it too).
 
-// Filter options, in the original's order. "Align" is a cork print.
+// Filter options, in the original's order (swatch colours measured from its
+// filter). "Align" is a cork print.
 const colorFamilies = [
-  { name: "Beige", swatch: "#efe9df" },
-  { name: "Blau", swatch: "#5a7da6" },
-  { name: "Rot", swatch: "#8c2a26" },
-  { name: "Grün", swatch: "#5d7a72" },
-  { name: "Schwarz", swatch: "#111" },
-  { name: "Rosa", swatch: "#c9a3a0" },
+  { name: "Beige", swatch: "#fcfaf5" },
+  { name: "Blau", swatch: "#44709c" },
+  { name: "Rot", swatch: "#972626" },
+  { name: "Grün", swatch: "#5f837e" },
+  { name: "Terra", swatch: "#e17f43" },
+  { name: "Schwarz", swatch: "#000" },
+  { name: "Grau", swatch: "#b7abae" },
+  { name: "Rosa", swatch: "#c69a98" },
   { name: "Braun", swatch: "#9b6e55" },
   { name: "Align", swatch: "repeating-linear-gradient(135deg, #c9a77e 0 5px, #b48f63 5px 7px)" },
 ];
-const materials = ["Naturkautschuk", "Polyester", "PU (Polyurethan)", "PVC (Polyvinylchlorid)", "Naturkork", "Schurwolle"];
+const materials = ["Bio-Baumwolle (kbA)", "Naturkautschuk", "Polyester", "PU (Polyurethan)", "PVC (Polyvinylchlorid)", "Naturkork", "Schurwolle", "Polymere Klebefolie mit UV-Schutz"];
 const availabilities = ["Verfügbar", "Nicht verfügbar"];
 
-// "Meistverkauft" is left out: this rebuild has no real sales numbers.
+// The original sorts most pages by "meistverkauft". Its sales ranking (as
+// shown on 2 Oct 2026) is one list across all pages, each page showing the
+// cards it has in that order; cards missing from the list go last.
+const bestSellingRanking = [
+  // Mats
+  "Yogamatte MUDRA / Balsam Green", "Yogamatte PURE / Light Taupe", "Yogamatte MUDRA / Light Taupe", "Yogamatte PURE / Aubergine",
+  "Yogamatte MUDRA / Indigo Dust", "Yogamatte ARISE Travel / Balsam Green", "Yogamatte ARISE / Balsam Green", "Yogamatte PURE / Indigo Dust",
+  "Yogamatte ARISE Travel / Indigo Dust", "Yogamatte MUDRA / Dark Cranberry", "Yogamatte MUDRA / Lavender Fog", "Yogamatte ARISE / Indigo Dust",
+  "Yogamatte PURE / Anthrazit", "Yogamatte ARISE CORK / Align", "Yogamatte ARISE CORK / Lotus", "Yogamatte ARISE Travel / Graphite",
+  "Yogamatte ARISE / Dark Cranberry", "Yogamatte MUDRA / Anthrazit", "Yogamatte ARISE Travel / Dark Cranberry", "Yogamatte MUDRA PRO / Light Taupe",
+  "Yogamatte MUDRA / Aubergine", "Yogamatte PURE / Balsam Green", "Yogamatte ARISE / Graphite", "Yogamatte MUDRA PRO / Anthrazit",
+  "Yogamatte MUDRA PRO / Balsam Green", "Yogamatte ARISE / Midnight Blue", "Yogamatte PURE / Dark Cranberry", "Yogamatte Mudra XL / Balsam Green",
+  "Yogamatte Mudra XL / Anthrazit", "Yogamatte Mudra XL / Indigo Dust", "Yogamatte WOOL aus Schurwolle",
+  // Accessories
+  "Yogamatten Tragegurt / Light Taupe", "Yoga Handtuch / Balsam Green", "Yogatasche PUNE / Light Taupe", "Yogatasche PUNE / Balsam Green",
+  "Yogagurt 100% Bio-Baumwolle / Balsam Green", "Yogatasche PUNE / Indigo Dust", "Yogadecke Savasana 100% Baumwolle (kbA) / Natur", "Yogagurt 100% Bio-Baumwolle / Indigo Dust",
+  "Yogagurt 100% Bio-Baumwolle / Light Taupe", "Yogatasche PUNE / Aubergine", "Yoga Handtuch / Lavender Fog", "Yoga Handtuch / Light Taupe",
+  "Yogagurt 100% Bio-Baumwolle / Natur", "Yogatasche PUNE / Anthrazit", "Yogagurt 100% Bio-Baumwolle / Aubergine", "Yogatasche NANDI / Anthrazit",
+  "Yogadecke Savasana 100% Baumwolle (kbA) / Indigo Dust", "Augenkissen / Light Taupe", "Augenkissen / Lavender Fog", "Yoga Handtuch / Anthrazit",
+  "Yogagurt 100% Bio-Baumwolle / Lavender Fog", "Yogagurt 100% Bio-Baumwolle / Anthrazit", "Yogatasche PUNE / Lavender Fog", "Yoga Handtuch / Indigo Dust",
+  "Yogatasche NANDI / Natur", "Yogadecke Savasana 100% Baumwolle (kbA) / Anthrazit", "Augenkissen / Balsam Green", "Augenkissen / Natur",
+  "Yogagurt 100% Bio-Baumwolle / Kurkuma", "Yogablock Kork 2er Set / Klein", "Yogablock Kork 2er Set / Groß", "Bio Yogamatten Spray / 60ml",
+  "Bio Yogamatten Spray / 500ml", "Yogamatten-Sticker I am enough", "Yogamatten-Sticker einatmen. ausatmen.", "Yogamatten-Sticker Ich bin dankbar",
+  "Yogamatten-Sticker good vibes only", "Yogamatten Tragegurt / Balsam Green",
+  // "Almost Perfect"
+  "Almost Perfect Yogamatte MUDRA / Indigo Dust", "Almost Perfect Yogamatte MUDRA / Light Taupe", "Almost Perfect Yogamatte MUDRA / Balsam Green",
+  "Almost Perfect Yogamatte MUDRA PRO / Anthrazit", "Almost Perfect Yogamatte PURE / Light Taupe", "Almost Perfect Yogamatte MUDRA PRO / Light Taupe",
+  "Almost Perfect Yogamatte MUDRA PRO / Balsam Green", "Almost Perfect Yogamatte ARISE / Dark Cranberry", "Almost Perfect Yogamatte ARISE Cork / Align",
+  "Almost Perfect Yogamatte MUDRA / Aubergine", "Almost Perfect Yogamatte PURE / Indigo Dust", "Almost Perfect Yogamatte ARISE Cork / Lotus",
+  "Almost Perfect Yogamatte MUDRA PRO XL / Anthrazit", "Almost Perfect Yogamatte ARISE Travel / Wild Ginger", "Almost Perfect Yogamatte MUDRA / Bordeaux",
+  "Almost Perfect Yogamatte MUDRA XL / Balsam Green", "Almost Perfect Yogamatte PURE / Balsam Green",
+];
+// Card names here use „…“ where the original uses straight quotes: compare without quotes.
+const rankKey = (card) => `${card.name}${card.variant ? ` / ${card.variant}` : ""}`.replace(/[„“"]/g, "");
+const salesRank = new Map(bestSellingRanking.map((key, i) => [key, i]));
+const rankOf = (card) => salesRank.get(rankKey(card)) ?? bestSellingRanking.length;
+
 const sorters = {
   relevanz: { label: "Am relevantesten", compare: (a, b) => a.order - b.order },
+  meistverkauft: { label: "meistverkauft", compare: (a, b) => rankOf(a) - rankOf(b) || a.order - b.order },
   "a-z": { label: "Alphabetisch, A-Z", compare: (a, b) => a.name.localeCompare(b.name, "de") || a.order - b.order },
   "z-a": { label: "Alphabetisch, Z-A", compare: (a, b) => b.name.localeCompare(a.name, "de") || a.order - b.order },
   "preis-auf": { label: "Preis, niedrig nach hoch", compare: (a, b) => a.price - b.price || a.order - b.order },
@@ -48,6 +88,9 @@ function checkboxList(values) {
             </div>`;
 }
 
+// Like the original, pages open sorted by "meistverkauft" unless they say otherwise.
+const defaultSort = (category) => category.sort || "meistverkauft";
+
 function categoryMarkup(category) {
   // Circles without a `key` lead to pages this rebuild doesn't have yet.
   const shortcuts = category.shortcuts.map((shortcut) => `
@@ -62,7 +105,8 @@ function categoryMarkup(category) {
   const families = colorFamilies.filter((family) => category.colorFilter
     ? category.colorFilter.includes(family.name)
     : category.models.some((model) => model.variants?.some((v) => v.family === family.name)));
-  const materialOptions = materials.filter((material) => category.models.some((model) => model.material === material));
+  const materialOptions = materials.filter((material) => category.models.some((model) => model.material === material
+    || model.variants?.some((v) => v.material === material)));
 
   const swatches = `<div class="filter__swatches">${families.map((family) => `
               <label class="filter-swatch" title="${family.name}">
@@ -72,8 +116,8 @@ function categoryMarkup(category) {
               </label>`).join("")}
             </div>`;
 
-  const sortOptions = Object.entries(sorters).map(([key, sorter], i) => `
-              <label class="filter__check"><input type="radio" name="sort" value="${key}"${i === 0 ? " checked" : ""}>${sorter.label}</label>`).join("");
+  const sortOptions = Object.entries(sorters).map(([key, sorter]) => `
+              <label class="filter__check"><input type="radio" name="sort" value="${key}"${key === defaultSort(category) ? " checked" : ""}>${sorter.label}</label>`).join("");
 
   return `
     <div class="container">${shortcuts ? `
@@ -130,26 +174,27 @@ if (!category) {
     document.querySelector(`.nav__item[data-menu="${section}"] .nav__link`)?.classList.add("is-current");
   });
 
-  // One card per colour, keeping the original order for "Am relevantesten".
-  // Sets have no colour variants and get one card each.
+  // One card per colour (or size), keeping the original order for "Am
+  // relevantesten". A variant can bring its own price and material. Sets and
+  // stickers have no variants and get one card each.
   const cards = category.models
     .flatMap((model) => (model.variants ? model.variants.map((variant) => ({
       name: model.name,
       slug: model.slug,
-      price: model.price,
+      price: variant.price ?? model.price,
       compareAt: model.compareAt,
-      material: model.material,
-      shape: "mat",
+      material: variant.material ?? model.material,
+      shape: model.shape || "mat",
       variant: variant.color,
       tint: variant.hex,
       family: variant.family,
       soldOut: Boolean(variant.soldOut),
       badge: variant.badge,
-    })) : [{ ...model, soldOut: false }]))
+    })) : [{ ...model, soldOut: Boolean(model.soldOut) }]))
     .map((card, order) => ({ ...card, order }));
 
   const filters = { colors: new Set(), materials: new Set(), availability: new Set() };
-  let sortKey = "relevanz";
+  let sortKey = defaultSort(category);
 
   const grid = categoryRoot.querySelector(".category__grid");
   const empty = categoryRoot.querySelector(".category__empty");

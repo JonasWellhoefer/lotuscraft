@@ -112,6 +112,15 @@ const shapes = {
   towel: (c) => `<rect x="32" y="56" width="116" height="78" rx="12" fill="${c}"/>
                  <path d="M32 82h116M32 108h116" stroke="rgba(0,0,0,.12)" stroke-width="2"/>
                  <path d="M46 134v7M60 134v7M74 134v7M88 134v7M102 134v7M116 134v7M130 134v7" stroke="${c}" stroke-width="2.5" stroke-linecap="round"/>`,
+  blanket: (c) => `<rect x="28" y="56" width="124" height="78" rx="5" fill="${c}"/>
+                   <path d="M28 82h124M28 108h124" stroke="rgba(0,0,0,.14)" stroke-width="2"/>
+                   <path d="M28 70h124M28 96h124M28 122h124" stroke="rgba(255,255,255,.3)" stroke-width="3"/>
+                   <path d="M38 134v8M50 134v8M62 134v8M74 134v8M86 134v8M98 134v8M110 134v8M122 134v8M134 134v8M146 134v8" stroke="${c}" stroke-width="2.5" stroke-linecap="round"/>`,
+  singleBlock: (c) => `<rect x="56" y="50" width="68" height="96" rx="4" fill="${c}"/>
+                       <rect x="56" y="50" width="68" height="14" rx="4" fill="rgba(255,255,255,.35)"/>`,
+  sticker: (c) => `<circle cx="90" cy="90" r="48" fill="${c}" stroke="rgba(0,0,0,.12)"/>
+                   <path d="M90 62c-8 10-8 21 0 30 8-9 8-20 0-30zM90 92c-12-3-21 1-25 9 10 3 19 0 25-9zM90 92c12-3 21 1 25 9-10 3-19 0-25-9z" fill="rgba(0,0,0,.3)"/>
+                   <path d="M70 114h40M77 122h26" stroke="rgba(0,0,0,.3)" stroke-width="3" stroke-linecap="round"/>`,
   eyePillow: (c) => `<path d="M28 96c0-17 24-26 62-26s62 9 62 26-24 26-62 26-62-9-62-26z" fill="${c}"/>
                      <path d="M40 92c4-9 24-14 50-14s46 5 50 14" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="2"/>`,
   spray: (c) => `<rect x="66" y="74" width="48" height="82" rx="10" fill="${c}" stroke="rgba(0,0,0,.12)"/>
@@ -305,6 +314,87 @@ const yogaSets = [
   setNamed("Yogamatte PURE Set"),
 ];
 
+// ---------- Yoga accessories ----------
+// As on the original's "Yoga-Zubehör" pages: one card per colour (or size,
+// with its own price). Like there, the material is set on single colours
+// only, e.g. six of the eight belts count as organic cotton.
+const ORGANIC_COTTON = "Bio-Baumwolle (kbA)";
+const yogaAccessories = [
+  { name: "Yogagurt 100% Bio-Baumwolle", price: 12.95, shape: "strap", material: null, variants: [
+    { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
+    { color: "Indigo Dust", hex: "#6b7c95", family: "Blau", material: ORGANIC_COTTON },
+    { color: "Natur", hex: COTTON, family: "Beige", material: ORGANIC_COTTON },
+    { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz", material: ORGANIC_COTTON },
+    { color: "Aubergine", hex: "#8d5a6f", family: "Rot", material: ORGANIC_COTTON },
+    { color: "Light Taupe", hex: "#c4b6a6", family: "Beige", material: ORGANIC_COTTON },
+    { color: "Lavender Fog", hex: "#b7a3b6", family: "Rosa" },
+    { color: "Kurkuma", hex: "#d4913b", family: "Terra", material: ORGANIC_COTTON, badge: "New in" },
+  ] },
+  { name: "Yogatasche PUNE", price: 29.95, shape: "bag", material: null, variants: [
+    { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
+    { color: "Light Taupe", hex: "#c4b6a6", family: "Beige", material: ORGANIC_COTTON },
+    { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz", material: ORGANIC_COTTON },
+    { color: "Aubergine", hex: "#8d5a6f", family: "Rot", material: ORGANIC_COTTON },
+    { color: "Indigo Dust", hex: "#6b7c95", family: "Blau", material: ORGANIC_COTTON },
+    { color: "Lavender Fog", hex: "#b7a3b6", family: "Rosa" },
+  ] },
+  { name: "Yogablock Kork 2er Set", price: 29.95, shape: "block", material: null, variants: [
+    { color: "Klein", hex: CORK },
+    { color: "Groß", hex: CORK, price: 34.95 },
+  ] },
+  { name: "Yogadecke „Savasana“ 100% Baumwolle (kbA)", price: 44.95, shape: "blanket", material: ORGANIC_COTTON, variants: [
+    { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
+    { color: "Natur", hex: COTTON, family: "Beige" },
+    { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz" },
+  ] },
+  { name: "Bio Yogamatten Spray", price: 12.95, shape: "spray", material: null, variants: [
+    { color: "60ml", hex: "#e6e1d6" },
+    { color: "500ml", hex: "#e6e1d6", price: 24.95 },
+  ] },
+  { name: "Yoga Handtuch", price: 29.95, shape: "towel", material: null, variants: [
+    { color: "Light Taupe", hex: "#c4b6a6", family: "Beige" },
+    { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
+    { color: "Balsam Green", hex: "#5d7366", family: "Grün", material: "Polyester" },
+    { color: "Lavender Fog", hex: "#b7a3b6", family: "Rosa", material: "Polyester" },
+    { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz", material: "Polyester" },
+  ] },
+  { name: "Yogatasche NANDI", price: 19.95, shape: "bag", material: ORGANIC_COTTON, variants: [
+    { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz", soldOut: true },
+    { color: "Natur", hex: COTTON, family: "Beige" },
+  ] },
+  { name: "Augenkissen", price: 27.95, shape: "eyePillow", material: null, variants: [
+    { color: "Light Taupe", hex: "#c4b6a6", family: "Beige", material: ORGANIC_COTTON },
+    { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
+    { color: "Lavender Fog", hex: "#b7a3b6", family: "Rosa", material: ORGANIC_COTTON },
+    { color: "Natur", hex: COTTON, family: "Beige", material: ORGANIC_COTTON },
+  ] },
+  // Stickers come in one version each: one card without a colour line.
+  { name: "Yogamatten-Sticker „I am enough“", price: 2.95, shape: "sticker", tint: "#eadbc6", material: "Polymere Klebefolie mit UV-Schutz", soldOut: true },
+  { name: "Yogamatten-Sticker „einatmen. ausatmen.“", price: 2.95, shape: "sticker", tint: "#d3ddd5", soldOut: true },
+  { name: "Yogamatten-Sticker „Ich bin dankbar“", price: 2.95, shape: "sticker", tint: "#f0d9d0", material: "Polymere Klebefolie mit UV-Schutz" },
+  { name: "Yogamatten-Sticker „good vibes only“", price: 2.95, shape: "sticker", tint: "#dcd7e8", soldOut: true },
+];
+const accessoriesNamed = (...names) => yogaAccessories.filter((item) => names.includes(item.name));
+
+// Two products that only show up on a sub-page, not under "Yoga-Zubehör".
+const matCarrier = { name: "Yogamatten Tragegurt", price: 14.95, shape: "strap", material: null, variants: [
+  { color: "Light Taupe", hex: "#c4b6a6", family: "Beige" },
+  { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
+] };
+const singleCorkBlock = { name: "Yogablock Kork Einzeln", price: 17.95, shape: "singleBlock", material: null, variants: [
+  { color: "Klein.", hex: CORK },
+  { color: "Groß.", hex: CORK, price: 19.95 },
+] };
+
+// The circles above "Yoga-Zubehör"; its sub-pages show the first four.
+const accessoryShortcuts = [
+  { label: "Yogataschen", icon: "bag", key: "yogataschen" },
+  { label: "Yogadecken", icon: "blanket", key: "yogadecken" },
+  { label: "Yoga-Handtücher", icon: "towel", key: "yoga-handtuecher" },
+  { label: "Yoga-Gurte", icon: "strap", key: "yoga-gurte" },
+  { label: "Yoga Blöcke", icon: "block", key: "yoga-block" },
+];
+
 // "Almost Perfect" mats: second-quality, 15% off. Only the colours the
 // original shows as cards; like there, only some have a material set.
 const almostPerfectMats = [
@@ -394,13 +484,52 @@ const categories = {
   },
   "unperfekte-produkte": {
     title: "„Almost Perfect“ Yogamatten",
-    nav: [],
     shortcuts: [],
     models: almostPerfectMats,
     // The original's colour filter also counts colours that are sold out and
     // hidden, so it offers "Rosa" (which then shows no products).
     colorFilter: ["Beige", "Blau", "Rot", "Grün", "Schwarz", "Rosa", "Braun", "Align"],
     description: `Diese Matten funktionieren einwandfrei, haben aber kleine optische Makel – etwa eine leicht abweichende Farbe oder einen winzigen Fleck. Deshalb gibt es sie 15 % günstiger: gut für dein Budget und gut für die Umwelt, weil keine Matte aussortiert wird. Die regulären Modelle findest du unter <a href="kategorie.html?k=yogamatten">Yogamatten</a>.`,
+  },
+  "yoga-zubehor": {
+    title: "Yoga-Zubehör",
+    shortcuts: accessoryShortcuts,
+    models: yogaAccessories,
+    // Grey comes from a belt colour that is sold out and hidden (as on the original).
+    colorFilter: ["Beige", "Blau", "Rot", "Grün", "Terra", "Schwarz", "Grau", "Rosa"],
+    description: `Kleine Helfer, große Wirkung: Ein Block bringt den Boden näher, ein Gurt verlängert die Arme, eine Decke polstert Knie und Rücken. Das Zubehör ist meist aus Kork oder Bio-Baumwolle und farblich auf die Matten abgestimmt.`,
+  },
+  yogataschen: {
+    title: "Yogataschen",
+    shortcuts: accessoryShortcuts.slice(0, 4),
+    models: [...accessoriesNamed("Yogatasche PUNE", "Yogatasche NANDI"), matCarrier],
+    description: "Damit deine Matte sicher ins Studio kommt: geräumige Taschen für Matte und Kleinkram oder ein schlichter Tragegurt, wenn du nur die Matte mitnehmen willst.",
+  },
+  yogadecken: {
+    title: "Yogadecken",
+    shortcuts: accessoryShortcuts.slice(0, 4),
+    models: accessoriesNamed("Yogadecke „Savasana“ 100% Baumwolle (kbA)"),
+    description: "Handgewebt aus Bio-Baumwolle: Die Decke wärmt in der Endentspannung, polstert Knie und Hüften und lässt sich gerollt als Stütze nutzen.",
+  },
+  "yoga-handtuecher": {
+    title: "Yoga-Handtücher",
+    shortcuts: accessoryShortcuts.slice(0, 4),
+    models: accessoriesNamed("Yoga Handtuch"),
+    description: "Auf die Matte gelegt, nimmt das Handtuch Schweiß auf und gibt dir zusätzlichen Halt – ideal für Hot Yoga, schweißtreibende Flows oder als hygienische Auflage auf Leihmatten.",
+  },
+  "yoga-gurte": {
+    title: "Yoga-Gurte",
+    shortcuts: accessoryShortcuts.slice(0, 4),
+    models: accessoriesNamed("Yogagurt 100% Bio-Baumwolle"),
+    colorFilter: ["Beige", "Blau", "Rot", "Grün", "Terra", "Schwarz", "Grau", "Rosa"],
+    description: "Ein Gurt verlängert deine Arme: Er hilft dir, Dehnungen sanft zu vertiefen und Haltungen zu halten, in die du allein noch nicht hineinkommst.",
+  },
+  "yoga-block": {
+    title: "Yoga Blöcke",
+    sort: "relevanz", // the only page here that the original doesn't sort by sales
+    shortcuts: [],
+    models: [...accessoriesNamed("Yogablock Kork 2er Set"), singleCorkBlock],
+    description: "Blöcke aus Naturkork geben dir Höhe und Halt, wo der Boden noch zu weit weg ist – im Stehen, im Sitzen und in der Entspannung. Es gibt sie klein und groß, einzeln oder im Zweierset.",
   },
 };
 
@@ -420,7 +549,7 @@ const searchIndex = (() => {
         slug: model.slug,
         price: model.price,
         compareAt: model.compareAt,
-        shape: "mat",
+        shape: model.shape || "mat",
         tint: model.variants[0].hex,
         keywords: [category.title, model.material, ...model.variants.flatMap((v) => [v.color, v.family])].filter(Boolean).join(" "),
       });
@@ -442,6 +571,12 @@ const sitePages = [
   { title: "Reise Yogamatte", href: "kategorie.html?k=reise-yogamatte", keywords: "yogamatte yogamatten matte reise reisen travel faltbar kategorie" },
   { title: "Yoga-Sets", href: "kategorie.html?k=yoga-sets", keywords: "yoga set sets bundle paket geschenk kategorie" },
   { title: "„Almost Perfect“ Yogamatten", href: "kategorie.html?k=unperfekte-produkte", keywords: "almost perfect yogamatte yogamatten matte b-ware reduziert sale kategorie" },
+  { title: "Yoga-Zubehör", href: "kategorie.html?k=yoga-zubehor", keywords: "yoga zubehör zubehoer hilfsmittel kategorie" },
+  { title: "Yogataschen", href: "kategorie.html?k=yogataschen", keywords: "yoga tasche taschen yogatasche mattentasche kategorie" },
+  { title: "Yogadecken", href: "kategorie.html?k=yogadecken", keywords: "yoga decke decken yogadecke kategorie" },
+  { title: "Yoga-Handtücher", href: "kategorie.html?k=yoga-handtuecher", keywords: "yoga handtuch handtücher kategorie" },
+  { title: "Yoga-Gurte", href: "kategorie.html?k=yoga-gurte", keywords: "yoga gurt gurte yogagurt kategorie" },
+  { title: "Yoga Blöcke", href: "kategorie.html?k=yoga-block", keywords: "yoga block blöcke yogablock kork kategorie" },
   { title: "Startseite", href: "index.html", keywords: "start home lotuscraft bestseller sets" },
 ];
 
@@ -529,6 +664,8 @@ const menuIcons = {
   mat: '<rect x="3" y="13" width="14" height="6" rx="1"/><circle cx="18.5" cy="16" r="3"/>',
   block: '<path d="M4 8.5l8-4 8 4v8l-8 4-8-4z"/><path d="M4 8.5l8 4 8-4M12 12.5v8"/>',
   bolster: '<rect x="3" y="9" width="18" height="7" rx="3.5"/><path d="M7 9v7"/>',
+  blanket: '<rect x="3" y="6" width="18" height="12" rx="1.5"/><path d="M3 10h18M3 14h18M6 18v2.5M10 18v2.5M14 18v2.5M18 18v2.5"/>',
+  towel: '<path d="M6 4h12v13H6z"/><path d="M6 8h12M8 17v3M11 17v3M14 17v3M17 17v3"/>',
   bottle: '<path d="M10 3h4v3h-4zM9 6h6l1 3v12H8V9z"/>',
   set: '<rect x="3" y="11" width="9" height="9" rx="1"/><rect x="13" y="6" width="8" height="14" rx="1"/>',
   voucher: '<rect x="3" y="7" width="18" height="11" rx="1"/><path d="M9 7v11M3 12.5h6"/>',
@@ -555,6 +692,12 @@ const menuLinks = {
   "Yoga-Sets": "kategorie.html?k=yoga-sets",
   "Alle Yoga-Sets": "kategorie.html?k=yoga-sets",
   "„Almost Perfect“ Yogamatten": "kategorie.html?k=unperfekte-produkte",
+  "Alles in Yoga-Zubehör": "kategorie.html?k=yoga-zubehor",
+  "Yogablöcke": "kategorie.html?k=yoga-block",
+  "Yogataschen": "kategorie.html?k=yogataschen",
+  "Yogadecken": "kategorie.html?k=yogadecken",
+  "Yogagurte": "kategorie.html?k=yoga-gurte",
+  "Yogahandtuch": "kategorie.html?k=yoga-handtuecher",
 };
 
 // Desktop dropdown links that get a more specific icon than their column.
