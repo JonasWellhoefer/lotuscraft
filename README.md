@@ -96,7 +96,7 @@ lotuscraft/
 │   ├── layout.js   # Header, Menüs (Handy + Desktop), Suche, Footer, Warenkorb (Demo)
 │   ├── home.js     # Startseite: Produkt-Tabs, Community, Bewertungs-Karussell
 │   ├── product.js  # Produktseiten: Daten aller Matten, Zeichnungen, Galerie, Farbauswahl, Warenkorb-Button
-│   └── category.js # Kategorieseite: Filter (Farbe, Sitzhöhe, Form, Material, Füllung, Verfügbarkeit), Sortierung
+│   └── category.js # Kategorieseite: Filter (Farbe, Sitzhöhe, Form, Material, Füllung, Größe, Verfügbarkeit), Sortierung
 └── README.md
 ```
 
@@ -148,9 +148,10 @@ die Werte stammen direkt aus dem CSS des Originals.
 - [x] „Meditationskissen“ (46 Karten, Filter „Sitzhöhe“ und „Form“: rund, halbrund, Zafu) mit den Unterseiten Rundkissen, Zafu-Kissen und Halbmondkissen – im Header ist dort „Meditation“ hervorgehoben
 - [x] „Meditationsmatten“ (Zabuton in 8 Farben, je 4 cm und 7 cm hoch) und „Meditationskissen Set“ (3 Sets; im Header „Meditation“ und „Geschenke“ hervorgehoben)
 - [x] „Meditation Zubehör“ (Augenkissen, Malas, Dinkelspelz) mit den Unterseiten Augenkissen und Dinkelspelz Füllung, „Bezug Meditationskissen“ (43 Bezüge mit Filter „Sitzhöhe“ 10 / 15 / 20 cm), „Bezug Meditationsmatte“ und „Meditationsbänke“ – damit führt jeder Eintrag der Meditation-Spalte im Menü auf eine Seite (außer „Gutscheine“), auch im Handy-Menü
-- [x] Filter Farbe, Sitzhöhe, Form, Material, Füllung und Verfügbarkeit (kombinierbar) – wie im Original nur mit Werten, die auf der Seite vorkommen
+- [x] „Yoga-Kleidung“ (Header → „Bekleidung“, 37 Karten) mit „Yogakleidung Damen“ (Hosen, Leggings, Yoga BH, Shirts, Overalls, Pullover) und „Yogakleidung Herren“ (Tanktops, Trainingshosen, Sweatshirts) – der Filter „Größe“ findet wie im Original nur lieferbare Größen
+- [x] Filter Farbe, Sitzhöhe, Form, Material, Füllung, Größe und Verfügbarkeit (kombinierbar) – wie im Original nur mit Werten, die auf der Seite vorkommen
 - [x] Auf dem Handy (unter 780 px) wie im Original nur zwei Buttons: „Filter“ öffnet eine Schublade mit einer Unterseite je Filter (Haken wirken sofort, ein goldener Punkt zählt sie), „Sortierung“ öffnet die Auswahlliste des Handys – per Tastatur bedienbar, Escape geht erst zurück und schließt dann
-- [x] Sortierung wie im Original, voreingestellt „meistverkauft“ (Rangliste des Originals vom 2. Oktober 2026); dazu Relevanz, A–Z, Z–A und Preis
+- [x] Sortierung wie im Original, voreingestellt „meistverkauft“ (Rangliste des Originals vom 2. Oktober 2026); dazu Relevanz, A–Z, Z–A und Preis. Einige Bekleidungsseiten zeigen wie dort die eigene Reihenfolge des Shops, ohne gewählte Sortierung
 - [x] Kurzer eigener Text unter dem Raster, mit Links zu den Produktseiten
 - [x] Jede Mattenkarte öffnet die passende Produktseite, gleich in der richtigen Farbe (Zubehör hat noch keine eigenen Produktseiten)
 

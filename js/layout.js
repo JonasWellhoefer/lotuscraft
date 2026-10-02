@@ -67,7 +67,7 @@ document.getElementById("site-header").outerHTML = `
       <ul class="nav__list">
         <li class="nav__item" data-menu="Yoga"><a href="#" class="nav__link">Yoga</a></li>
         <li class="nav__item" data-menu="Meditation"><a href="#" class="nav__link">Meditation</a></li>
-        <li class="nav__item" data-menu="Bekleidung"><a href="#" class="nav__link">Bekleidung</a></li>
+        <li class="nav__item" data-menu="Bekleidung"><a href="kategorie.html?k=yoga-kleidung" class="nav__link">Bekleidung</a></li>
         <li class="nav__item" data-menu="Geschenke"><a href="#" class="nav__link">Geschenke</a></li>
         <li class="nav__item"><a href="#" class="nav__link">Sale</a></li>
       </ul>
@@ -369,7 +369,7 @@ function megaColumn(category, column) {
         </div>`;
 }
 
-function megaPromo({ kicker, title, scene, product }) {
+function megaPromo({ kicker, title, key, scene, product }) {
   // Extra room below the figure keeps it clear of the label at the bottom.
   const art = scene
     ? sceneSvg(scene, "0 -20 100 160", "xMidYMax")
@@ -378,7 +378,7 @@ function megaPromo({ kicker, title, scene, product }) {
          <g transform="translate(0 20)">${shapes[product](COTTON)}</g>
        </svg>`;
   return `
-        <a href="#" class="mega__promo">
+        <a href="${key ? `kategorie.html?k=${key}` : "#"}" class="mega__promo">
           ${art}
           <span class="mega__promo-details">
             <span class="mega__promo-kicker">${kicker}</span>

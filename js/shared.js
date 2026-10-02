@@ -44,7 +44,7 @@ const bestsellers = {
   ],
   bekleidung: [
     { name: "BECCA Leggings", price: 55.95, compareAt: 69.95, shape: "leggings", tint: "#5f6062" },
-    { name: "MIKO Bralette", price: 31.49, compareAt: 44.95, shape: "top", tint: "#ebe7e0" },
+    { name: "MIKO Bralette", price: 31.49, compareAt: 44.95, shape: "bralette", tint: "#ebe7e0" },
     { name: "NIA Womens Sweater", price: 62.99, compareAt: 89.95, shape: "sweater", tint: "#56595a" },
     { name: "FEND Mens Sweater", price: 44.99, compareAt: 89.95, shape: "sweater", tint: "#9aa6aa" },
   ],
@@ -115,6 +115,9 @@ const setPiece = {
                     <ellipse cx="134" cy="96" rx="11" ry="24" fill="rgba(255,255,255,.2)"/>`,
 };
 
+// Outline of the flat clothing drawings, so light colours stay visible.
+const GARMENT_LINE = "rgba(0, 0, 0, .12)";
+
 // Simple SVG silhouettes so each card reads as the right kind of product.
 // `c` is the product's main colour, `a` an optional accent (e.g. the mat bag).
 const shapes = {
@@ -170,9 +173,25 @@ const shapes = {
                    <rect x="24" y="72" width="132" height="17" rx="8" fill="${c}"/>
                    <rect x="24" y="72" width="132" height="6" rx="3" fill="rgba(255,255,255,.14)"/>
                  </g>`,
-  leggings: (c) => `<path d="M62 30h56l6 130h-22l-12-96-12 96H56z" fill="${c}"/>`,
-  top: (c) => `<path d="M58 52l14-18h36l14 18v58H58z" fill="${c}" stroke="#d5d0c7"/>`,
-  sweater: (c) => `<path d="M58 38l32-8 32 8 22 18 10 86-16 2-12-70v80H54V74l-12 70-16-2 10-86z" fill="${c}"/>`,
+  // Clothing, laid out flat
+  leggings: (c) => `<path d="M62 30h56l6 130h-22l-12-96-12 96H56z" fill="${c}" stroke="${GARMENT_LINE}"/>`,
+  top: (c) => `<path d="M68 40c4-4 8-6 12-6 3 6 17 6 20 0 4 0 8 2 12 6l12 14-10 8v74H66V62l-10-8z" fill="${c}" stroke="${GARMENT_LINE}"/>`,
+  sweater: (c) => `<path d="M58 38l32-8 32 8 22 18 10 86-16 2-12-70v80H54V74l-12 70-16-2 10-86z" fill="${c}" stroke="${GARMENT_LINE}"/>`,
+  tee: (c) => `<path d="M66 40l14-6c3 6 17 6 20 0l14 6 22 20-11 13-11-8v73H66V65l-11 8-11-13z" fill="${c}" stroke="${GARMENT_LINE}"/>`,
+  tankTop: (c) => `<path d="M70 36h9c2 13 20 13 22 0h9c0 12 4 20 10 26v78H60V62c6-6 10-14 10-26z" fill="${c}" stroke="${GARMENT_LINE}"/>`,
+  tankTee: (c) => `<path d="M66 36h12c3 9 21 9 24 0h12l4 20c4 4 8 6 10 8v74H52V64c2-2 6-4 10-8z" fill="${c}" stroke="${GARMENT_LINE}"/>`,
+  bralette: (c) => `<path d="M70 72l8-32M110 72l-8-32" stroke="${GARMENT_LINE}" stroke-width="6" stroke-linecap="round"/>
+                    <path d="M70 72l8-32M110 72l-8-32" stroke="${c}" stroke-width="4" stroke-linecap="round"/>
+                    <path d="M58 74c10-8 22-8 32 2 10-10 22-10 32-2l-2 26c-20 6-40 6-60 0z" fill="${c}" stroke="${GARMENT_LINE}"/>`,
+  wrapTop: (c) => `<path d="M66 40l14-6 10 16 10-16 14 6 26 66-12 6-14-40v70H66V72l-14 40-12-6z" fill="${c}" stroke="${GARMENT_LINE}"/>
+                   <path d="M80 34l26 58 12 10" fill="none" stroke="rgba(0,0,0,.18)" stroke-width="1.5"/>`,
+  culotte: (c) => `<path d="M62 38h56l2 12 18 74H96l-6-52-6 52H44l18-74z" fill="${c}" stroke="${GARMENT_LINE}"/>
+                   <path d="M62 46h56" stroke="rgba(0,0,0,.14)"/>`,
+  pants: (c) => `<path d="M64 34h52l4 108H98l-8-76-8 76H60z" fill="${c}" stroke="${GARMENT_LINE}"/>
+                 <path d="M64 42h52" stroke="rgba(0,0,0,.14)"/>`,
+  overall: (c) => `<path d="M72 30v26M108 30v26" stroke="${GARMENT_LINE}" stroke-width="7" stroke-linecap="round"/>
+                   <path d="M72 30v26M108 30v26" stroke="${c}" stroke-width="5" stroke-linecap="round"/>
+                   <path d="M70 52h40l4 16 6 76H98l-8-60-8 60H60l6-76z" fill="${c}" stroke="${GARMENT_LINE}"/>`,
   bag: (c) => `<path d="M42 84C58 38 122 38 138 84" fill="none" stroke="${c}" stroke-width="6" stroke-linecap="round"/>
                <rect x="22" y="80" width="136" height="38" rx="19" fill="${c}"/>
                <ellipse cx="141" cy="99" rx="9" ry="19" fill="rgba(0,0,0,.12)"/>
@@ -707,6 +726,87 @@ const meditationBench = { name: "Meditationsbank DHARMA Standard", price: 74.95,
   cushionColor("Natur"), cushionColor("Anthrazit"), cushionColor("Indigo Dust", { badge: "New in" }), cushionColor("Aubergine", { badge: "New in" }),
 ] };
 
+// ---------- Clothing ----------
+// One card per colour, as on the original. `sizes` are all sizes a model
+// comes in (they make up the "Größe" filter), a colour's `stock` the sizes
+// it still has: like the original, the size filter only finds colours in
+// stock, and colours sold out in every size drop out of any filtered list.
+const CLOTHING_TONES = {
+  "Dark Cranberry": { hex: "#7a2a3a", family: "Rot" },
+  "Midnight Blue": { hex: "#2f3a5c", family: "Blau" },
+  "Almond Milk": { hex: "#e6d9c6", family: "Beige" },
+  "Marshmallow": { hex: "#eee8de", family: "Beige" },
+  "Deep Taupe": { hex: "#9a8878", family: "Beige" },
+  "Anthrazit": { hex: "#3d3d3f", family: "Schwarz" },
+  "Violetta": { hex: "#9b7f9f", family: "Rosa" },
+  "Stone Blue": { hex: "#8fa0b0", family: "Blau" },
+};
+const VISCOSE = "Viskose";
+const RECYCLED_POLYESTER = "Recyceltes Polyester";
+const sizeList = (text) => (text ? text.split(" ") : []);
+const ALL_SIZES = "XS S M L XL XXL";
+const outfit = (color, stock, extra = {}) => ({ color, ...CLOTHING_TONES[color], stock: sizeList(stock), soldOut: !stock, ...extra });
+const newIn = { badge: "New in" };
+const clothes = [
+  { name: "Amina Wrap Top", price: 59.95, shape: "wrapTop", material: VISCOSE, sizes: sizeList(ALL_SIZES), variants: [
+    outfit("Dark Cranberry", ALL_SIZES, newIn), outfit("Midnight Blue", ALL_SIZES, newIn), outfit("Almond Milk", ALL_SIZES, newIn),
+  ] },
+  { name: "Naima Top", price: 39.95, shape: "top", material: VISCOSE, sizes: sizeList(ALL_SIZES), variants: [
+    outfit("Dark Cranberry", ALL_SIZES, newIn), outfit("Midnight Blue", "XS S M L XL", newIn), outfit("Almond Milk", "M L XL XXL", newIn),
+  ] },
+  { name: "Heya Culotte", price: 69.95, shape: "culotte", material: VISCOSE, sizes: sizeList(ALL_SIZES), variants: [
+    outfit("Midnight Blue", "M", newIn), outfit("Dark Cranberry", "S M L XXL", newIn), outfit("Almond Milk", "M L XXL", newIn),
+  ] },
+  { name: "MIKO Bralette", price: 31.49, compareAt: 44.95, shape: "bralette", material: RECYCLED_POLYESTER, sizes: sizeList(ALL_SIZES), variants: [
+    outfit("Marshmallow", "XS S M L"), outfit("Anthrazit", "XS S M L"), outfit("Violetta", ALL_SIZES),
+  ] },
+  { name: "ALA Tank Tee", price: 41.99, compareAt: 59.95, shape: "tankTee", material: RECYCLED_POLYESTER, sizes: sizeList(ALL_SIZES), variants: [
+    outfit("Marshmallow", "XS S M L XL"), outfit("Anthrazit", ALL_SIZES, { price: 47.95 }), outfit("Violetta", ALL_SIZES),
+  ] },
+  // The sold-out colour isn't reduced.
+  { name: "DANA Overall", price: 71.95, compareAt: 89.95, shape: "overall", material: RECYCLED_POLYESTER, sizes: sizeList(ALL_SIZES), variants: [
+    outfit("Marshmallow", "S M L"), outfit("Anthrazit", "", { price: 89.95, compareAt: null }),
+  ] },
+  { name: "BECCA Leggings", price: 55.95, compareAt: 69.95, shape: "leggings", material: RECYCLED_POLYESTER, sizes: sizeList(ALL_SIZES), variants: [
+    outfit("Anthrazit", "XS S M XL"), outfit("Marshmallow", ALL_SIZES, { price: 48.99 }), outfit("Violetta", "XS S M L XL"),
+  ] },
+  { name: "FIONA Womens Pants", price: 89.95, shape: "pants", material: ORGANIC_COTTON, sizes: sizeList(ALL_SIZES), variants: [
+    outfit("Anthrazit", "XS S L"), outfit("Stone Blue", "XS S M L XL", { price: 71.95, compareAt: 89.95 }),
+  ] },
+  { name: "QUINN Mens Pants", price: 99.95, shape: "pants", material: ORGANIC_COTTON, sizes: sizeList("S M L XL XXL"), variants: [
+    outfit("Deep Taupe", "S M L XL XXL", newIn), outfit("Anthrazit", "S M L XL XXL"), outfit("Stone Blue", "S M L XXL", { price: 69.95, compareAt: 99.95 }),
+  ] },
+  { name: "ELI Womens Tee (Short Sleeve)", price: 35.95, compareAt: 44.95, shape: "tee", material: ORGANIC_COTTON, sizes: sizeList("XS S M L XL"), variants: [
+    outfit("Violetta", "S M L XL"), outfit("Marshmallow", "L XL"), outfit("Anthrazit", "L"),
+  ] },
+  { name: "REID Mens Tank-Top", price: 35.95, compareAt: 44.95, shape: "tankTop", material: ORGANIC_COTTON, sizes: sizeList("S M L XL"), variants: [
+    outfit("Marshmallow", "S M L XL", { price: 31.49 }), outfit("Anthrazit", "S M L XL"), outfit("Stone Blue", "S M L XL"),
+  ] },
+  { name: "FEND Mens Sweater", price: 44.99, compareAt: 89.95, shape: "sweater", material: ORGANIC_COTTON, sizes: sizeList("S M L XL"), variants: [
+    outfit("Stone Blue", "S M L XL"), outfit("Marshmallow", "S M L XL"), outfit("Anthrazit", "S M L XL"),
+  ] },
+  { name: "NIA Womens Sweater", price: 71.95, compareAt: 89.95, shape: "sweater", material: ORGANIC_COTTON, sizes: sizeList("XS S M L XL"), variants: [
+    outfit("Anthrazit", "XS S M L XL", { price: 62.99 }), outfit("Marshmallow", "XS S M L XL"), outfit("Stone Blue", "XS S M L XL"),
+  ] },
+];
+// Each collection has its own order on the original, so pick in the given order.
+const clothesNamed = (...names) => names.map((name) => clothes.find((model) => model.name.startsWith(name)));
+const womenShortcuts = [
+  { label: "Hosen", icon: "pants", key: "yoga-hosen-pants-damen" },
+  { label: "Leggings", icon: "leggings", key: "yoga-leggings-damen" },
+  { label: "Yoga BH", icon: "bra", key: "yoga-bra-tops" },
+  { label: "Shirts", icon: "top", key: "yoga-shirt" },
+  { label: "Pullover", icon: "sweater", key: "yoga-pullover" },
+  { label: "Overalls", icon: "overall", key: "overalls" },
+];
+const menShortcuts = [
+  { label: "Tanktops", icon: "top", key: "tanktops" },
+  { label: "Sweatshirts", icon: "sweater", key: "yoga-sweatshirt-herren" },
+  { label: "Trainingshosen", icon: "pants", key: "trainingshose-jogginghose-herren" },
+];
+// Brown comes from sold-out colours the original hides (Amina, Naima, Heya).
+const CLOTHES_FILTER_COLORS = ["Beige", "Blau", "Rot", "Schwarz", "Rosa", "Braun"];
+
 // "Almost Perfect" mats: second-quality, 15% off. Only the colours the
 // original shows as cards; like there, only some have a material set.
 const almostPerfectMats = [
@@ -956,6 +1056,102 @@ const categories = {
     models: [meditationBench],
     description: "Auf der Meditationsbank sitzt du im Kniesitz, ohne dass Knie und Füße das Gewicht tragen. Die leicht schräge Sitzfläche kippt das Becken nach vorn, so bleibt der Rücken von selbst aufrecht. Die Ausführung „Standard“ passt bis etwa 180 cm Körpergröße.",
   },
+  "yoga-kleidung": {
+    title: "Yoga-Kleidung",
+    nav: ["Bekleidung"],
+    shortcuts: [
+      { label: "Yogakleidung Herren", icon: "clothing", key: "yogakleidung-herren" },
+      { label: "Yogakleidung Damen", icon: "dress", key: "yogakleidung-damen" },
+    ],
+    models: clothesNamed("Amina", "Naima", "Heya", "MIKO", "ALA", "DANA", "BECCA", "FIONA", "QUINN", "ELI", "REID", "FEND", "NIA"),
+    sort: "standard",
+    filterValues: { colors: CLOTHES_FILTER_COLORS },
+    description: "Yogakleidung für Damen und Herren aus Bio-Baumwolle, recyceltem Polyester oder fließender Viskose. Oben wählst du Damen oder Herren, mit den Filtern grenzt du nach Farbe, Material und Größe ein.",
+  },
+  "yogakleidung-damen": {
+    title: "Yogakleidung Damen",
+    nav: ["Bekleidung"],
+    shortcuts: womenShortcuts,
+    models: clothesNamed("Amina", "Naima", "Heya", "BECCA", "FIONA", "ELI", "ALA", "MIKO", "NIA", "DANA"),
+    sort: "standard",
+    filterValues: { colors: CLOTHES_FILTER_COLORS },
+    description: "Vom Bralette bis zum Wickeltop: Die Damenkollektion begleitet dich auf der Matte und durch den Tag, und viele Teile lassen sich farblich miteinander kombinieren.",
+  },
+  "yoga-hosen-pants-damen": {
+    title: "Hosen",
+    nav: ["Bekleidung"],
+    shortcuts: womenShortcuts,
+    models: clothesNamed("Heya", "FIONA"),
+    sort: "standard",
+    filterValues: { colors: ["Beige", "Blau", "Rot", "Schwarz", "Braun"] },
+    description: "Eine weite Culotte aus Viskose oder eine Hose aus Bio-Baumwolle: bequem genug für die Praxis und schön genug für den Alltag.",
+  },
+  "yoga-leggings-damen": {
+    title: "Leggings",
+    nav: ["Bekleidung"],
+    shortcuts: womenShortcuts,
+    models: clothesNamed("BECCA"),
+    description: "Die BECCA Leggings aus recyceltem Polyester sitzt eng am Körper und macht jede Bewegung mit.",
+  },
+  "yoga-bra-tops": {
+    title: "Yoga BH",
+    nav: ["Bekleidung"],
+    shortcuts: womenShortcuts,
+    models: clothesNamed("MIKO"),
+    sort: "standard",
+    description: "Das MIKO Bralette aus recyceltem Polyester trägst du solo in der Yogastunde oder unter einem lockeren Shirt.",
+  },
+  "yoga-shirt": {
+    title: "Shirts",
+    nav: ["Bekleidung"],
+    shortcuts: womenShortcuts,
+    models: clothesNamed("Naima", "Amina", "ELI", "ALA"),
+    filterValues: { colors: CLOTHES_FILTER_COLORS },
+    description: "Top, Wickeltop, T-Shirt oder Tank Tee: Oberteile aus Viskose, Bio-Baumwolle und recyceltem Polyester für die Matte und den Alltag.",
+  },
+  overalls: {
+    title: "Overalls",
+    nav: ["Bekleidung"],
+    shortcuts: womenShortcuts,
+    models: clothesNamed("DANA"),
+    description: "Ein Teil, und du bist angezogen: Der DANA Overall aus recyceltem Polyester begleitet dich zur Yogastunde und danach.",
+  },
+  "yoga-pullover": {
+    title: "Pullover",
+    nav: ["Bekleidung"],
+    shortcuts: womenShortcuts,
+    models: clothesNamed("NIA"),
+    sort: "standard",
+    description: "Der NIA Sweater aus Bio-Baumwolle hält dich vor und nach der Praxis warm, etwa in der Entspannung am Ende der Stunde.",
+  },
+  "yogakleidung-herren": {
+    title: "Yogakleidung Herren",
+    nav: ["Bekleidung"],
+    shortcuts: menShortcuts,
+    models: clothesNamed("QUINN", "REID", "FEND"),
+    description: "Tank-Top, Hose und Sweater aus Bio-Baumwolle: schlichte Yogakleidung für Herren, die sich gut miteinander kombinieren lässt.",
+  },
+  tanktops: {
+    title: "Tanktops",
+    nav: ["Bekleidung"],
+    shortcuts: menShortcuts,
+    models: clothesNamed("REID"),
+    description: "Das REID Tank-Top aus Bio-Baumwolle lässt den Armen viel Bewegungsfreiheit.",
+  },
+  "trainingshose-jogginghose-herren": {
+    title: "Trainingshosen",
+    nav: ["Bekleidung"],
+    shortcuts: menShortcuts,
+    models: clothesNamed("QUINN"),
+    description: "Die QUINN Pants aus Bio-Baumwolle sind bequem auf der Matte und unterwegs.",
+  },
+  "yoga-sweatshirt-herren": {
+    title: "Sweatshirts",
+    nav: ["Bekleidung"],
+    shortcuts: menShortcuts,
+    models: clothesNamed("FEND"),
+    description: "Der FEND Sweater aus Bio-Baumwolle für den Weg ins Studio und die Pause danach.",
+  },
   "bezug-yogabolster": {
     title: "Bezug Yogarolle",
     shortcuts: [],
@@ -1027,6 +1223,18 @@ const sitePages = [
   { title: "Bezug Meditationskissen", href: "kategorie.html?k=bezug-meditationskissen", keywords: "bezug bezüge meditationskissen kissenbezug cover kategorie" },
   { title: "Bezug Meditationsmatte", href: "kategorie.html?k=bezug-meditationsmatte", keywords: "bezug bezüge meditationsmatte zabuton cover kategorie" },
   { title: "Meditationsbänke", href: "kategorie.html?k=meditationsbank", keywords: "meditation meditationsbank bank bänke kniebank hocker kategorie" },
+  { title: "Yoga-Kleidung", href: "kategorie.html?k=yoga-kleidung", keywords: "bekleidung kleidung yogakleidung mode kategorie" },
+  { title: "Yogakleidung Damen", href: "kategorie.html?k=yogakleidung-damen", keywords: "bekleidung kleidung yogakleidung damen frauen kategorie" },
+  { title: "Hosen", href: "kategorie.html?k=yoga-hosen-pants-damen", keywords: "bekleidung hose hosen pants culotte damen kategorie" },
+  { title: "Leggings", href: "kategorie.html?k=yoga-leggings-damen", keywords: "bekleidung leggings damen kategorie" },
+  { title: "Yoga BH", href: "kategorie.html?k=yoga-bra-tops", keywords: "bekleidung bh bra bralette top damen kategorie" },
+  { title: "Shirts", href: "kategorie.html?k=yoga-shirt", keywords: "bekleidung shirt shirts top tee damen kategorie" },
+  { title: "Overalls", href: "kategorie.html?k=overalls", keywords: "bekleidung overall overalls jumpsuit damen kategorie" },
+  { title: "Pullover", href: "kategorie.html?k=yoga-pullover", keywords: "bekleidung pullover sweater damen kategorie" },
+  { title: "Yogakleidung Herren", href: "kategorie.html?k=yogakleidung-herren", keywords: "bekleidung kleidung yogakleidung herren männer kategorie" },
+  { title: "Tanktops", href: "kategorie.html?k=tanktops", keywords: "bekleidung tanktop tank top herren kategorie" },
+  { title: "Trainingshosen", href: "kategorie.html?k=trainingshose-jogginghose-herren", keywords: "bekleidung hose hosen jogginghose trainingshose herren kategorie" },
+  { title: "Sweatshirts", href: "kategorie.html?k=yoga-sweatshirt-herren", keywords: "bekleidung sweatshirt pullover sweater herren kategorie" },
   { title: "Startseite", href: "index.html", keywords: "start home lotuscraft bestseller sets" },
 ];
 
@@ -1092,7 +1300,7 @@ const menu = [
     { label: "Meditationsbänke", icon: "bench" },
     { label: "Gutscheine", icon: "voucher", mobileOnly: true },
   ] },
-  { label: "Bekleidung", icon: "clothing", promo: { kicker: "Trending", title: "Die Flow Styles sind zurück!", scene: { pose: "warrior", wall: "#e3dcd3", floor: "#b49a7e", mat: "#4f5a4f", figure: "#6b2d3a" } }, children: [
+  { label: "Bekleidung", icon: "clothing", promo: { kicker: "Trending", title: "Die Flow Styles sind zurück!", key: "yogakleidung-damen", scene: { pose: "warrior", wall: "#e3dcd3", floor: "#b49a7e", mat: "#4f5a4f", figure: "#6b2d3a" } }, children: [
     { label: "Damen", icon: "clothing", children: ["Alles in Damen-Kleidung", "Hosen", "Leggings", "Bra-Tops", "Shirts", "Overalls", "Pullover"] },
     { label: "Herren", icon: "clothing", children: ["Alles in Herren-Kleidung", "Tanktops", "Trainingshosen", "Sweatshirts & Pullover"] },
   ] },
@@ -1131,6 +1339,11 @@ const menuIcons = {
   strap: '<path d="M7 17l12-9M9 19l12-9"/><rect x="2.5" y="15.5" width="5" height="5" rx="2.5"/>',
   eyemask: '<path d="M3 10c3-3 15-3 18 0v2c-2 3-6 4-9 2-3 2-7 1-9-2z"/>',
   pants: '<path d="M7 3h10l1 18h-4l-2-11-2 11H6z"/>',
+  leggings: '<path d="M8.5 3h7l1.5 18h-3L12 8.5 10 21H7z"/>',
+  dress: '<path d="M10 3h4l-.5 4.5L17 20H7l3.5-12.5z"/>',
+  bra: '<path d="M7 4.5 8 10M17 4.5 16 10"/><path d="M4 11c2.5-1.5 5.5-1 8 2 2.5-3 5.5-3.5 8-2v3c-2.7 1-5.4 1-8-1-2.6 2-5.3 2-8 1z"/>',
+  overall: '<path d="M8.5 3v5M15.5 3v5"/><path d="M7.5 8h9l1.5 13h-4.5L12 13l-1.5 8H6z"/>',
+  sweater: '<path d="M9 4l3 1 3-1 4 3 2 11-2 .5-2-7V20H7v-8.5l-2 7L3 18 5 7z"/>',
   top: '<path d="M8 4c1 2 2.5 3 4 3s3-1 4-3l3 3-2 3v10H7V10L5 7z"/>',
 };
 
@@ -1173,6 +1386,17 @@ const menuLinks = {
   "Bezüge Meditationsmatten": "kategorie.html?k=bezug-meditationsmatte",
   "Meditationsbänke": "kategorie.html?k=meditationsbank",
   "Alle Meditationsbänke": "kategorie.html?k=meditationsbank",
+  "Alles in Damen-Kleidung": "kategorie.html?k=yogakleidung-damen",
+  "Hosen": "kategorie.html?k=yoga-hosen-pants-damen",
+  "Leggings": "kategorie.html?k=yoga-leggings-damen",
+  "Bra-Tops": "kategorie.html?k=yoga-bra-tops",
+  "Shirts": "kategorie.html?k=yoga-shirt",
+  "Overalls": "kategorie.html?k=overalls",
+  "Pullover": "kategorie.html?k=yoga-pullover",
+  "Alles in Herren-Kleidung": "kategorie.html?k=yogakleidung-herren",
+  "Tanktops": "kategorie.html?k=tanktops",
+  "Trainingshosen": "kategorie.html?k=trainingshose-jogginghose-herren",
+  "Sweatshirts & Pullover": "kategorie.html?k=yoga-sweatshirt-herren",
 };
 
 // Desktop dropdown links that get a more specific icon than their column.
@@ -1186,12 +1410,14 @@ const linkIcons = {
   "Augenkissen": "eyemask",
   "Meditations-Set": "set",
   "Hosen": "pants",
-  "Leggings": "pants",
-  "Overalls": "pants",
+  "Leggings": "leggings",
+  "Overalls": "overall",
   "Trainingshosen": "pants",
-  "Bra-Tops": "top",
+  "Bra-Tops": "bra",
   "Shirts": "top",
   "Tanktops": "top",
+  "Pullover": "sweater",
+  "Sweatshirts & Pullover": "sweater",
 };
 
 const menuIcon = (name, className = "drawer__icon") =>

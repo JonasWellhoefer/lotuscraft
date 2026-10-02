@@ -22,10 +22,11 @@ const colorFamilies = [
   // The original shows a photo of wood grain here; this is a drawn stand-in.
   { name: "Wood Grain", swatch: "repeating-linear-gradient(100deg, #ded6c9 0 3px, #cbc1b0 3px 5px, #d7cebf 5px 9px)" },
 ];
-const materials = ["Bio-Baumwolle (kbA)", "Naturkautschuk", "Polyester", "PU (Polyurethan)", "PVC (Polyvinylchlorid)", "Naturkork", "Schurwolle", "Rotes Sandelholz", "Tulsi", "Rudraksha", "Polymere Klebefolie mit UV-Schutz"];
+const materials = ["Bio-Baumwolle (kbA)", "Naturkautschuk", "Polyester", "PU (Polyurethan)", "PVC (Polyvinylchlorid)", "Naturkork", "Schurwolle", "Rotes Sandelholz", "Tulsi", "Rudraksha", "Polymere Klebefolie mit UV-Schutz", "Recyceltes Polyester", "Viskose"];
 const fillings = ["Bio-Dinkelspelz (kbA)", "Kapokwolle"];
 const forms = ["Rund", "Halbrund", "Zafu"];
 const seatHeights = { 10: "10 cm (niedrig)", 15: "15 cm (standard)", 20: "20 cm (hoch)" };
+const clothingSizes = ["XS", "S", "M", "L", "XL", "XXL"];
 const availabilities = ["Verfügbar", "Nicht verfügbar"];
 
 // The original sorts most pages by "meistverkauft". Its sales ranking (as
@@ -116,6 +117,17 @@ const bestSellingRanking = [
   "Bezug für Zabuton / Aubergine", "Bezug für Zabuton / Bordeaux", "Bezug für Zabuton / Schwarz", "Bezug für Zabuton / Balsam Green",
   "Meditationsbank DHARMA Standard / Indigo Dust", "Meditationsbank DHARMA Standard / Natur", "Meditationsbank DHARMA Standard / Anthrazit",
   "Meditationsbank DHARMA Standard / Aubergine",
+  // Clothing
+  "Heya Culotte / Dark Cranberry", "Heya Culotte / Midnight Blue", "Heya Culotte / Almond Milk", "Naima Top / Almond Milk",
+  "Naima Top / Dark Cranberry", "Naima Top / Midnight Blue", "Amina Wrap Top / Almond Milk", "Amina Wrap Top / Dark Cranberry",
+  "Amina Wrap Top / Midnight Blue", "MIKO Bralette / Marshmallow", "QUINN Mens Pants / Stone Blue", "REID Mens Tank-Top / Anthrazit",
+  "ELI Womens Tee (Short Sleeve) / Violetta", "REID Mens Tank-Top / Marshmallow", "MIKO Bralette / Anthrazit",
+  "ELI Womens Tee (Short Sleeve) / Anthrazit", "BECCA Leggings / Anthrazit", "MIKO Bralette / Violetta", "REID Mens Tank-Top / Stone Blue",
+  "FIONA Womens Pants / Stone Blue", "BECCA Leggings / Marshmallow", "QUINN Mens Pants / Anthrazit", "ALA Tank Tee / Marshmallow",
+  "DANA Overall / Marshmallow", "ELI Womens Tee (Short Sleeve) / Marshmallow", "ALA Tank Tee / Anthrazit", "NIA Womens Sweater / Anthrazit",
+  "ALA Tank Tee / Violetta", "FEND Mens Sweater / Anthrazit", "NIA Womens Sweater / Stone Blue", "QUINN Mens Pants / Deep Taupe",
+  "BECCA Leggings / Violetta", "FEND Mens Sweater / Stone Blue", "FIONA Womens Pants / Anthrazit", "DANA Overall / Anthrazit",
+  "NIA Womens Sweater / Marshmallow", "FEND Mens Sweater / Marshmallow",
   // "Almost Perfect"
   "Almost Perfect Yogamatte MUDRA / Indigo Dust", "Almost Perfect Yogamatte MUDRA / Light Taupe", "Almost Perfect Yogamatte MUDRA / Balsam Green",
   "Almost Perfect Yogamatte MUDRA PRO / Anthrazit", "Almost Perfect Yogamatte PURE / Light Taupe", "Almost Perfect Yogamatte MUDRA PRO / Light Taupe",
@@ -129,8 +141,14 @@ const rankKey = (card) => `${card.name}${card.variant ? ` / ${card.variant}` : "
 const salesRank = new Map(bestSellingRanking.map((key, i) => [key, i]));
 const rankOf = (card) => salesRank.get(rankKey(card)) ?? bestSellingRanking.length;
 
+// "Am relevantesten" keeps the page's own order, except for clothing: there
+// the original ranks the models differently from its default order.
+const relevanceRanking = ["Heya Culotte", "Naima Top", "Amina Wrap Top", "ELI Womens Tee (Short Sleeve)", "BECCA Leggings", "MIKO Bralette",
+  "QUINN Mens Pants", "FIONA Womens Pants", "REID Mens Tank-Top", "ALA Tank Tee", "NIA Womens Sweater", "DANA Overall", "FEND Mens Sweater"];
+const relevance = (card) => relevanceRanking.indexOf(card.name);
+
 const sorters = {
-  relevanz: { label: "Am relevantesten", compare: (a, b) => a.order - b.order },
+  relevanz: { label: "Am relevantesten", compare: (a, b) => relevance(a) - relevance(b) || a.order - b.order },
   meistverkauft: { label: "meistverkauft", compare: (a, b) => rankOf(a) - rankOf(b) || a.order - b.order },
   "a-z": { label: "Alphabetisch, A-Z", compare: (a, b) => a.name.localeCompare(b.name, "de") || a.order - b.order },
   "z-a": { label: "Alphabetisch, Z-A", compare: (a, b) => b.name.localeCompare(a.name, "de") || a.order - b.order },
@@ -209,8 +227,11 @@ function filterDrawerMarkup(groups) {
       </dialog>`;
 }
 
-// Like the original, pages open sorted by "meistverkauft" unless they say otherwise.
+// Like the original, pages open sorted by "meistverkauft" unless they say
+// otherwise. "standard" keeps the page's own order with no option ticked
+// (the original's menu then says "Bitte wähle eine Sortieroption").
 const defaultSort = (category) => category.sort || "meistverkauft";
+const compareBy = (key) => sorters[key]?.compare || ((a, b) => a.order - b.order);
 
 function categoryMarkup(category) {
   // Circles without a `key` lead to pages this rebuild doesn't have yet.
@@ -224,7 +245,8 @@ function categoryMarkup(category) {
   // and a filter with a single value is left out. Availability always has
   // both. Where the original also counts hidden sold-out products, the
   // category lists its values in `filterValues`.
-  const offered = (key, value) => category.models.some((model) => model[key] === value || model.variants?.some((v) => v[key] === value));
+  const has = (field, value) => (Array.isArray(field) ? field.includes(value) : field === value);
+  const offered = (key, value) => category.models.some((model) => has(model[key], value) || model.variants?.some((v) => has(v[key], value)));
   const options = (key, filterKey, values) => values.filter((value) => (category.filterValues?.[filterKey]
     ? category.filterValues[filterKey].includes(value)
     : offered(key, value)));
@@ -233,19 +255,22 @@ function categoryMarkup(category) {
   const formOptions = options("form", "forms", forms);
   const materialOptions = options("material", "materials", materials);
   const fillingOptions = options("filling", "fillings", fillings);
+  const sizeOptions = options("sizes", "sizes", clothingSizes);
   const groups = [
     families.length > 1 && { key: "colors", label: "Farbe", options: swatchList(families) },
     heightOptions.length > 1 && { key: "heights", label: "Sitzhöhe", options: checkboxList(heightOptions, seatHeights) },
     formOptions.length > 1 && { key: "forms", label: "Form", options: checkboxList(formOptions) },
     materialOptions.length > 1 && { key: "materials", label: "Material", options: checkboxList(materialOptions) },
     fillingOptions.length > 1 && { key: "fillings", label: "Füllung", options: checkboxList(fillingOptions) },
+    sizeOptions.length > 1 && { key: "sizes", label: "Größe", options: checkboxList(sizeOptions) },
     { key: "availability", label: "Verfügbarkeit", options: checkboxList(availabilities) },
   ].filter(Boolean);
 
   const sortRadios = Object.entries(sorters).map(([key, sorter]) => `
               <label class="filter__check"><input type="radio" name="sort" value="${key}"${key === defaultSort(category) ? " checked" : ""}>${sorter.label}</label>`).join("");
   // Phones sort with the browser's own picker, like the original.
-  const sortSelect = Object.entries(sorters).map(([key, sorter]) => `
+  const sortSelect = (defaultSort(category) === "standard" ? `
+            <option value="standard" disabled selected>Bitte wähle eine Sortieroption</option>` : "") + Object.entries(sorters).map(([key, sorter]) => `
             <option value="${key}"${key === defaultSort(category) ? " selected" : ""}>${sorter.label}</option>`).join("");
 
   return `
@@ -322,10 +347,11 @@ if (!category) {
       name: model.name,
       slug: model.slug,
       price: variant.price ?? model.price,
-      compareAt: model.compareAt,
+      compareAt: "compareAt" in variant ? variant.compareAt : model.compareAt,
       material: variant.material ?? model.material,
       filling: variant.filling ?? model.filling,
       height: variant.height ?? model.height,
+      stock: variant.stock,
       form: variant.form ?? model.form,
       shape: variant.shape || model.shape || "mat",
       variant: variant.color,
@@ -336,7 +362,7 @@ if (!category) {
     })) : [{ ...model, soldOut: Boolean(model.soldOut) }]))
     .map((card, order) => ({ ...card, order }));
 
-  const filters = { colors: new Set(), heights: new Set(), forms: new Set(), materials: new Set(), fillings: new Set(), availability: new Set() };
+  const filters = { colors: new Set(), heights: new Set(), forms: new Set(), materials: new Set(), fillings: new Set(), sizes: new Set(), availability: new Set() };
   let sortKey = defaultSort(category);
 
   const grid = categoryRoot.querySelector(".category__grid");
@@ -344,19 +370,23 @@ if (!category) {
   const resultCount = categoryRoot.querySelector("#result-count");
   const filterBar = categoryRoot.querySelector(".filters");
 
-  // Within one filter any ticked value matches; different filters must all match.
+  // Within one filter any ticked value matches; different filters must all
+  // match. Clothing in no size at all drops out once anything is ticked.
   function matches(card) {
     const availability = card.soldOut ? "Nicht verfügbar" : "Verfügbar";
+    const filtering = Object.values(filters).some((set) => set.size);
+    if (filtering && card.stock?.length === 0) return false;
     return (!filters.colors.size || filters.colors.has(card.family))
       && (!filters.heights.size || filters.heights.has(card.height))
       && (!filters.forms.size || filters.forms.has(card.form))
       && (!filters.materials.size || filters.materials.has(card.material))
       && (!filters.fillings.size || filters.fillings.has(card.filling))
+      && (!filters.sizes.size || Boolean(card.stock?.some((size) => filters.sizes.has(size))))
       && (!filters.availability.size || filters.availability.has(availability));
   }
 
   function render() {
-    const visible = cards.filter(matches).sort(sorters[sortKey].compare);
+    const visible = cards.filter(matches).sort(compareBy(sortKey));
     grid.innerHTML = visible.map(productCard).join("");
     grid.hidden = visible.length === 0;
     empty.hidden = visible.length > 0;
