@@ -107,7 +107,7 @@ Die Startseite wird Abschnitt für Abschnitt in der Reihenfolge des Originals na
 - [x] Bestseller mit Tabs (Yoga / Meditation / Bekleidung)
 - [x] Kundenbewertungen (Karussell)
 - [x] Set-Angebote mit Tabs (Yoga- / Meditation-Bundles)
-- [ ] Community-Inspiration
+- [x] Community-Inspiration
 - [ ] Verkaufsargumente
 - [ ] Footer mit Newsletter
 - [ ] Mobiles Menü & Dropdowns

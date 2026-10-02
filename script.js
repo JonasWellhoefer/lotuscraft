@@ -134,6 +134,44 @@ document.querySelectorAll(".product-grid").forEach((grid) => {
   grid.innerHTML = collections[grid.dataset.category].map(productCard).join("");
 });
 
+// ---------- Community inspiration ----------
+// The original shows real Instagram posts. Here: invented "Musterfrau"-style
+// accounts and small drawn yoga scenes instead of other people's photos.
+const communityPosts = [
+  { handle: "erika.musterfrau", pose: "lunge", wall: "#d9d2c7", floor: "#a88b6a", mat: "#4f5a4f" },
+  { handle: "max.mustermann", pose: "legRaise", wall: "#8a8178", floor: "#5f554b", mat: "#2f3a35" },
+  { handle: "yoga.beispiel", pose: "supported", wall: "#e4e0d9", floor: "#cbbfae", mat: "#b8ad9c" },
+  { handle: "flow.demo", pose: "warrior", wall: "#b9c4b0", floor: "#7f8582", mat: "#2f3b3a" },
+  { handle: "om.platzhalter", pose: "seated", wall: "#ece9e3", floor: "#c9b293", mat: "#8b7d6b" },
+];
+
+// Stick-figure poses in a 100×100 scene: `body` is drawn as one thick stroke.
+const poses = {
+  lunge: { head: [39, 36], body: "M20 84H34L44 66L62 64L64 84M44 66L40 44M40 44L33 24" },
+  legRaise: { head: [22, 80], body: "M28 82H54M54 82L80 84M54 82L60 46M32 84L46 88" },
+  supported: { head: [18, 79], body: "M24 81H46M46 81L58 70L72 84M26 81L40 86", prop: `<ellipse cx="58" cy="80" rx="11" ry="6" fill="${COTTON}"/>` },
+  warrior: { head: [50, 30], body: "M30 84L50 60M50 60L66 66L70 84M50 60V38M28 40H72" },
+  seated: { head: [50, 44], body: "M32 84Q50 74 68 84M50 78V52M50 56L38 70L34 80M50 56L62 70L66 80", prop: `<ellipse cx="50" cy="86" rx="18" ry="5" fill="#6f6355"/>` },
+};
+
+function communityTile(post) {
+  const pose = poses[post.pose];
+  return `
+    <a href="#" class="community-tile" aria-label="Beitrag von @${post.handle} (Platzhalter)">
+      <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <rect width="100" height="72" fill="${post.wall}"/>
+        <rect y="72" width="100" height="28" fill="${post.floor}"/>
+        <path d="M10 80H90L96 90H4Z" fill="${post.mat}"/>
+        ${pose.prop || ""}
+        <path d="${pose.body}" fill="none" stroke="#3a3530" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="${pose.head[0]}" cy="${pose.head[1]}" r="5" fill="#3a3530"/>
+      </svg>
+      <span class="community-tile__handle">${post.handle}</span>
+    </a>`;
+}
+
+document.querySelector(".community-row").innerHTML = communityPosts.map(communityTile).join("");
+
 // ---------- Testimonials ----------
 // Invented sample reviews: the original shows real customers' names and
 // towns, which don't belong in a public student repo.
