@@ -34,7 +34,7 @@ const bestsellers = {
     { name: "Yogablock Kork 2er Set", price: 29.95, shape: "block", tint: CORK },
     { name: "Yogamatte PURE", slug: "yogamatte-pure", price: 79.95, shape: "mat", tint: "#7a2a3a", badge: "Matte Oberfläche" },
     { name: "Yogamatte ARISE", slug: "yogamatte-arise", price: 89.95, shape: "mat", tint: "#3f5550" },
-    { name: "Yogamatte MUDRA", price: 39.95, shape: "mat", tint: "#55695f" },
+    { name: "Yogamatte MUDRA", slug: "yogamatte-mudra-studio", price: 39.95, shape: "mat", tint: "#55695f" },
   ],
   meditation: [
     { name: "Meditationskissen Lotus (H: 15cm)", price: 39.95, shape: "cushion", tint: "#8b7d6b" },
@@ -189,7 +189,7 @@ const categories = {
       { label: "Reise Yogamatte", icon: "suitcase" },
     ],
     models: [
-      { name: "Yogamatte MUDRA", price: 39.95, material: "PVC (Polyvinylchlorid)", variants: [
+      { name: "Yogamatte MUDRA", slug: "yogamatte-mudra-studio", price: 39.95, material: "PVC (Polyvinylchlorid)", variants: [
         { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
         { color: "Lavender Fog", hex: "#b7a3b6", family: "Rosa" },
         { color: "Light Taupe", hex: "#c4b6a6", family: "Beige" },

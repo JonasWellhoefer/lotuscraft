@@ -771,7 +771,9 @@ button { font: inherit; background: none; border: 0; padding: 0; cursor: pointer
 .color-swatch input:focus-visible + .color-swatch__thumb { outline: 2px solid var(--gold); outline-offset: 2px; }
 
 .buybox__cart { margin-top: 32px; }
+.buybox__note { margin-top: 4px; text-align: center; font-size: 12.8px; line-height: 1.2; color: var(--text-muted); }
 .buybox__stock { margin-top: 16px; text-align: center; color: #028849; }
+.buybox__stock--out { color: var(--sale); }
 .buybox__added:empty { display: none; }
 .buybox__added { margin-top: 8px; text-align: center; font-size: 14px; color: var(--text-muted); }
 .buybox__payments {

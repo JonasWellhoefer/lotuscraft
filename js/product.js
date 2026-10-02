@@ -14,6 +14,7 @@ const accessories = {
   strap: { name: "Yogamatten Tragegurt", price: 14.95, shape: "strap", tint: COTTON },
   towel: { name: "Yoga Handtuch", price: 29.95, shape: "towel", tint: "#8f9a8c" },
   spray: { name: "Bio Yogamatten Spray", price: 12.95, shape: "spray", tint: "#e6e1d6" },
+  belt: { name: "Yogagurt 100% Bio-Baumwolle", price: 6.49, compareAt: 12.95, shape: "strap", tint: "#8a7f72" },
 };
 
 // The ARISE mats are two-tone: the underside is a lighter shade of the top.
@@ -241,6 +242,80 @@ const productDetails = {
       { name: "„Almost Perfect“ Yogamatte ARISE Travel", price: 50.95, compareAt: 59.95, shape: "mat", tint: "#5d7366" },
     ],
   },
+
+  "yogamatte-mudra-studio": {
+    name: "Yogamatte MUDRA",
+    subtitle: "Die Vielseitige: Perfekt für Einsteiger - ideal für alle Yoga-Stile und als Studioausstattung.",
+    price: 39.95,
+    rating: 4.56,
+    reviewCount: 1637,
+    ratingScales: [
+      ["Rutschfestigkeit", 4.35],
+      ["Dämpfung", 4.47],
+      ["Qualität und Langlebigkeit", 4.47],
+    ],
+    specs: { material: "PVC (Polyvinylchlorid)", short: "PVC", length: 183, width: 61, mm: 5, weight: "1,35 kg", origin: "Taiwan", texture: "waffle" },
+    // One colour all through. Aubergine is sold out but still offered, as on
+    // the original (which hides Withered Rose instead).
+    colors: [
+      { name: "Balsam Green", hex: "#5d7366" },
+      { name: "Lavender Fog", hex: "#b7a3b6" },
+      { name: "Light Taupe", hex: "#c4b6a6" },
+      { name: "Indigo Dust", hex: "#6b7c95" },
+      { name: "Anthrazit", hex: "#3d3d3f" },
+      { name: "Aubergine", hex: "#8d5a6f", soldOut: true },
+      { name: "Dark Cranberry", hex: "#7a2a3a" },
+    ].map((color) => ({ ...color, underside: color.hex })),
+    gallery: ["standing", "rolled", "layers", "top", "studioLunge", "studioSeated"],
+    description: `
+        <p>Die MUDRA ist die Allrounderin für den Einstieg: leicht, gut gepolstert und unkompliziert. Mit 5 mm Dicke federt sie Knie und Handgelenke ab, mit rund 1,35 kg trägst du sie mühelos ins Studio.</p>
+        <p>Ihre Oberfläche mit Waffelstruktur gibt Halt, auch in dynamischen Stilen wie Vinyasa oder Ashtanga. Die Matte ist frei von Latex und BPA und robust genug für den Alltag im Yogastudio – dafür ist sie ausdrücklich gemacht.</p>`,
+    care: `
+        <p>Mit einer weichen Bürste oder einem Tuch und einer Mischung aus Wasser und Apfelessig (1:1) reinigen. Keine Seife verwenden und nicht in die Waschmaschine geben.</p>
+        <p>Erst trocknen lassen, dann aufrollen. Vor direkter Sonne und großer Hitze schützen.</p>`,
+    sustainability: `
+        <p><strong>Schadstoffgeprüft</strong> nach OEKO-TEX® STANDARD 100.</p>`,
+    features: [
+      {
+        title: "Gut gepolstert, sicher im Stand",
+        text: "5 mm geben Knien und Handgelenken spürbar Polster. Trotzdem steht die MUDRA stabil genug für Balancehaltungen – ideal, wenn du gerade mit Yoga anfängst oder sanfte Stile magst.",
+        picture: "studio",
+      },
+      {
+        title: "Leicht genug für jeden Weg",
+        text: "Mit rund 1,35 kg ist die MUDRA eine der leichtesten Matten im Sortiment. Aufgerollt unter dem Arm oder am Tragegurt nimmst du sie mühelos mit ins Studio, in den Park oder zu Freund:innen.",
+        picture: "carry",
+      },
+      {
+        title: "Geprüft und frei von Latex",
+        text: "Die Matte ist nach OEKO-TEX® STANDARD 100 auf Schadstoffe geprüft und enthält weder Latex noch BPA. Damit ist sie auch eine gute Wahl, wenn du auf Latex allergisch reagierst.",
+        picture: "calm",
+      },
+      {
+        title: "Griffig und schnell sauber",
+        text: "Die Waffelstruktur der Oberfläche gibt dir Halt, auch wenn es im Flow anstrengender wird. Nach der Stunde genügt ein feuchtes Tuch – deshalb ist die MUDRA auch in vielen Yogastudios im Einsatz.",
+        picture: "layers",
+      },
+    ],
+    reviews: [
+      { name: "Anna", place: "Berlin, DE", color: "Balsam Green", stars: 5, days: 1, text: "Meine erste richtige Yogamatte und ich bin begeistert. Leicht, weich und sie rutscht nicht weg." },
+      { name: "Kerstin", place: "Essen, DE", color: "Lavender Fog", stars: 5, days: 2, text: "Die Farbe ist ein Traum und die Matte angenehm dick. Für meine Yin-Stunden genau richtig." },
+      { name: "Anonym", place: "", color: "Anthrazit", stars: 4, days: 3, text: "Für den Preis wirklich gut. Bei sehr schwitzigen Händen rutsche ich manchmal ein wenig." },
+      { name: "Ralf", place: "Kassel, DE", color: "Indigo Dust", stars: 5, days: 5, text: "Wir haben zehn Stück für unseren Kurs im Gemeindesaal gekauft. Robust und leicht zu reinigen." },
+      { name: "Eva", place: "Salzburg, AT", color: "Light Taupe", stars: 4, days: 8, text: "Schön leicht zum Tragen. Auf dem hellen Farbton sieht man Flecken allerdings schnell." },
+      { name: "Lisa", place: "Rostock, DE", color: "Dark Cranberry", stars: 5, days: 10, text: "Die neue Farbe ist wunderschön. Polsterung und Grip passen für mich perfekt." },
+      { name: "Max", place: "Winterthur, CH", color: "Anthrazit", stars: 3, days: 13, text: "Ordentliche Einsteigermatte. Nach einem Jahr täglicher Nutzung sieht man erste Abriebspuren." },
+      { name: "Johanna", place: "Ulm, DE", color: "Balsam Green", stars: 5, days: 17, text: "Wiegt fast nichts, ich nehme sie mit dem Fahrrad mit ins Studio. Klare Empfehlung." },
+      { name: "Greta", place: "Innsbruck, AT", color: "Aubergine", stars: 5, days: 22, text: "Habe für meine Tochter gleich eine zweite bestellt. Weich, rutschfest und schnell sauber gewischt." },
+      { name: "Oskar", place: "Graz, AT", color: "Lavender Fog", stars: 4, days: 26, text: "Gute Matte für den Anfang. Die Waffelstruktur ist zuerst ungewohnt, gibt aber guten Halt." },
+    ],
+    related: [
+      bestsellers.yoga[0], // Yogablock Kork 2er Set
+      accessories.bag,
+      { name: "Yogamatte MUDRA PRO", price: 99.95, shape: "mat", tint: "#3d3d3f" },
+      accessories.belt,
+    ],
+  },
 };
 
 // ---------- Drawn product pictures ----------
@@ -255,11 +330,18 @@ const cm = (mm) => `${decimal(mm / 10)} cm`;
 // Explicit `underside`, else PURE's rule: matte colours match, smooth ones are black.
 const underside = (color) => color.underside || (color.matte ? color.hex : "#2b2a28");
 
-// Fine grain over a matte surface (`path` = the visible top of the mat).
-function texture(color, path) {
-  if (!color.matte) return "";
-  const id = `grain-${++patternCount}`;
-  return `<defs><pattern id="${id}" width="4" height="4" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".6" fill="rgba(255,255,255,.14)"/></pattern></defs>
+// Surface texture over the visible top of the mat (`path`): fine grain on
+// PURE's matte colours, a waffle grid on mats with `specs.texture: "waffle"`.
+const textures = {
+  grain: '<circle cx="1" cy="1" r=".6" fill="rgba(255,255,255,.14)"/>',
+  waffle: '<path d="M0 .5H4M.5 0V4" stroke="rgba(0,0,0,.13)"/>',
+};
+
+function texture(color, specs, path) {
+  const kind = color.matte ? "grain" : specs.texture;
+  if (!kind) return "";
+  const id = `texture-${++patternCount}`;
+  return `<defs><pattern id="${id}" width="4" height="4" patternUnits="userSpaceOnUse">${textures[kind]}</pattern></defs>
        <path d="${path}" fill="url(#${id})"/>`;
 }
 
@@ -278,12 +360,12 @@ function rolledPicture(color) {
     </svg>`;
 }
 
-function topPicture(color) {
+function topPicture(color, specs) {
   return `
     <svg viewBox="0 0 200 250" aria-hidden="true">
       <rect width="200" height="250" fill="${PHOTO_BG}"/>
       <rect x="52" y="22" width="96" height="180" rx="3" fill="${color.hex}"/>
-      ${texture(color, "M52 22h96v180H52z")}
+      ${texture(color, specs, "M52 22h96v180H52z")}
       <circle cx="100" cy="54" r="8" fill="none" stroke="rgba(0,0,0,.22)" stroke-width="1.2"/>
       <rect x="48" y="196" width="104" height="30" rx="15" fill="${underside(color)}"/>
       <rect x="54" y="199" width="92" height="7" rx="3.5" fill="rgba(255,255,255,.1)"/>
@@ -312,7 +394,7 @@ function layersPicture(color, specs) {
     <svg viewBox="0 0 200 250" aria-hidden="true">
       <rect width="200" height="250" fill="${PHOTO_BG}"/>
       <path d="M28 92H172L192 160H8Z" fill="${color.hex}"/>
-      ${texture(color, "M28 92H172L192 160H8Z")}
+      ${texture(color, specs, "M28 92H172L192 160H8Z")}
       <rect x="8" y="160" width="184" height="${top}" fill="${color.hex}"/>
       <rect x="8" y="160" width="184" height="${top}" fill="rgba(0,0,0,.2)"/>
       <rect x="8" y="${160 + top}" width="184" height="${side - top}" fill="${underside(color)}"/>
@@ -347,7 +429,7 @@ function sizeWidePicture(color, specs) {
     <svg viewBox="0 0 330 202" aria-hidden="true">
       <rect width="330" height="202" fill="${PHOTO_BG}"/>
       <rect x="40" y="${y}" width="222" height="${height}" rx="3" fill="${color.hex}"/>
-      ${texture(color, `M40 ${y}h222v${height}H40z`)}
+      ${texture(color, specs, `M40 ${y}h222v${height}H40z`)}
       <circle cx="66" cy="96" r="7" fill="none" stroke="rgba(0,0,0,.22)" stroke-width="1.2"/>
       <g stroke="#5f5c52" fill="none">
         <path d="M276 ${y}V${y + height}M272 ${y}H280M272 ${y + height}H280"/>
@@ -367,7 +449,7 @@ function layersWidePicture(color, specs) {
     <svg viewBox="0 0 330 202" aria-hidden="true">
       <rect width="330" height="202" fill="${PHOTO_BG}"/>
       <path d="M50 56H250L286 128H14Z" fill="${color.hex}"/>
-      ${texture(color, "M50 56H250L286 128H14Z")}
+      ${texture(color, specs, "M50 56H250L286 128H14Z")}
       <rect x="14" y="128" width="272" height="${top}" fill="${color.hex}"/>
       <rect x="14" y="128" width="272" height="${top}" fill="rgba(0,0,0,.2)"/>
       <rect x="14" y="${128 + top}" width="272" height="${side - top}" fill="${underside(color)}"/>
@@ -407,6 +489,24 @@ function foldedWidePicture(color, specs) {
     </svg>`;
 }
 
+// The rolled-up mat on its carrying strap.
+function carryWidePicture(color, specs) {
+  return `
+    <svg viewBox="0 0 330 202" aria-hidden="true">
+      <rect width="330" height="202" fill="${PHOTO_BG}"/>
+      <ellipse cx="165" cy="136" rx="112" ry="7" fill="rgba(0,0,0,.07)"/>
+      <path d="M101 74C111 24 213 24 223 74" fill="none" stroke="${COTTON}" stroke-width="6" stroke-linecap="round"/>
+      <rect x="64" y="74" width="196" height="56" rx="4" fill="${color.hex}"/>
+      ${texture(color, specs, "M64 74h196v56H64z")}
+      <rect x="96" y="72" width="10" height="60" rx="2" fill="${COTTON}"/>
+      <rect x="218" y="72" width="10" height="60" rx="2" fill="${COTTON}"/>
+      <ellipse cx="260" cy="102" rx="13" ry="28" fill="${underside(color)}"/>
+      <ellipse cx="259" cy="102" rx="8" ry="18" fill="none" stroke="rgba(0,0,0,.18)"/>
+      <ellipse cx="259" cy="102" rx="4" ry="8" fill="rgba(0,0,0,.35)"/>
+      <text x="165" y="176" text-anchor="middle" font-size="11" fill="#5f5c52" font-family="Hanken Grotesk, sans-serif">ca. ${specs.weight} · ${specs.length} × ${specs.width} cm</text>
+    </svg>`;
+}
+
 // A wide crop of a drawn scene (the scene backdrop reaches past its frame).
 const wideScene = (color, pose, wall, floor) => sceneSvg({ pose, wall, floor, mat: color.hex }, "-40 -2 180 110");
 
@@ -421,6 +521,9 @@ const featurePictures = {
   folded: { label: (specs) => `Gefaltete Matte neben einem Rucksack, ${specs.weight}`, draw: foldedWidePicture },
   park: { label: () => "Figur im Krieger auf der Matte im Park", draw: (color) => wideScene(color, "warrior", "#d8e4d2", "#93a874") },
   beach: { label: () => "Figur im Baum auf der Matte am Strand", draw: (color) => wideScene(color, "tree", "#cfe0e8", "#e2d2b0") },
+  studio: { label: () => "Figur im Ausfallschritt auf der Matte im Studio", draw: (color) => wideScene(color, "lunge", "#ece8e1", "#c4a886") },
+  carry: { label: (specs) => `Aufgerollte Matte am Tragegurt, ca. ${specs.weight}`, draw: carryWidePicture },
+  calm: { label: () => "Figur im Sitzen auf der Matte im Studio", draw: (color) => wideScene(color, "seated", "#e6e2dc", "#c4a886") },
 };
 
 const galleryPictures = {
@@ -436,6 +539,8 @@ const galleryPictures = {
   beach: { label: "im Baum am Strand", draw: (color) => scenePicture(color, "tree", "#cfe0e8", "#e2d2b0") },
   park: { label: "im Krieger im Park", draw: (color) => scenePicture(color, "warrior", "#d8e4d2", "#93a874") },
   seated: { label: "im Sitzen", draw: (color) => scenePicture(color, "seated", "#e8e1d6", "#b49a7e") },
+  studioLunge: { label: "im Ausfallschritt im Studio", draw: (color) => scenePicture(color, "lunge", "#ece8e1", "#c4a886") },
+  studioSeated: { label: "im Sitzen im Studio", draw: (color) => scenePicture(color, "seated", "#e6e2dc", "#c4a886") },
 };
 
 // ---------- Small line icons for the buy box ----------
@@ -454,6 +559,10 @@ const buyboxUsps = [
   ["invoice", "Kauf auf Rechnung"],
   ["heart", "Designed with love in Vienna"],
 ];
+
+// Buy box texts for the picked colour; sold-out colours read as on the original.
+const cartLabel = (color) => (color.soldOut ? "Benachrichtige mich" : "In den Warenkorb");
+const stockText = (color) => (color.soldOut ? "Nicht auf Lager" : "Auf Lager: In 1-3 Tagen bei dir");
 
 // ---------- Page markup ----------
 function galleryItems(product, color) {
@@ -536,8 +645,9 @@ function productMarkup(product) {
           </div>
         </fieldset>
 
-        <button class="btn btn--primary btn--block buybox__cart" type="button">In den Warenkorb</button>
-        <p class="buybox__stock">Auf Lager: In 1-3 Tagen bei dir</p>
+        <button class="btn btn--primary btn--block buybox__cart" type="button">${cartLabel(color)}</button>
+        <p class="buybox__note"${color.soldOut ? "" : " hidden"}>Du erhältst eine Benachrichtigung per E-Mail, sobald der Artikel wieder auf Lager ist.</p>
+        <p class="buybox__stock${color.soldOut ? " buybox__stock--out" : ""}">${stockText(color)}</p>
         <p class="buybox__added" role="status"></p>
         <div class="buybox__payments" role="img" aria-label="Zahlungsarten (neutrale Platzhalter-Icons)">${PAYMENT_ICONS}
         </div>
@@ -706,6 +816,10 @@ if (!product) {
   const thumbs = productRoot.querySelector(".gallery__thumbs");
   const badge = productRoot.querySelector(".gallery__badge");
   const colorValue = productRoot.querySelector(".color-picker__value");
+  const cartButton = productRoot.querySelector(".buybox__cart");
+  const note = productRoot.querySelector(".buybox__note");
+  const stock = productRoot.querySelector(".buybox__stock");
+  const added = productRoot.querySelector(".buybox__added");
   let color = product.colors[0];
 
   // On tablets and phones the gallery is a swipe slider; thumbnails jump to
@@ -730,7 +844,8 @@ if (!product) {
 
   track.addEventListener("scroll", () => markThumb(currentPicture()), { passive: true });
 
-  // Picking a colour redraws every picture in that colour.
+  // Picking a colour redraws every picture in that colour and shows
+  // whether it is in stock.
   productRoot.querySelector(".color-picker").addEventListener("change", (e) => {
     color = product.colors[Number(e.target.value)];
     colorValue.textContent = color.name;
@@ -740,17 +855,20 @@ if (!product) {
     productRoot.querySelectorAll(".feature__media").forEach((media) => {
       media.innerHTML = featurePictures[media.dataset.picture].draw(color, product.specs);
     });
+    cartButton.textContent = cartLabel(color);
+    note.hidden = !color.soldOut;
+    stock.textContent = stockText(color);
+    stock.classList.toggle("buybox__stock--out", Boolean(color.soldOut));
+    added.textContent = "";
   });
 
-  // A link can preselect a colour, e.g. from the category page (&farbe=Light Taupe).
-  const wanted = product.colors.findIndex((c) => c.name === new URLSearchParams(location.search).get("farbe"));
-  if (wanted > 0) productRoot.querySelectorAll(".color-picker input")[wanted].click();
-
   // Demo cart: adds the picked colour and opens the cart; nothing is ordered.
-  const cartButton = productRoot.querySelector(".buybox__cart");
-  const added = productRoot.querySelector(".buybox__added");
-
+  // For a sold-out colour the button only explains that no reminder is stored.
   cartButton.addEventListener("click", () => {
+    if (color.soldOut) {
+      added.textContent = "Nur eine Demo: In diesem Studentenprojekt gibt es keine Benachrichtigungen, es wird nichts gespeichert.";
+      return;
+    }
     addToCart({
       id: `${slug}:${color.name}`,
       name: product.name,
@@ -762,6 +880,10 @@ if (!product) {
     openCart();
     added.textContent = `${product.name} (${color.name}) liegt im Warenkorb – nur eine Demo, es wird nichts bestellt.`;
     cartButton.textContent = "Hinzugefügt ✓";
-    setTimeout(() => (cartButton.textContent = "In den Warenkorb"), 2000);
+    setTimeout(() => (cartButton.textContent = cartLabel(color)), 2000);
   });
+
+  // A link can preselect a colour, e.g. from the category page (&farbe=Light Taupe).
+  const wanted = product.colors.findIndex((c) => c.name === new URLSearchParams(location.search).get("farbe"));
+  if (wanted > 0) productRoot.querySelectorAll(".color-picker input")[wanted].click();
 }
