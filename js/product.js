@@ -44,6 +44,29 @@ const productDetails = {
       ["Nachhaltigkeit", `
         <p><strong>Plastikfreie Verpackung</strong> – ohne PVC und ohne erdölbasierte Kunststoffe.</p>`],
     ],
+    // Info rows below the details, alternating text and picture.
+    features: [
+      {
+        title: "Griffig dank PU-Oberfläche",
+        text: "Die Oberfläche aus PU wird nicht rutschig, wenn du ins Schwitzen kommst. So stehst du auch in fordernden Flows sicher – vom herabschauenden Hund bis zur Balance-Haltung. Die Unterseite aus Naturkautschuk hält die Matte dabei fest am Boden.",
+        picture: "grip",
+      },
+      {
+        title: "Viel Platz, sicherer Stand",
+        text: "Mit 66 cm ist die PURE breiter als viele Standardmatten, die meist um die 60 cm messen. Das gibt dir Raum für weite Stände und seitliche Übergänge, ohne dass Hände oder Füße über den Rand rutschen. Mit 183 cm Länge passt sie auch für große Menschen.",
+        picture: "size",
+      },
+      {
+        title: "Angenehm auf der Haut",
+        text: "Die samtige PU-Schicht fühlt sich weich an, der Naturkautschuk darunter federt Knie und Handgelenke ab. Mit 4 mm ist die Matte dick genug für Komfort und dünn genug, um stabil zu stehen.",
+        picture: "layers",
+      },
+      {
+        title: "Für viele Yogastile gemacht",
+        text: "Ob ruhiges Hatha, kraftvolles Vinyasa oder Yin am Abend: Die Mischung aus Grip und Dämpfung macht die PURE zur Matte für jeden Tag – zu Hause wie im Studio.",
+        picture: "styles",
+      },
+    ],
   },
 };
 
@@ -114,6 +137,53 @@ function layersPicture(color) {
 }
 
 const scenePicture = (color, pose, wall, floor) => sceneSvg({ pose, wall, floor, mat: color.hex });
+
+// Wide pictures for the info rows (840×515 on the original).
+function sizeWidePicture(color) {
+  return `
+    <svg viewBox="0 0 330 202" aria-hidden="true">
+      <rect width="330" height="202" fill="${PHOTO_BG}"/>
+      <rect x="40" y="56" width="222" height="80" rx="3" fill="${color.hex}"/>
+      <circle cx="66" cy="96" r="7" fill="none" stroke="rgba(0,0,0,.22)" stroke-width="1.2"/>
+      <g stroke="#5f5c52" fill="none">
+        <path d="M276 56V136M272 56H280M272 136H280"/>
+        <path d="M40 152H262M40 148V156M262 148V156"/>
+      </g>
+      <g font-size="11" fill="#5f5c52" font-family="Hanken Grotesk, sans-serif">
+        <text x="286" y="100">66 cm</text>
+        <text x="151" y="172" text-anchor="middle">183 cm</text>
+      </g>
+    </svg>`;
+}
+
+function layersWidePicture(color) {
+  const id = `grain-${++patternCount}`;
+  const grain = color.matte
+    ? `<defs><pattern id="${id}" width="4" height="4" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".6" fill="rgba(255,255,255,.14)"/></pattern></defs>
+       <path d="M50 56H250L286 128H14Z" fill="url(#${id})"/>`
+    : "";
+  return `
+    <svg viewBox="0 0 330 202" aria-hidden="true">
+      <rect width="330" height="202" fill="${PHOTO_BG}"/>
+      <path d="M50 56H250L286 128H14Z" fill="${color.hex}"/>
+      ${grain}
+      <rect x="14" y="128" width="272" height="8" fill="${color.hex}"/>
+      <rect x="14" y="128" width="272" height="8" fill="rgba(0,0,0,.2)"/>
+      <rect x="14" y="136" width="272" height="12" fill="${underside(color)}"/>
+      <path d="M296 128V148M292 128H300M292 148H300" stroke="#5f5c52"/>
+      <text x="150" y="176" text-anchor="middle" font-size="11" fill="#5f5c52" font-family="Hanken Grotesk, sans-serif">PU-Oberfläche · Naturkautschuk · 4 mm</text>
+    </svg>`;
+}
+
+// A wide crop of a drawn scene (the scene backdrop reaches past its frame).
+const wideScene = (color, pose, wall, floor) => sceneSvg({ pose, wall, floor, mat: color.hex }, "-40 -2 180 110");
+
+const featurePictures = {
+  grip: { label: "Figur im herabschauenden Hund auf der Matte", draw: (color) => wideScene(color, "dog", "#e4ded5", "#b49a7e") },
+  size: { label: "Matte von oben, 183 × 66 cm", draw: sizeWidePicture },
+  layers: { label: "Schichtaufbau: PU-Oberfläche und Naturkautschuk, 4 mm", draw: layersWidePicture },
+  styles: { label: "Figur im Baum auf der Matte", draw: (color) => wideScene(color, "tree", "#dcdcd2", "#9c8a74") },
+};
 
 const pictures = [
   { label: "halb aufgerollt", draw: rolledPicture },
@@ -222,7 +292,24 @@ function productMarkup(product) {
         </ul>
         <a href="#bewertungen" class="btn btn--secondary btn--block">Bewertungen anschauen</a>
       </div>
-    </div>`;
+    </div>
+
+    <section class="container product-features" aria-label="Mehr über die ${product.name}">${featureRows(product, color)}
+    </section>`;
+}
+
+function featureRows(product, color) {
+  return product.features.map((feature, i) => {
+    const picture = featurePictures[feature.picture];
+    return `
+      <div class="feature${i % 2 ? " feature--reverse" : ""}">
+        <div class="feature__text">
+          <h2 class="feature__title">${feature.title}</h2>
+          <p>${feature.text}</p>
+        </div>
+        <div class="feature__media" role="img" aria-label="${picture.label}" data-picture="${feature.picture}">${picture.draw(color)}</div>
+      </div>`;
+  }).join("");
 }
 
 function missingMarkup() {
@@ -280,6 +367,9 @@ if (!product) {
     badge.hidden = !color.matte;
     track.innerHTML = galleryItems(product, color);
     thumbs.innerHTML = galleryThumbs(color, currentPicture());
+    productRoot.querySelectorAll(".feature__media").forEach((media) => {
+      media.innerHTML = featurePictures[media.dataset.picture].draw(color);
+    });
   });
 
   // Demo cart: counts up the badge in the header, nothing is ordered.

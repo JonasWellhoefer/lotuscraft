@@ -127,7 +127,7 @@ die Werte stammen direkt aus dem CSS des Originals.
 - [x] Galerie (Desktop: Raster, Handy: Wisch-Galerie mit Vorschaubildern)
 - [x] Kaufbox: Preis, Bewertung, Farbauswahl (zeichnet die Bilder neu), Warenkorb-Button (Demo)
 - [x] Akkordeon (Beschreibung, Details, Pflege, Nachhaltigkeit) und Bewertungsübersicht
-- [ ] Infobereich zu Material & Grip
+- [x] Infobereich zu Material & Grip (4 Zeilen im Zickzack)
 - [ ] Bewertungen
 - [ ] Verwandte Produkte
 
