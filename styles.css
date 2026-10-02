@@ -997,6 +997,7 @@ button { font: inherit; background: none; border: 0; padding: 0; cursor: pointer
 
 /* ---------- Category page ---------- */
 .category { padding: 34px 0 23px; }
+.category--no-text { padding-bottom: 64px; } /* the original's gap when no text follows the grid */
 
 .shortcuts { display: flex; justify-content: center; gap: 20px; }
 .shortcut { display: flex; flex-direction: column; align-items: center; width: 76px; }

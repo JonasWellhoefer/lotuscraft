@@ -17,8 +17,11 @@ const colorFamilies = [
   { name: "Rosa", swatch: "#c69a98" },
   { name: "Braun", swatch: "#9b6e55" },
   { name: "Align", swatch: "repeating-linear-gradient(135deg, #c9a77e 0 5px, #b48f63 5px 7px)" },
+  // The original shows a photo of wood grain here; this is a drawn stand-in.
+  { name: "Wood Grain", swatch: "repeating-linear-gradient(100deg, #ded6c9 0 3px, #cbc1b0 3px 5px, #d7cebf 5px 9px)" },
 ];
-const materials = ["Bio-Baumwolle (kbA)", "Naturkautschuk", "Polyester", "PU (Polyurethan)", "PVC (Polyvinylchlorid)", "Naturkork", "Schurwolle", "Polymere Klebefolie mit UV-Schutz"];
+const materials = ["Bio-Baumwolle (kbA)", "Naturkautschuk", "Polyester", "PU (Polyurethan)", "PVC (Polyvinylchlorid)", "Naturkork", "Schurwolle", "Rotes Sandelholz", "Tulsi", "Rudraksha", "Polymere Klebefolie mit UV-Schutz"];
+const fillings = ["Bio-Dinkelspelz (kbA)", "Kapokwolle"];
 const availabilities = ["Verfügbar", "Nicht verfügbar"];
 
 // The original sorts most pages by "meistverkauft". Its sales ranking (as
@@ -43,8 +46,21 @@ const bestSellingRanking = [
   "Yogagurt 100% Bio-Baumwolle / Lavender Fog", "Yogagurt 100% Bio-Baumwolle / Anthrazit", "Yogatasche PUNE / Lavender Fog", "Yoga Handtuch / Indigo Dust",
   "Yogatasche NANDI / Natur", "Yogadecke Savasana 100% Baumwolle (kbA) / Anthrazit", "Augenkissen / Balsam Green", "Augenkissen / Natur",
   "Yogagurt 100% Bio-Baumwolle / Kurkuma", "Yogablock Kork 2er Set / Klein", "Yogablock Kork 2er Set / Groß", "Bio Yogamatten Spray / 60ml",
-  "Bio Yogamatten Spray / 500ml", "Yogamatten-Sticker I am enough", "Yogamatten-Sticker einatmen. ausatmen.", "Yogamatten-Sticker Ich bin dankbar",
+  "Bio Yogamatten Spray / 500ml", "Yogablock Kork Einzeln / Klein.", "Yogablock Kork Einzeln / Groß.", "Rosenholz Mala (Dunkles Rosenholz)",
+  "Tulsi Mala", "Rudraksha Mala", "Yogamatten-Sticker I am enough", "Bio Dinkelspelzen - Dinkelspreu (kbA) 2kg",
+  "Yogamatten-Sticker einatmen. ausatmen.", "Bio Dinkelspelzen -Dinkelspreu (kbA) 1kg", "Yogamatten-Sticker Ich bin dankbar",
   "Yogamatten-Sticker good vibes only", "Yogamatten Tragegurt / Balsam Green",
+  // Bolsters and covers
+  "Yogarolle RESTORATIVE Ø24 cm / Light Taupe", "Yoga Bolster RESTORATIVE L / Light Taupe", "Yoga Bolster RESTORATIVE L / Indigo Dust",
+  "Yogarolle RESTORATIVE Ø24 cm / Indigo Dust", "Yoga Mini-Rolle (Nackenrolle) Ø12 cm / Light Taupe", "Yogarolle RESTORATIVE Ø24 cm / Natur",
+  "Yoga Bolster RESTORATIVE S / Indigo Dust", "Yoga Bolster RESTORATIVE S / Light Taupe", "Yoga Bolster RESTORATIVE L / Natur",
+  "Yoga Mini-Rolle (Nackenrolle) Ø12 cm / Balsam Green", "Yogarolle RESTORATIVE Ø24 cm / Aubergine", "Yoga Bolster RESTORATIVE S / Natur",
+  "Yoga Bolster RESTORATIVE L / Anthrazit", "Yogarolle RESTORATIVE Ø24 cm / Anthrazit", "Yoga Bolster RESTORATIVE L / Aubergine",
+  "Yoga Bolster RESTORATIVE S / Anthrazit", "Yogarolle RESTORATIVE Ø24 cm / Grassland", "Yogarolle RESTORATIVE Ø24 cm / Dark Cranberry",
+  "Yoga Bolster RESTORATIVE L / Dark Cranberry", "Yoga Bolster RESTORATIVE S / Aubergine", "Yoga Bolster RESTORATIVE L / Grassland",
+  "Yoga Bolster RESTORATIVE S / Dark Cranberry", "Yoga Bolster RESTORATIVE S / Grassland",
+  "Bezug für Yogarolle COVER Ø24 cm / Light Taupe", "Bezug für Yogarolle COVER Ø24 cm / Natur", "Bezug für Yogarolle COVER Ø24 cm / Anthrazit",
+  "Bezug für Yogarolle COVER Ø24 cm / Indigo Dust", "Bezug für Yogarolle COVER Ø24 cm / Dark Cranberry",
   // "Almost Perfect"
   "Almost Perfect Yogamatte MUDRA / Indigo Dust", "Almost Perfect Yogamatte MUDRA / Light Taupe", "Almost Perfect Yogamatte MUDRA / Balsam Green",
   "Almost Perfect Yogamatte MUDRA PRO / Anthrazit", "Almost Perfect Yogamatte PURE / Light Taupe", "Almost Perfect Yogamatte MUDRA PRO / Light Taupe",
@@ -105,8 +121,9 @@ function categoryMarkup(category) {
   const families = colorFamilies.filter((family) => category.colorFilter
     ? category.colorFilter.includes(family.name)
     : category.models.some((model) => model.variants?.some((v) => v.family === family.name)));
-  const materialOptions = materials.filter((material) => category.models.some((model) => model.material === material
-    || model.variants?.some((v) => v.material === material)));
+  const offered = (key, value) => category.models.some((model) => model[key] === value || model.variants?.some((v) => v[key] === value));
+  const materialOptions = materials.filter((material) => offered("material", material));
+  const fillingOptions = fillings.filter((filling) => offered("filling", filling));
 
   const swatches = `<div class="filter__swatches">${families.map((family) => `
               <label class="filter-swatch" title="${family.name}">
@@ -127,7 +144,7 @@ function categoryMarkup(category) {
       <h1 class="category__title">${category.title}</h1>
 
       <div class="filters">
-        <div class="filters__group">${families.length > 1 ? filterPanel("colors", "Farbe", swatches) : ""}${materialOptions.length > 1 ? filterPanel("materials", "Material", checkboxList(materialOptions)) : ""}${filterPanel("availability", "Verfügbarkeit", checkboxList(availabilities))}
+        <div class="filters__group">${families.length > 1 ? filterPanel("colors", "Farbe", swatches) : ""}${materialOptions.length > 1 ? filterPanel("materials", "Material", checkboxList(materialOptions)) : ""}${fillingOptions.length > 1 ? filterPanel("fillings", "Füllung", checkboxList(fillingOptions)) : ""}${filterPanel("availability", "Verfügbarkeit", checkboxList(availabilities))}
         </div>
         <details class="filter filter--sort" name="filters">
           <summary class="filter__toggle">Sortierung${sortIcon}</summary>
@@ -147,7 +164,8 @@ function categoryMarkup(category) {
         <button class="btn btn--primary category__reset-all" type="button">Alle Filter zurücksetzen</button>
       </div>
 
-      <p class="category__description">${category.description}</p>
+${category.description ? `
+      <p class="category__description">${category.description}</p>` : ""}
     </div>`;
 }
 
@@ -166,6 +184,7 @@ if (!category) {
 } else {
   document.title = `${category.title} – LotusCraft Student Rebuild`;
   categoryRoot.innerHTML = categoryMarkup(category);
+  categoryRoot.classList.toggle("category--no-text", !category.description);
 
   // The header highlights the category's section(s), as on the original
   // (mats: "Yoga"; the sets also "Geschenke"; "Almost Perfect" none).
@@ -184,16 +203,17 @@ if (!category) {
       price: variant.price ?? model.price,
       compareAt: model.compareAt,
       material: variant.material ?? model.material,
+      filling: variant.filling ?? model.filling,
       shape: model.shape || "mat",
       variant: variant.color,
       tint: variant.hex,
       family: variant.family,
       soldOut: Boolean(variant.soldOut),
-      badge: variant.badge,
+      badge: variant.badge ?? model.badge,
     })) : [{ ...model, soldOut: Boolean(model.soldOut) }]))
     .map((card, order) => ({ ...card, order }));
 
-  const filters = { colors: new Set(), materials: new Set(), availability: new Set() };
+  const filters = { colors: new Set(), materials: new Set(), fillings: new Set(), availability: new Set() };
   let sortKey = defaultSort(category);
 
   const grid = categoryRoot.querySelector(".category__grid");
@@ -206,6 +226,7 @@ if (!category) {
     const availability = card.soldOut ? "Nicht verfügbar" : "Verfügbar";
     return (!filters.colors.size || filters.colors.has(card.family))
       && (!filters.materials.size || filters.materials.has(card.material))
+      && (!filters.fillings.size || filters.fillings.has(card.filling))
       && (!filters.availability.size || filters.availability.has(availability));
   }
 

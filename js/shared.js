@@ -112,6 +112,37 @@ const shapes = {
   towel: (c) => `<rect x="32" y="56" width="116" height="78" rx="12" fill="${c}"/>
                  <path d="M32 82h116M32 108h116" stroke="rgba(0,0,0,.12)" stroke-width="2"/>
                  <path d="M46 134v7M60 134v7M74 134v7M88 134v7M102 134v7M116 134v7M130 134v7" stroke="${c}" stroke-width="2.5" stroke-linecap="round"/>`,
+  // Bolsters and rolls, lying on their side
+  roll: (c) => `<ellipse cx="90" cy="126" rx="62" ry="6" fill="rgba(0,0,0,.06)"/>
+                <rect x="24" y="64" width="132" height="58" rx="29" fill="${c}"/>
+                <path d="M54 64v58" stroke="rgba(0,0,0,.08)"/>
+                <ellipse cx="141" cy="93" rx="15" ry="29" fill="rgba(255,255,255,.18)"/>`,
+  bolster: (c) => `<ellipse cx="90" cy="124" rx="66" ry="6" fill="rgba(0,0,0,.06)"/>
+                   <rect x="20" y="74" width="140" height="48" rx="18" fill="${c}"/>
+                   <rect x="20" y="74" width="140" height="14" rx="7" fill="rgba(255,255,255,.16)"/>
+                   <path d="M44 74v48M136 74v48" stroke="rgba(0,0,0,.08)"/>`,
+  bolsterS: (c) => `<ellipse cx="90" cy="124" rx="54" ry="6" fill="rgba(0,0,0,.06)"/>
+                    <rect x="34" y="80" width="112" height="42" rx="16" fill="${c}"/>
+                    <rect x="34" y="80" width="112" height="12" rx="6" fill="rgba(255,255,255,.16)"/>
+                    <path d="M54 80v42M126 80v42" stroke="rgba(0,0,0,.08)"/>`,
+  neckRoll: (c) => `<ellipse cx="90" cy="120" rx="46" ry="5" fill="rgba(0,0,0,.06)"/>
+                    <rect x="42" y="84" width="96" height="34" rx="17" fill="${c}"/>
+                    <ellipse cx="129" cy="101" rx="9" ry="17" fill="rgba(255,255,255,.2)"/>`,
+  // A cover, folded flat, with its zip
+  rollCover: (c) => `<rect x="30" y="56" width="120" height="72" rx="6" fill="${c}"/>
+                     <path d="M30 116h120" stroke="rgba(0,0,0,.25)" stroke-width="2" stroke-dasharray="3 2"/>
+                     <rect x="138" y="111" width="8" height="10" rx="2" fill="#8b8b8b"/>
+                     <path d="M30 80h120" stroke="rgba(0,0,0,.08)"/>`,
+  mala: (c) => `${Array.from({ length: 27 }, (_, i) => {
+                  const angle = (i / 27) * Math.PI * 2 - Math.PI / 2;
+                  return `<circle cx="${(90 + 44 * Math.cos(angle)).toFixed(1)}" cy="${(78 + 44 * Math.sin(angle)).toFixed(1)}" r="5" fill="${c}"/>`;
+                }).join("")}
+                <circle cx="90" cy="128" r="7" fill="${c}"/>
+                <path d="M84 134h12l5 26H79z" fill="${c}"/>`,
+  husks: (c) => `<path d="M52 44h76l8 108H44z" fill="${c}"/>
+                 <path d="M52 44h76v12H52z" fill="rgba(0,0,0,.08)"/>
+                 <rect x="66" y="84" width="48" height="30" rx="3" fill="rgba(255,255,255,.6)"/>
+                 <path d="M74 94h32M74 102h22" stroke="rgba(0,0,0,.25)" stroke-width="2.5" stroke-linecap="round"/>`,
   blanket: (c) => `<rect x="28" y="56" width="124" height="78" rx="5" fill="${c}"/>
                    <path d="M28 82h124M28 108h124" stroke="rgba(0,0,0,.14)" stroke-width="2"/>
                    <path d="M28 70h124M28 96h124M28 122h124" stroke="rgba(255,255,255,.3)" stroke-width="3"/>
@@ -382,9 +413,79 @@ const matCarrier = { name: "Yogamatten Tragegurt", price: 14.95, shape: "strap",
   { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
 ] };
 const singleCorkBlock = { name: "Yogablock Kork Einzeln", price: 17.95, shape: "singleBlock", material: null, variants: [
-  { color: "Klein.", hex: CORK },
+  { color: "Klein.", hex: CORK, material: "Naturkork" },
   { color: "Groß.", hex: CORK, price: 19.95 },
 ] };
+
+// ---------- Bolsters, rolls and mat add-ons ----------
+// The filling works like the material: the original sets it on single
+// colours only. "Grassland" is a patterned fabric (colour group Wood Grain).
+const SPELT = "Bio-Dinkelspelz (kbA)";
+const KAPOK = "Kapokwolle";
+const GRASSLAND = "#c9c6b0";
+const bolsterColors = (filling) => [
+  { color: "Light Taupe", hex: "#c4b6a6", family: "Beige", filling },
+  { color: "Natur", hex: COTTON, family: "Beige", filling },
+  { color: "Indigo Dust", hex: "#6b7c95", family: "Blau", filling },
+  { color: "Aubergine", hex: "#8d5a6f", family: "Rot", filling },
+  { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz", filling },
+  { color: "Dark Cranberry", hex: "#7a2a3a", family: "Rot" },
+  { color: "Grassland", hex: GRASSLAND, family: "Wood Grain" },
+];
+const yogaRoll = { name: "Yogarolle RESTORATIVE Ø24 cm", price: 54.95, shape: "roll", variants: [
+  { color: "Light Taupe", hex: "#c4b6a6", family: "Beige", filling: SPELT },
+  { color: "Natur", hex: COTTON, family: "Beige", filling: SPELT },
+  { color: "Indigo Dust", hex: "#6b7c95", family: "Blau", filling: SPELT },
+  { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz", filling: SPELT },
+  { color: "Aubergine", hex: "#8d5a6f", family: "Rot", filling: SPELT, soldOut: true },
+  { color: "Dark Cranberry", hex: "#7a2a3a", family: "Rot" },
+  { color: "Grassland", hex: GRASSLAND, family: "Wood Grain" },
+] };
+const neckRoll = { name: "Yoga Mini-Rolle (Nackenrolle) Ø12 cm", price: 34.95, shape: "neckRoll", variants: [
+  { color: "Light Taupe", hex: "#c4b6a6", family: "Beige", filling: SPELT },
+  { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
+] };
+const bolsters = [
+  yogaRoll,
+  { name: "Yoga Bolster RESTORATIVE L", price: 64.95, shape: "bolster", variants: bolsterColors(KAPOK) },
+  { name: "Yoga Bolster RESTORATIVE S", price: 49.95, shape: "bolsterS", variants: bolsterColors(KAPOK) },
+  neckRoll,
+];
+const rollCover = { name: "Bezug für Yogarolle COVER Ø24 cm", price: 29.95, shape: "rollCover", badge: "NUR BEZUG", variants: [
+  { color: "Light Taupe", hex: "#c4b6a6", family: "Beige" },
+  { color: "Natur", hex: COTTON, family: "Beige" },
+  { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz" },
+  { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
+  { color: "Dark Cranberry", hex: "#7a2a3a", family: "Rot" },
+] };
+
+// "Yogamatten Zubehör" (the original's name for the add-ons page) also has
+// malas and spelt husks for refilling cushions.
+const stickers = yogaAccessories.filter((item) => item.shape === "sticker");
+const matAddOns = [
+  ...accessoriesNamed("Bio Yogamatten Spray"),
+  singleCorkBlock,
+  { name: "Rosenholz Mala (Dunkles Rosenholz)", price: 22.95, shape: "mala", tint: "#6b3a2c", material: "Rotes Sandelholz", soldOut: true },
+  { name: "Tulsi Mala", price: 24.95, shape: "mala", tint: "#c8a77a", material: "Tulsi", soldOut: true },
+  { name: "Rudraksha Mala", price: 19.95, shape: "mala", tint: "#7a4a32", material: "Rudraksha", soldOut: true },
+  stickers[0],
+  { name: "Bio Dinkelspelzen - Dinkelspreu (kbA) 2kg", price: 14.95, shape: "husks", tint: "#d9c69e" },
+  stickers[1],
+  { name: "Bio Dinkelspelzen -Dinkelspreu (kbA) 1kg", price: 9.95, shape: "husks", tint: "#d9c69e" },
+  stickers[2],
+  stickers[3],
+];
+
+const bolsterShortcuts = [
+  { label: "Yogamatten", icon: "mat", key: "yogamatten" },
+  { label: "Yoga-Zubehör", icon: "block", key: "yoga-zubehor" },
+  { label: "Yoga Bolster", icon: "bolster", key: "yoga-bolster" },
+  { label: "Yogamatten Zubehör", icon: "bottle", key: "yoga-accessories" },
+];
+const addOnShortcuts = [
+  { label: "Yogamatten Spray", icon: "bottle", key: "yogamatten-spray" },
+  { label: "Yogamatten-Sticker", icon: "sticker", key: "yogamatten-sticker-1" },
+];
 
 // The circles above "Yoga-Zubehör"; its sub-pages show the first four.
 const accessoryShortcuts = [
@@ -531,6 +632,43 @@ const categories = {
     models: [...accessoriesNamed("Yogablock Kork 2er Set"), singleCorkBlock],
     description: "Blöcke aus Naturkork geben dir Höhe und Halt, wo der Boden noch zu weit weg ist – im Stehen, im Sitzen und in der Entspannung. Es gibt sie klein und groß, einzeln oder im Zweierset.",
   },
+  "yoga-bolster": {
+    title: "Yoga Bolster",
+    shortcuts: bolsterShortcuts,
+    models: bolsters,
+    description: "Bolster und Rollen stützen dich dort, wo du loslassen willst: unter den Knien, entlang der Wirbelsäule oder im Nacken. Gefüllt mit Bio-Dinkelspelz oder Kapok und bezogen mit Bio-Baumwolle sind sie wie gemacht für Yin und Restorative Yoga.",
+  },
+  // The original has no circles and no text on the next page and on the covers.
+  "yoga-rolle": {
+    title: "Yoga Rolle",
+    shortcuts: [],
+    models: [yogaRoll, neckRoll],
+  },
+  "yoga-accessories": {
+    title: "Yogamatten Zubehör",
+    shortcuts: addOnShortcuts,
+    models: matAddOns,
+    description: "Alles rund um die Matte: Spray zum Reinigen, Sticker als kleine Botschaft, einzelne Korkblöcke, Malas und Dinkelspelz zum Nachfüllen deiner Kissen.",
+  },
+  "yogamatten-spray": {
+    title: "Yogamatten Spray",
+    shortcuts: addOnShortcuts,
+    models: accessoriesNamed("Bio Yogamatten Spray"),
+    description: "Schonende Reinigung für deine Matte – klein für unterwegs oder groß zum Nachfüllen.",
+  },
+  "yogamatten-sticker-1": {
+    title: "Yogamatten-Sticker",
+    shortcuts: addOnShortcuts,
+    models: stickers,
+    description: "Kleine Botschaften für deine Praxis: Die Sticker halten auf Matte, Trinkflasche oder Laptop und sind mit UV-Schutz bedruckt, damit sie lange schön bleiben.",
+  },
+  "bezug-yogabolster": {
+    title: "Bezug Yogarolle",
+    shortcuts: [],
+    models: [rollCover],
+    // Wood Grain comes from a cover colour that is sold out and hidden.
+    colorFilter: ["Beige", "Blau", "Rot", "Schwarz", "Wood Grain"],
+  },
 };
 
 // ---------- Search index ----------
@@ -577,6 +715,12 @@ const sitePages = [
   { title: "Yoga-Handtücher", href: "kategorie.html?k=yoga-handtuecher", keywords: "yoga handtuch handtücher kategorie" },
   { title: "Yoga-Gurte", href: "kategorie.html?k=yoga-gurte", keywords: "yoga gurt gurte yogagurt kategorie" },
   { title: "Yoga Blöcke", href: "kategorie.html?k=yoga-block", keywords: "yoga block blöcke yogablock kork kategorie" },
+  { title: "Yoga Bolster", href: "kategorie.html?k=yoga-bolster", keywords: "yoga bolster yogabolster kissen rolle kategorie" },
+  { title: "Yoga Rolle", href: "kategorie.html?k=yoga-rolle", keywords: "yoga rolle yogarolle nackenrolle kategorie" },
+  { title: "Yogamatten Zubehör", href: "kategorie.html?k=yoga-accessories", keywords: "yogamatte yogamatten zubehör add-ons mala dinkelspelz kategorie" },
+  { title: "Yogamatten Spray", href: "kategorie.html?k=yogamatten-spray", keywords: "yogamatte spray reiniger reinigung kategorie" },
+  { title: "Yogamatten-Sticker", href: "kategorie.html?k=yogamatten-sticker-1", keywords: "yogamatte sticker aufkleber kategorie" },
+  { title: "Bezug Yogarolle", href: "kategorie.html?k=bezug-yogabolster", keywords: "bezug yogarolle cover bolster kategorie" },
   { title: "Startseite", href: "index.html", keywords: "start home lotuscraft bestseller sets" },
 ];
 
@@ -666,6 +810,7 @@ const menuIcons = {
   bolster: '<rect x="3" y="9" width="18" height="7" rx="3.5"/><path d="M7 9v7"/>',
   blanket: '<rect x="3" y="6" width="18" height="12" rx="1.5"/><path d="M3 10h18M3 14h18M6 18v2.5M10 18v2.5M14 18v2.5M18 18v2.5"/>',
   towel: '<path d="M6 4h12v13H6z"/><path d="M6 8h12M8 17v3M11 17v3M14 17v3M17 17v3"/>',
+  sticker: '<circle cx="12" cy="12" r="8.5"/><path d="M12 6.5c-1.2 1.4-1.2 3 0 4.4 1.2-1.4 1.2-3 0-4.4zM9 14.5h6M10 17h4"/>',
   bottle: '<path d="M10 3h4v3h-4zM9 6h6l1 3v12H8V9z"/>',
   set: '<rect x="3" y="11" width="9" height="9" rx="1"/><rect x="13" y="6" width="8" height="14" rx="1"/>',
   voucher: '<rect x="3" y="7" width="18" height="11" rx="1"/><path d="M9 7v11M3 12.5h6"/>',
@@ -698,6 +843,13 @@ const menuLinks = {
   "Yogadecken": "kategorie.html?k=yogadecken",
   "Yogagurte": "kategorie.html?k=yoga-gurte",
   "Yogahandtuch": "kategorie.html?k=yoga-handtuecher",
+  "Alle Yoga-Bolster": "kategorie.html?k=yoga-bolster",
+  "Yogabolster": "kategorie.html?k=yoga-bolster",
+  "Yogarolle": "kategorie.html?k=yoga-rolle",
+  "Alle Yogamatten Add-Ons": "kategorie.html?k=yoga-accessories",
+  "Yogamatten Reiniger": "kategorie.html?k=yogamatten-spray",
+  "Yogamatten Sticker": "kategorie.html?k=yogamatten-sticker-1",
+  "Bezüge Yogarolle": "kategorie.html?k=bezug-yogabolster",
 };
 
 // Desktop dropdown links that get a more specific icon than their column.
