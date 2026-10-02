@@ -141,6 +141,7 @@ const sorters = {
 // ---------- Markup ----------
 const chevronDown = `<svg class="filter__chevron" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg>`;
 const sortIcon = `<svg class="filter__chevron filter__chevron--sort" viewBox="0 0 16 16" aria-hidden="true"><path d="M5 2v12M2 11l3 3 3-3M11 14V2M8 5l3-3 3 3"/></svg>`;
+const slidersIcon = `<svg viewBox="0 0 18 18" aria-hidden="true"><path d="M2.5 4.5h13M2.5 9h13M2.5 13.5h13"/><circle cx="11.5" cy="4.5" r="1.75"/><circle cx="6" cy="9" r="1.75"/><circle cx="12.5" cy="13.5" r="1.75"/></svg>`;
 
 function filterPanel(key, label, options) {
   return `
@@ -157,6 +158,55 @@ function checkboxList(values, labels = {}) {
   return `<div class="filter__options">${values.map((value) => `
               <label class="filter__check"><input type="checkbox" value="${value}">${labels[value] || value}</label>`).join("")}
             </div>`;
+}
+
+function swatchList(families) {
+  return `<div class="filter__swatches">${families.map((family) => `
+              <label class="filter-swatch" title="${family.name}">
+                <input type="checkbox" value="${family.name}" class="visually-hidden">
+                <span class="filter-swatch__dot" style="background: ${family.swatch}"></span>
+                <span class="visually-hidden">${family.name}</span>
+              </label>`).join("")}
+            </div>`;
+}
+
+// The number of ticked values, as a small gold badge (filled in by render()).
+const countBadge = (key) => `<span class="filter-badge" data-count="${key}" hidden></span>`;
+
+// Below 780px the original swaps the bar for a "Filter" button: a drawer
+// lists the filters and each one opens its own panel. Ticking a value
+// filters right away; "anwenden" just goes back (panel) or closes (drawer).
+function filterDrawerMarkup(groups) {
+  const rows = groups.map((group) => `
+            <li><button class="filter-drawer__row" type="button" data-open="${group.key}">
+              <span>${group.label}</span>${countBadge(group.key)}${chevron("right")}
+            </button></li>`).join("");
+  const panels = groups.map((group) => `
+          <section class="filter-drawer__panel" data-filter="${group.key}" aria-label="${group.label}" hidden>
+            <button class="filter-drawer__back" type="button">${chevron("left")}<span>${group.label}</span>${countBadge(group.key)}</button>
+            ${group.options}
+            <div class="filter-drawer__actions">
+              <button class="btn btn--secondary btn--block filter__reset" type="button">Filter zurücksetzen</button>
+              <button class="btn btn--primary btn--block filter-drawer__done" type="button">Filter anwenden</button>
+            </div>
+          </section>`).join("");
+  return `
+      <dialog class="filter-drawer" aria-labelledby="filter-drawer-title">
+        <div class="filter-drawer__header">
+          <h2 class="filter-drawer__title" id="filter-drawer-title">Filter</h2>
+          <button class="icon-btn filter-drawer__close" type="button" aria-label="Filter schließen">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"/></svg>
+          </button>
+        </div>
+        <div class="filter-drawer__body">
+          <ul class="filter-drawer__list">${rows}
+          </ul>
+        </div>
+        <div class="filter-drawer__actions">
+          <button class="btn btn--secondary btn--block category__reset-all" type="button">Alle Filter zurücksetzen</button>
+          <button class="btn btn--primary btn--block filter-drawer__done" type="button">Alle Filter anwenden</button>
+        </div>${panels}
+      </dialog>`;
 }
 
 // Like the original, pages open sorted by "meistverkauft" unless they say otherwise.
@@ -183,17 +233,20 @@ function categoryMarkup(category) {
   const formOptions = options("form", "forms", forms);
   const materialOptions = options("material", "materials", materials);
   const fillingOptions = options("filling", "fillings", fillings);
+  const groups = [
+    families.length > 1 && { key: "colors", label: "Farbe", options: swatchList(families) },
+    heightOptions.length > 1 && { key: "heights", label: "Sitzhöhe", options: checkboxList(heightOptions, seatHeights) },
+    formOptions.length > 1 && { key: "forms", label: "Form", options: checkboxList(formOptions) },
+    materialOptions.length > 1 && { key: "materials", label: "Material", options: checkboxList(materialOptions) },
+    fillingOptions.length > 1 && { key: "fillings", label: "Füllung", options: checkboxList(fillingOptions) },
+    { key: "availability", label: "Verfügbarkeit", options: checkboxList(availabilities) },
+  ].filter(Boolean);
 
-  const swatches = `<div class="filter__swatches">${families.map((family) => `
-              <label class="filter-swatch" title="${family.name}">
-                <input type="checkbox" value="${family.name}" class="visually-hidden">
-                <span class="filter-swatch__dot" style="background: ${family.swatch}"></span>
-                <span class="visually-hidden">${family.name}</span>
-              </label>`).join("")}
-            </div>`;
-
-  const sortOptions = Object.entries(sorters).map(([key, sorter]) => `
+  const sortRadios = Object.entries(sorters).map(([key, sorter]) => `
               <label class="filter__check"><input type="radio" name="sort" value="${key}"${key === defaultSort(category) ? " checked" : ""}>${sorter.label}</label>`).join("");
+  // Phones sort with the browser's own picker, like the original.
+  const sortSelect = Object.entries(sorters).map(([key, sorter]) => `
+            <option value="${key}"${key === defaultSort(category) ? " selected" : ""}>${sorter.label}</option>`).join("");
 
   return `
     <div class="container">${shortcuts ? `
@@ -203,16 +256,25 @@ function categoryMarkup(category) {
       <h1 class="category__title">${category.title}</h1>
 
       <div class="filters">
-        <div class="filters__group">${families.length > 1 ? filterPanel("colors", "Farbe", swatches) : ""}${heightOptions.length > 1 ? filterPanel("heights", "Sitzhöhe", checkboxList(heightOptions, seatHeights)) : ""}${formOptions.length > 1 ? filterPanel("forms", "Form", checkboxList(formOptions)) : ""}${materialOptions.length > 1 ? filterPanel("materials", "Material", checkboxList(materialOptions)) : ""}${fillingOptions.length > 1 ? filterPanel("fillings", "Füllung", checkboxList(fillingOptions)) : ""}${filterPanel("availability", "Verfügbarkeit", checkboxList(availabilities))}
+        <div class="filters__group">${groups.map((group) => filterPanel(group.key, group.label, group.options)).join("")}
         </div>
         <details class="filter filter--sort" name="filters">
           <summary class="filter__toggle">Sortierung${sortIcon}</summary>
           <div class="filter__panel filter__panel--right">
-            <div class="filter__options">${sortOptions}
+            <div class="filter__options">${sortRadios}
             </div>
           </div>
         </details>
       </div>
+
+      <div class="filters-mobile">
+        <button class="filter-button" type="button" aria-haspopup="dialog">Filter${countBadge("all")}${slidersIcon}</button>
+        <label class="filter-button">
+          Sortierung${sortIcon}
+          <select class="filter-button__select" name="sort">${sortSelect}
+          </select>
+        </label>
+      </div>${filterDrawerMarkup(groups)}
 
       <p class="visually-hidden" role="status" id="result-count"></p>
       <div class="product-grid category__grid"></div>
@@ -300,14 +362,31 @@ if (!category) {
     empty.hidden = visible.length > 0;
     resultCount.textContent = `${visible.length} Produkte`;
 
-    // Show how many values are ticked next to each filter name.
+    // The bar and the phone drawer have their own inputs: keep both in step.
+    categoryRoot.querySelectorAll("[data-filter] input").forEach((input) => {
+      input.checked = filters[input.closest("[data-filter]").dataset.filter].has(input.value);
+    });
+    categoryRoot.querySelectorAll('[name="sort"]').forEach((control) => {
+      if (control.type === "radio") control.checked = control.value === sortKey;
+      else control.value = sortKey;
+    });
+
+    // Show how many values are ticked: "(1)" in the bar, a badge on phones.
     filterBar.querySelectorAll("[data-filter]").forEach((details) => {
       const count = filters[details.dataset.filter].size;
       details.querySelector(".filter__count").textContent = count ? ` (${count})` : "";
     });
+    categoryRoot.querySelectorAll("[data-count]").forEach((badge) => {
+      const key = badge.dataset.count;
+      const count = key === "all"
+        ? Object.values(filters).reduce((sum, set) => sum + set.size, 0)
+        : filters[key].size;
+      badge.hidden = count === 0;
+      badge.innerHTML = `${count}<span class="visually-hidden"> ausgewählt</span>`;
+    });
   }
 
-  filterBar.addEventListener("change", (e) => {
+  categoryRoot.addEventListener("change", (e) => {
     const input = e.target;
     if (input.name === "sort") {
       sortKey = input.value;
@@ -319,20 +398,14 @@ if (!category) {
     render();
   });
 
-  function resetFilter(details) {
-    filters[details.dataset.filter].clear();
-    details.querySelectorAll("input").forEach((input) => (input.checked = false));
-  }
-
-  filterBar.addEventListener("click", (e) => {
-    if (!e.target.closest(".filter__reset")) return;
-    resetFilter(e.target.closest("[data-filter]"));
-    render();
-  });
-
-  categoryRoot.querySelector(".category__reset-all").addEventListener("click", () => {
-    filterBar.querySelectorAll("[data-filter]").forEach(resetFilter);
-    render();
+  categoryRoot.addEventListener("click", (e) => {
+    if (e.target.closest(".filter__reset")) {
+      filters[e.target.closest("[data-filter]").dataset.filter].clear();
+      render();
+    } else if (e.target.closest(".category__reset-all")) {
+      Object.values(filters).forEach((set) => set.clear());
+      render();
+    }
   });
 
   // Dropdowns close when clicking elsewhere or pressing Escape.
@@ -346,6 +419,51 @@ if (!category) {
     if (e.key !== "Escape" || !open) return;
     open.open = false;
     open.querySelector("summary").focus();
+  });
+
+  // ---------- Phone filter drawer ----------
+  const filterDialog = categoryRoot.querySelector(".filter-drawer");
+  const filterButton = categoryRoot.querySelector(".filter-button");
+
+  filterButton.addEventListener("click", () => {
+    filterDialog.querySelectorAll(".filter-drawer__panel").forEach((panel) => (panel.hidden = true));
+    filterDialog.showModal();
+    filterDialog.querySelector(".filter-drawer__row").focus();
+  });
+
+  // preventScroll: a panel still sliding in must not pull the drawer along.
+  function closePanel(panel) {
+    panel.hidden = true;
+    filterDialog.querySelector(`[data-open="${panel.dataset.filter}"]`).focus({ preventScroll: true });
+  }
+
+  filterDialog.addEventListener("click", (e) => {
+    const row = e.target.closest("[data-open]");
+    if (row) {
+      const panel = filterDialog.querySelector(`.filter-drawer__panel[data-filter="${row.dataset.open}"]`);
+      panel.hidden = false;
+      panel.querySelector(".filter-drawer__back").focus({ preventScroll: true });
+    } else if (e.target.closest(".filter-drawer__back, .filter-drawer__panel .filter-drawer__done")) {
+      closePanel(e.target.closest(".filter-drawer__panel"));
+    } else if (e.target.closest(".filter-drawer__close, .filter-drawer__done") || e.target === filterDialog) {
+      // The last case is a click on the dimmed backdrop.
+      filterDialog.close();
+    }
+  });
+
+  // Escape first leaves an open panel, then closes the drawer. (Handled on
+  // keydown: the dialog's own "cancel" can't always be stopped.)
+  filterDialog.addEventListener("keydown", (e) => {
+    const panel = filterDialog.querySelector(".filter-drawer__panel:not([hidden])");
+    if (e.key !== "Escape" || !panel) return;
+    e.preventDefault();
+    closePanel(panel);
+  });
+  filterDialog.addEventListener("close", () => filterButton.focus());
+
+  // The bar takes over again from 780px.
+  window.matchMedia("(min-width: 780px)").addEventListener("change", (e) => {
+    if (e.matches && filterDialog.open) filterDialog.close();
   });
 
   render();

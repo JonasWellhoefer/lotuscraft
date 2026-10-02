@@ -600,32 +600,34 @@ const spelt = { filling: SPELT };
 const speltSoldOut = { filling: SPELT, soldOut: true };
 
 const meditationCushions = [
-  { name: "Meditationskissen Lotus (H: 15cm)", price: 39.95, shape: "lotusCushion15", form: "Rund", variants: [
+  { name: "Meditationskissen Lotus (H: 15cm)", price: 39.95, shape: "lotusCushion15", form: "Rund", height: "15", variants: [
     cushionColor("Balsam Green"), cushionColor("Natur", spelt), cushionColor("Anthrazit", spelt), cushionColor("Light Taupe", spelt),
     cushionColor("Indigo Dust", spelt), cushionColor("Kurkuma"), cushionColor("Schwarz"),
   ] },
+  // Like the filling, the seat height is only set on the older colours here.
   { name: "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung", price: 34.95, shape: "plainCushion", form: "Rund", variants: [
-    cushionColor("Indigo Dust", spelt), cushionColor("Aubergine", speltSoldOut), cushionColor("Natur", spelt), cushionColor("Light Taupe", spelt),
-    cushionColor("Anthrazit", spelt), cushionColor("Lavender Fog"), cushionColor("Balsam Green"), cushionColor("Grassland"),
+    ...[cushionColor("Indigo Dust", spelt), cushionColor("Aubergine", speltSoldOut), cushionColor("Natur", spelt), cushionColor("Light Taupe", spelt),
+      cushionColor("Anthrazit", spelt)].map((variant) => ({ ...variant, height: "15" })),
+    cushionColor("Lavender Fog"), cushionColor("Balsam Green"), cushionColor("Grassland"),
   ] },
-  { name: "Meditationskissen Lotus HOCH (H: 20cm)", price: 44.95, shape: "lotusCushion20", form: "Rund", variants: [
+  { name: "Meditationskissen Lotus HOCH (H: 20cm)", price: 44.95, shape: "lotusCushion20", form: "Rund", height: "20", variants: [
     cushionColor("Light Taupe", spelt), cushionColor("Natur", spelt), cushionColor("Indigo Dust", spelt), cushionColor("Bordeaux", speltSoldOut),
     cushionColor("Anthrazit", spelt), cushionColor("Aubergine", speltSoldOut), cushionColor("Kurkuma", { badge: "New in" }), cushionColor("Balsam Green", { badge: "New in" }),
   ] },
-  { name: "Zafu-Meditationskissen Zen", price: 39.95, shape: "zafu", form: "Zafu", variants: [
+  { name: "Zafu-Meditationskissen Zen", price: 39.95, shape: "zafu", form: "Zafu", height: "15", variants: [
     cushionColor("Balsam Green"), cushionColor("Light Taupe", spelt), cushionColor("Indigo Dust", spelt), cushionColor("Natur", spelt),
     cushionColor("Anthrazit", spelt), cushionColor("Kurkuma"),
   ] },
-  { name: "Yogakissen Halbmond Shanti", price: 39.95, shape: "crescent", form: "Halbrund", variants: [
+  { name: "Yogakissen Halbmond Shanti", price: 39.95, shape: "crescent", form: "Halbrund", height: "15", variants: [
     cushionColor("Indigo Dust", spelt), cushionColor("Natur", spelt), cushionColor("Light Taupe", spelt), cushionColor("Anthrazit", spelt),
     cushionColor("Balsam Green"), cushionColor("Bordeaux", speltSoldOut), cushionColor("Aubergine", speltSoldOut),
   ] },
-  { name: "Meditationskissen Lotus KLEIN (H: 10 cm)", price: 37.95, shape: "lotusCushion10", form: "Rund", variants: [
+  { name: "Meditationskissen Lotus KLEIN (H: 10 cm)", price: 37.95, shape: "lotusCushion10", form: "Rund", height: "10", variants: [
     cushionColor("Balsam Green"), cushionColor("Natur", spelt), cushionColor("Light Taupe", spelt), cushionColor("Aubergine", speltSoldOut),
     cushionColor("Bordeaux", speltSoldOut), cushionColor("Indigo Dust", spelt), cushionColor("Anthrazit", spelt), cushionColor("Marine Blue", spelt),
     cushionColor("Kurkuma"),
   ] },
-  { name: "Zafu-Meditationskissen Zen Kapok", price: 44.95, shape: "zafu", form: "Zafu", variants: [
+  { name: "Zafu-Meditationskissen Zen Kapok", price: 44.95, shape: "zafu", form: "Zafu", height: "15", variants: [
     cushionColor("Anthrazit", { filling: KAPOK }),
   ] },
 ];
