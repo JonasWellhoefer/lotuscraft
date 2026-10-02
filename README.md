@@ -108,7 +108,7 @@ Die Startseite wird Abschnitt für Abschnitt in der Reihenfolge des Originals na
 - [x] Kundenbewertungen (Karussell)
 - [x] Set-Angebote mit Tabs (Yoga- / Meditation-Bundles)
 - [x] Community-Inspiration
-- [ ] Verkaufsargumente
+- [x] Verkaufsargumente
 - [ ] Footer mit Newsletter
 - [ ] Mobiles Menü & Dropdowns
 
