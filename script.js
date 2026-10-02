@@ -168,18 +168,26 @@ const poses = {
   seated: { head: [50, 44], body: "M32 84Q50 74 68 84M50 78V52M50 56L38 70L34 80M50 56L62 70L66 80", prop: `<ellipse cx="50" cy="86" rx="18" ry="5" fill="#6f6355"/>` },
 };
 
+// A drawn yoga scene (wall, floor, mat, figure) used in place of photos.
+// Wall and floor reach past the 100×100 frame, so a caller can pass a
+// taller viewBox (e.g. for a portrait card) without showing empty edges.
+function sceneSvg({ pose: poseName, wall, floor, mat, figure = "#3a3530" }, viewBox = "0 0 100 100", align = "xMidYMid") {
+  const pose = poses[poseName];
+  return `
+      <svg viewBox="${viewBox}" preserveAspectRatio="${align} slice" aria-hidden="true">
+        <rect y="-100" width="100" height="172" fill="${wall}"/>
+        <rect y="72" width="100" height="128" fill="${floor}"/>
+        <path d="M10 80H90L96 90H4Z" fill="${mat}"/>
+        ${pose.prop || ""}
+        <path d="${pose.body}" fill="none" stroke="${figure}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="${pose.head[0]}" cy="${pose.head[1]}" r="5" fill="${figure}"/>
+      </svg>`;
+}
+
 function communityTile(post) {
-  const pose = poses[post.pose];
   return `
     <a href="#" class="community-tile" aria-label="Beitrag von @${post.handle} (Platzhalter)">
-      <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-        <rect width="100" height="72" fill="${post.wall}"/>
-        <rect y="72" width="100" height="28" fill="${post.floor}"/>
-        <path d="M10 80H90L96 90H4Z" fill="${post.mat}"/>
-        ${pose.prop || ""}
-        <path d="${pose.body}" fill="none" stroke="#3a3530" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="${pose.head[0]}" cy="${pose.head[1]}" r="5" fill="#3a3530"/>
-      </svg>
+      ${sceneSvg(post)}
       <span class="community-tile__handle">${post.handle}</span>
     </a>`;
 }
@@ -261,9 +269,11 @@ newsletterForm.addEventListener("submit", (e) => {
   newsletterForm.reset();
 });
 
-// ---------- Mobile menu ----------
+// ---------- Menu data (mobile drawer + desktop dropdowns) ----------
 // Same three-level structure as the original. A string is a plain link,
-// an object with `children` opens its own panel.
+// an object with `children` opens its own panel on mobile and becomes a
+// column on desktop. `mobileOnly` entries are left out of the desktop
+// dropdown (as on the original); `promo` adds a picture card there.
 const menu = [
   { label: "Yoga", icon: "yoga", children: [
     { label: "Yogamatten", icon: "mat", children: ["Alle Yogamatten", "Rutschfeste Yogamatten", "Yogamatten für Zuhause", "Studio Yogamatten", "Reise Yogamatten", "Yogamatten-Set", "„Almost Perfect“ Yogamatten"] },
@@ -271,7 +281,7 @@ const menu = [
     { label: "Yoga-Bolster", icon: "bolster", children: ["Alle Yoga-Bolster", "Yogabolster", "Yogarolle", "Yoga-Sets"] },
     { label: "Yogamatten Add-Ons", icon: "bottle", children: ["Alle Yogamatten Add-Ons", "Yogamatten Reiniger", "Yogamatten Sticker", "Bezüge Yogarolle"] },
     { label: "Yoga-Sets", icon: "set" },
-    { label: "Gutscheine", icon: "voucher" },
+    { label: "Gutscheine", icon: "voucher", mobileOnly: true },
   ] },
   { label: "Meditation", icon: "meditation", children: [
     { label: "Meditationskissen", icon: "cushion", children: ["Alle Meditationskissen", "Rundkissen", "Zafu-Kissen", "Halbmondkissen"] },
@@ -279,13 +289,13 @@ const menu = [
     { label: "Meditation-Zubehör", icon: "block", children: ["Alles in Meditation-Zubehör", "Augenkissen", "Dinkelspelz Füllmaterial", "Bezüge Meditationskissen", "Bezüge Meditationsmatten"] },
     { label: "Meditations-Sets", icon: "set" },
     { label: "Meditationsbänke", icon: "bench" },
-    { label: "Gutscheine", icon: "voucher" },
+    { label: "Gutscheine", icon: "voucher", mobileOnly: true },
   ] },
-  { label: "Bekleidung", icon: "clothing", children: [
+  { label: "Bekleidung", icon: "clothing", promo: { kicker: "Trending", title: "Die Flow Styles sind zurück!", scene: { pose: "warrior", wall: "#e3dcd3", floor: "#b49a7e", mat: "#4f5a4f", figure: "#6b2d3a" } }, children: [
     { label: "Damen", icon: "clothing", children: ["Alles in Damen-Kleidung", "Hosen", "Leggings", "Bra-Tops", "Shirts", "Overalls", "Pullover"] },
     { label: "Herren", icon: "clothing", children: ["Alles in Herren-Kleidung", "Tanktops", "Trainingshosen", "Sweatshirts & Pullover"] },
   ] },
-  { label: "Geschenke", icon: "gift", children: [
+  { label: "Geschenke", icon: "gift", promo: { kicker: "Angebote", title: "Spare beim Set-Kauf", product: "accessorySet" }, children: [
     { label: "Geschenkideen", icon: "gift", children: ["Alle Geschenkideen", "Geschenkideen unter 50€", "Geschenkideen unter 100€", "Geschenkideen unter 120€"] },
     { label: "Yoga-Sets", icon: "set" },
     { label: "Meditations-Sets", icon: "set" },
@@ -308,15 +318,42 @@ const menuIcons = {
   voucher: '<rect x="3" y="7" width="18" height="11" rx="1"/><path d="M9 7v11M3 12.5h6"/>',
   cushion: '<path d="M4 12c0-2 3.6-3.5 8-3.5s8 1.5 8 3.5v3c0 2-3.6 3.5-8 3.5S4 17 4 15z"/><path d="M4 12c0 2 3.6 3.5 8 3.5s8-1.5 8-3.5"/>',
   bench: '<path d="M4 10l1-2h14l1 2zM6 10v8M18 10v8"/>',
+  house: '<path d="M4 11l8-6 8 6v9H4z"/><path d="M10 20v-5h4v5"/>',
+  suitcase: '<rect x="4" y="8" width="16" height="11" rx="1.5"/><path d="M9 8V5.5h6V8M4 13h16"/>',
+  bag: '<rect x="3" y="10" width="18" height="7" rx="3.5"/><path d="M6 10c2-4 10-4 12 0"/>',
+  strap: '<path d="M7 17l12-9M9 19l12-9"/><rect x="2.5" y="15.5" width="5" height="5" rx="2.5"/>',
+  eyemask: '<path d="M3 10c3-3 15-3 18 0v2c-2 3-6 4-9 2-3 2-7 1-9-2z"/>',
+  pants: '<path d="M7 3h10l1 18h-4l-2-11-2 11H6z"/>',
+  top: '<path d="M8 4c1 2 2.5 3 4 3s3-1 4-3l3 3-2 3v10H7V10L5 7z"/>',
 };
 
+// Desktop dropdown links that get a more specific icon than their column.
+const linkIcons = {
+  "Yogamatten für Zuhause": "house",
+  "Reise Yogamatten": "suitcase",
+  "Yogamatten-Set": "set",
+  "Yogataschen": "bag",
+  "Yogagurte": "strap",
+  "Yoga-Sets": "set",
+  "Augenkissen": "eyemask",
+  "Meditations-Set": "set",
+  "Hosen": "pants",
+  "Leggings": "pants",
+  "Overalls": "pants",
+  "Trainingshosen": "pants",
+  "Bra-Tops": "top",
+  "Shirts": "top",
+  "Tanktops": "top",
+};
+
+// ---------- Mobile menu ----------
 const drawer = document.getElementById("menu-drawer");
 const drawerNav = drawer.querySelector(".drawer__nav");
 const menuToggle = document.querySelector(".menu-toggle");
 const trail = []; // the panels opened so far, e.g. [Yoga, Yogamatten]
 
-const menuIcon = (name) =>
-  `<svg class="drawer__icon" viewBox="0 0 24 24" aria-hidden="true">${menuIcons[name]}</svg>`;
+const menuIcon = (name, className = "drawer__icon") =>
+  `<svg class="${className}" viewBox="0 0 24 24" aria-hidden="true">${menuIcons[name]}</svg>`;
 const chevron = (direction) =>
   `<svg class="drawer__chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="${direction === "left" ? "M15 5l-7 7 7 7" : "M9 5l7 7-7 7"}"/></svg>`;
 
@@ -381,6 +418,107 @@ drawer.addEventListener("close", () => {
 // The desktop navigation takes over above 1100px, so close the drawer there.
 window.matchMedia("(min-width: 1101px)").addEventListener("change", (e) => {
   if (e.matches && drawer.open) drawer.close();
+});
+
+// ---------- Desktop mega menu ----------
+// Hovering a nav item (after a short pause, so sweeping across the nav
+// doesn't flicker) or tabbing onto it opens its full-width dropdown.
+// Escape closes it again.
+const header = document.querySelector(".header");
+const megaItems = [...document.querySelectorAll(".nav__item[data-menu]")];
+let openMegaItem = null;
+let megaTimer = null;
+let suppressFocusOpen = false;
+
+function megaColumn(category, column) {
+  // An entry without children (e.g. "Yoga-Sets") becomes one "Alle …" link.
+  const links = column.children || [`Alle ${column.label}`];
+  const items = links.map((label, i) => {
+    const icon = column.children && i === 0 ? category.icon : linkIcons[label] || column.icon;
+    return `<li><a href="#" class="mega__link">${menuIcon(icon, "mega__icon")}<span>${label}</span></a></li>`;
+  }).join("");
+  return `
+        <div class="mega__column">
+          <p class="mega__heading">${column.label}</p>
+          <ul class="mega__links">${items}</ul>
+        </div>`;
+}
+
+function megaPromo({ kicker, title, scene, product }) {
+  // Extra room below the figure keeps it clear of the label at the bottom.
+  const art = scene
+    ? sceneSvg(scene, "0 -20 100 160", "xMidYMax")
+    : `<svg viewBox="0 0 180 225" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+         <rect width="180" height="225" fill="#f1f0ee"/>
+         <g transform="translate(0 20)">${shapes[product](COTTON)}</g>
+       </svg>`;
+  return `
+        <a href="#" class="mega__promo">
+          ${art}
+          <span class="mega__promo-details">
+            <span class="mega__promo-kicker">${kicker}</span>
+            <span class="mega__promo-title">${title}</span>
+          </span>
+        </a>`;
+}
+
+function setMegaOpen(item) {
+  if (openMegaItem === item) return;
+  if (openMegaItem) {
+    openMegaItem.classList.remove("is-open");
+    openMegaItem.querySelector(".nav__link").setAttribute("aria-expanded", "false");
+  }
+  openMegaItem = item;
+  if (item) {
+    item.classList.add("is-open");
+    item.querySelector(".nav__link").setAttribute("aria-expanded", "true");
+  }
+  header.classList.toggle("has-open-menu", Boolean(item));
+}
+
+megaItems.forEach((item) => {
+  const category = menu.find((entry) => entry.label === item.dataset.menu);
+  const columns = category.children
+    .filter((column) => !column.mobileOnly)
+    .map((column) => megaColumn(category, column))
+    .join("");
+  const id = `mega-${category.label.toLowerCase()}`;
+
+  item.insertAdjacentHTML("beforeend", `
+    <div class="mega" id="${id}">
+      <div class="mega__grid">${columns}${category.promo ? megaPromo(category.promo) : ""}
+      </div>
+    </div>`);
+
+  const link = item.querySelector(".nav__link");
+  link.setAttribute("aria-expanded", "false");
+  link.setAttribute("aria-controls", id);
+
+  item.addEventListener("mouseenter", () => {
+    clearTimeout(megaTimer);
+    // Switch at once when moving between items, wait a moment otherwise.
+    megaTimer = setTimeout(() => setMegaOpen(item), openMegaItem ? 0 : 80);
+  });
+  item.addEventListener("mouseleave", () => {
+    clearTimeout(megaTimer);
+    megaTimer = setTimeout(() => setMegaOpen(null), 150);
+  });
+  item.addEventListener("focusin", () => {
+    if (suppressFocusOpen) return;
+    clearTimeout(megaTimer);
+    setMegaOpen(item);
+  });
+  item.addEventListener("focusout", (e) => {
+    if (!item.contains(e.relatedTarget) && openMegaItem === item) setMegaOpen(null);
+  });
+  item.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape" || openMegaItem !== item) return;
+    setMegaOpen(null);
+    // Put focus back on the nav link without the focus reopening the menu.
+    suppressFocusOpen = true;
+    link.focus();
+    suppressFocusOpen = false;
+  });
 });
 
 // ---------- Tabs ----------

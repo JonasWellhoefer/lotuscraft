@@ -107,13 +107,120 @@ button { font: inherit; background: none; border: 0; padding: 0; cursor: pointer
   margin-top: 4px;
 }
 
-.nav { display: flex; }
-.nav a {
+/* The nav stretches to the full header height, so the mouse can travel
+   from a nav item straight into its dropdown without leaving the item. */
+.nav { align-self: stretch; }
+.nav__list { display: flex; height: 100%; list-style: none; margin: 0; padding: 0; }
+.nav__item { display: flex; align-items: center; }
+.nav__link {
   padding: 16px;
   color: var(--text);
   transition: color .2s;
 }
-.nav a:hover { color: var(--gold); }
+.nav__link:hover,
+.nav__item.is-open .nav__link { color: var(--gold); }
+.nav__link:focus-visible { outline: 2px solid var(--gold); outline-offset: -4px; border-radius: var(--radius); }
+
+/* ---------- Desktop mega menu ---------- */
+.mega {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  padding: 64px var(--gutter);
+  background: var(--background);
+  visibility: hidden;
+  opacity: 0;
+  /* Hide only after the fade-out; show at once so the links are
+     focusable as soon as the menu opens. */
+  transition: opacity .2s ease, visibility 0s linear .2s;
+}
+.nav__item.is-open .mega {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity .2s ease, visibility 0s;
+}
+.mega__grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 32px;
+}
+.mega__heading { font-size: 16px; font-weight: 600; color: var(--text-muted); }
+.mega__links { list-style: none; margin: 14px 0 0; padding: 0; }
+.mega__link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 0;
+  color: var(--text-muted);
+  transition: color .2s;
+}
+.mega__link:hover { color: var(--text); }
+.mega__link:focus-visible,
+.mega__promo:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: var(--radius); }
+.mega__icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: .9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Promotion card in the last column (Bekleidung, Geschenke) */
+.mega__promo {
+  grid-column: -2 / -1;
+  position: relative;
+  display: block;
+  aspect-ratio: 237 / 296;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.mega__promo svg { display: block; width: 100%; height: 100%; transition: transform .4s ease; }
+.mega__promo:hover svg { transform: scale(1.04); }
+.mega__promo-details {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, .8);
+  color: var(--text);
+}
+.mega__promo-kicker { text-transform: uppercase; }
+.mega__promo-title { font-weight: 600; }
+
+/* Dark veil over the page while a dropdown is open */
+.header::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  height: 100vh;
+  background: rgba(24, 23, 20, .85);
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease, visibility 0s linear .2s;
+}
+.header.has-open-menu::after {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity .2s ease, visibility 0s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mega,
+  .nav__item.is-open .mega,
+  .header::after,
+  .header.has-open-menu::after { transition: none; }
+}
 
 .header__actions { display: flex; gap: 16px; justify-self: end; }
 .icon-btn { display: inline-flex; padding: 6px; color: var(--text); }
@@ -655,7 +762,8 @@ body:has(.drawer[open]) { overflow: hidden; }
 @media (max-width: 1100px) {
   :root { --gutter: 24px; }
   .hide-md { display: none; }
-  .nav { display: none; }
+  .nav,
+  .header::after { display: none; }
   .menu-toggle { display: inline-flex; justify-self: start; }
   .header__inner { height: 72px; grid-template-columns: auto 1fr auto; gap: 12px; }
   .logo { justify-self: start; }

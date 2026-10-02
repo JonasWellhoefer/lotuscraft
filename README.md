@@ -111,7 +111,7 @@ Die Startseite wird Abschnitt für Abschnitt in der Reihenfolge des Originals na
 - [x] Verkaufsargumente
 - [x] Footer mit Newsletter (Demo-Formular, sendet nichts)
 - [x] Mobiles Menü (3 Ebenen, per Tastatur bedienbar)
-- [ ] Desktop-Dropdowns (Mega-Menü)
+- [x] Desktop-Dropdowns (Mega-Menü mit Werbekacheln, per Tastatur bedienbar)
 
 ## Hinweis
 

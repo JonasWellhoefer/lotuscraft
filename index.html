@@ -68,12 +68,15 @@
         </span>
       </a>
 
+      <!-- Items with data-menu get their dropdown panel from script.js -->
       <nav class="nav" aria-label="Hauptnavigation">
-        <a href="#">Yoga</a>
-        <a href="#">Meditation</a>
-        <a href="#">Bekleidung</a>
-        <a href="#">Geschenke</a>
-        <a href="#">Sale</a>
+        <ul class="nav__list">
+          <li class="nav__item" data-menu="Yoga"><a href="#" class="nav__link">Yoga</a></li>
+          <li class="nav__item" data-menu="Meditation"><a href="#" class="nav__link">Meditation</a></li>
+          <li class="nav__item" data-menu="Bekleidung"><a href="#" class="nav__link">Bekleidung</a></li>
+          <li class="nav__item" data-menu="Geschenke"><a href="#" class="nav__link">Geschenke</a></li>
+          <li class="nav__item"><a href="#" class="nav__link">Sale</a></li>
+        </ul>
       </nav>
 
       <div class="header__actions">
