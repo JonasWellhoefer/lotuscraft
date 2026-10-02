@@ -128,7 +128,7 @@ die Werte stammen direkt aus dem CSS des Originals.
 - [x] Kaufbox: Preis, Bewertung, Farbauswahl (zeichnet die Bilder neu), Warenkorb-Button (Demo)
 - [x] Akkordeon (Beschreibung, Details, Pflege, Nachhaltigkeit) und Bewertungsübersicht
 - [x] Infobereich zu Material & Grip (4 Zeilen im Zickzack)
-- [ ] Bewertungen
+- [x] Bewertungen (Beispieldaten, sortierbar, mit Seiten)
 - [ ] Verwandte Produkte
 
 ## Hinweis

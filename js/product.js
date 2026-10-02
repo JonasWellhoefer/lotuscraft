@@ -10,7 +10,7 @@ const productDetails = {
     name: "Yogamatte PURE",
     subtitle: "Die Dynamische: Rutschfestigkeit und Stabilität in perfekter Balance.",
     price: 79.95,
-    rating: 4.6,
+    rating: 4.61,
     reviewCount: 866,
     ratingScales: [
       ["Rutschfestigkeit", 4.89],
@@ -66,6 +66,22 @@ const productDetails = {
         text: "Ob ruhiges Hatha, kraftvolles Vinyasa oder Yin am Abend: Die Mischung aus Grip und Dämpfung macht die PURE zur Matte für jeden Tag – zu Hause wie im Studio.",
         picture: "styles",
       },
+    ],
+    // Invented sample reviews: the original lists real customers' names and
+    // towns. `days` = how long ago, used for sorting by "newest".
+    reviews: [
+      { name: "Katrin", place: "Wien, AT", color: "Dark Cranberry", stars: 5, days: 1, text: "Schöne, satte Farbe und ein richtig guter Grip. Nach drei Wochen täglichem Üben sieht sie noch aus wie neu." },
+      { name: "Mia", place: "München, DE", color: "Light Taupe", stars: 5, days: 2, text: "Ich schwitze beim Vinyasa ziemlich viel – auf der PURE kein Problem. Endlich brauche ich kein Handtuch mehr als Unterlage." },
+      { name: "Paul", place: "Berlin, DE", color: "Anthrazit", stars: 4, days: 3, text: "Top Grip und angenehm breit. Einen Stern Abzug, weil sie zum Mitnehmen etwas schwer ist." },
+      { name: "Elena", place: "Graz, AT", color: "Balsam Green", stars: 5, days: 5, text: "Die matte Oberfläche fühlt sich samtig an und ist trotzdem super griffig. Das Grün passt perfekt in mein Yogazimmer." },
+      { name: "Anonym", place: "", color: "Indigo Dust", stars: 5, days: 6, text: "Gute Dämpfung für die Knie, trotzdem stabil in den Balance-Haltungen." },
+      { name: "Sabine", place: "Hamburg, DE", color: "Aubergine", stars: 3, days: 8, text: "Schöne Matte, aber der Gummigeruch war die ersten Tage ziemlich stark. Nach einer Woche Lüften ist er kaum noch da." },
+      { name: "Lukas", place: "Zürich, CH", color: "Anthrazit", stars: 5, days: 10, text: "Nutze sie täglich fürs Morgen-Yoga. Sie rollt sich flach aus und bleibt liegen, keine hochstehenden Ecken." },
+      { name: "Nina", place: "Köln, DE", color: "Dark Cranberry", stars: 4, days: 12, text: "Sehr guter Halt. Auf der dunklen Farbe sieht man allerdings jeden Fussel – regelmäßiges Abwischen gehört dazu." },
+      { name: "Thomas", place: "Leipzig, DE", color: "Light Taupe", stars: 5, days: 15, text: "Als großer Mensch freue ich mich über die Breite. Im herabschauenden Hund rutsche ich endlich nicht mehr nach hinten." },
+      { name: "Julia", place: "Salzburg, AT", color: "Balsam Green", stars: 5, days: 18, text: "Schnelle Lieferung, plastikfreie Verpackung und eine Matte, die sich hochwertig anfühlt. Gerne wieder." },
+      { name: "Martin", place: "Frankfurt, DE", color: "Indigo Dust", stars: 2, days: 21, text: "Für mich zu fest – für Yin hätte ich mehr Polsterung gebraucht. Für dynamisches Yoga ist sie sicher super." },
+      { name: "Lea", place: "Innsbruck, AT", color: "Aubergine", stars: 5, days: 27, text: "Nach langer Suche die Matte, auf der ich mich wirklich sicher fühle. Und die Farbe ist wunderschön." },
     ],
   },
 };
@@ -295,7 +311,8 @@ function productMarkup(product) {
     </div>
 
     <section class="container product-features" aria-label="Mehr über die ${product.name}">${featureRows(product, color)}
-    </section>`;
+    </section>
+${reviewsMarkup(product)}`;
 }
 
 function featureRows(product, color) {
@@ -310,6 +327,101 @@ function featureRows(product, color) {
         <div class="feature__media" role="img" aria-label="${picture.label}" data-picture="${feature.picture}">${picture.draw(color)}</div>
       </div>`;
   }).join("");
+}
+
+// ---------- Reviews ----------
+const REVIEWS_PER_PAGE = 5;
+
+const reviewSorters = {
+  neueste: (a, b) => a.days - b.days,
+  beste: (a, b) => b.stars - a.stars || a.days - b.days,
+  schlechteste: (a, b) => a.stars - b.stars || a.days - b.days,
+};
+
+function ago(days) {
+  if (days === 1) return "vor einem Tag";
+  if (days < 7) return `vor ${days} Tagen`;
+  if (days < 14) return "vor einer Woche";
+  return `vor ${Math.floor(days / 7)} Wochen`;
+}
+
+function reviewItem(product, review) {
+  return `
+          <li class="review-item">
+            <div class="review-item__meta">
+              <p class="review-item__badge"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.4"/></svg>Verifizierter Kauf</p>
+              <p class="review-item__name">${review.name}</p>
+              ${review.place ? `<p class="review-item__place">${review.place}</p>` : ""}
+            </div>
+            <div class="review-item__body">
+              ${starRating(review.stars, `${review.stars} von 5 Sternen`)}
+              <p class="review-item__product">${product.name} ${review.color}</p>
+              <p class="review-item__text">${review.text}</p>
+              <p class="review-item__date">${ago(review.days)}</p>
+            </div>
+          </li>`;
+}
+
+function reviewsMarkup(product) {
+  return `
+    <section class="reviews-section" id="bewertungen" aria-labelledby="reviews-title">
+      <div class="container">
+        <div class="reviews__summary">
+          <h2 class="visually-hidden" id="reviews-title">Bewertungen</h2>
+          <p class="reviews__score"><span class="reviews__average">${product.rating.toFixed(2)}</span>${starRating(product.rating)}</p>
+          <p class="reviews__basis">Basierend auf ${product.reviewCount} Bewertungen</p>
+          <p class="reviews__note">Beispielbewertungen für dieses Studentenprojekt – keine echten Kund:innen.</p>
+        </div>
+        <div class="reviews__bar">
+          <label class="reviews__sort">
+            <span>Sortieren</span>
+            <select>
+              <option value="neueste">Neueste zuerst</option>
+              <option value="beste">Beste Bewertung</option>
+              <option value="schlechteste">Niedrigste Bewertung</option>
+            </select>
+            <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg>
+          </label>
+          <span class="reviews__tab">Produktbewertungen</span>
+        </div>
+        <ol class="reviews__list"></ol>
+        <nav class="pagination" aria-label="Bewertungsseiten"></nav>
+      </div>
+    </section>`;
+}
+
+function setupReviews(product) {
+  const section = productRoot.querySelector("#bewertungen");
+  const list = section.querySelector(".reviews__list");
+  const pager = section.querySelector(".pagination");
+  const sortSelect = section.querySelector(".reviews__sort select");
+  let page = 1;
+
+  function render() {
+    const sorted = [...product.reviews].sort(reviewSorters[sortSelect.value]);
+    const pages = Math.ceil(sorted.length / REVIEWS_PER_PAGE);
+    const start = (page - 1) * REVIEWS_PER_PAGE;
+    list.innerHTML = sorted.slice(start, start + REVIEWS_PER_PAGE).map((review) => reviewItem(product, review)).join("");
+    pager.innerHTML = Array.from({ length: pages }, (_, i) => `
+          <button class="pagination__page" data-page="${i + 1}" aria-label="Seite ${i + 1}"${i + 1 === page ? ' aria-current="page"' : ""}>${i + 1}</button>`).join("");
+  }
+
+  sortSelect.addEventListener("change", () => {
+    page = 1;
+    render();
+  });
+
+  pager.addEventListener("click", (e) => {
+    const button = e.target.closest("[data-page]");
+    if (!button) return;
+    page = Number(button.dataset.page);
+    render();
+    // Bring the new page into view and keep keyboard focus on the pager.
+    section.scrollIntoView({ block: "start" });
+    pager.querySelector('[aria-current="page"]').focus({ preventScroll: true });
+  });
+
+  render();
 }
 
 function missingMarkup() {
@@ -331,6 +443,7 @@ if (!product) {
 } else {
   document.title = `${product.name} – LotusCraft Student Rebuild`;
   productRoot.innerHTML = productMarkup(product);
+  setupReviews(product);
 
   const track = productRoot.querySelector(".gallery__track");
   const thumbs = productRoot.querySelector(".gallery__thumbs");
