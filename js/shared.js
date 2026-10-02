@@ -85,6 +85,14 @@ const shapes = {
   leggings: (c) => `<path d="M62 30h56l6 130h-22l-12-96-12 96H56z" fill="${c}"/>`,
   top: (c) => `<path d="M58 52l14-18h36l14 18v58H58z" fill="${c}" stroke="#d5d0c7"/>`,
   sweater: (c) => `<path d="M58 38l32-8 32 8 22 18 10 86-16 2-12-70v80H54V74l-12 70-16-2 10-86z" fill="${c}"/>`,
+  bag: (c) => `<path d="M42 84C58 38 122 38 138 84" fill="none" stroke="${c}" stroke-width="6" stroke-linecap="round"/>
+               <rect x="22" y="80" width="136" height="38" rx="19" fill="${c}"/>
+               <ellipse cx="141" cy="99" rx="9" ry="19" fill="rgba(0,0,0,.12)"/>
+               <rect x="70" y="80" width="6" height="38" fill="rgba(0,0,0,.08)"/>`,
+  strap: (c) => `<path d="M44 124C40 52 140 52 136 124" fill="none" stroke="rgba(0,0,0,.08)" stroke-width="13" stroke-linecap="round"/>
+                 <path d="M44 124C40 52 140 52 136 124" fill="none" stroke="${c}" stroke-width="10" stroke-linecap="round"/>
+                 <rect x="33" y="118" width="22" height="16" rx="3" fill="none" stroke="#8b8b8b" stroke-width="3"/>
+                 <rect x="125" y="118" width="22" height="16" rx="3" fill="none" stroke="#8b8b8b" stroke-width="3"/>`,
 
   // Bundles: several products in one picture.
   matSet: (c, a) => `<rect x="46" y="16" width="88" height="26" rx="13" fill="${a}"/>

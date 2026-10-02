@@ -129,7 +129,7 @@ die Werte stammen direkt aus dem CSS des Originals.
 - [x] Akkordeon (Beschreibung, Details, Pflege, Nachhaltigkeit) und Bewertungsübersicht
 - [x] Infobereich zu Material & Grip (4 Zeilen im Zickzack)
 - [x] Bewertungen (Beispieldaten, sortierbar, mit Seiten)
-- [ ] Verwandte Produkte
+- [x] Verwandte Produkte
 
 ## Hinweis
 

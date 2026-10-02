@@ -83,6 +83,13 @@ const productDetails = {
       { name: "Martin", place: "Frankfurt, DE", color: "Indigo Dust", stars: 2, days: 21, text: "Für mich zu fest – für Yin hätte ich mehr Polsterung gebraucht. Für dynamisches Yoga ist sie sicher super." },
       { name: "Lea", place: "Innsbruck, AT", color: "Aubergine", stars: 5, days: 27, text: "Nach langer Suche die Matte, auf der ich mich wirklich sicher fühle. Und die Farbe ist wunderschön." },
     ],
+    // "Verwandte Produkte", as on the original (prices from the shop).
+    related: [
+      { name: "Yogatasche PUNE", price: 29.95, shape: "bag", tint: "#c9bcae" },
+      { name: "Yogamatten Tragegurt", price: 14.95, shape: "strap", tint: COTTON },
+      { name: "„Almost Perfect“ Yogamatte PURE", price: 67.95, compareAt: 79.95, shape: "mat", tint: "#7a2a3a" },
+      bestsellers.yoga[0], // Yogablock Kork 2er Set
+    ],
   },
 };
 
@@ -312,7 +319,16 @@ function productMarkup(product) {
 
     <section class="container product-features" aria-label="Mehr über die ${product.name}">${featureRows(product, color)}
     </section>
-${reviewsMarkup(product)}`;
+${reviewsMarkup(product)}
+    <section class="section related" aria-labelledby="related-title">
+      <div class="container">
+        <header class="section-header">
+          <h2 class="section-header__title" id="related-title">Verwandte Produkte</h2>
+        </header>
+        <div class="product-grid">${product.related.map(productCard).join("")}
+        </div>
+      </div>
+    </section>`;
 }
 
 function featureRows(product, color) {
