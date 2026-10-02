@@ -146,19 +146,23 @@ function productCard(product) {
        </span>`
     : "";
 
-  // Products with their own page (`slug`) link to it; the rest are placeholders.
-  const href = product.slug ? `produkt.html?p=${product.slug}` : "#";
+  // Products with their own page (`slug`) link to it, preselecting the
+  // card's colour (`variant`); the rest are placeholders.
+  const colorParam = product.variant ? `&farbe=${encodeURIComponent(product.variant)}` : "";
+  const href = product.slug ? `produkt.html?p=${product.slug}${colorParam}` : "#";
+  const label = product.variant ? `${product.name} in ${product.variant}` : product.name;
 
   return `
     <a href="${href}" class="product-card">
       <div class="product-card__media${swatches ? " product-card__media--swatches" : ""}">
-        <svg viewBox="0 0 180 180" role="img" aria-label="Platzhalter: ${product.name}">
+        <svg viewBox="0 0 180 180" role="img" aria-label="Platzhalter: ${label}">
           ${shapes[product.shape](product.tint, product.accent)}
         </svg>
         ${swatches}
         ${tag}
       </div>
       <h3 class="product-card__title">${product.name}</h3>
+      ${product.variant ? `<p class="product-card__variant">${product.variant}</p>` : ""}
       <p class="product-card__price">${price}</p>
     </a>`;
 }
@@ -240,12 +244,18 @@ const menuIcons = {
   cushion: '<path d="M4 12c0-2 3.6-3.5 8-3.5s8 1.5 8 3.5v3c0 2-3.6 3.5-8 3.5S4 17 4 15z"/><path d="M4 12c0 2 3.6 3.5 8 3.5s8-1.5 8-3.5"/>',
   bench: '<path d="M4 10l1-2h14l1 2zM6 10v8M18 10v8"/>',
   house: '<path d="M4 11l8-6 8 6v9H4z"/><path d="M10 20v-5h4v5"/>',
+  studio: '<path d="M3 10l2-5h14l2 5zM4 10v10h16V10M10 20v-5h4v5M7 13h1M16 13h1"/>',
   suitcase: '<rect x="4" y="8" width="16" height="11" rx="1.5"/><path d="M9 8V5.5h6V8M4 13h16"/>',
   bag: '<rect x="3" y="10" width="18" height="7" rx="3.5"/><path d="M6 10c2-4 10-4 12 0"/>',
   strap: '<path d="M7 17l12-9M9 19l12-9"/><rect x="2.5" y="15.5" width="5" height="5" rx="2.5"/>',
   eyemask: '<path d="M3 10c3-3 15-3 18 0v2c-2 3-6 4-9 2-3 2-7 1-9-2z"/>',
   pants: '<path d="M7 3h10l1 18h-4l-2-11-2 11H6z"/>',
   top: '<path d="M8 4c1 2 2.5 3 4 3s3-1 4-3l3 3-2 3v10H7V10L5 7z"/>',
+};
+
+// Menu entries that already have a page in this rebuild; all others are "#".
+const menuLinks = {
+  "Alle Yogamatten": "kategorie.html?k=yogamatten",
 };
 
 // Desktop dropdown links that get a more specific icon than their column.

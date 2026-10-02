@@ -23,7 +23,7 @@ const productDetails = {
       { name: "Dark Cranberry", hex: "#7a2a3a", matte: true },
       { name: "Balsam Green", hex: "#5d7366", matte: true },
       { name: "Light Taupe", hex: "#c4b6a6" },
-      { name: "Aubergine", hex: "#4a3142" },
+      { name: "Aubergine", hex: "#8d5a6f" },
       { name: "Indigo Dust", hex: "#6b7c95" },
       { name: "Anthrazit", hex: "#3d3d3f" },
     ],
@@ -500,6 +500,10 @@ if (!product) {
       media.innerHTML = featurePictures[media.dataset.picture].draw(color);
     });
   });
+
+  // A link can preselect a colour, e.g. from the category page (&farbe=Light Taupe).
+  const wanted = product.colors.findIndex((c) => c.name === new URLSearchParams(location.search).get("farbe"));
+  if (wanted > 0) productRoot.querySelectorAll(".color-picker input")[wanted].click();
 
   // Demo cart: counts up the badge in the header, nothing is ordered.
   const cartButton = productRoot.querySelector(".buybox__cart");

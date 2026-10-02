@@ -263,7 +263,7 @@ function renderMenu(direction) {
     : "";
   const list = items.map((item, i) => {
     if (typeof item === "string") {
-      return `<li><a href="#" class="drawer__link drawer__link--plain">${item}</a></li>`;
+      return `<li><a href="${menuLinks[item] || "#"}" class="drawer__link drawer__link--plain">${item}</a></li>`;
     }
     return item.children
       ? `<li><button class="drawer__link" data-index="${i}">${menuIcon(item.icon)}<span>${item.label}</span>${chevron("right")}</button></li>`
@@ -332,7 +332,7 @@ function megaColumn(category, column) {
   const links = column.children || [`Alle ${column.label}`];
   const items = links.map((label, i) => {
     const icon = column.children && i === 0 ? category.icon : linkIcons[label] || column.icon;
-    return `<li><a href="#" class="mega__link">${menuIcon(icon, "mega__icon")}<span>${label}</span></a></li>`;
+    return `<li><a href="${menuLinks[label] || "#"}" class="mega__link">${menuIcon(icon, "mega__icon")}<span>${label}</span></a></li>`;
   }).join("");
   return `
         <div class="mega__column">
@@ -417,6 +417,11 @@ megaItems.forEach((item) => {
     suppressFocusOpen = false;
   });
 });
+
+// ---------- Current section ----------
+// A page can name its section, e.g. <body data-nav="Yoga">, to highlight it.
+const currentNav = document.querySelector(`.nav__item[data-menu="${document.body.dataset.nav}"] .nav__link`);
+if (currentNav) currentNav.classList.add("is-current");
 
 // ---------- Cart count (demo) ----------
 // "In den Warenkorb" only counts items, nothing is ordered. The count is

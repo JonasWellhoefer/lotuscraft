@@ -89,12 +89,14 @@ Beenden mit **Strg + C** im Terminal.
 lotuscraft/
 ├── index.html      # Startseite (nur der Inhalt zwischen Header und Footer)
 ├── produkt.html    # Produktseite, z. B. produkt.html?p=yogamatte-pure
+├── kategorie.html  # Kategorieseite mit Filtern, z. B. kategorie.html?k=yogamatten
 ├── styles.css      # Gestaltung: Farben, Schriften, Layout, Mobilansicht
 ├── js/
 │   ├── shared.js   # Gemeinsame Daten & Helfer: Produkte, Menü, Icons, Zeichnungen
 │   ├── layout.js   # Header, Menüs (Handy + Desktop), Footer, Warenkorb-Zähler
 │   ├── home.js     # Startseite: Produkt-Tabs, Community, Bewertungs-Karussell
-│   └── product.js  # Produktseite: Daten, Galerie, Farbauswahl, Warenkorb-Button
+│   ├── product.js  # Produktseite: Daten, Galerie, Farbauswahl, Warenkorb-Button
+│   └── category.js # Kategorieseite: Daten, Filter (Farbe, Material, Verfügbarkeit), Sortierung
 └── README.md
 ```
 
@@ -130,6 +132,12 @@ die Werte stammen direkt aus dem CSS des Originals.
 - [x] Infobereich zu Material & Grip (4 Zeilen im Zickzack)
 - [x] Bewertungen (Beispieldaten, sortierbar, mit Seiten)
 - [x] Verwandte Produkte
+
+**Kategorieseite „Yogamatten“** (Hero-Button „Yogamatten“ oder Menü → „Alle Yogamatten“):
+
+- [x] Unterkategorien als Kreise, Titel, 31 Karten (eine pro Farbe, wie im Original)
+- [x] Filter Farbe, Material, Verfügbarkeit (kombinierbar) und Sortierung
+- [x] Klick auf eine PURE-Karte öffnet die Produktseite gleich in der richtigen Farbe
 
 ## Hinweis
 
