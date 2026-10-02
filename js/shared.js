@@ -8,6 +8,24 @@ const COTTON = "#ebe5d6";
 // Star outline shared by ratings and reviews.
 const STAR_PATH = "M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.1 6-5.3-3-5.3 3 1.1-6L1.4 7.7l6-.7z";
 
+// Five stars filled up to `rating`, so 4.6 shows a partly filled last star.
+function starRating(rating, label = `${String(rating).replace(".", ",")} von 5 Sternen`) {
+  const row = `<svg viewBox="0 0 20 20" aria-hidden="true"><path d="${STAR_PATH}"/></svg>`.repeat(5);
+  return `
+    <span class="star-rating" role="img" aria-label="${label}">
+      <span class="star-rating__row">${row}</span>
+      <span class="star-rating__row star-rating__row--fill" style="width: ${(rating / 5) * 100}%">${row}</span>
+    </span>`;
+}
+
+// Neutral payment icons (no brand logos), used in the footer and on product pages.
+const PAYMENT_ICONS = `
+  <svg viewBox="0 0 30 24" aria-hidden="true"><rect x=".5" y=".5" width="29" height="23" rx="3.5"/><path d="M7 9h16M7 15h6"/></svg>
+  <svg viewBox="0 0 30 24" aria-hidden="true"><rect x=".5" y=".5" width="29" height="23" rx="3.5"/><path d="M8 10l7-4 7 4zM10 11v6M15 11v6M20 11v6M8 18h14"/></svg>
+  <svg viewBox="0 0 30 24" aria-hidden="true"><rect x=".5" y=".5" width="29" height="23" rx="3.5"/><path d="M8 8h13a1 1 0 0 1 1 1v8H8zM8 8l10-2v2M18 12.5h4"/></svg>
+  <svg viewBox="0 0 30 24" aria-hidden="true"><rect x=".5" y=".5" width="29" height="23" rx="3.5"/><rect x="11" y="5" width="8" height="14" rx="1.5"/><path d="M14 16.5h2"/></svg>
+  <svg viewBox="0 0 30 24" aria-hidden="true"><rect x=".5" y=".5" width="29" height="23" rx="3.5"/><path d="M10 5h7l3 3v11H10zM13 11h4M13 14h4"/></svg>`;
+
 // ---------- Bestseller data ----------
 // Product names and prices mirror the original shop (as of Oct 2026).
 // `shape` picks a placeholder illustration instead of the original photo.

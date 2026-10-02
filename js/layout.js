@@ -165,12 +165,7 @@ document.getElementById("site-footer").outerHTML = `
   <div class="container footer__bottom">
     <p class="footer__copyright">© 2026 LotusCraft · Studentenprojekt</p>
 
-    <div class="payments" role="img" aria-label="Zahlungsarten (neutrale Platzhalter-Icons)">
-      <svg viewBox="0 0 30 24" aria-hidden="true"><rect x=".5" y=".5" width="29" height="23" rx="3.5"/><path d="M7 9h16M7 15h6"/></svg>
-      <svg viewBox="0 0 30 24" aria-hidden="true"><rect x=".5" y=".5" width="29" height="23" rx="3.5"/><path d="M8 10l7-4 7 4zM10 11v6M15 11v6M20 11v6M8 18h14"/></svg>
-      <svg viewBox="0 0 30 24" aria-hidden="true"><rect x=".5" y=".5" width="29" height="23" rx="3.5"/><path d="M8 8h13a1 1 0 0 1 1 1v8H8zM8 8l10-2v2M18 12.5h4"/></svg>
-      <svg viewBox="0 0 30 24" aria-hidden="true"><rect x=".5" y=".5" width="29" height="23" rx="3.5"/><rect x="11" y="5" width="8" height="14" rx="1.5"/><path d="M14 16.5h2"/></svg>
-      <svg viewBox="0 0 30 24" aria-hidden="true"><rect x=".5" y=".5" width="29" height="23" rx="3.5"/><path d="M10 5h7l3 3v11H10zM13 11h4M13 14h4"/></svg>
+    <div class="payments" role="img" aria-label="Zahlungsarten (neutrale Platzhalter-Icons)">${PAYMENT_ICONS}
     </div>
 
     <div class="language">

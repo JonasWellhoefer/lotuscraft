@@ -88,11 +88,13 @@ Beenden mit **Strg + C** im Terminal.
 ```
 lotuscraft/
 ├── index.html      # Startseite (nur der Inhalt zwischen Header und Footer)
+├── produkt.html    # Produktseite, z. B. produkt.html?p=yogamatte-pure
 ├── styles.css      # Gestaltung: Farben, Schriften, Layout, Mobilansicht
 ├── js/
 │   ├── shared.js   # Gemeinsame Daten & Helfer: Produkte, Menü, Icons, Zeichnungen
 │   ├── layout.js   # Header, Menüs (Handy + Desktop), Footer, Warenkorb-Zähler
-│   └── home.js     # Startseite: Produkt-Tabs, Community, Bewertungs-Karussell
+│   ├── home.js     # Startseite: Produkt-Tabs, Community, Bewertungs-Karussell
+│   └── product.js  # Produktseite: Daten, Galerie, Farbauswahl, Warenkorb-Button
 └── README.md
 ```
 
@@ -105,7 +107,7 @@ die Werte stammen direkt aus dem CSS des Originals.
 
 ## ✅ Fortschritt
 
-Die Startseite wird Abschnitt für Abschnitt in der Reihenfolge des Originals nachgebaut:
+**Startseite** – Abschnitt für Abschnitt in der Reihenfolge des Originals:
 
 - [x] Vertrauensleiste (Bewertung, Versand)
 - [x] Header mit Navigation
@@ -119,6 +121,15 @@ Die Startseite wird Abschnitt für Abschnitt in der Reihenfolge des Originals na
 - [x] Footer mit Newsletter (Demo-Formular, sendet nichts)
 - [x] Mobiles Menü (3 Ebenen, per Tastatur bedienbar)
 - [x] Desktop-Dropdowns (Mega-Menü mit Werbekacheln, per Tastatur bedienbar)
+
+**Produktseite** (Yogamatte PURE – Klick auf die Karte bei den Bestsellern):
+
+- [x] Galerie (Desktop: Raster, Handy: Wisch-Galerie mit Vorschaubildern)
+- [x] Kaufbox: Preis, Bewertung, Farbauswahl (zeichnet die Bilder neu), Warenkorb-Button (Demo)
+- [x] Akkordeon (Beschreibung, Details, Pflege, Nachhaltigkeit) und Bewertungsübersicht
+- [ ] Infobereich zu Material & Grip
+- [ ] Bewertungen
+- [ ] Verwandte Produkte
 
 ## Hinweis
 
