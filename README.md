@@ -133,14 +133,15 @@ die Werte stammen direkt aus dem CSS des Originals.
 - [x] Infobereich zu Material & Grip (4 Zeilen im Zickzack)
 - [x] Bewertungen (Beispieldaten, sortierbar, mit Seiten)
 - [x] Verwandte Produkte
-- [x] Yogamatte PURE, ARISE, ARISE Travel (faltbar), MUDRA (Waffelstruktur), Mudra XL und MUDRA PRO – alle Seiten nutzen dieselbe Vorlage, Maße und Material stehen in den Daten
+- [x] Alle 8 Yogamatten: PURE, ARISE, ARISE Travel (faltbar), MUDRA (Waffelstruktur), Mudra XL, MUDRA PRO, ARISE CORK (Kork, Variante „Align“ mit Linienmuster) und WOOL (Schurwolle) – alle Seiten nutzen dieselbe Vorlage, Maße und Material stehen in den Daten
+- [x] Produkte mit nur einer Ausführung (WOOL) zeigen wie im Original keine Farbauswahl
 - [x] Längenauswahl wie im Original (MUDRA PRO: 180 / 200 cm mit eigenem Preis; Kombinationen, die es nicht gibt, werden ausgeblendet)
 
 **Kategorieseite „Yogamatten“** (Hero-Button „Yogamatten“ oder Menü → „Alle Yogamatten“):
 
 - [x] Unterkategorien als Kreise, Titel, 31 Karten (eine pro Farbe, wie im Original)
 - [x] Filter Farbe, Material, Verfügbarkeit (kombinierbar) und Sortierung
-- [x] Klick auf eine Karte mit eigener Produktseite (alle Matten außer ARISE CORK und WOOL – 28 von 31 Karten) öffnet sie gleich in der richtigen Farbe
+- [x] Jede der 31 Karten öffnet die passende Produktseite, gleich in der richtigen Farbe
 
 **Warenkorb** (Icon oben rechts oder „In den Warenkorb“ auf der Produktseite):
 

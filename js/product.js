@@ -16,6 +16,8 @@ const relatedCards = {
   spray: { name: "Bio Yogamatten Spray", price: 12.95, shape: "spray", tint: "#e6e1d6" },
   belt: { name: "Yogagurt 100% Bio-Baumwolle", price: 6.49, compareAt: 12.95, shape: "strap", tint: "#8a7f72" },
   mudraPro: { name: "Yogamatte MUDRA PRO", slug: "yogamatte-mudra-pro", price: 99.95, shape: "mat", tint: "#3d3d3f" },
+  eyePillow: { name: "Augenkissen", price: 27.95, shape: "eyePillow", tint: "#7f93ad" },
+  ariseCork: { name: "Yogamatte ARISE CORK", slug: "yogamatte-arise-cork", price: 99.95, shape: "mat", tint: "#d6a571" },
   almostPerfectProXl: { name: "„Almost Perfect“ Yogamatte MUDRA PRO XL", price: 106.29, compareAt: 124.95, shape: "mat", tint: "#3d3d3f" },
 };
 
@@ -363,7 +365,7 @@ const productDetails = {
     ],
     related: [
       relatedCards.mudraPro,
-      { name: "Augenkissen", price: 27.95, shape: "eyePillow", tint: "#7f93ad" },
+      relatedCards.eyePillow,
       { name: "Naima Top", price: 39.95, shape: "top", tint: "#d8d0c4" },
       relatedCards.almostPerfectProXl,
     ],
@@ -443,6 +445,132 @@ const productDetails = {
       bestsellers.yoga[3], // Yogamatte MUDRA
     ],
   },
+
+  "yogamatte-arise-cork": {
+    name: "Yogamatte ARISE CORK",
+    subtitle: "Die Natürliche: Angenehmes Hautgefühl und extra rutschfest bei intensiver Praxis.",
+    price: 99.95,
+    rating: 4.79,
+    reviewCount: 72,
+    ratingScales: [
+      ["Rutschfestigkeit", 4.53],
+      ["Dämpfung", 4.8],
+      ["Qualität und Langlebigkeit", 4.86],
+    ],
+    specs: { material: "Naturkork auf Naturkautschuk (15 % recycelt)", short: "Kork + Naturkautschuk", length: 185, width: 65, mm: 4.5, weight: "1,8 kg", origin: "Spanien", texture: "cork", topOutside: true },
+    // Both are the same cork; "Align" carries a line print.
+    colors: [
+      { name: "Align", hex: "#d6a571", print: "align" },
+      { name: "Lotus", hex: "#d6a571" },
+    ],
+    gallery: ["rolled", "top", "standing", "layers", "lunge", "seated"],
+    description: `
+        <p>Die ARISE CORK verbindet eine Oberfläche aus Naturkork mit einer Unterseite aus Naturkautschuk, die zu 15 % aus recyceltem Material besteht. Kork fühlt sich warm und angenehm auf der Haut an und wird griffiger, je feuchter er ist – ideal für schweißtreibende Stile.</p>
+        <p>Mit 4,5 mm dämpft die Matte gut und bleibt stabil. Kork und Kautschuk sind ohne Klebstoff miteinander verbunden. Hergestellt wird sie in Spanien.</p>
+        <p>Tipp: Zu Beginn der Praxis Hände und Füße leicht anfeuchten, dann greift der Kork sofort. Die Matte ist für die eigene Praxis gedacht – für Studios sind MUDRA und MUDRA PRO die bessere Wahl.</p>`,
+    care: `
+        <p>Kork wirkt von Natur aus antimikrobiell und nimmt Gerüche kaum an. Nach der Praxis mit einem weichen, leicht feuchten Tuch abwischen und trocken nachwischen. Keine Seife verwenden und nicht in die Waschmaschine geben.</p>
+        <p>Immer mit der Korkseite nach außen aufrollen und vor direkter Sonne und großer Hitze schützen.</p>`,
+    sustainability: `
+        <p><strong>Plastikfreie Verpackung</strong> – ohne PVC und ohne erdölbasierte Kunststoffe.</p>
+        <p><strong>Nachwachsende Rohstoffe</strong> – Kork und Naturkautschuk, dazu ein Recyclinganteil.</p>`,
+    features: [
+      {
+        title: "Je feuchter, desto griffiger",
+        text: "Kork verhält sich anders als Gummi: Wird die Oberfläche feucht, greift sie sogar besser. Darum passt die ARISE CORK gut zu schweißtreibenden Stilen wie Power Yoga – Hände und Füße bleiben auch dann, wo du sie hinsetzt.",
+        picture: "grip",
+      },
+      {
+        title: "Pflegeleicht von Natur aus",
+        text: "Kork wirkt antimikrobiell und nimmt kaum Gerüche an. Nach der Praxis genügt ein leicht feuchtes Tuch. Beim Aufrollen zeigt die Korkseite nach außen, dann bleibt die Matte schön flach.",
+        picture: "layers",
+      },
+      {
+        title: "Kork und Kautschuk, sonst nichts",
+        text: "Oben Naturkork, unten Naturkautschuk mit 15 % Recyclinganteil – und dazwischen kein Klebstoff. Das macht die Matte langlebig und angenehm natürlich im Griff.",
+        picture: "forest",
+      },
+      {
+        title: "Hergestellt in Spanien",
+        text: "Die ARISE CORK wird in Spanien gefertigt und kommt ohne Verpackung aus PVC oder erdölbasierten Kunststoffen. Mit 185 × 65 cm und 1,8 kg bietet sie viel Fläche und ist trotzdem gut zu tragen.",
+        picture: "size",
+      },
+    ],
+    reviews: [
+      { name: "Paula", place: "Heidelberg, DE", color: "Align", stars: 5, days: 2, text: "Die Linien helfen mir wirklich, Hände und Füße gerade zu setzen. Und der Kork fühlt sich wunderbar an." },
+      { name: "Anonym", place: "", color: "Lotus", stars: 5, days: 4, text: "Je mehr ich schwitze, desto besser hält sie. Hätte ich nicht gedacht." },
+      { name: "Selin", place: "Dortmund, DE", color: "Align", stars: 4, days: 7, text: "Schöne Matte, aber trocken ist sie am Anfang etwas glatt. Ein paar Tropfen Wasser auf die Hände, dann passt es." },
+      { name: "Georg", place: "Wien, AT", color: "Lotus", stars: 5, days: 10, text: "Riecht nicht nach Gummi und sieht nach Monaten noch aus wie neu." },
+      { name: "Merle", place: "Kiel, DE", color: "Align", stars: 5, days: 15, text: "Ein Naturmaterial, das sich warm anfühlt. Für mich die schönste Matte im ganzen Kurs." },
+      { name: "Timo", place: "Chur, CH", color: "Lotus", stars: 4, days: 21, text: "Top Grip bei Hot Yoga. Man sollte sie mit der Korkseite nach außen rollen, sonst wellt sie sich leicht." },
+      { name: "Hanna", place: "Magdeburg, DE", color: "Align", stars: 5, days: 26, text: "Liegt flach, rutscht nicht und ist schnell abgewischt. Gerne wieder." },
+    ],
+    related: [
+      relatedCards.bag,
+      bestsellers.yoga[2], // Yogamatte ARISE
+      { name: "Yogatasche NANDI", price: 19.95, shape: "bag", tint: "#d5cbbd" },
+      { name: "„Almost Perfect“ Yogamatte ARISE Cork", price: 84.95, compareAt: 99.95, shape: "mat", tint: "#d6a571" },
+    ],
+  },
+
+  "yogamatte-schurwolle": {
+    name: "Yogamatte WOOL aus Schurwolle",
+    subtitle: "Natürlich warm, weich & kuschelig - Made in Germany.",
+    price: 119.95,
+    rating: 4.95,
+    reviewCount: 16,
+    ratingScales: [
+      ["Rutschfestigkeit", 4.65],
+      ["Dämpfung", 4.6],
+      ["Qualität und Langlebigkeit", 4.89],
+    ],
+    specs: { material: "Schurwolle auf Naturlatex, PU und Acrylharz", short: "Schurwolle", length: 200, width: 75, mm: 20, weight: "1,75 kg", origin: "Deutschland", texture: "wool" },
+    // One version only, so the page shows no colour choice (as on the original).
+    colors: [{ name: null, hex: "#e7e1d6", underside: "#c9c0ae" }],
+    gallery: ["rolled", "top", "standing", "layers", "seated", "studioSeated"],
+    description: `
+        <p>Die WOOL ist eine Matte aus 100 % Schurwolle mit rund 2 cm dichtem Flor – weich, warm und wie gemacht für ruhige Praxis: Yin Yoga, Meditation oder Atemübungen.</p>
+        <p>Die Wolle ist mulesingfrei und stammt aus Neuseeland. Die Unterseite aus Naturlatex, PU und Acrylharz hält die Matte auf jedem Boden, ein eingefasster Rand gibt ihr Form, und Baumwollkordeln halten sie aufgerollt zusammen. Hergestellt wird sie in Deutschland.</p>`,
+    care: `
+        <p>Regelmäßig auslüften, ausklopfen oder absaugen – das reicht meistens. Bei Bedarf ist eine kalte Handwäsche mit Wollwaschmittel ohne Weichspüler möglich.</p>
+        <p>Zum Trocknen aufhängen oder flach auslegen, nicht in den Trockner geben. Keine Seife, keine Waschmaschine, und vor direkter Sonne und großer Hitze schützen.</p>`,
+    sustainability: `
+        <p><strong>Hergestellt in Deutschland</strong> – kurze Wege innerhalb der EU.</p>
+        <p><strong>Schadstoffgeprüft</strong> nach OEKO-TEX® STANDARD 100.</p>
+        <p><strong>Woolmark-zertifizierte Wolle</strong> – mulesingfrei, aus Neuseeland.</p>`,
+    // The original has three info rows here instead of four.
+    features: [
+      {
+        title: "Warm und weich für ruhige Stunden",
+        text: "Rund 2 cm dichter Wollflor halten die Kälte vom Boden fern und machen die WOOL zur gemütlichen Unterlage für Yin Yoga, Meditation und Atemübungen.",
+        picture: "calm",
+      },
+      {
+        title: "Wolle, die sich selbst pflegt",
+        text: "Schurwolle enthält natürliches Wollfett. Dadurch weist sie Schmutz und Gerüche ab, gleicht Wärme und Feuchtigkeit aus und bleibt atmungsaktiv. Meist reicht es, die Matte regelmäßig auszulüften.",
+        picture: "layers",
+      },
+      {
+        title: "Gefertigt in Deutschland",
+        text: "Die WOOL wird in Deutschland hergestellt. Mit 200 × 75 cm ist sie größer als die meisten Yogamatten, ein eingefasster Rand hält sie in Form, und mit den Baumwollkordeln bindest du sie aufgerollt zusammen.",
+        picture: "size",
+      },
+    ],
+    reviews: [
+      { name: "Ines", place: "Konstanz, DE", stars: 5, days: 3, text: "Für meine Yin-Stunden am Abend gibt es nichts Gemütlicheres. Herrlich warm, auch auf dem Fliesenboden." },
+      { name: "Anonym", place: "", stars: 5, days: 6, text: "Ich meditiere jeden Morgen darauf. Weich, ohne dass man einsinkt." },
+      { name: "Robert", place: "Linz, AT", stars: 5, days: 12, text: "Hochwertig verarbeitet, der Rand ist sauber eingefasst. Riecht ganz leicht nach Wolle, das mag ich." },
+      { name: "Maja", place: "Freiburg, DE", stars: 4, days: 17, text: "Wunderbar für Atemübungen und Entspannung. Für Sonnengrüße ist sie mir zu weich, aber dafür ist sie ja nicht gemacht." },
+      { name: "Christine", place: "Luzern, CH", stars: 5, days: 23, text: "Nicht günstig, aber jeden Euro wert. Die Kordeln zum Zusammenbinden sind praktisch." },
+      { name: "Anton", place: "Göttingen, DE", stars: 5, days: 30, text: "Endlich keine kalten Füße mehr beim Yoga auf dem Holzboden." },
+    ],
+    related: [
+      relatedCards.eyePillow,
+      bundles["yoga-bundles"][0], // Yogamatte ARISE Set
+      relatedCards.ariseCork,
+      relatedCards.almostPerfectProXl,
+    ],
+  },
 };
 
 // ---------- Drawn product pictures ----------
@@ -460,10 +588,12 @@ const sizeText = (specs) => specs.size || (specs.width ? `${specs.length} × ${s
 const underside = (color) => color.underside || (color.matte ? color.hex : "#2b2a28");
 
 // Surface texture over the visible top of the mat (`path`): fine grain on
-// PURE's matte colours, a waffle grid on mats with `specs.texture: "waffle"`.
+// PURE's matte colours, otherwise the product's `specs.texture`.
 const textures = {
   grain: '<circle cx="1" cy="1" r=".6" fill="rgba(255,255,255,.14)"/>',
   waffle: '<path d="M0 .5H4M.5 0V4" stroke="rgba(0,0,0,.13)"/>',
+  cork: '<circle cx="1" cy="1" r=".45" fill="rgba(110,60,20,.3)"/><circle cx="3" cy="2.6" r=".3" fill="rgba(255,255,255,.25)"/>',
+  wool: '<circle cx="1" cy="1" r="1.1" fill="rgba(255,255,255,.45)"/><circle cx="3" cy="3" r="1.1" fill="rgba(0,0,0,.05)"/>',
 };
 
 function texture(color, specs, path) {
@@ -474,6 +604,18 @@ function texture(color, specs, path) {
        <path d="${path}" fill="url(#${id})"/>`;
 }
 
+// Line print of the cork mat "Align": centre line, cross line, two chevrons
+// and a circle - our own simple pattern, drawn into a mat seen from above.
+function alignPrint(color, x, y, w, h) {
+  if (color.print !== "align") return "";
+  const cx = x + w / 2;
+  const cy = y + h / 2;
+  const lines = h > w
+    ? `M${cx} ${y + 6}V${y + h - 6}M${x + 6} ${cy}H${x + w - 6}M${x + 6} ${y + h * 0.25}L${cx} ${y + h * 0.15}L${x + w - 6} ${y + h * 0.25}M${x + 6} ${y + h * 0.75}L${cx} ${y + h * 0.85}L${x + w - 6} ${y + h * 0.75}`
+    : `M${x + 6} ${cy}H${x + w - 6}M${cx} ${y + 6}V${y + h - 6}M${x + w * 0.25} ${y + 6}L${x + w * 0.15} ${cy}L${x + w * 0.25} ${y + h - 6}M${x + w * 0.75} ${y + 6}L${x + w * 0.85} ${cy}L${x + w * 0.75} ${y + h - 6}`;
+  return `<g fill="none" stroke="rgba(40,30,20,.5)" stroke-width=".8"><path d="${lines}"/><circle cx="${cx}" cy="${cy}" r="${Math.min(w, h) * 0.22}"/></g>`;
+}
+
 function rolledPicture(color) {
   return `
     <svg viewBox="0 0 200 250" aria-hidden="true">
@@ -481,6 +623,7 @@ function rolledPicture(color) {
       <ellipse cx="104" cy="176" rx="86" ry="9" fill="rgba(0,0,0,.07)"/>
       <g transform="rotate(-24 100 130)">
         <rect x="30" y="112" width="160" height="46" rx="3" fill="${color.hex}"/>
+        ${alignPrint(color, 50, 112, 140, 46)}
         <circle cx="128" cy="135" r="7" fill="none" stroke="rgba(0,0,0,.22)" stroke-width="1.2"/>
         <ellipse cx="34" cy="135" rx="17" ry="26" fill="${underside(color)}"/>
         <ellipse cx="32" cy="135" rx="12" ry="19" fill="none" stroke="rgba(255,255,255,.14)"/>
@@ -495,18 +638,20 @@ function topPicture(color, specs) {
       <rect width="200" height="250" fill="${PHOTO_BG}"/>
       <rect x="52" y="22" width="96" height="180" rx="3" fill="${color.hex}"/>
       ${texture(color, specs, "M52 22h96v180H52z")}
+      ${alignPrint(color, 52, 22, 96, 180)}
       <circle cx="100" cy="54" r="8" fill="none" stroke="rgba(0,0,0,.22)" stroke-width="1.2"/>
       <rect x="48" y="196" width="104" height="30" rx="15" fill="${underside(color)}"/>
       <rect x="54" y="199" width="92" height="7" rx="3.5" fill="rgba(255,255,255,.1)"/>
     </svg>`;
 }
 
-function standingPicture(color) {
+// Rolled up and standing; cork mats are rolled with the top outside (`topOutside`).
+function standingPicture(color, specs) {
   return `
     <svg viewBox="0 0 200 250" aria-hidden="true">
       <rect width="200" height="250" fill="${PHOTO_BG}"/>
       <ellipse cx="100" cy="222" rx="40" ry="7" fill="rgba(0,0,0,.08)"/>
-      <rect x="76" y="46" width="48" height="176" rx="4" fill="${underside(color)}"/>
+      <rect x="76" y="46" width="48" height="176" rx="4" fill="${specs.topOutside ? color.hex : underside(color)}"/>
       <rect x="80" y="50" width="8" height="168" rx="4" fill="rgba(255,255,255,.1)"/>
       <ellipse cx="100" cy="46" rx="24" ry="9" fill="${color.hex}"/>
       <ellipse cx="100" cy="46" rx="15" ry="5.5" fill="none" stroke="${underside(color)}" stroke-width="2"/>
@@ -517,7 +662,7 @@ function standingPicture(color) {
 // Cut edge of the mat: the side gets thicker with `specs.mm`
 // (top layer darkened, underside in its own colour).
 function layersPicture(color, specs) {
-  const side = Math.max(4, Math.round(specs.mm * 4));
+  const side = Math.min(36, Math.max(4, Math.round(specs.mm * 4)));
   const top = Math.round(side * 0.44);
   return `
     <svg viewBox="0 0 200 250" aria-hidden="true">
@@ -559,6 +704,7 @@ function sizeWidePicture(color, specs) {
       <rect width="330" height="202" fill="${PHOTO_BG}"/>
       <rect x="40" y="${y}" width="222" height="${height}" rx="3" fill="${color.hex}"/>
       ${texture(color, specs, `M40 ${y}h222v${height}H40z`)}
+      ${alignPrint(color, 40, y, 222, height)}
       <circle cx="66" cy="96" r="7" fill="none" stroke="rgba(0,0,0,.22)" stroke-width="1.2"/>
       <g stroke="#5f5c52" fill="none">
         <path d="M276 ${y}V${y + height}M272 ${y}H280M272 ${y + height}H280"/>
@@ -572,7 +718,7 @@ function sizeWidePicture(color, specs) {
 }
 
 function layersWidePicture(color, specs) {
-  const side = Math.max(5, Math.round(specs.mm * 5));
+  const side = Math.min(36, Math.max(5, Math.round(specs.mm * 5)));
   const top = Math.round(side * 0.4);
   return `
     <svg viewBox="0 0 330 202" aria-hidden="true">
@@ -698,7 +844,7 @@ function galleryItems(product, color) {
   return product.gallery.map((key) => {
     const picture = galleryPictures[key];
     return `
-          <div class="gallery__item" role="img" aria-label="${product.name} in ${color.name}, ${picture.label}">${picture.draw(color, product.specs)}</div>`;
+          <div class="gallery__item" role="img" aria-label="${product.name}${color.name ? ` in ${color.name}` : ""}, ${picture.label}">${picture.draw(color, product.specs)}</div>`;
   }).join("");
 }
 
@@ -732,6 +878,15 @@ function productMarkup(product) {
                 <span class="color-swatch__thumb">${rolledPicture(c)}</span>
                 <span class="visually-hidden">${c.name}</span>
               </label>`).join("");
+
+  // Like the original, a product that comes in one version only (WOOL) has no colour choice.
+  const colorPicker = product.colors.length > 1 ? `
+
+        <fieldset class="color-picker">
+          <legend class="color-picker__legend"><strong>Farbe:</strong> <span class="color-picker__value">${color.name}</span></legend>
+          <div class="color-picker__options">${swatches}
+          </div>
+        </fieldset>` : "";
 
   const lengths = product.lengths ? `
 
@@ -784,11 +939,7 @@ function productMarkup(product) {
           <span class="buybox__tax">inkl. MwSt. zzgl. <a href="#">Versandkosten</a></span>
         </p>
 
-        <fieldset class="color-picker">
-          <legend class="color-picker__legend"><strong>Farbe:</strong> <span class="color-picker__value">${color.name}</span></legend>
-          <div class="color-picker__options">${swatches}
-          </div>
-        </fieldset>${lengths}
+${colorPicker}${lengths}
 
         <button class="btn btn--primary btn--block buybox__cart" type="button">${cartLabel(color)}</button>
         <p class="buybox__note"${color.soldOut ? "" : " hidden"}>Du erhältst eine Benachrichtigung per E-Mail, sobald der Artikel wieder auf Lager ist.</p>
@@ -867,7 +1018,7 @@ function reviewItem(product, review) {
             </div>
             <div class="review-item__body">
               ${starRating(review.stars, `${review.stars} von 5 Sternen`)}
-              <p class="review-item__product">${product.name} ${review.color}</p>
+              <p class="review-item__product">${product.name}${review.color ? ` ${review.color}` : ""}</p>
               <p class="review-item__text">${review.text}</p>
               <p class="review-item__date">${ago(review.days)}</p>
             </div>
@@ -999,7 +1150,7 @@ if (!product) {
 
   // Buy box texts, price and offered choices for the picked colour (and length).
   function updateBuybox() {
-    colorValue.textContent = color.name;
+    if (colorValue) colorValue.textContent = color.name;
     cartButton.textContent = cartLabel(color);
     note.hidden = !color.soldOut;
     stock.textContent = stockText(color);
@@ -1013,7 +1164,7 @@ if (!product) {
   }
 
   // Picking a colour redraws every picture in that colour.
-  productRoot.querySelector(".color-picker").addEventListener("change", (e) => {
+  productRoot.querySelector(".color-picker")?.addEventListener("change", (e) => {
     color = product.colors[Number(e.target.value)];
     badge.hidden = !color.matte;
     track.innerHTML = galleryItems(product, color);
@@ -1036,17 +1187,17 @@ if (!product) {
       added.textContent = "Nur eine Demo: In diesem Studentenprojekt gibt es keine Benachrichtigungen, es wird nichts gespeichert.";
       return;
     }
-    const variant = length ? `${color.name} / ${length.label}` : color.name;
+    const variant = [color.name, length?.label].filter(Boolean).join(" / ");
     addToCart({
-      id: `${slug}:${variant}`,
+      id: variant ? `${slug}:${variant}` : slug,
       name: product.name,
       variant,
       hex: color.hex,
       price: length ? length.price : product.price,
-      href: `produkt.html?p=${slug}&farbe=${encodeURIComponent(color.name)}`,
+      href: `produkt.html?p=${slug}${color.name ? `&farbe=${encodeURIComponent(color.name)}` : ""}`,
     });
     openCart();
-    added.textContent = `${product.name} (${variant}) liegt im Warenkorb – nur eine Demo, es wird nichts bestellt.`;
+    added.textContent = `${product.name}${variant ? ` (${variant})` : ""} liegt im Warenkorb – nur eine Demo, es wird nichts bestellt.`;
     cartButton.textContent = "Hinzugefügt ✓";
     setTimeout(() => (cartButton.textContent = cartLabel(color)), 2000);
   });

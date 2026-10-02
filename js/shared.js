@@ -227,7 +227,7 @@ const categories = {
         { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
         { color: "Dark Cranberry", hex: "#7a2a3a", family: "Rot" },
       ] },
-      { name: "Yogamatte ARISE CORK", price: 99.95, material: "Naturkork", variants: [
+      { name: "Yogamatte ARISE CORK", slug: "yogamatte-arise-cork", price: 99.95, material: "Naturkork", variants: [
         { color: "Align", hex: "#c9a77e", family: "Align" },
         { color: "Lotus", hex: "#b8916a", family: "Braun" },
       ] },
@@ -236,7 +236,7 @@ const categories = {
         { color: "Light Taupe", hex: "#c4b6a6", family: "Beige" },
         { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
       ] },
-      { name: "Yogamatte WOOL aus Schurwolle", price: 119.95, material: "Schurwolle", variants: [
+      { name: "Yogamatte WOOL aus Schurwolle", slug: "yogamatte-schurwolle", price: 119.95, material: "Schurwolle", variants: [
         { color: null, hex: "#e7e1d6", family: null },
       ] },
     ],
