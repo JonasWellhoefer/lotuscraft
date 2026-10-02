@@ -146,6 +146,7 @@ die Werte stammen direkt aus dem CSS des Originals.
 - [x] „Yoga-Zubehör“ (36 Karten: Gurte, Taschen, Blöcke, Decke, Spray, Handtuch, Augenkissen, Sticker) mit den Unterseiten Yogataschen, Yogadecken, Yoga-Handtücher, Yoga-Gurte und Yoga Blöcke
 - [x] „Yoga Bolster“ (23 Karten, mit Filter „Füllung“) und „Yoga Rolle“; „Yogamatten Zubehör“ mit Spray, Stickern, Malas und Dinkelspelz sowie „Bezug Yogarolle“ – damit führt jeder Eintrag der Yoga-Spalte im Menü auf eine Seite (außer „Gutscheine“)
 - [x] „Meditationskissen“ (46 Karten, Filter „Form“: rund, halbrund, Zafu) mit den Unterseiten Rundkissen, Zafu-Kissen und Halbmondkissen – im Header ist dort „Meditation“ hervorgehoben
+- [x] „Meditationsmatten“ (Zabuton in 8 Farben, je 4 cm und 7 cm hoch) und „Meditationskissen Set“ (3 Sets; im Header „Meditation“ und „Geschenke“ hervorgehoben)
 - [x] Filter Farbe, Material, Verfügbarkeit (kombinierbar) – wie im Original nur mit Werten, die auf der Seite vorkommen
 - [x] Sortierung wie im Original, voreingestellt „meistverkauft“ (Rangliste des Originals vom 2. Oktober 2026); dazu Relevanz, A–Z, Z–A und Preis
 - [x] Kurzer eigener Text unter dem Raster, mit Links zu den Produktseiten

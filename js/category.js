@@ -82,6 +82,13 @@ const bestSellingRanking = [
   "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Aubergine", "Meditationskissen Lotus KLEIN (H: 10 cm) / Aubergine",
   "Meditationskissen Lotus HOCH (H: 20cm) / Aubergine", "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Grassland",
   "Meditationskissen Lotus KLEIN (H: 10 cm) / Bordeaux",
+  // Meditation mat (the original shows its sizes colour by colour)
+  "Meditationsmatte Zabuton / Light Taupe / 4 cm", "Meditationsmatte Zabuton / Light Taupe / 7 cm", "Meditationsmatte Zabuton / Natur / 4 cm",
+  "Meditationsmatte Zabuton / Natur / 7 cm", "Meditationsmatte Zabuton / Balsam Green / 4 cm", "Meditationsmatte Zabuton / Balsam Green / 7 cm",
+  "Meditationsmatte Zabuton / Indigo Dust / 4 cm", "Meditationsmatte Zabuton / Indigo Dust / 7 cm", "Meditationsmatte Zabuton / Anthrazit / 4 cm",
+  "Meditationsmatte Zabuton / Anthrazit / 7 cm", "Meditationsmatte Zabuton / Bordeaux / 4 cm", "Meditationsmatte Zabuton / Bordeaux / 7 cm",
+  "Meditationsmatte Zabuton / Schwarz / 4 cm", "Meditationsmatte Zabuton / Schwarz / 7 cm", "Meditationsmatte Zabuton / Aubergine / 4 cm",
+  "Meditationsmatte Zabuton / Aubergine / 7 cm",
   // "Almost Perfect"
   "Almost Perfect Yogamatte MUDRA / Indigo Dust", "Almost Perfect Yogamatte MUDRA / Light Taupe", "Almost Perfect Yogamatte MUDRA / Balsam Green",
   "Almost Perfect Yogamatte MUDRA PRO / Anthrazit", "Almost Perfect Yogamatte PURE / Light Taupe", "Almost Perfect Yogamatte MUDRA PRO / Light Taupe",
@@ -229,7 +236,7 @@ if (!category) {
       material: variant.material ?? model.material,
       filling: variant.filling ?? model.filling,
       form: model.form,
-      shape: model.shape || "mat",
+      shape: variant.shape || model.shape || "mat",
       variant: variant.color,
       tint: variant.hex,
       family: variant.family,

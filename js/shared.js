@@ -118,6 +118,8 @@ const shapes = {
                     <path d="M40 98c14-10 30-14 50-14s36 4 50 14" fill="none" stroke="rgba(255,255,255,.22)" stroke-width="2"/>`,
   zabuton: (c) => `<rect x="22" y="88" width="136" height="30" rx="8" fill="${c}"/>
                    <rect x="22" y="80" width="136" height="16" rx="8" fill="${c}" opacity=".75"/>`,
+  zabutonThick: (c) => `<rect x="22" y="76" width="136" height="42" rx="10" fill="${c}"/>
+                        <rect x="22" y="68" width="136" height="16" rx="8" fill="${c}" opacity=".75"/>`,
   leggings: (c) => `<path d="M62 30h56l6 130h-22l-12-96-12 96H56z" fill="${c}"/>`,
   top: (c) => `<path d="M58 52l14-18h36l14 18v58H58z" fill="${c}" stroke="#d5d0c7"/>`,
   sweater: (c) => `<path d="M58 38l32-8 32 8 22 18 10 86-16 2-12-70v80H54V74l-12 70-16-2 10-86z" fill="${c}"/>`,
@@ -577,6 +579,33 @@ const cushionShortcuts = [
 // Colours of sold-out, hidden cushions still show up in the original's filters.
 const CUSHION_FILTER_COLORS = ["Beige", "Blau", "Rot", "Grün", "Terra", "Schwarz", "Rosa", "Gelb", "Wood Grain"];
 
+// ---------- Meditation mats and sets ----------
+// The zabuton in two heights: each colour gets a 4 cm and a 7 cm card, with
+// the original's prices.
+const zabutonHeights = (color, extra = {}) => [
+  { color: `${color} / 4 cm`, ...CUSHION_TONES[color], ...extra, shape: "zabuton" },
+  { color: `${color} / 7 cm`, ...CUSHION_TONES[color], ...extra, shape: "zabutonThick", price: 74.95 },
+];
+const zabuton = { name: "Meditationsmatte Zabuton", price: 59.95, shape: "zabuton", variants: [
+  ...zabutonHeights("Light Taupe"), ...zabutonHeights("Natur"), ...zabutonHeights("Balsam Green"), ...zabutonHeights("Indigo Dust"),
+  ...zabutonHeights("Anthrazit"), ...zabutonHeights("Bordeaux"), ...zabutonHeights("Schwarz", { badge: "New in" }),
+  ...zabutonHeights("Aubergine", { soldOut: true }),
+] };
+// The category page lists the sets under their full names; the home page
+// (like the original's) uses shorter ones for two of them.
+const meditationSets = [
+  { name: "Meditations-Set Lotus 15cm (Ohne Stick) inkl. GRATIS Meditationskurs", price: 85.41, compareAt: 94.9, bundle: true, fromPrice: true, shape: "meditationSet", tint: "#b3a596", swatches: ["#ad9f94", "#607c97", "#5a6566", "#88505a"] },
+  { ...setNamed("Meditations-Set Lotus 15cm"), name: "Meditations-Set Lotus 15cm inkl. GRATIS Meditationskurs" },
+  setNamed("Meditations-Set Lotus 20cm"),
+];
+const giftShortcuts = (first) => [
+  first,
+  { label: "Gutscheine", icon: "voucher" },
+  { label: "Geschenke unter 50€", icon: "gift" },
+  { label: "Geschenke unter 100€", icon: "gift" },
+  { label: "Geschenke unter 120€", icon: "gift" },
+];
+
 // "Almost Perfect" mats: second-quality, 15% off. Only the colours the
 // original shows as cards; like there, only some have a material set.
 const almostPerfectMats = [
@@ -650,17 +679,11 @@ const categories = {
     description: `Nur 1 kg leicht und faltbar: Die ${productLink("yogamatte-arise-travel", "ARISE Travel")} passt in jeden Koffer und begleitet dich ins Hotel, auf Retreats oder in den Park.`,
   },
   // Also listed under "Geschenke", so the original highlights both sections
-  // and shows gift circles (their pages don't exist here yet).
+  // and shows gift circles (the gift pages don't exist here yet).
   "yoga-sets": {
     title: "Yoga-Sets",
     nav: ["Yoga", "Geschenke"],
-    shortcuts: [
-      { label: "Meditationskissen Set", icon: "cushion" },
-      { label: "Gutscheine", icon: "voucher" },
-      { label: "Geschenke unter 50€", icon: "gift" },
-      { label: "Geschenke unter 100€", icon: "gift" },
-      { label: "Geschenke unter 120€", icon: "gift" },
-    ],
+    shortcuts: giftShortcuts({ label: "Meditationskissen Set", icon: "cushion", key: "meditations-sets" }),
     models: yogaSets,
     description: `Gut ausgestattet für jede Einheit: Die Sets kombinieren Matte, Tasche, Gurt, Block oder Bolster und kosten zusammen 10 % weniger als die Teile einzeln – ob für Yin Yoga, für unterwegs oder als Geschenk.`,
   },
@@ -776,6 +799,20 @@ const categories = {
     filterValues: { colors: ["Beige", "Blau", "Rot", "Grün", "Terra", "Schwarz"], forms: ["Halbrund", "Zafu"] },
     description: "Die Halbmondform lässt vorne Platz für die Beine: So kippt das Becken leicht nach vorn, und du sitzt lange bequem – gut, wenn deine Knie im Schneidersitz nicht bis zum Boden reichen.",
   },
+  meditationsmatten: {
+    title: "Meditationsmatten",
+    nav: ["Meditation"],
+    shortcuts: [],
+    models: [zabuton],
+    description: "Ein Zabuton polstert Knie und Knöchel, wenn du länger auf deinem Kissen sitzt. Es gibt ihn 4 cm hoch als flache Unterlage und 7 cm hoch, wenn du es weicher magst.",
+  },
+  "meditations-sets": {
+    title: "Meditationskissen Set",
+    nav: ["Meditation", "Geschenke"],
+    shortcuts: giftShortcuts({ label: "Yoga-Sets", icon: "set", key: "yoga-sets" }),
+    models: meditationSets,
+    description: "Kissen und Zabuton passend kombiniert: Mit einem Meditations-Set sitzt du von Anfang an bequem und sparst 10 % gegenüber den einzelnen Teilen. Ein schönes Geschenk für alle, die mit dem Meditieren beginnen.",
+  },
   "bezug-yogabolster": {
     title: "Bezug Yogarolle",
     shortcuts: [],
@@ -839,6 +876,8 @@ const sitePages = [
   { title: "Rundkissen", href: "kategorie.html?k=rundkissen", keywords: "meditationskissen rund rundkissen lotus kissen kategorie" },
   { title: "Zafu-Kissen", href: "kategorie.html?k=zafu-kissen", keywords: "meditationskissen zafu kissen kategorie" },
   { title: "Halbmondkissen", href: "kategorie.html?k=yogakissen-halbmond", keywords: "meditationskissen halbmond kissen kategorie" },
+  { title: "Meditationsmatten", href: "kategorie.html?k=meditationsmatten", keywords: "meditation meditationsmatte matten zabuton kategorie" },
+  { title: "Meditationskissen Set", href: "kategorie.html?k=meditations-sets", keywords: "meditation set sets meditationsset geschenk kategorie" },
   { title: "Startseite", href: "index.html", keywords: "start home lotuscraft bestseller sets" },
 ];
 
@@ -974,6 +1013,10 @@ const menuLinks = {
   "Rundkissen": "kategorie.html?k=rundkissen",
   "Zafu-Kissen": "kategorie.html?k=zafu-kissen",
   "Halbmondkissen": "kategorie.html?k=yogakissen-halbmond",
+  "Alle Meditationsmatten": "kategorie.html?k=meditationsmatten",
+  "Meditations-Set": "kategorie.html?k=meditations-sets",
+  "Meditations-Sets": "kategorie.html?k=meditations-sets",
+  "Alle Meditations-Sets": "kategorie.html?k=meditations-sets",
 };
 
 // Desktop dropdown links that get a more specific icon than their column.
