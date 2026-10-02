@@ -1,7 +1,8 @@
 // Category page: shortcut circles, filters (colour, material, availability),
-// sorting and the product grid. Which category is shown comes from the URL,
-// e.g. kategorie.html?k=yogamatten. The category data itself is in shared.js
-// (the search uses it too).
+// sorting, the product grid and a short text below it. Which category is
+// shown comes from the URL, e.g. kategorie.html?k=yogamatten or
+// kategorie.html?k=reise-yogamatte. The category data itself is in shared.js
+// (the search and the menus use it too).
 
 // Filter options, in the original's order. "Align" is a cork print.
 const colorFamilies = [
@@ -49,12 +50,17 @@ function checkboxList(values) {
 
 function categoryMarkup(category) {
   const shortcuts = category.shortcuts.map((shortcut) => `
-        <a href="#" class="shortcut">
+        <a href="kategorie.html?k=${shortcut.key}" class="shortcut"${shortcut.key === categoryKey ? ' aria-current="page"' : ""}>
           <span class="shortcut__icon">${menuIcon(shortcut.icon, "shortcut__svg")}</span>
           <span class="shortcut__label">${shortcut.label}</span>
         </a>`).join("");
 
-  const swatches = `<div class="filter__swatches">${colorFamilies.map((family) => `
+  // Like the original, filters only offer values that occur in this category,
+  // and a filter with a single value is left out. Availability always has both.
+  const families = colorFamilies.filter((family) => category.models.some((model) => model.variants.some((v) => v.family === family.name)));
+  const materialOptions = materials.filter((material) => category.models.some((model) => model.material === material));
+
+  const swatches = `<div class="filter__swatches">${families.map((family) => `
               <label class="filter-swatch" title="${family.name}">
                 <input type="checkbox" value="${family.name}" class="visually-hidden">
                 <span class="filter-swatch__dot" style="background: ${family.swatch}"></span>
@@ -73,7 +79,7 @@ function categoryMarkup(category) {
       <h1 class="category__title">${category.title}</h1>
 
       <div class="filters">
-        <div class="filters__group">${filterPanel("colors", "Farbe", swatches)}${filterPanel("materials", "Material", checkboxList(materials))}${filterPanel("availability", "Verfügbarkeit", checkboxList(availabilities))}
+        <div class="filters__group">${families.length > 1 ? filterPanel("colors", "Farbe", swatches) : ""}${materialOptions.length > 1 ? filterPanel("materials", "Material", checkboxList(materialOptions)) : ""}${filterPanel("availability", "Verfügbarkeit", checkboxList(availabilities))}
         </div>
         <details class="filter filter--sort" name="filters">
           <summary class="filter__toggle">Sortierung${sortIcon}</summary>
@@ -92,6 +98,8 @@ function categoryMarkup(category) {
         <p>Filter zurücksetzen oder entfernen, um mehr Produkte zu sehen.</p>
         <button class="btn btn--primary category__reset-all" type="button">Alle Filter zurücksetzen</button>
       </div>
+
+      <p class="category__description">${category.description}</p>
     </div>`;
 }
 

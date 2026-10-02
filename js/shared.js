@@ -181,65 +181,103 @@ function productCard(product) {
 // Models, prices, colours, materials and which variant is sold out mirror the
 // original "Yogamatten" category (Oct 2026). Every colour gets its own card,
 // as on the original. `family` is the colour group used by the colour filter.
+const yogaMats = [
+  { name: "Yogamatte MUDRA", slug: "yogamatte-mudra-studio", price: 39.95, material: "PVC (Polyvinylchlorid)", variants: [
+    { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
+    { color: "Lavender Fog", hex: "#b7a3b6", family: "Rosa" },
+    { color: "Light Taupe", hex: "#c4b6a6", family: "Beige" },
+    { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
+    { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz" },
+    { color: "Aubergine", hex: "#8d5a6f", family: "Rot", soldOut: true },
+    { color: "Dark Cranberry", hex: "#7a2a3a", family: "Rot", badge: "New in" },
+  ] },
+  { name: "Yogamatte PURE", slug: "yogamatte-pure", price: 79.95, material: "PU (Polyurethan)", variants: [
+    { color: "Dark Cranberry", hex: "#7a2a3a", family: "Rot", badge: "Matte Oberfläche" },
+    { color: "Balsam Green", hex: "#5d7366", family: "Grün", badge: "Matte Oberfläche" },
+    { color: "Light Taupe", hex: "#c4b6a6", family: "Beige" },
+    { color: "Aubergine", hex: "#8d5a6f", family: "Rot" },
+    { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
+    { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz" },
+  ] },
+  // The original has no material set for this one, so material filters hide it.
+  { name: "Yogamatte Mudra XL", slug: "yogamatte-mudra-studio-xl", price: 44.95, material: null, variants: [
+    { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz" },
+    { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
+    { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
+  ] },
+  { name: "Yogamatte ARISE", slug: "yogamatte-arise", price: 89.95, material: "Naturkautschuk", variants: [
+    { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
+    { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
+    { color: "Graphite", hex: "#4a4b4d", family: "Schwarz" },
+    { color: "Dark Cranberry", hex: "#7a2a3a", family: "Rot" },
+    { color: "Midnight Blue", hex: "#2f3a5c", family: "Blau" },
+  ] },
+  { name: "Yogamatte ARISE Travel", slug: "yogamatte-arise-travel", price: 59.95, material: "Naturkautschuk", variants: [
+    { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
+    { color: "Graphite", hex: "#4a4b4d", family: "Schwarz" },
+    { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
+    { color: "Dark Cranberry", hex: "#7a2a3a", family: "Rot" },
+  ] },
+  { name: "Yogamatte ARISE CORK", slug: "yogamatte-arise-cork", price: 99.95, material: "Naturkork", variants: [
+    { color: "Align", hex: "#c9a77e", family: "Align" },
+    { color: "Lotus", hex: "#b8916a", family: "Braun" },
+  ] },
+  { name: "Yogamatte MUDRA PRO", slug: "yogamatte-mudra-pro", price: 99.95, material: "Polyester", variants: [
+    { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz" },
+    { color: "Light Taupe", hex: "#c4b6a6", family: "Beige" },
+    { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
+  ] },
+  { name: "Yogamatte WOOL aus Schurwolle", slug: "yogamatte-schurwolle", price: 119.95, material: "Schurwolle", variants: [
+    { color: null, hex: "#e7e1d6", family: null },
+  ] },
+];
+
+// The sub-categories, shown as circles above every mat category. `key` is
+// the original's collection handle, used in kategorie.html?k=...
+const matShortcuts = [
+  { label: "Yogamatten für Zuhause", icon: "house", key: "yogamatte-fur-zuhause" },
+  { label: "Rutschfeste Yogamatte", icon: "mat", key: "rutschfeste-yogamatte" },
+  { label: "Studio Yogamatte", icon: "studio", key: "studio-yogamatte" },
+  { label: "Reise Yogamatte", icon: "suitcase", key: "reise-yogamatte" },
+];
+
+// Mats by name, in the order of the full category (as on the original).
+const matsNamed = (...names) => yogaMats.filter((model) => names.includes(model.name));
+
+const productLink = (slug, text) => `<a href="produkt.html?p=${slug}">${text}</a>`;
+
+// Which mats each sub-category shows was read from the original. The
+// `description` (the paragraph below the grid) is our own short text.
 const categories = {
   yogamatten: {
     title: "Yogamatten",
-    shortcuts: [
-      { label: "Yogamatten für Zuhause", icon: "house" },
-      { label: "Rutschfeste Yogamatte", icon: "mat" },
-      { label: "Studio Yogamatte", icon: "studio" },
-      { label: "Reise Yogamatte", icon: "suitcase" },
-    ],
-    models: [
-      { name: "Yogamatte MUDRA", slug: "yogamatte-mudra-studio", price: 39.95, material: "PVC (Polyvinylchlorid)", variants: [
-        { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
-        { color: "Lavender Fog", hex: "#b7a3b6", family: "Rosa" },
-        { color: "Light Taupe", hex: "#c4b6a6", family: "Beige" },
-        { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
-        { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz" },
-        { color: "Aubergine", hex: "#8d5a6f", family: "Rot", soldOut: true },
-        { color: "Dark Cranberry", hex: "#7a2a3a", family: "Rot", badge: "New in" },
-      ] },
-      { name: "Yogamatte PURE", slug: "yogamatte-pure", price: 79.95, material: "PU (Polyurethan)", variants: [
-        { color: "Dark Cranberry", hex: "#7a2a3a", family: "Rot", badge: "Matte Oberfläche" },
-        { color: "Balsam Green", hex: "#5d7366", family: "Grün", badge: "Matte Oberfläche" },
-        { color: "Light Taupe", hex: "#c4b6a6", family: "Beige" },
-        { color: "Aubergine", hex: "#8d5a6f", family: "Rot" },
-        { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
-        { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz" },
-      ] },
-      // The original has no material set for this one, so material filters hide it.
-      { name: "Yogamatte Mudra XL", slug: "yogamatte-mudra-studio-xl", price: 44.95, material: null, variants: [
-        { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz" },
-        { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
-        { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
-      ] },
-      { name: "Yogamatte ARISE", slug: "yogamatte-arise", price: 89.95, material: "Naturkautschuk", variants: [
-        { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
-        { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
-        { color: "Graphite", hex: "#4a4b4d", family: "Schwarz" },
-        { color: "Dark Cranberry", hex: "#7a2a3a", family: "Rot" },
-        { color: "Midnight Blue", hex: "#2f3a5c", family: "Blau" },
-      ] },
-      { name: "Yogamatte ARISE Travel", slug: "yogamatte-arise-travel", price: 59.95, material: "Naturkautschuk", variants: [
-        { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
-        { color: "Graphite", hex: "#4a4b4d", family: "Schwarz" },
-        { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
-        { color: "Dark Cranberry", hex: "#7a2a3a", family: "Rot" },
-      ] },
-      { name: "Yogamatte ARISE CORK", slug: "yogamatte-arise-cork", price: 99.95, material: "Naturkork", variants: [
-        { color: "Align", hex: "#c9a77e", family: "Align" },
-        { color: "Lotus", hex: "#b8916a", family: "Braun" },
-      ] },
-      { name: "Yogamatte MUDRA PRO", slug: "yogamatte-mudra-pro", price: 99.95, material: "Polyester", variants: [
-        { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz" },
-        { color: "Light Taupe", hex: "#c4b6a6", family: "Beige" },
-        { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
-      ] },
-      { name: "Yogamatte WOOL aus Schurwolle", slug: "yogamatte-schurwolle", price: 119.95, material: "Schurwolle", variants: [
-        { color: null, hex: "#e7e1d6", family: null },
-      ] },
-    ],
+    shortcuts: matShortcuts,
+    models: yogaMats,
+    description: `Ob griffige ${productLink("yogamatte-pure", "PURE")}, natürliche ${productLink("yogamatte-arise-cork", "ARISE CORK")} oder die leichte ${productLink("yogamatte-mudra-studio", "MUDRA")}, die in vielen Studios liegt: Hier findest du alle Yogamatten auf einen Blick. Mit den Filtern grenzt du die Auswahl nach Farbe, Material und Verfügbarkeit ein.`,
+  },
+  "yogamatte-fur-zuhause": {
+    title: "Yogamatten für Zuhause",
+    shortcuts: matShortcuts,
+    models: matsNamed("Yogamatte MUDRA", "Yogamatte PURE", "Yogamatte Mudra XL", "Yogamatte ARISE", "Yogamatte ARISE CORK", "Yogamatte WOOL aus Schurwolle"),
+    description: `Für die Praxis daheim: die kuschelige ${productLink("yogamatte-schurwolle", "WOOL")} für ruhige Abende, die griffige ${productLink("yogamatte-pure", "PURE")} für dynamische Flows oder die ${productLink("yogamatte-arise-cork", "ARISE CORK")} mit ihrem natürlichen Hautgefühl – hier stehen alle Matten, die sich für zu Hause eignen.`,
+  },
+  "rutschfeste-yogamatte": {
+    title: "Rutschfeste Yogamatte",
+    shortcuts: matShortcuts,
+    models: matsNamed("Yogamatte PURE", "Yogamatte ARISE", "Yogamatte ARISE CORK", "Yogamatte MUDRA PRO"),
+    description: `Wenn es im Flow warm wird, zählt der Halt: ${productLink("yogamatte-pure", "PURE")}, ${productLink("yogamatte-arise", "ARISE")}, ${productLink("yogamatte-arise-cork", "ARISE CORK")} und ${productLink("yogamatte-mudra-pro", "MUDRA PRO")} sind die griffigsten Matten im Sortiment – damit du dich ganz auf Atem und Bewegung konzentrieren kannst.`,
+  },
+  "studio-yogamatte": {
+    title: "Studio Yogamatte",
+    shortcuts: matShortcuts,
+    models: matsNamed("Yogamatte MUDRA", "Yogamatte Mudra XL", "Yogamatte MUDRA PRO"),
+    description: `Leicht, robust und schnell gereinigt: Die ${productLink("yogamatte-mudra-studio", "MUDRA")} ist für den Alltag im Yogastudio gemacht – auch in Überlänge als ${productLink("yogamatte-mudra-studio-xl", "Mudra XL")} oder besonders strapazierfähig als ${productLink("yogamatte-mudra-pro", "MUDRA PRO")}.`,
+  },
+  "reise-yogamatte": {
+    title: "Reise Yogamatte",
+    shortcuts: matShortcuts,
+    models: matsNamed("Yogamatte ARISE Travel"),
+    description: `Nur 1 kg leicht und faltbar: Die ${productLink("yogamatte-arise-travel", "ARISE Travel")} passt in jeden Koffer und begleitet dich ins Hotel, auf Retreats oder in den Park.`,
   },
 };
 
@@ -250,14 +288,17 @@ const categories = {
 const searchIndex = (() => {
   const byName = new Map();
   Object.values(categories).forEach((category) => {
-    category.models.forEach((model) => byName.set(model.name, {
-      name: model.name,
-      slug: model.slug,
-      price: model.price,
-      shape: "mat",
-      tint: model.variants[0].hex,
-      keywords: [category.title, model.material, ...model.variants.flatMap((v) => [v.color, v.family])].filter(Boolean).join(" "),
-    }));
+    category.models.forEach((model) => {
+      const known = byName.get(model.name);
+      byName.set(model.name, known ? { ...known, keywords: `${known.keywords} ${category.title}` } : {
+        name: model.name,
+        slug: model.slug,
+        price: model.price,
+        shape: "mat",
+        tint: model.variants[0].hex,
+        keywords: [category.title, model.material, ...model.variants.flatMap((v) => [v.color, v.family])].filter(Boolean).join(" "),
+      });
+    });
   });
   [...Object.values(bestsellers), ...Object.values(bundles)].flat().forEach((item) => {
     const known = byName.get(item.name);
@@ -269,6 +310,10 @@ const searchIndex = (() => {
 // Pages the search can suggest besides products.
 const sitePages = [
   { title: "Yogamatten", href: "kategorie.html?k=yogamatten", keywords: "yoga yogamatte yogamatten matte matten kategorie" },
+  { title: "Yogamatten für Zuhause", href: "kategorie.html?k=yogamatte-fur-zuhause", keywords: "yogamatte yogamatten matte zuhause home kategorie" },
+  { title: "Rutschfeste Yogamatte", href: "kategorie.html?k=rutschfeste-yogamatte", keywords: "yogamatte yogamatten matte rutschfest grip halt kategorie" },
+  { title: "Studio Yogamatte", href: "kategorie.html?k=studio-yogamatte", keywords: "yogamatte yogamatten matte studio kategorie" },
+  { title: "Reise Yogamatte", href: "kategorie.html?k=reise-yogamatte", keywords: "yogamatte yogamatten matte reise reisen travel faltbar kategorie" },
   { title: "Startseite", href: "index.html", keywords: "start home lotuscraft bestseller sets" },
 ];
 
@@ -374,6 +419,10 @@ const menuIcons = {
 // Menu entries that already have a page in this rebuild; all others are "#".
 const menuLinks = {
   "Alle Yogamatten": "kategorie.html?k=yogamatten",
+  "Rutschfeste Yogamatten": "kategorie.html?k=rutschfeste-yogamatte",
+  "Yogamatten für Zuhause": "kategorie.html?k=yogamatte-fur-zuhause",
+  "Studio Yogamatten": "kategorie.html?k=studio-yogamatte",
+  "Reise Yogamatten": "kategorie.html?k=reise-yogamatte",
 };
 
 // Desktop dropdown links that get a more specific icon than their column.

@@ -398,14 +398,16 @@ button { font: inherit; background: none; border: 0; padding: 0; cursor: pointer
   font-size: 14px;
 }
 .product-card__tag--sale { background: var(--sale); color: #fff; }
+/* 20px lines and 4px / 3px gaps as on the original: cards are 442px high, 466px with a colour line */
 .product-card__title {
   margin-top: 8px;
   font-size: 16px;
   font-weight: 600;
+  line-height: 20px;
   color: var(--text);
 }
-.product-card__variant { margin-top: 2px; color: var(--text-muted); font-size: 15px; }
-.product-card__price { margin-top: 2px; display: flex; gap: 6px; }
+.product-card__variant { margin-top: 4px; line-height: 20px; color: var(--text-muted); font-size: 15px; }
+.product-card__price { margin-top: 3px; line-height: 20px; display: flex; gap: 6px; }
 /* Colour swatches below the picture (set offers) */
 .product-card__media--swatches { grid-template-rows: minmax(0, 1fr) auto; }
 .swatches {
@@ -994,15 +996,15 @@ button { font: inherit; background: none; border: 0; padding: 0; cursor: pointer
 .product-missing { padding: 64px 0; display: grid; gap: 16px; justify-items: start; }
 
 /* ---------- Category page ---------- */
-.category { padding: 42px 0 64px; }
+.category { padding: 34px 0 23px; }
 
 .shortcuts { display: flex; justify-content: center; gap: 20px; }
 .shortcut { display: flex; flex-direction: column; align-items: center; width: 76px; }
 .shortcut__icon {
   display: grid;
   place-items: center;
-  width: 64px;
-  height: 64px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   background: var(--background-soft);
   transition: background .2s;
@@ -1017,7 +1019,8 @@ button { font: inherit; background: none; border: 0; padding: 0; cursor: pointer
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-.shortcut__label { margin-top: 18px; font-size: 12.8px; line-height: 1.2; text-align: center; color: var(--text); }
+.shortcut__label { margin-top: 10px; font-size: 12.8px; line-height: 1.2; text-align: center; color: var(--text); }
+.shortcut[aria-current="page"] .shortcut__icon { outline: 1px solid var(--text); }
 .shortcut:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; border-radius: var(--radius); }
 
 .category__title {
@@ -1098,6 +1101,8 @@ button { font: inherit; background: none; border: 0; padding: 0; cursor: pointer
 .category__empty { margin-top: 75px; padding: 48px 0; display: grid; justify-items: center; gap: 12px; text-align: center; }
 .category__empty-title { font-family: var(--font-heading); font-size: 25px; }
 .category__empty .btn { margin-top: 12px; }
+.category__description { max-width: 642px; margin: 88px auto 0; line-height: 1.22; text-align: center; }
+.category__description a { color: var(--text-muted); text-decoration: underline; }
 
 /* ---------- Mobile menu ---------- */
 .drawer {
@@ -1384,7 +1389,7 @@ body:has(dialog[open]) { overflow: hidden; }
   .nav,
   .header::after { display: none; }
   .menu-toggle { display: inline-flex; justify-self: start; }
-  .header__inner { height: 72px; grid-template-columns: auto 1fr auto; gap: 12px; }
+  .header__inner { height: 62px; grid-template-columns: auto 1fr auto; gap: 12px; } /* + 1px line = the original's 63px */
   .logo { justify-self: start; }
   .collections,
   .product-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1468,9 +1473,19 @@ body:has(dialog[open]) { overflow: hidden; }
   .product { padding-top: 0; }
   .reviews-section { padding: 40px 0; }
   .search__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-  .category { padding-top: 24px; }
-  .shortcuts { gap: 8px; }
-  .category__title { margin-top: 32px; }
+  .category { padding-top: 32px; }
+  /* Four 80px circles don't fit: the row scrolls sideways, as on the original */
+  .shortcuts {
+    justify-content: flex-start;
+    gap: 16px;
+    margin: 0 -16px;
+    padding: 2px 16px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .shortcuts::-webkit-scrollbar { display: none; }
+  .shortcut { flex: none; width: 80px; }
+  .category__title { margin-top: 32px; font-size: 25px; line-height: 34px; }
   .filters { align-items: flex-start; margin-top: 24px; }
   .filters__group { gap: 0 16px; }
   /* Dropdowns span the whole bar so they never stick out of the screen */

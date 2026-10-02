@@ -89,7 +89,7 @@ Beenden mit **Strg + C** im Terminal.
 lotuscraft/
 ├── index.html      # Startseite (nur der Inhalt zwischen Header und Footer)
 ├── produkt.html    # Produktseite, z. B. produkt.html?p=yogamatte-pure
-├── kategorie.html  # Kategorieseite mit Filtern, z. B. kategorie.html?k=yogamatten
+├── kategorie.html  # Kategorieseiten mit Filtern, z. B. kategorie.html?k=yogamatten oder ?k=reise-yogamatte
 ├── styles.css      # Gestaltung: Farben, Schriften, Layout, Mobilansicht
 ├── js/
 │   ├── shared.js   # Gemeinsame Daten & Helfer: Produkte, Kategorien, Menü, Suchindex, Zeichnungen
@@ -137,11 +137,13 @@ die Werte stammen direkt aus dem CSS des Originals.
 - [x] Produkte mit nur einer Ausführung (WOOL) zeigen wie im Original keine Farbauswahl
 - [x] Längenauswahl wie im Original (MUDRA PRO: 180 / 200 cm mit eigenem Preis; Kombinationen, die es nicht gibt, werden ausgeblendet)
 
-**Kategorieseite „Yogamatten“** (Hero-Button „Yogamatten“ oder Menü → „Alle Yogamatten“):
+**Kategorieseiten „Yogamatten“ und Unterkategorien** (Hero-Button „Yogamatten“, Menü → „Yoga“ → „Yogamatten“ oder die Kreise oben):
 
-- [x] Unterkategorien als Kreise, Titel, 31 Karten (eine pro Farbe, wie im Original)
-- [x] Filter Farbe, Material, Verfügbarkeit (kombinierbar) und Sortierung
-- [x] Jede der 31 Karten öffnet die passende Produktseite, gleich in der richtigen Farbe
+- [x] Unterkategorien als Kreise, Titel, eine Karte pro Farbe (31 bei „Yogamatten“, wie im Original)
+- [x] Vier Unterkategorien wie im Original: Für Zuhause (24 Karten), Rutschfest (16), Studio (13), Reise (4) – der aktuelle Kreis ist umrandet
+- [x] Filter Farbe, Material, Verfügbarkeit (kombinierbar) und Sortierung – wie im Original nur mit Werten, die auf der Seite vorkommen
+- [x] Kurzer eigener Text unter dem Raster, mit Links zu den Produktseiten
+- [x] Jede Karte öffnet die passende Produktseite, gleich in der richtigen Farbe
 
 **Warenkorb** (Icon oben rechts oder „In den Warenkorb“ auf der Produktseite):
 
