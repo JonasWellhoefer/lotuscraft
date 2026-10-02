@@ -96,6 +96,8 @@ const shapes = {
   towel: (c) => `<rect x="32" y="56" width="116" height="78" rx="12" fill="${c}"/>
                  <path d="M32 82h116M32 108h116" stroke="rgba(0,0,0,.12)" stroke-width="2"/>
                  <path d="M46 134v7M60 134v7M74 134v7M88 134v7M102 134v7M116 134v7M130 134v7" stroke="${c}" stroke-width="2.5" stroke-linecap="round"/>`,
+  eyePillow: (c) => `<path d="M28 96c0-17 24-26 62-26s62 9 62 26-24 26-62 26-62-9-62-26z" fill="${c}"/>
+                     <path d="M40 92c4-9 24-14 50-14s46 5 50 14" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="2"/>`,
   spray: (c) => `<rect x="66" y="74" width="48" height="82" rx="10" fill="${c}" stroke="rgba(0,0,0,.12)"/>
                  <rect x="80" y="58" width="20" height="17" rx="2" fill="#8b8b8b"/>
                  <path d="M74 38h30a6 6 0 0 1 6 6v14H74z" fill="#5b5b5b"/>
@@ -207,7 +209,7 @@ const categories = {
         { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz" },
       ] },
       // The original has no material set for this one, so material filters hide it.
-      { name: "Yogamatte Mudra XL", price: 44.95, material: null, variants: [
+      { name: "Yogamatte Mudra XL", slug: "yogamatte-mudra-studio-xl", price: 44.95, material: null, variants: [
         { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz" },
         { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
         { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
@@ -229,7 +231,7 @@ const categories = {
         { color: "Align", hex: "#c9a77e", family: "Align" },
         { color: "Lotus", hex: "#b8916a", family: "Braun" },
       ] },
-      { name: "Yogamatte MUDRA PRO", price: 99.95, material: "Polyester", variants: [
+      { name: "Yogamatte MUDRA PRO", slug: "yogamatte-mudra-pro", price: 99.95, material: "Polyester", variants: [
         { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz" },
         { color: "Light Taupe", hex: "#c4b6a6", family: "Beige" },
         { color: "Balsam Green", hex: "#5d7366", family: "Grün" },

@@ -746,10 +746,10 @@ button { font: inherit; background: none; border: 0; padding: 0; cursor: pointer
   line-height: 35px;
 }
 .buybox__subtitle { margin-top: 8px; color: var(--text-muted); line-height: 1.22; }
-.buybox__rating { display: inline-flex; align-items: center; gap: 4px; margin-top: 16px; line-height: 20px; }
+.buybox__rating { display: flex; width: fit-content; align-items: center; gap: 4px; margin-top: 16px; line-height: 20px; }
 .buybox__price { margin-top: 16px; display: flex; align-items: baseline; gap: 8px; line-height: 24px; }
 .buybox__amount { font-size: 20px; color: var(--text-muted); }
-.buybox__tax { font-size: 12.8px; color: var(--text-muted); }
+.buybox__tax { font-size: 12.8px; line-height: 16px; color: var(--text-muted); }
 .buybox__tax a { text-decoration: underline; }
 
 .color-picker { margin: 32px 0 0; padding: 0; border: 0; min-width: 0; }
@@ -770,7 +770,25 @@ button { font: inherit; background: none; border: 0; padding: 0; cursor: pointer
 .color-swatch input:checked + .color-swatch__thumb { box-shadow: inset 0 0 0 1px var(--text); }
 .color-swatch input:focus-visible + .color-swatch__thumb { outline: 2px solid var(--gold); outline-offset: 2px; }
 
-.buybox__cart { margin-top: 32px; }
+/* Length choice (MUDRA PRO): pills, as on the original */
+.option-picker { margin: 16px 0 0; padding: 0; border: 0; min-width: 0; }
+.option-picker__options { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.option-pill { cursor: pointer; }
+.option-pill__label {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--background-soft);
+  transition: border-color .2s;
+}
+.option-pill:hover .option-pill__label,
+.option-pill input:checked + .option-pill__label { border-color: var(--text); }
+.option-pill input:focus-visible + .option-pill__label { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+.buybox__cart { margin-top: 32px; border: 0; } /* 52px high like the original's */
 .buybox__note { margin-top: 4px; text-align: center; font-size: 12.8px; line-height: 1.2; color: var(--text-muted); }
 .buybox__stock { margin-top: 16px; text-align: center; color: #028849; }
 .buybox__stock--out { color: var(--sale); }

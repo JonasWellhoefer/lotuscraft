@@ -8,13 +8,15 @@
 // `specs` also label the drawn pictures; `gallery` and each feature's
 // `picture` pick drawings from `galleryPictures` / `featurePictures` below.
 
-// Accessories under "Verwandte Produkte" (prices from the shop).
-const accessories = {
+// Cards that show up under "Verwandte Produkte" on several pages (prices from the shop).
+const relatedCards = {
   bag: { name: "Yogatasche PUNE", price: 29.95, shape: "bag", tint: "#c9bcae" },
   strap: { name: "Yogamatten Tragegurt", price: 14.95, shape: "strap", tint: COTTON },
   towel: { name: "Yoga Handtuch", price: 29.95, shape: "towel", tint: "#8f9a8c" },
   spray: { name: "Bio Yogamatten Spray", price: 12.95, shape: "spray", tint: "#e6e1d6" },
   belt: { name: "Yogagurt 100% Bio-Baumwolle", price: 6.49, compareAt: 12.95, shape: "strap", tint: "#8a7f72" },
+  mudraPro: { name: "Yogamatte MUDRA PRO", slug: "yogamatte-mudra-pro", price: 99.95, shape: "mat", tint: "#3d3d3f" },
+  almostPerfectProXl: { name: "„Almost Perfect“ Yogamatte MUDRA PRO XL", price: 106.29, compareAt: 124.95, shape: "mat", tint: "#3d3d3f" },
 };
 
 // The ARISE mats are two-tone: the underside is a lighter shade of the top.
@@ -26,6 +28,30 @@ const ARISE_TONES = {
   "Midnight Blue": { hex: "#2f3a5c", underside: "#6f8db0" },
 };
 const ariseColors = (...names) => names.map((name) => ({ name, ...ARISE_TONES[name] }));
+
+// MUDRA and MUDRA XL share their info rows, as on the original.
+const mudraFeatures = [
+  {
+    title: "Gut gepolstert, sicher im Stand",
+    text: "5 mm geben Knien und Handgelenken spürbar Polster. Trotzdem steht die MUDRA stabil genug für Balancehaltungen – ideal, wenn du gerade mit Yoga anfängst oder sanfte Stile magst.",
+    picture: "studio",
+  },
+  {
+    title: "Leicht genug für jeden Weg",
+    text: "Die MUDRA gehört zu den leichtesten Matten im Sortiment. Aufgerollt unter dem Arm oder am Tragegurt nimmst du sie mühelos mit ins Studio, in den Park oder zu Freund:innen.",
+    picture: "carry",
+  },
+  {
+    title: "Geprüft und frei von Latex",
+    text: "Die Matte ist nach OEKO-TEX® STANDARD 100 auf Schadstoffe geprüft und enthält weder Latex noch BPA. Damit ist sie auch eine gute Wahl, wenn du auf Latex allergisch reagierst.",
+    picture: "calm",
+  },
+  {
+    title: "Griffig und schnell sauber",
+    text: "Die Waffelstruktur der Oberfläche gibt dir Halt, auch wenn es im Flow anstrengender wird. Nach der Stunde genügt ein feuchtes Tuch – deshalb ist die MUDRA auch in vielen Yogastudios im Einsatz.",
+    picture: "layers",
+  },
+];
 
 const productDetails = {
   "yogamatte-pure": {
@@ -101,8 +127,8 @@ const productDetails = {
     ],
     // "Verwandte Produkte", as on the original (prices from the shop).
     related: [
-      accessories.bag,
-      accessories.strap,
+      relatedCards.bag,
+      relatedCards.strap,
       { name: "„Almost Perfect“ Yogamatte PURE", price: 67.95, compareAt: 79.95, shape: "mat", tint: "#7a2a3a" },
       bestsellers.yoga[0], // Yogablock Kork 2er Set
     ],
@@ -161,17 +187,17 @@ const productDetails = {
       { name: "Clara", place: "Dresden, DE", color: "Midnight Blue", stars: 5, days: 2, text: "Das Blau sieht in echt noch schöner aus als auf den Bildern. Grip und Dämpfung passen für mich perfekt." },
       { name: "Anonym", place: "", color: "Indigo Dust", stars: 5, days: 4, text: "Dass man beide Seiten nutzen kann, finde ich praktisch – die hellere Unterseite nehme ich für Yoga im Garten." },
       { name: "Felix", place: "Bern, CH", color: "Graphite", stars: 3, days: 5, text: "Der Gummigeruch war anfangs sehr stark. Nach zwei Wochen auf dem Balkon ist es deutlich besser geworden." },
-      { name: "Marie", place: "Stuttgart, DE", color: "Dark Cranberry", stars: 5, days: 7, text: "Beim Vinyasa sind mir bisher ständig die Hände weggerutscht. Auf der ARISE ist das vorbei." },
+      { name: "Marie", place: "Karlsruhe, DE", color: "Dark Cranberry", stars: 5, days: 7, text: "Beim Vinyasa sind mir bisher ständig die Hände weggerutscht. Auf der ARISE ist das vorbei." },
       { name: "Sophie", place: "Linz, AT", color: "Balsam Green", stars: 5, days: 9, text: "Fühlt sich weich und trotzdem stabil an. Meine Knie freuen sich über die 4 mm." },
-      { name: "David", place: "Hannover, DE", color: "Graphite", stars: 4, days: 13, text: "Top Qualität. Mit 2 kg ist sie mir für den Weg ins Studio etwas schwer, zu Hause ist sie perfekt." },
+      { name: "David", place: "Kiel, DE", color: "Graphite", stars: 4, days: 13, text: "Top Qualität. Mit 2 kg ist sie mir für den Weg ins Studio etwas schwer, zu Hause ist sie perfekt." },
       { name: "Laura", place: "Nürnberg, DE", color: "Indigo Dust", stars: 5, days: 17, text: "Schön, dass sie in Europa hergestellt wird. Verarbeitung und Grip sind erstklassig." },
       { name: "Tim", place: "Basel, CH", color: "Dark Cranberry", stars: 2, days: 22, text: "Für meinen Geschmack zu schwer und zu fest. Für dynamisches Yoga sicher super, für mich leider nicht das Richtige." },
       { name: "Nora", place: "Graz, AT", color: "Midnight Blue", stars: 5, days: 26, text: "Liegt flach, rollt sich an den Ecken nicht auf und hält bombenfest. Jeden Cent wert." },
     ],
     related: [
-      accessories.bag,
+      relatedCards.bag,
       { name: "„Almost Perfect“ Yogamatte ARISE", price: 76.46, compareAt: 89.95, shape: "mat", tint: "#5d7366" },
-      accessories.strap,
+      relatedCards.strap,
       { name: "Yogamatte ARISE Travel", slug: "yogamatte-arise-travel", price: 59.95, shape: "mat", tint: "#5d7366" },
     ],
   },
@@ -236,9 +262,9 @@ const productDetails = {
       { name: "Elias", place: "Zürich, CH", color: "Graphite", stars: 4, days: 28, text: "Für unterwegs ideal. Zu Hause nutze ich trotzdem lieber meine dickere Matte." },
     ],
     related: [
-      accessories.towel,
+      relatedCards.towel,
       bestsellers.yoga[2], // Yogamatte ARISE
-      accessories.spray,
+      relatedCards.spray,
       { name: "„Almost Perfect“ Yogamatte ARISE Travel", price: 50.95, compareAt: 59.95, shape: "mat", tint: "#5d7366" },
     ],
   },
@@ -275,28 +301,7 @@ const productDetails = {
         <p>Erst trocknen lassen, dann aufrollen. Vor direkter Sonne und großer Hitze schützen.</p>`,
     sustainability: `
         <p><strong>Schadstoffgeprüft</strong> nach OEKO-TEX® STANDARD 100.</p>`,
-    features: [
-      {
-        title: "Gut gepolstert, sicher im Stand",
-        text: "5 mm geben Knien und Handgelenken spürbar Polster. Trotzdem steht die MUDRA stabil genug für Balancehaltungen – ideal, wenn du gerade mit Yoga anfängst oder sanfte Stile magst.",
-        picture: "studio",
-      },
-      {
-        title: "Leicht genug für jeden Weg",
-        text: "Mit rund 1,35 kg ist die MUDRA eine der leichtesten Matten im Sortiment. Aufgerollt unter dem Arm oder am Tragegurt nimmst du sie mühelos mit ins Studio, in den Park oder zu Freund:innen.",
-        picture: "carry",
-      },
-      {
-        title: "Geprüft und frei von Latex",
-        text: "Die Matte ist nach OEKO-TEX® STANDARD 100 auf Schadstoffe geprüft und enthält weder Latex noch BPA. Damit ist sie auch eine gute Wahl, wenn du auf Latex allergisch reagierst.",
-        picture: "calm",
-      },
-      {
-        title: "Griffig und schnell sauber",
-        text: "Die Waffelstruktur der Oberfläche gibt dir Halt, auch wenn es im Flow anstrengender wird. Nach der Stunde genügt ein feuchtes Tuch – deshalb ist die MUDRA auch in vielen Yogastudios im Einsatz.",
-        picture: "layers",
-      },
-    ],
+    features: mudraFeatures,
     reviews: [
       { name: "Anna", place: "Berlin, DE", color: "Balsam Green", stars: 5, days: 1, text: "Meine erste richtige Yogamatte und ich bin begeistert. Leicht, weich und sie rutscht nicht weg." },
       { name: "Kerstin", place: "Essen, DE", color: "Lavender Fog", stars: 5, days: 2, text: "Die Farbe ist ein Traum und die Matte angenehm dick. Für meine Yin-Stunden genau richtig." },
@@ -311,9 +316,131 @@ const productDetails = {
     ],
     related: [
       bestsellers.yoga[0], // Yogablock Kork 2er Set
-      accessories.bag,
-      { name: "Yogamatte MUDRA PRO", price: 99.95, shape: "mat", tint: "#3d3d3f" },
-      accessories.belt,
+      relatedCards.bag,
+      relatedCards.mudraPro,
+      relatedCards.belt,
+    ],
+  },
+
+  "yogamatte-mudra-studio-xl": {
+    name: "Yogamatte Mudra XL",
+    subtitle: "Universelle XL Yogamatte für Einsteiger & Fortgeschrittene, schadstoffgeprüft",
+    price: 44.95,
+    rating: 4.56,
+    reviewCount: 273,
+    ratingScales: [
+      ["Rutschfestigkeit", 4.38],
+      ["Dämpfung", 4.36],
+      ["Qualität und Langlebigkeit", 4.39],
+    ],
+    // The original states only length, thickness and weight for the XL
+    // (no material or width), so the Details tab does the same.
+    specs: { short: "Waffelstruktur", length: 195, mm: 5, weight: "1,5 kg", texture: "waffle" },
+    // Five more colours are sold out and hidden, as on the original.
+    colors: [
+      { name: "Anthrazit", hex: "#3d3d3f" },
+      { name: "Indigo Dust", hex: "#6b7c95" },
+      { name: "Balsam Green", hex: "#5d7366" },
+    ].map((color) => ({ ...color, underside: color.hex })),
+    gallery: ["standing", "rolled", "top", "layers"],
+    description: `
+        <p>Die Mudra XL ist die bewährte MUDRA in Überlänge: 195 statt 183 cm – genug Platz, wenn du groß bist oder dich in der Endentspannung gern ganz ausstreckst.</p>
+        <p>Wie die MUDRA ist sie 5 mm dick, leicht und hat eine griffige Waffelstruktur. Sie ist nach OEKO-TEX® STANDARD 100 schadstoffgeprüft und robust genug für den Einsatz im Yogastudio.</p>`,
+    care: `
+        <p>Mit einer weichen Bürste oder einem Tuch und einer Mischung aus Wasser und Apfelessig (1:1) reinigen. Keine Seife verwenden und nicht in die Waschmaschine geben.</p>
+        <p>Erst trocknen lassen, dann aufrollen. Vor direkter Sonne schützen und am besten in einer Tasche oder im Schrank aufbewahren.</p>`,
+    sustainability: `
+        <p><strong>Schadstoffgeprüft</strong> nach OEKO-TEX® STANDARD 100.</p>`,
+    features: mudraFeatures,
+    reviews: [
+      { name: "Florian", place: "Ingolstadt, DE", color: "Anthrazit", stars: 5, days: 1, text: "Als großer Mensch hingen bei normalen Matten immer Kopf oder Füße drüber. Auf der XL nicht mehr." },
+      { name: "Birgit", place: "Bregenz, AT", color: "Indigo Dust", stars: 5, days: 4, text: "Leicht, weich und lang genug für die Endentspannung. Genau das, was ich gesucht habe." },
+      { name: "Anonym", place: "", color: "Balsam Green", stars: 4, days: 6, text: "Gute Dämpfung, der Grip könnte bei schwitzigen Händen etwas besser sein." },
+      { name: "Lars", place: "Oldenburg, DE", color: "Anthrazit", stars: 5, days: 9, text: "Für meine Größe die beste Matte, die ich bisher hatte. Und trotzdem leicht zu tragen." },
+      { name: "Theresa", place: "Passau, DE", color: "Indigo Dust", stars: 4, days: 13, text: "Schöne Farbe, angenehm weich. Der Geruch war am Anfang deutlich, ist aber schnell verflogen." },
+      { name: "Daniel", place: "Thun, CH", color: "Balsam Green", stars: 5, days: 19, text: "Nutze sie für Yoga und für Dehnübungen nach dem Laufen. Die Extralänge ist Gold wert." },
+      { name: "Sarah", place: "Wiesbaden, DE", color: "Anthrazit", stars: 3, days: 25, text: "Für den Preis in Ordnung. Nach einigen Monaten zeigen sich unter den Händen leichte Abriebspuren." },
+    ],
+    related: [
+      relatedCards.mudraPro,
+      { name: "Augenkissen", price: 27.95, shape: "eyePillow", tint: "#7f93ad" },
+      { name: "Naima Top", price: 39.95, shape: "top", tint: "#d8d0c4" },
+      relatedCards.almostPerfectProXl,
+    ],
+  },
+
+  "yogamatte-mudra-pro": {
+    name: "Yogamatte MUDRA PRO",
+    subtitle: "Die Leistungsstarke: Extra robust für Yoga und Workouts - Made in Germany",
+    price: 99.95,
+    rating: 4.46,
+    reviewCount: 48,
+    ratingScales: [
+      ["Rutschfestigkeit", 4.45],
+      ["Dämpfung", 4.43],
+      ["Qualität und Langlebigkeit", 4.47],
+    ],
+    // `size` replaces "L × B" in the Details tab, since there are two lengths.
+    specs: { material: "Polyester mit Vinyl-Beschichtung", short: "Polyester + Vinyl", size: "180 × 65 cm oder 200 × 65 cm", mm: 5, weight: "1,77 kg (180 cm), 2,13 kg (200 cm)", origin: "Deutschland" },
+    colors: [
+      { name: "Anthrazit", hex: "#3d3d3f" },
+      { name: "Light Taupe", hex: "#c4b6a6" },
+      { name: "Balsam Green", hex: "#5d7366" },
+    ].map((color) => ({ ...color, underside: color.hex })),
+    // A second choice next to the colour. The first length's price is `price`;
+    // `without` lists colours not made in that length (hidden, as on the original).
+    lengths: [
+      { label: "180cm", price: 99.95 },
+      { label: "200cm", price: 124.95, without: ["Light Taupe", "Balsam Green"] },
+    ],
+    gallery: ["rolled", "top", "standing", "layers", "studioLunge", "studioSeated"],
+    description: `
+        <p>Die MUDRA PRO ist die robusteste Matte im Sortiment: gemacht für tägliches Üben zu Hause und den Dauereinsatz im Studio. Die geschlossene Oberfläche nimmt keine Feuchtigkeit auf und ist schnell gereinigt, die strukturierte Unterseite hält sie am Platz.</p>
+        <p>Mit 5 mm Dicke dämpft sie gut und bleibt trotzdem stabil. Es gibt sie in 180 cm und – für große Menschen – in 200 cm Länge. Hergestellt wird sie in Deutschland.</p>
+        <p>Neue Matten können anfangs eine leichte Schutzschicht aus der Herstellung haben. Sie verschwindet beim Üben und Reinigen, danach wird die Oberfläche griffiger.</p>`,
+    care: `
+        <p>Nach dem Üben mit einem weichen, leicht feuchten Tuch abwischen und mit einem trockenen Tuch nachtrocknen. Keine Seife verwenden und nicht in die Waschmaschine geben.</p>
+        <p>Eine feuchte Matte erst trocknen lassen, dann aufrollen.</p>`,
+    sustainability: `
+        <p><strong>Hergestellt in Deutschland</strong> – kurze Wege innerhalb der EU.</p>
+        <p><strong>Schadstoffgeprüft</strong> nach OEKO-TEX® STANDARD 100.</p>`,
+    features: [
+      {
+        title: "Robust für jeden Tag",
+        text: "Die MUDRA PRO ist für viel Nutzung gebaut: Ihre geschlossene Oberfläche hält auch kraftvollen Workouts stand und bleibt formstabil. Die strukturierte Unterseite sorgt dafür, dass die Matte auf glattem Boden nicht wandert.",
+        picture: "grip",
+      },
+      {
+        title: "Gefertigt in Deutschland",
+        text: "Die MUDRA PRO wird in Deutschland hergestellt und ist nach OEKO-TEX® STANDARD 100 auf Schadstoffe geprüft – kurze Lieferwege inklusive.",
+        picture: "calm",
+      },
+      {
+        title: "Polster, das trägt",
+        text: "5 mm Polsterung schonen Knie und Rücken, ohne dass die Matte unter dir nachgibt. Mit 65 cm Breite und wahlweise 200 cm Länge hast du auch als großer Mensch genug Platz.",
+        picture: "layers",
+      },
+      {
+        title: "Für Yoga, Pilates und Workouts",
+        text: "Ob Sonnengruß, Pilates-Übung oder Training zu Hause: Die MUDRA PRO lässt sich nach jeder Einheit feucht abwischen und ist schnell wieder einsatzbereit – auch im Studioalltag.",
+        picture: "studio",
+      },
+    ],
+    reviews: [
+      { name: "Sandra", place: "Augsburg, DE", color: "Anthrazit", stars: 5, days: 2, text: "Ich gebe fünf Kurse pro Woche auf dieser Matte. Nach Monaten sieht sie noch aus wie am ersten Tag." },
+      { name: "Moritz", place: "Bielefeld, DE", color: "Anthrazit", stars: 5, days: 3, text: "Mit fast zwei Metern endlich eine Matte, auf der Kopf und Füße Platz haben. Die 200-cm-Version lohnt sich." },
+      { name: "Anonym", place: "", color: "Light Taupe", stars: 4, days: 5, text: "Sehr stabil und angenehm gedämpft. In den ersten Tagen war sie etwas rutschig, das hat sich gegeben." },
+      { name: "Helena", place: "Wels, AT", color: "Balsam Green", stars: 5, days: 8, text: "Nutze sie für Pilates und Krafttraining. Hält alles aus und ist in Sekunden sauber gewischt." },
+      { name: "Jan", place: "Lübeck, DE", color: "Anthrazit", stars: 3, days: 11, text: "Gute Qualität, aber für Hot Yoga ist mir der Grip zu gering. Für ruhigere Stile top." },
+      { name: "Vera", place: "St. Gallen, CH", color: "Light Taupe", stars: 5, days: 14, text: "Schön, dass sie in Deutschland gefertigt wird. Fühlt sich hochwertig an und liegt sofort flach." },
+      { name: "Philipp", place: "Potsdam, DE", color: "Balsam Green", stars: 4, days: 18, text: "Etwas schwerer als meine alte Matte, dafür deutlich robuster. Für den Preis absolut in Ordnung." },
+      { name: "Amelie", place: "Regensburg, DE", color: "Anthrazit", stars: 5, days: 24, text: "Wir haben unser Studio komplett mit der MUDRA PRO ausgestattet. Die Teilnehmenden sind begeistert." },
+    ],
+    related: [
+      relatedCards.almostPerfectProXl,
+      relatedCards.bag,
+      relatedCards.strap,
+      bestsellers.yoga[3], // Yogamatte MUDRA
     ],
   },
 };
@@ -326,6 +453,8 @@ let patternCount = 0; // keeps SVG pattern ids unique on the page
 
 const decimal = (value) => String(value).replace(".", ",");
 const cm = (mm) => `${decimal(mm / 10)} cm`;
+// "183 × 61 cm" – or just the length where the original gives no width.
+const sizeText = (specs) => specs.size || (specs.width ? `${specs.length} × ${specs.width} cm` : `${specs.length} cm lang`);
 
 // Explicit `underside`, else PURE's rule: matte colours match, smooth ones are black.
 const underside = (color) => color.underside || (color.matte ? color.hex : "#2b2a28");
@@ -454,7 +583,7 @@ function layersWidePicture(color, specs) {
       <rect x="14" y="128" width="272" height="${top}" fill="rgba(0,0,0,.2)"/>
       <rect x="14" y="${128 + top}" width="272" height="${side - top}" fill="${underside(color)}"/>
       <path d="M296 128V${128 + side}M292 128H300M292 ${128 + side}H300" stroke="#5f5c52"/>
-      <text x="150" y="176" text-anchor="middle" font-size="11" fill="#5f5c52" font-family="Hanken Grotesk, sans-serif">${specs.material} · ${decimal(specs.mm)} mm</text>
+      <text x="150" y="176" text-anchor="middle" font-size="11" fill="#5f5c52" font-family="Hanken Grotesk, sans-serif">${specs.material || specs.short} · ${decimal(specs.mm)} mm</text>
     </svg>`;
 }
 
@@ -503,7 +632,7 @@ function carryWidePicture(color, specs) {
       <ellipse cx="260" cy="102" rx="13" ry="28" fill="${underside(color)}"/>
       <ellipse cx="259" cy="102" rx="8" ry="18" fill="none" stroke="rgba(0,0,0,.18)"/>
       <ellipse cx="259" cy="102" rx="4" ry="8" fill="rgba(0,0,0,.35)"/>
-      <text x="165" y="176" text-anchor="middle" font-size="11" fill="#5f5c52" font-family="Hanken Grotesk, sans-serif">ca. ${specs.weight} · ${specs.length} × ${specs.width} cm</text>
+      <text x="165" y="176" text-anchor="middle" font-size="11" fill="#5f5c52" font-family="Hanken Grotesk, sans-serif">ca. ${specs.weight} · ${sizeText(specs)}</text>
     </svg>`;
 }
 
@@ -514,7 +643,7 @@ const wideScene = (color, pose, wall, floor) => sceneSvg({ pose, wall, floor, ma
 const featurePictures = {
   grip: { label: () => "Figur im herabschauenden Hund auf der Matte", draw: (color) => wideScene(color, "dog", "#e4ded5", "#b49a7e") },
   size: { label: (specs) => `Matte von oben, ${specs.length} × ${specs.width} cm`, draw: sizeWidePicture },
-  layers: { label: (specs) => `Schichtaufbau: ${specs.material}, ${decimal(specs.mm)} mm`, draw: layersWidePicture },
+  layers: { label: (specs) => `Schichtaufbau: ${specs.material || specs.short}, ${decimal(specs.mm)} mm`, draw: layersWidePicture },
   styles: { label: () => "Figur im Baum auf der Matte", draw: (color) => wideScene(color, "tree", "#dcdcd2", "#9c8a74") },
   reversible: { label: () => "Matte mit umgeschlagener Ecke: Ober- und Unterseite", draw: reversibleWidePicture },
   forest: { label: () => "Figur im Sitzen auf der Matte im Wald", draw: (color) => wideScene(color, "seated", "#b4bea6", "#86735a") },
@@ -578,15 +707,19 @@ function galleryThumbs(product, color, current = 0) {
           <button class="gallery__thumb" data-index="${i}" aria-label="Bild ${i + 1} von ${product.gallery.length} zeigen"${i === current ? ' aria-current="true"' : ""}>${galleryPictures[key].draw(color, product.specs)}</button>`).join("");
 }
 
+// Rows the original leaves out (e.g. the XL's material) are left out here too.
 function detailsMarkup(specs) {
+  const rows = [
+    ["Material", specs.material],
+    specs.width || specs.size ? ["Maße (L × B)", sizeText(specs)] : ["Länge", `${specs.length} cm`],
+    ["Dicke", cm(specs.mm)],
+    ["Gewicht", specs.weight],
+    ["Herkunft", specs.origin],
+    ["Hinweis", "Nachbau für ein Studentenprojekt – kein echtes Produkt, daher keine Hersteller- oder Bestellangaben."],
+  ];
   return `
-        <dl class="facts">
-          <dt>Material</dt><dd>${specs.material}</dd>
-          <dt>Maße (L × B)</dt><dd>${specs.length} × ${specs.width} cm</dd>
-          <dt>Dicke</dt><dd>${cm(specs.mm)}</dd>
-          <dt>Gewicht</dt><dd>${specs.weight}</dd>
-          <dt>Herkunft</dt><dd>${specs.origin}</dd>
-          <dt>Hinweis</dt><dd>Nachbau für ein Studentenprojekt – kein echtes Produkt, daher keine Hersteller- oder Bestellangaben.</dd>
+        <dl class="facts">${rows.filter(([, value]) => value).map(([term, value]) => `
+          <dt>${term}</dt><dd>${value}</dd>`).join("")}
         </dl>`;
 }
 
@@ -599,6 +732,18 @@ function productMarkup(product) {
                 <span class="color-swatch__thumb">${rolledPicture(c)}</span>
                 <span class="visually-hidden">${c.name}</span>
               </label>`).join("");
+
+  const lengths = product.lengths ? `
+
+        <fieldset class="option-picker">
+          <legend class="color-picker__legend"><strong>Länge:</strong> <span class="option-picker__value">${product.lengths[0].label}</span></legend>
+          <div class="option-picker__options">${product.lengths.map((length, i) => `
+            <label class="option-pill">
+              <input type="radio" name="length" value="${i}" class="visually-hidden"${i === 0 ? " checked" : ""}>
+              <span class="option-pill__label">${length.label}</span>
+            </label>`).join("")}
+          </div>
+        </fieldset>` : "";
 
   const usps = buyboxUsps.map(([icon, text]) => `
             <li><svg class="buybox__usp-icon" viewBox="0 0 24 24" aria-hidden="true">${buyboxIcons[icon]}</svg>${text}</li>`).join("");
@@ -643,7 +788,7 @@ function productMarkup(product) {
           <legend class="color-picker__legend"><strong>Farbe:</strong> <span class="color-picker__value">${color.name}</span></legend>
           <div class="color-picker__options">${swatches}
           </div>
-        </fieldset>
+        </fieldset>${lengths}
 
         <button class="btn btn--primary btn--block buybox__cart" type="button">${cartLabel(color)}</button>
         <p class="buybox__note"${color.soldOut ? "" : " hidden"}>Du erhältst eine Benachrichtigung per E-Mail, sobald der Artikel wieder auf Lager ist.</p>
@@ -816,11 +961,15 @@ if (!product) {
   const thumbs = productRoot.querySelector(".gallery__thumbs");
   const badge = productRoot.querySelector(".gallery__badge");
   const colorValue = productRoot.querySelector(".color-picker__value");
+  const colorInputs = productRoot.querySelectorAll('input[name="color"]');
+  const lengthInputs = productRoot.querySelectorAll('input[name="length"]');
+  const amount = productRoot.querySelector(".buybox__amount");
   const cartButton = productRoot.querySelector(".buybox__cart");
   const note = productRoot.querySelector(".buybox__note");
   const stock = productRoot.querySelector(".buybox__stock");
   const added = productRoot.querySelector(".buybox__added");
   let color = product.colors[0];
+  let length = product.lengths?.[0]; // only for products with a length choice
 
   // On tablets and phones the gallery is a swipe slider; thumbnails jump to
   // a picture and follow along while swiping. One step = picture + gap.
@@ -844,22 +993,40 @@ if (!product) {
 
   track.addEventListener("scroll", () => markThumb(currentPicture()), { passive: true });
 
-  // Picking a colour redraws every picture in that colour and shows
-  // whether it is in stock.
+  // A length can rule out colours (MUDRA PRO: 200 cm only in Anthrazit).
+  // Like the original, such combinations are hidden rather than sold out.
+  const offered = (c, l) => !l?.without?.includes(c.name);
+
+  // Buy box texts, price and offered choices for the picked colour (and length).
+  function updateBuybox() {
+    colorValue.textContent = color.name;
+    cartButton.textContent = cartLabel(color);
+    note.hidden = !color.soldOut;
+    stock.textContent = stockText(color);
+    stock.classList.toggle("buybox__stock--out", Boolean(color.soldOut));
+    added.textContent = "";
+    if (!length) return;
+    productRoot.querySelector(".option-picker__value").textContent = length.label;
+    amount.textContent = formatPrice(length.price);
+    colorInputs.forEach((input, i) => (input.closest("label").hidden = !offered(product.colors[i], length)));
+    lengthInputs.forEach((input, i) => (input.closest("label").hidden = !offered(color, product.lengths[i])));
+  }
+
+  // Picking a colour redraws every picture in that colour.
   productRoot.querySelector(".color-picker").addEventListener("change", (e) => {
     color = product.colors[Number(e.target.value)];
-    colorValue.textContent = color.name;
     badge.hidden = !color.matte;
     track.innerHTML = galleryItems(product, color);
     thumbs.innerHTML = galleryThumbs(product, color, currentPicture());
     productRoot.querySelectorAll(".feature__media").forEach((media) => {
       media.innerHTML = featurePictures[media.dataset.picture].draw(color, product.specs);
     });
-    cartButton.textContent = cartLabel(color);
-    note.hidden = !color.soldOut;
-    stock.textContent = stockText(color);
-    stock.classList.toggle("buybox__stock--out", Boolean(color.soldOut));
-    added.textContent = "";
+    updateBuybox();
+  });
+
+  productRoot.querySelector(".option-picker")?.addEventListener("change", (e) => {
+    length = product.lengths[Number(e.target.value)];
+    updateBuybox();
   });
 
   // Demo cart: adds the picked colour and opens the cart; nothing is ordered.
@@ -869,21 +1036,22 @@ if (!product) {
       added.textContent = "Nur eine Demo: In diesem Studentenprojekt gibt es keine Benachrichtigungen, es wird nichts gespeichert.";
       return;
     }
+    const variant = length ? `${color.name} / ${length.label}` : color.name;
     addToCart({
-      id: `${slug}:${color.name}`,
+      id: `${slug}:${variant}`,
       name: product.name,
-      variant: color.name,
+      variant,
       hex: color.hex,
-      price: product.price,
+      price: length ? length.price : product.price,
       href: `produkt.html?p=${slug}&farbe=${encodeURIComponent(color.name)}`,
     });
     openCart();
-    added.textContent = `${product.name} (${color.name}) liegt im Warenkorb – nur eine Demo, es wird nichts bestellt.`;
+    added.textContent = `${product.name} (${variant}) liegt im Warenkorb – nur eine Demo, es wird nichts bestellt.`;
     cartButton.textContent = "Hinzugefügt ✓";
     setTimeout(() => (cartButton.textContent = cartLabel(color)), 2000);
   });
 
   // A link can preselect a colour, e.g. from the category page (&farbe=Light Taupe).
   const wanted = product.colors.findIndex((c) => c.name === new URLSearchParams(location.search).get("farbe"));
-  if (wanted > 0) productRoot.querySelectorAll(".color-picker input")[wanted].click();
+  if (wanted > 0) colorInputs[wanted].click();
 }
