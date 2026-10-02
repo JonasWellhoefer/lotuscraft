@@ -75,6 +75,70 @@ document.querySelectorAll(".product-grid").forEach((grid) => {
   grid.innerHTML = bestsellers[grid.dataset.category].map(productCard).join("");
 });
 
+// ---------- Testimonials ----------
+// Invented sample reviews: the original shows real customers' names and
+// towns, which don't belong in a public student repo.
+const reviews = [
+  { name: "Lena", stars: 5, product: "Yogamatte ARISE", text: "Super rutschfest, auch wenn es mal schweißtreibend wird. Die Farbe ist in echt noch schöner.", meta: "vor 2 Stunden" },
+  { name: "Markus", stars: 5, product: "Yogablock Kork 2er Set", text: "Stabil, angenehm griffig und riecht nicht. Genau das, was ich gesucht habe.", meta: "vor 5 Stunden" },
+  { name: "Sophie", stars: 4, product: "Meditationskissen Lotus (H: 15cm)", text: "Sehr bequem und gut verarbeitet. Für mich hätte es einen Tick höher sein dürfen, sonst perfekt.", meta: "vor 9 Stunden" },
+  { name: "Jana", stars: 5, product: "Yogamatte PURE", text: "Die matte Oberfläche fühlt sich toll an. Lieferung ging schnell und die Verpackung war plastikfrei.", meta: "vor einem Tag" },
+  { name: "Anonym", stars: 5, product: "Meditationsmatte Zabuton", text: "Ergänzt mein Kissen perfekt, die Knie danken es mir. Klare Empfehlung.", meta: "vor einem Tag" },
+  { name: "Tobias", stars: 4, product: "FEND Mens Sweater", text: "Weich und gemütlich, fällt etwas größer aus. Nach dem Waschen immer noch in Form.", meta: "vor 2 Tagen" },
+  { name: "Clara", stars: 5, product: "Yogamatte MUDRA", text: "Für den Preis eine richtig gute Einsteigermatte. Leicht genug, um sie zum Kurs mitzunehmen.", meta: "vor 3 Tagen" },
+];
+
+const star = (filled) =>
+  `<svg viewBox="0 0 20 20" class="${filled ? "is-filled" : ""}"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.1 6-5.3-3-5.3 3 1.1-6L1.4 7.7l6-.7z"/></svg>`;
+
+function reviewCard(review) {
+  const stars = Array.from({ length: 5 }, (_, i) => star(i < review.stars)).join("");
+  return `
+    <article class="review">
+      <div class="review__head">
+        <span class="review__name">${review.name}</span>
+        <span class="review__stars" aria-label="${review.stars} von 5 Sternen">${stars}</span>
+      </div>
+      <p class="review__badge">
+        <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.4"/></svg>
+        Verifizierter Kauf
+      </p>
+      <p class="review__product">${review.product}</p>
+      <p class="review__text">${review.text}</p>
+      <p class="review__meta">${review.meta}</p>
+    </article>`;
+}
+
+const track = document.querySelector(".carousel__track");
+track.innerHTML = reviews.map(reviewCard).join("");
+
+function scrollByCard(direction) {
+  const card = track.querySelector(".review");
+  const step = card.offsetWidth + parseFloat(getComputedStyle(track).columnGap);
+  const atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
+  if (direction > 0 && atEnd) track.scrollTo({ left: 0, behavior: "smooth" });
+  else track.scrollBy({ left: direction * step, behavior: "smooth" });
+}
+
+document.querySelector(".carousel__arrow--prev").addEventListener("click", () => scrollByCard(-1));
+document.querySelector(".carousel__arrow--next").addEventListener("click", () => scrollByCard(1));
+
+// Autoplay like the original, with a pause button. Respects reduced motion.
+const pauseButton = document.querySelector(".carousel__pause");
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let autoplay = null;
+
+function setPaused(paused) {
+  clearInterval(autoplay);
+  autoplay = paused ? null : setInterval(() => scrollByCard(1), 5000);
+  pauseButton.setAttribute("aria-pressed", paused);
+  pauseButton.querySelector("span").textContent = paused ? "Abspielen" : "Pause";
+  pauseButton.querySelector("path").setAttribute("d", paused ? "M8 5l11 7-11 7z" : "M9 6v12M15 6v12");
+}
+
+pauseButton.addEventListener("click", () => setPaused(autoplay !== null));
+setPaused(reducedMotion);
+
 // ---------- Tabs ----------
 const tabs = [...document.querySelectorAll(".tab")];
 

@@ -139,6 +139,40 @@
         <div class="product-grid" role="tabpanel" id="panel-bekleidung" aria-labelledby="tab-bekleidung" data-category="bekleidung" hidden></div>
       </div>
     </section>
+
+    <!-- Testimonials (review carousel) -->
+    <section class="section testimonials" aria-labelledby="testimonials-title">
+      <div class="container">
+        <header class="section-header">
+          <div class="avatars" aria-hidden="true">
+            <span class="avatar" style="--tone:#c9a98c">L</span>
+            <span class="avatar" style="--tone:#8f6f58">M</span>
+            <span class="avatar" style="--tone:#6b7a6f">S</span>
+            <span class="avatar" style="--tone:#b8a48a">J</span>
+          </div>
+          <h2 class="section-header__title" id="testimonials-title">+520.000 zufriedene Kunden:innen</h2>
+          <p class="section-header__subtitle">Du bist in bester Gesellschaft</p>
+        </header>
+
+        <div class="carousel">
+          <button class="carousel__arrow carousel__arrow--prev" aria-label="Vorherige Bewertungen">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
+          </button>
+          <div class="carousel__track" tabindex="0" aria-label="Kundenbewertungen (Beispiele)"></div>
+          <button class="carousel__arrow carousel__arrow--next" aria-label="Nächste Bewertungen">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+
+        <div class="carousel__footer">
+          <p class="carousel__note">Beispielbewertungen für dieses Studentenprojekt – keine echten Kund:innen.</p>
+          <button class="carousel__pause" aria-pressed="false">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M9 6v12M15 6v12"/></svg>
+            <span>Pause</span>
+          </button>
+        </div>
+      </div>
+    </section>
   </main>
 
   <script src="script.js"></script>
