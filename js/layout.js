@@ -65,11 +65,11 @@ document.getElementById("site-header").outerHTML = `
     <!-- Items with data-menu get their dropdown panel below -->
     <nav class="nav" aria-label="Hauptnavigation">
       <ul class="nav__list">
-        <li class="nav__item" data-menu="Yoga"><a href="#" class="nav__link">Yoga</a></li>
-        <li class="nav__item" data-menu="Meditation"><a href="#" class="nav__link">Meditation</a></li>
+        <li class="nav__item" data-menu="Yoga"><a href="kategorie.html?k=yoga" class="nav__link">Yoga</a></li>
+        <li class="nav__item" data-menu="Meditation"><a href="kategorie.html?k=meditation" class="nav__link">Meditation</a></li>
         <li class="nav__item" data-menu="Bekleidung"><a href="kategorie.html?k=yoga-kleidung" class="nav__link">Bekleidung</a></li>
         <li class="nav__item" data-menu="Geschenke"><a href="kategorie.html?k=geschenkideen" class="nav__link">Geschenke</a></li>
-        <li class="nav__item"><a href="#" class="nav__link">Sale</a></li>
+        <li class="nav__item" data-section="Sale"><a href="kategorie.html?k=sale" class="nav__link">Sale</a></li>
       </ul>
     </nav>
 

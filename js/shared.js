@@ -4,6 +4,8 @@
 // Placeholder colours for materials that appear in several products.
 const CORK = "#c7a27a";
 const COTTON = "#ebe5d6";
+// The material most products are made of (also a value of the "Material" filter).
+const ORGANIC_COTTON = "Bio-Baumwolle (kbA)";
 
 // Star outline shared by ratings and reviews.
 const STAR_PATH = "M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.1 6-5.3-3-5.3 3 1.1-6L1.4 7.7l6-.7z";
@@ -432,7 +434,7 @@ const yogaSets = [
   { name: "Restore Comfort Set", price: 58.41, compareAt: 64.9, bundle: true, shape: "rollTowelSet", tint: "#cdc4b6", accent: "#586666", swatches: ["#ad9f94", "#5f7d97", "#586666", "#a5939e"] },
   { name: "Deep Release Set", price: 43.11, compareAt: 47.9, bundle: true, fromPrice: true, shape: "rollBeltSet", tint: "#cdc4b6", accent: "#586666", swatches: ["#ad9f92", "#5f7d97", "#586666", "#a593a0"] },
   { name: "Travel Essentials Set", price: 65.61, compareAt: 72.9, bundle: true, fromPrice: true, shape: "travelBeltSet", tint: "#647a97", accent: "#576565", swatches: ["#505256", "#647a97", "#576565"] },
-  { name: "Yoga Tasche + Gurt Set", price: 38.61, compareAt: 42.9, bundle: true, fromPrice: true, shape: "bagBeltSet", tint: "#b3a596", accent: "#844657", swatches: ["#844657", "#697386", "#4d5156", "#ad9f94", "#6f7253", "#415d74"] },
+  { name: "Yoga Tasche + Gurt Set", price: 38.61, compareAt: 42.9, bundle: true, fromPrice: true, material: ORGANIC_COTTON, shape: "bagBeltSet", tint: "#b3a596", accent: "#844657", swatches: ["#844657", "#697386", "#4d5156", "#ad9f94", "#6f7253", "#415d74"] },
   { name: "Yoga Zubehör + Reinigungs Set", price: 50.27, compareAt: 55.85, bundle: true, fromPrice: true, shape: "cleaningSet", tint: COTTON, swatches: [COTTON, "#854858", "#6e7152", "#4d4a4e", "#677283"] },
   { name: "Yogamatte MUDRA PRO Set", price: 116.91, compareAt: 129.9, bundle: true, fromPrice: true, shape: "matSet", tint: "#4e4c4f", accent: "#8f8c84", swatches: ["#ad9f92", "#4e4c4f"] },
   setNamed("Yoga-Zubehör Set"),
@@ -446,7 +448,6 @@ const yogaSets = [
 // As on the original's "Yoga-Zubehör" pages: one card per colour (or size,
 // with its own price). Like there, the material is set on single colours
 // only, e.g. six of the eight belts count as organic cotton.
-const ORGANIC_COTTON = "Bio-Baumwolle (kbA)";
 const yogaAccessories = [
   { name: "Yogagurt 100% Bio-Baumwolle", price: 12.95, shape: "strap", material: null, variants: [
     { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
@@ -490,7 +491,7 @@ const yogaAccessories = [
     { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz", soldOut: true },
     { color: "Natur", hex: COTTON, family: "Beige" },
   ] },
-  { name: "Augenkissen", price: 27.95, shape: "eyePillow", material: null, variants: [
+  { name: "Augenkissen", price: 27.95, shape: "eyePillow", material: null, filling: "95% Leinsaat, 5% Lavendel", variants: [
     { color: "Light Taupe", hex: "#c4b6a6", family: "Beige", material: ORGANIC_COTTON },
     { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
     { color: "Lavender Fog", hex: "#b7a3b6", family: "Rosa", material: ORGANIC_COTTON },
@@ -506,7 +507,7 @@ const accessoriesNamed = (...names) => yogaAccessories.filter((item) => names.in
 
 // Two products that only show up on a sub-page, not under "Yoga-Zubehör".
 const matCarrier = { name: "Yogamatten Tragegurt", price: 14.95, shape: "strap", material: null, variants: [
-  { color: "Light Taupe", hex: "#c4b6a6", family: "Beige" },
+  { color: "Light Taupe", hex: "#c4b6a6", family: "Beige", material: ORGANIC_COTTON },
   { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
 ] };
 const singleCorkBlock = { name: "Yogablock Kork Einzeln", price: 17.95, shape: "singleBlock", material: null, variants: [
@@ -520,18 +521,19 @@ const singleCorkBlock = { name: "Yogablock Kork Einzeln", price: 17.95, shape: "
 const SPELT = "Bio-Dinkelspelz (kbA)";
 const KAPOK = "Kapokwolle";
 const GRASSLAND = "#c9c6b0";
-// The colours with a filling also carry a 15 cm seat height (it only shows
-// as a filter on the gift pages).
+// The colours with a filling also carry organic cotton and a 15 cm seat
+// height (they only show as filters on the overview and gift pages).
+const olderBolster = (filling) => ({ filling, material: ORGANIC_COTTON, height: "15" });
 const bolsterColors = (filling) => [
-  { color: "Light Taupe", hex: "#c4b6a6", family: "Beige", filling, height: "15" },
-  { color: "Natur", hex: COTTON, family: "Beige", filling, height: "15" },
-  { color: "Indigo Dust", hex: "#6b7c95", family: "Blau", filling, height: "15" },
-  { color: "Aubergine", hex: "#8d5a6f", family: "Rot", filling, height: "15" },
-  { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz", filling, height: "15" },
+  { color: "Light Taupe", hex: "#c4b6a6", family: "Beige", ...olderBolster(filling) },
+  { color: "Natur", hex: COTTON, family: "Beige", ...olderBolster(filling) },
+  { color: "Indigo Dust", hex: "#6b7c95", family: "Blau", ...olderBolster(filling) },
+  { color: "Aubergine", hex: "#8d5a6f", family: "Rot", ...olderBolster(filling) },
+  { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz", ...olderBolster(filling) },
   { color: "Dark Cranberry", hex: "#7a2a3a", family: "Rot" },
   { color: "Grassland", hex: GRASSLAND, family: "Wood Grain" },
 ];
-const yogaRoll = { name: "Yogarolle RESTORATIVE Ø24 cm", price: 54.95, shape: "roll", variants: [
+const yogaRoll = { name: "Yogarolle RESTORATIVE Ø24 cm", price: 54.95, shape: "roll", material: ORGANIC_COTTON, variants: [
   { color: "Light Taupe", hex: "#c4b6a6", family: "Beige", filling: SPELT },
   { color: "Natur", hex: COTTON, family: "Beige", filling: SPELT },
   { color: "Indigo Dust", hex: "#6b7c95", family: "Blau", filling: SPELT },
@@ -541,7 +543,7 @@ const yogaRoll = { name: "Yogarolle RESTORATIVE Ø24 cm", price: 54.95, shape: "
   { color: "Grassland", hex: GRASSLAND, family: "Wood Grain" },
 ] };
 const neckRoll = { name: "Yoga Mini-Rolle (Nackenrolle) Ø12 cm", price: 34.95, shape: "neckRoll", variants: [
-  { color: "Light Taupe", hex: "#c4b6a6", family: "Beige", filling: SPELT },
+  { color: "Light Taupe", hex: "#c4b6a6", family: "Beige", filling: SPELT, material: ORGANIC_COTTON },
   { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
 ] };
 const bolsters = [
@@ -552,7 +554,7 @@ const bolsters = [
   { name: "Yoga Bolster RESTORATIVE S", price: 49.95, shape: "bolsterS", variants: bolsterColors(KAPOK) },
   neckRoll,
 ];
-const rollCover = { name: "Bezug für Yogarolle COVER Ø24 cm", price: 29.95, shape: "rollCover", badge: "NUR BEZUG", variants: [
+const rollCover = { name: "Bezug für Yogarolle COVER Ø24 cm", price: 29.95, shape: "rollCover", badge: "NUR BEZUG", material: ORGANIC_COTTON, variants: [
   { color: "Light Taupe", hex: "#c4b6a6", family: "Beige" },
   { color: "Natur", hex: COTTON, family: "Beige" },
   { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz" },
@@ -629,34 +631,34 @@ const spelt = { filling: SPELT };
 const speltSoldOut = { filling: SPELT, soldOut: true };
 
 const meditationCushions = [
-  { name: "Meditationskissen Lotus (H: 15cm)", price: 39.95, shape: "lotusCushion15", form: "Rund", height: "15", variants: [
+  { name: "Meditationskissen Lotus (H: 15cm)", price: 39.95, shape: "lotusCushion15", form: "Rund", height: "15", material: ORGANIC_COTTON, variants: [
     cushionColor("Balsam Green"), cushionColor("Natur", spelt), cushionColor("Anthrazit", spelt), cushionColor("Light Taupe", spelt),
     cushionColor("Indigo Dust", spelt), cushionColor("Kurkuma"), cushionColor("Schwarz"),
   ] },
   // Like the filling, the seat height is only set on the older colours here.
-  { name: "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung", price: 34.95, shape: "plainCushion", form: "Rund", variants: [
+  { name: "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung", price: 34.95, shape: "plainCushion", form: "Rund", material: ORGANIC_COTTON, variants: [
     ...[cushionColor("Indigo Dust", spelt), cushionColor("Aubergine", speltSoldOut), cushionColor("Natur", spelt), cushionColor("Light Taupe", spelt),
       cushionColor("Anthrazit", spelt)].map((variant) => ({ ...variant, height: "15" })),
     cushionColor("Lavender Fog"), cushionColor("Balsam Green"), cushionColor("Grassland"),
   ] },
-  { name: "Meditationskissen Lotus HOCH (H: 20cm)", price: 44.95, shape: "lotusCushion20", form: "Rund", height: "20", variants: [
+  { name: "Meditationskissen Lotus HOCH (H: 20cm)", price: 44.95, shape: "lotusCushion20", form: "Rund", height: "20", material: ORGANIC_COTTON, variants: [
     cushionColor("Light Taupe", spelt), cushionColor("Natur", spelt), cushionColor("Indigo Dust", spelt), cushionColor("Bordeaux", speltSoldOut),
     cushionColor("Anthrazit", spelt), cushionColor("Aubergine", speltSoldOut), cushionColor("Kurkuma", { badge: "New in" }), cushionColor("Balsam Green", { badge: "New in" }),
   ] },
-  { name: "Zafu-Meditationskissen Zen", price: 39.95, shape: "zafu", form: "Zafu", height: "15", variants: [
+  { name: "Zafu-Meditationskissen Zen", price: 39.95, shape: "zafu", form: "Zafu", height: "15", material: ORGANIC_COTTON, variants: [
     cushionColor("Balsam Green"), cushionColor("Light Taupe", spelt), cushionColor("Indigo Dust", spelt), cushionColor("Natur", spelt),
     cushionColor("Anthrazit", spelt), cushionColor("Kurkuma"),
   ] },
-  { name: "Yogakissen Halbmond Shanti", price: 39.95, shape: "crescent", form: "Halbrund", height: "15", variants: [
+  { name: "Yogakissen Halbmond Shanti", price: 39.95, shape: "crescent", form: "Halbrund", height: "15", material: ORGANIC_COTTON, variants: [
     cushionColor("Indigo Dust", spelt), cushionColor("Natur", spelt), cushionColor("Light Taupe", spelt), cushionColor("Anthrazit", spelt),
     cushionColor("Balsam Green"), cushionColor("Bordeaux", speltSoldOut), cushionColor("Aubergine", speltSoldOut),
   ] },
-  { name: "Meditationskissen Lotus KLEIN (H: 10 cm)", price: 37.95, shape: "lotusCushion10", form: "Rund", height: "10", variants: [
+  { name: "Meditationskissen Lotus KLEIN (H: 10 cm)", price: 37.95, shape: "lotusCushion10", form: "Rund", height: "10", material: ORGANIC_COTTON, variants: [
     cushionColor("Balsam Green"), cushionColor("Natur", spelt), cushionColor("Light Taupe", spelt), cushionColor("Aubergine", speltSoldOut),
     cushionColor("Bordeaux", speltSoldOut), cushionColor("Indigo Dust", spelt), cushionColor("Anthrazit", spelt), cushionColor("Kurkuma"),
   ] },
-  { name: "Zafu-Meditationskissen Zen Kapok", price: 44.95, shape: "zafu", form: "Zafu", height: "15", variants: [
-    cushionColor("Anthrazit", { filling: KAPOK }),
+  { name: "Zafu-Meditationskissen Zen Kapok", price: 44.95, shape: "zafu", form: "Zafu", height: "15", material: ORGANIC_COTTON, variants: [
+    cushionColor("Anthrazit", { filling: KAPOK, soldOut: true }),
   ] },
 ];
 const cushionsNamed = (...names) => meditationCushions.filter((cushion) => names.includes(cushion.name));
@@ -675,10 +677,12 @@ const zabutonHeights = (color, extra = {}) => [
   { color: `${color} / 4 cm`, ...CUSHION_TONES[color], ...extra, shape: "zabuton" },
   { color: `${color} / 7 cm`, ...CUSHION_TONES[color], ...extra, shape: "zabutonThick", price: 74.95 },
 ];
-const zabuton = { name: "Meditationsmatte Zabuton", price: 59.95, shape: "zabuton", variants: [
-  ...zabutonHeights("Light Taupe"), ...zabutonHeights("Natur"), ...zabutonHeights("Balsam Green"), ...zabutonHeights("Indigo Dust"),
-  ...zabutonHeights("Anthrazit"), ...zabutonHeights("Bordeaux"), ...zabutonHeights("Schwarz", { badge: "New in" }),
-  ...zabutonHeights("Aubergine", { soldOut: true }),
+// The older colours are filled with cotton fleece, the newer ones say nothing.
+const fleece = { filling: "Baumwollvlies" };
+const zabuton = { name: "Meditationsmatte Zabuton", price: 59.95, shape: "zabuton", material: ORGANIC_COTTON, variants: [
+  ...zabutonHeights("Light Taupe", fleece), ...zabutonHeights("Natur", fleece), ...zabutonHeights("Balsam Green"), ...zabutonHeights("Indigo Dust", fleece),
+  ...zabutonHeights("Anthrazit", fleece), ...zabutonHeights("Bordeaux", fleece), ...zabutonHeights("Schwarz", { badge: "New in" }),
+  ...zabutonHeights("Aubergine", { ...fleece, soldOut: true }),
 ] };
 // The category page lists the sets under their full names; the home page
 // (like the original's) uses shorter ones for two of them.
@@ -703,7 +707,7 @@ const giftShortcuts = (...names) => names.map((name) => giftLinks[name]);
 // Covers sold on their own, one card per colour the original shows (in its
 // variant order). `height` feeds its "Sitzhöhe" filter; like there, only one
 // half-moon cover has its form set.
-const coverFor = (name, shape, extra, variants) => ({ name: `Bezug für ${name}`, price: 19.95, shape, badge: "NUR BEZUG", ...extra, variants });
+const coverFor = (name, shape, extra, variants) => ({ name: `Bezug für ${name}`, price: 19.95, shape, badge: "NUR BEZUG", material: ORGANIC_COTTON, ...extra, variants });
 const coverSoldOut = { soldOut: true };
 const cushionCovers = [
   coverFor("Meditationskissen Lotus (H: 15cm)", "lotusCover15", { height: "15", form: "Rund" }, [
@@ -735,7 +739,7 @@ const zabutonCover = coverFor("Zabuton", "zabutonCover", { price: 39.95 }, [
   cushionColor("Anthrazit"), cushionColor("Aubergine", coverSoldOut), cushionColor("Bordeaux"), cushionColor("Indigo Dust"),
   cushionColor("Light Taupe"), cushionColor("Natur"), cushionColor("Balsam Green"), cushionColor("Schwarz"),
 ]);
-const meditationBench = { name: "Meditationsbank DHARMA Standard", price: 74.95, shape: "bench", variants: [
+const meditationBench = { name: "Meditationsbank DHARMA Standard", price: 74.95, shape: "bench", material: "Europäisches Buchenholz", height: "15", variants: [
   cushionColor("Natur"), cushionColor("Anthrazit"), cushionColor("Indigo Dust", { badge: "New in" }), cushionColor("Aubergine", { badge: "New in" }),
 ] };
 
@@ -768,7 +772,7 @@ const clothes = [
     outfit("Dark Cranberry", ALL_SIZES, newIn), outfit("Midnight Blue", "XS S M L XL", newIn), outfit("Almond Milk", "M L XL XXL", newIn),
   ] },
   { name: "Heya Culotte", price: 69.95, shape: "culotte", material: VISCOSE, sizes: sizeList(ALL_SIZES), variants: [
-    outfit("Midnight Blue", "M", newIn), outfit("Dark Cranberry", "S M L XXL", newIn), outfit("Almond Milk", "M L XXL", newIn),
+    outfit("Midnight Blue", "", newIn), outfit("Dark Cranberry", "S M L XXL", newIn), outfit("Almond Milk", "M L XXL", newIn),
   ] },
   { name: "MIKO Bralette", price: 31.49, compareAt: 44.95, shape: "bralette", material: RECYCLED_POLYESTER, sizes: sizeList(ALL_SIZES), variants: [
     outfit("Marshmallow", "XS S M L"), outfit("Anthrazit", "XS S M L"), outfit("Violetta", ALL_SIZES),
@@ -823,13 +827,6 @@ const CLOTHES_FILTER_COLORS = ["Beige", "Blau", "Rot", "Schwarz", "Rosa", "Braun
 // ---------- Gifts ----------
 // The gift card comes in 20 to 200 €; like everything here it's only shown.
 const giftCard = { name: "Gutscheinkarte", price: 20, shape: "giftCard", tint: "#b8975a" };
-// The gift pages mix products from everywhere. On them the original prices
-// the stickers "ab €2,95", so these copies come first and win the lookup.
-const giftModels = [
-  ...stickers.map((sticker) => ({ ...sticker, fromPrice: true })),
-  giftCard, ...clothes, ...yogaMats, ...yogaAccessories, matCarrier, ...bolsters, ...meditationCushions, ...yogaSets, ...meditationSets,
-];
-const giftsNamed = (...names) => names.map((name) => giftModels.find((model) => model.name === name));
 // Yellow comes from sold-out cushion colours the original hides.
 const GIFT_FILTER_COLORS = ["Beige", "Blau", "Rot", "Grün", "Terra", "Schwarz", "Rosa", "Gelb", "Wood Grain"];
 
@@ -861,7 +858,7 @@ const almostPerfectMats = [
     { color: "Balsam Green", hex: "#5d7366", family: "Grün", soldOut: true },
   ] },
   { name: "„Almost Perfect“ Yogamatte ARISE", price: 76.46, compareAt: 89.95, material: null, variants: [
-    { color: "Dark Cranberry", hex: "#7a2a3a", family: "Rot" },
+    { color: "Wild Ginger", hex: "#8c5769", family: "Rot" },
   ] },
   { name: "„Almost Perfect“ Yogamatte ARISE Cork", price: 84.95, compareAt: 99.95, material: null, variants: [
     { color: "Align", hex: "#c9a77e", family: "Align" },
@@ -871,6 +868,22 @@ const almostPerfectMats = [
     { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz" },
   ] },
 ];
+
+// ---------- Pages that mix products from everywhere ----------
+// Overview, gift and sale pages pick their models by name.
+const allModels = [
+  giftCard, ...clothes, ...yogaMats, ...almostPerfectMats, ...yogaAccessories, matCarrier, singleCorkBlock, ...bolsters, rollCover, ...malas,
+  ...speltHusks, ...meditationCushions, zabuton, meditationBench, ...cushionCovers, zabutonCover, ...yogaSets, ...meditationSets,
+];
+const modelsNamed = (...names) => names.map((name) => allModels.find((model) => model.name === name));
+// On the gift pages the original prices the stickers "ab €2,95", so these
+// copies come first and win the lookup.
+const giftModels = [...stickers.map((sticker) => ({ ...sticker, fromPrice: true })), ...allModels];
+const giftsNamed = (...names) => names.map((name) => giftModels.find((model) => model.name === name));
+// The sale shows only what is reduced: of clothing just the reduced colours.
+const reduced = (model) => (model.variants
+  ? { ...model, variants: model.variants.filter((variant) => ("compareAt" in variant ? variant.compareAt : model.compareAt)) }
+  : model);
 
 // Which mats each sub-category shows was read from the original. The
 // `description` (the paragraph below the grid) is our own short text.
@@ -958,7 +971,7 @@ const categories = {
   },
   "yoga-block": {
     title: "Yoga Blöcke",
-    sort: "relevanz", // the only page here that the original doesn't sort by sales
+    sort: "standard",
     shortcuts: [],
     models: [...accessoriesNamed("Yogablock Kork 2er Set"), singleCorkBlock],
     description: "Blöcke aus Naturkork geben dir Höhe und Halt, wo der Boden noch zu weit weg ist – im Stehen, im Sitzen und in der Entspannung. Es gibt sie klein und groß, einzeln oder im Zweierset.",
@@ -1244,6 +1257,59 @@ const categories = {
     sort: "standard",
     description: "Alle Sets auf einen Blick: Yoga- und Meditations-Sets aus Teilen, die zusammenpassen – jeweils 10 % günstiger als einzeln gekauft.",
   },
+  // Overview pages behind the header's "Yoga" and "Meditation", and the sale.
+  yoga: {
+    title: "Yoga",
+    shortcuts: bolsterShortcuts,
+    models: modelsNamed("Yogamatte MUDRA", "Yogagurt 100% Bio-Baumwolle", "Yogamatte PURE", "Yogatasche PUNE", "Yoga Bolster RESTORATIVE L",
+      "Yogablock Kork 2er Set", "Yoga Bolster RESTORATIVE S", "Yogamatte Mudra XL", "Yogamatte ARISE", "Yogadecke „Savasana“ 100% Baumwolle (kbA)",
+      "Yogamatte ARISE Travel", "Bio Yogamatten Spray", "Yogamatte ARISE CORK", "Yoga Handtuch", "Yogatasche NANDI", "Yogamatten Tragegurt",
+      "Augenkissen", "Yogamatte MUDRA PRO", "Yogablock Kork Einzeln", "Yoga Mini-Rolle (Nackenrolle) Ø12 cm", "Yogamatten-Sticker „I am enough“",
+      "Yogamatte WOOL aus Schurwolle", "Yogamatten-Sticker „einatmen. ausatmen.“", "„Almost Perfect“ Yogamatte MUDRA PRO",
+      "Yogamatten-Sticker „Ich bin dankbar“", "„Almost Perfect“ Yogamatte PURE", "„Almost Perfect“ Yogamatte MUDRA", "Bezug für Yogarolle COVER Ø24 cm",
+      "Yogamatten-Sticker „good vibes only“", "„Almost Perfect“ Yogamatte ARISE Travel", "„Almost Perfect“ Yogamatte MUDRA XL",
+      "„Almost Perfect“ Yogamatte ARISE", "„Almost Perfect“ Yogamatte ARISE Cork", "„Almost Perfect“ Yogamatte MUDRA PRO XL"),
+    // Grey comes from a sold-out product the original hides.
+    filterValues: { colors: ["Beige", "Blau", "Rot", "Grün", "Terra", "Schwarz", "Grau", "Rosa", "Braun", "Align", "Wood Grain"] },
+    description: "Alles für deine Yogapraxis an einem Ort: Matten, Blöcke, Gurte, Bolster und das passende Zubehör. Über die Kreise oben kommst du direkt in einen Bereich, mit den Filtern grenzt du nach Farbe, Material und Füllung ein.",
+  },
+  meditation: {
+    title: "Meditation",
+    nav: ["Meditation"],
+    shortcuts: [
+      { label: "Meditationskissen", icon: "cushion", key: "meditationskissen" },
+      { label: "Meditationsmatten", icon: "mat", key: "meditationsmatten" },
+      { label: "Meditationsbänke", icon: "bench", key: "meditationsbank" },
+      { label: "Meditation Zubehör", icon: "block", key: "meditation-zubehor" },
+      { label: "Meditationskissen Set", icon: "set", key: "meditations-sets" },
+    ],
+    models: modelsNamed("Yogarolle RESTORATIVE Ø24 cm", "Meditationskissen Lotus (H: 15cm)", "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung",
+      "Meditationskissen Lotus HOCH (H: 20cm)", "Zafu-Meditationskissen Zen", "Meditationsmatte Zabuton", "Yogakissen Halbmond Shanti",
+      "Meditationskissen Lotus KLEIN (H: 10 cm)", "Zafu-Meditationskissen Zen Kapok", "Meditationsbank DHARMA Standard", "Rosenholz Mala (Dunkles Rosenholz)",
+      "Tulsi Mala", "Rudraksha Mala", "Bio Dinkelspelzen - Dinkelspreu (kbA) 2kg", "Bio Dinkelspelzen -Dinkelspreu (kbA) 1kg", "Bezug für Yogarolle COVER Ø24 cm",
+      "Bezug für Meditationskissen Lotus (H: 15cm)", "Bezug für Zabuton", "Bezug für Meditationskissen Lotus (H: 15cm) - Ohne Bestickung",
+      "Bezug für Zafu-Meditationskissen Zen", "Bezug für Halbmond Kissen", "Bezug für Meditationskissen Lotus KLEIN (H: 10 cm)",
+      "Bezug für Meditationskissen Lotus HOCH (H: 20cm)"),
+    // Brown and yellow come from sold-out colours the original hides.
+    filterValues: { colors: ["Beige", "Blau", "Rot", "Grün", "Terra", "Schwarz", "Rosa", "Braun", "Gelb", "Wood Grain"] },
+    description: "Kissen, Zabuton, Bank und kleine Helfer: Hier findest du alles, was dir hilft, entspannt und aufrecht zu sitzen. Über die Kreise oben geht es direkt zu Kissen, Matten, Bänken, Zubehör und Sets.",
+  },
+  sale: {
+    title: "SALE",
+    nav: ["Sale"],
+    shortcuts: [],
+    models: modelsNamed("Yogamatte PURE Set", "Yoga Bolster Set Yin Yoga", "Yoga Set Yin Yoga Restorative S", "Yogarolle Set Yin Yoga", "Yoga-Zubehör Set",
+      "Meditations-Set Lotus 20cm", "Yogamatte ARISE Set", "Yogamatte MUDRA PRO Set", "Yoga Zubehör + Reinigungs Set", "„Almost Perfect“ Yogamatte MUDRA PRO",
+      "Meditations-Set Lotus 15cm inkl. GRATIS Meditationskurs", "NIA Womens Sweater", "FEND Mens Sweater", "REID Mens Tank-Top",
+      "ELI Womens Tee (Short Sleeve)", "QUINN Mens Pants", "FIONA Womens Pants", "BECCA Leggings", "DANA Overall", "ALA Tank Tee", "MIKO Bralette",
+      "Yoga Tasche + Gurt Set", "Meditations-Set Lotus 15cm (Ohne Stick) inkl. GRATIS Meditationskurs", "Travel Essentials Set", "Practice Anywhere Set",
+      "Deep Release Set", "Restore Comfort Set", "„Almost Perfect“ Yogamatte PURE", "„Almost Perfect“ Yogamatte ARISE", "„Almost Perfect“ Yogamatte MUDRA",
+      "„Almost Perfect“ Yogamatte MUDRA PRO XL", "„Almost Perfect“ Yogamatte ARISE Travel", "„Almost Perfect“ Yogamatte ARISE Cork").map(reduced),
+    sort: "standard",
+    // Like the original: values of products it hides, which find nothing.
+    filterValues: { colors: ["Beige", "Blau", "Rot", "Grün", "Terra", "Schwarz", "Rosa", "Braun", "Gelb", "Align"], heights: ["10", "15"], forms: ["Rund", "Zafu"] },
+    description: "Reduzierte Lieblingsstücke: Yogakleidung, Sets mit 10 % Rabatt und „Almost Perfect“ Yogamatten mit kleinen Schönheitsfehlern.",
+  },
   "bezug-yogabolster": {
     title: "Bezug Yogarolle",
     shortcuts: [],
@@ -1333,6 +1399,9 @@ const sitePages = [
   { title: "Geschenke unter 120€", href: "kategorie.html?k=unter-120", keywords: "geschenk geschenke unter 120 kategorie" },
   { title: "Gutscheine", href: "kategorie.html?k=geschenk-gutscheine-1", keywords: "gutschein gutscheine gutscheinkarte geschenk kategorie" },
   { title: "Yoga & Meditation Set", href: "kategorie.html?k=sets-bundles", keywords: "set sets bundle bundles angebote sparen kategorie" },
+  { title: "Yoga", href: "kategorie.html?k=yoga", keywords: "yoga übersicht alles yogamatten zubehör kategorie" },
+  { title: "Meditation", href: "kategorie.html?k=meditation", keywords: "meditation übersicht alles meditationskissen kategorie" },
+  { title: "SALE", href: "kategorie.html?k=sale", keywords: "sale angebote reduziert rabatt kategorie" },
   { title: "Startseite", href: "index.html", keywords: "start home lotuscraft bestseller sets" },
 ];
 
@@ -1501,6 +1570,7 @@ const menuLinks = {
   "Geschenkideen unter 120€": "kategorie.html?k=unter-120",
   "Gutscheine": "kategorie.html?k=geschenk-gutscheine-1",
   "Alle Gutscheine": "kategorie.html?k=geschenk-gutscheine-1",
+  "Sale": "kategorie.html?k=sale",
 };
 
 // Desktop dropdown links that get a more specific icon than their column.
