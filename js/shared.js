@@ -251,6 +251,12 @@ const shapes = {
                  <path d="M74 45H60" stroke="#5b5b5b" stroke-width="5" stroke-linecap="round"/>
                  <rect x="74" y="98" width="32" height="34" rx="3" fill="rgba(255,255,255,.7)"/>`,
 
+  // Gift card with a ribbon and bow
+  giftCard: (c) => `<rect x="30" y="56" width="120" height="76" rx="8" fill="${c}"/>
+                    <path d="M30 82h120M108 56v76" stroke="rgba(255,255,255,.35)" stroke-width="6"/>
+                    <path d="M108 82c-6-12-20-14-20-6 0 6 14 6 20 6zm0 0c6-12 20-14 20-6 0 6-14 6-20 6z" fill="none" stroke="#fff" stroke-width="2"/>
+                    <path d="M44 110h30M44 118h20" stroke="rgba(255,255,255,.7)" stroke-width="3" stroke-linecap="round"/>`,
+
   // Bundles: several products in one picture.
   matSet: (c, a) => `<rect x="46" y="16" width="88" height="26" rx="13" fill="${a}"/>
                      <rect x="56" y="16" width="5" height="26" fill="rgba(0,0,0,.1)"/>
@@ -514,12 +520,14 @@ const singleCorkBlock = { name: "Yogablock Kork Einzeln", price: 17.95, shape: "
 const SPELT = "Bio-Dinkelspelz (kbA)";
 const KAPOK = "Kapokwolle";
 const GRASSLAND = "#c9c6b0";
+// The colours with a filling also carry a 15 cm seat height (it only shows
+// as a filter on the gift pages).
 const bolsterColors = (filling) => [
-  { color: "Light Taupe", hex: "#c4b6a6", family: "Beige", filling },
-  { color: "Natur", hex: COTTON, family: "Beige", filling },
-  { color: "Indigo Dust", hex: "#6b7c95", family: "Blau", filling },
-  { color: "Aubergine", hex: "#8d5a6f", family: "Rot", filling },
-  { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz", filling },
+  { color: "Light Taupe", hex: "#c4b6a6", family: "Beige", filling, height: "15" },
+  { color: "Natur", hex: COTTON, family: "Beige", filling, height: "15" },
+  { color: "Indigo Dust", hex: "#6b7c95", family: "Blau", filling, height: "15" },
+  { color: "Aubergine", hex: "#8d5a6f", family: "Rot", filling, height: "15" },
+  { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz", filling, height: "15" },
   { color: "Dark Cranberry", hex: "#7a2a3a", family: "Rot" },
   { color: "Grassland", hex: GRASSLAND, family: "Wood Grain" },
 ];
@@ -538,7 +546,9 @@ const neckRoll = { name: "Yoga Mini-Rolle (Nackenrolle) Ø12 cm", price: 34.95, 
 ] };
 const bolsters = [
   yogaRoll,
-  { name: "Yoga Bolster RESTORATIVE L", price: 64.95, shape: "bolster", variants: bolsterColors(KAPOK) },
+  // Aubergine has sold out in the large size (as of 4 Oct 2026).
+  { name: "Yoga Bolster RESTORATIVE L", price: 64.95, shape: "bolster", variants: bolsterColors(KAPOK)
+    .map((variant) => (variant.color === "Aubergine" ? { ...variant, soldOut: true } : variant)) },
   { name: "Yoga Bolster RESTORATIVE S", price: 49.95, shape: "bolsterS", variants: bolsterColors(KAPOK) },
   neckRoll,
 ];
@@ -643,8 +653,7 @@ const meditationCushions = [
   ] },
   { name: "Meditationskissen Lotus KLEIN (H: 10 cm)", price: 37.95, shape: "lotusCushion10", form: "Rund", height: "10", variants: [
     cushionColor("Balsam Green"), cushionColor("Natur", spelt), cushionColor("Light Taupe", spelt), cushionColor("Aubergine", speltSoldOut),
-    cushionColor("Bordeaux", speltSoldOut), cushionColor("Indigo Dust", spelt), cushionColor("Anthrazit", spelt), cushionColor("Marine Blue", spelt),
-    cushionColor("Kurkuma"),
+    cushionColor("Bordeaux", speltSoldOut), cushionColor("Indigo Dust", spelt), cushionColor("Anthrazit", spelt), cushionColor("Kurkuma"),
   ] },
   { name: "Zafu-Meditationskissen Zen Kapok", price: 44.95, shape: "zafu", form: "Zafu", height: "15", variants: [
     cushionColor("Anthrazit", { filling: KAPOK }),
@@ -678,13 +687,17 @@ const meditationSets = [
   { ...setNamed("Meditations-Set Lotus 15cm"), name: "Meditations-Set Lotus 15cm inkl. GRATIS Meditationskurs" },
   setNamed("Meditations-Set Lotus 20cm"),
 ];
-const giftShortcuts = (first) => [
-  first,
-  { label: "Gutscheine", icon: "voucher" },
-  { label: "Geschenke unter 50€", icon: "gift" },
-  { label: "Geschenke unter 100€", icon: "gift" },
-  { label: "Geschenke unter 120€", icon: "gift" },
-];
+// The gift circles. Each page shows its own pick (never itself), in the
+// original's order.
+const giftLinks = {
+  yogaSets: { label: "Yoga-Sets", icon: "set", key: "yoga-sets" },
+  meditationSets: { label: "Meditationskissen Set", icon: "cushion", key: "meditations-sets" },
+  vouchers: { label: "Gutscheine", icon: "voucher", key: "geschenk-gutscheine-1" },
+  under50: { label: "Geschenke unter 50€", icon: "gift", key: "unter-50" },
+  under100: { label: "Geschenke unter 100€", icon: "gift", key: "unter-100" },
+  under120: { label: "Geschenke unter 120€", icon: "gift", key: "unter-120" },
+};
+const giftShortcuts = (...names) => names.map((name) => giftLinks[name]);
 
 // ---------- Covers and the meditation bench ----------
 // Covers sold on their own, one card per colour the original shows (in its
@@ -807,6 +820,19 @@ const menShortcuts = [
 // Brown comes from sold-out colours the original hides (Amina, Naima, Heya).
 const CLOTHES_FILTER_COLORS = ["Beige", "Blau", "Rot", "Schwarz", "Rosa", "Braun"];
 
+// ---------- Gifts ----------
+// The gift card comes in 20 to 200 €; like everything here it's only shown.
+const giftCard = { name: "Gutscheinkarte", price: 20, shape: "giftCard", tint: "#b8975a" };
+// The gift pages mix products from everywhere. On them the original prices
+// the stickers "ab €2,95", so these copies come first and win the lookup.
+const giftModels = [
+  ...stickers.map((sticker) => ({ ...sticker, fromPrice: true })),
+  giftCard, ...clothes, ...yogaMats, ...yogaAccessories, matCarrier, ...bolsters, ...meditationCushions, ...yogaSets, ...meditationSets,
+];
+const giftsNamed = (...names) => names.map((name) => giftModels.find((model) => model.name === name));
+// Yellow comes from sold-out cushion colours the original hides.
+const GIFT_FILTER_COLORS = ["Beige", "Blau", "Rot", "Grün", "Terra", "Schwarz", "Rosa", "Gelb", "Wood Grain"];
+
 // "Almost Perfect" mats: second-quality, 15% off. Only the colours the
 // original shows as cards; like there, only some have a material set.
 const almostPerfectMats = [
@@ -884,7 +910,7 @@ const categories = {
   "yoga-sets": {
     title: "Yoga-Sets",
     nav: ["Yoga", "Geschenke"],
-    shortcuts: giftShortcuts({ label: "Meditationskissen Set", icon: "cushion", key: "meditations-sets" }),
+    shortcuts: giftShortcuts("meditationSets", "vouchers", "under50", "under100", "under120"),
     models: yogaSets,
     description: `Gut ausgestattet für jede Einheit: Die Sets kombinieren Matte, Tasche, Gurt, Block oder Bolster und kosten zusammen 10 % weniger als die Teile einzeln – ob für Yin Yoga, für unterwegs oder als Geschenk.`,
   },
@@ -1010,7 +1036,7 @@ const categories = {
   "meditations-sets": {
     title: "Meditationskissen Set",
     nav: ["Meditation", "Geschenke"],
-    shortcuts: giftShortcuts({ label: "Yoga-Sets", icon: "set", key: "yoga-sets" }),
+    shortcuts: giftShortcuts("yogaSets", "vouchers", "under50", "under100", "under120"),
     models: meditationSets,
     description: "Kissen und Zabuton passend kombiniert: Mit einem Meditations-Set sitzt du von Anfang an bequem und sparst 10 % gegenüber den einzelnen Teilen. Ein schönes Geschenk für alle, die mit dem Meditieren beginnen.",
   },
@@ -1152,6 +1178,72 @@ const categories = {
     models: clothesNamed("FEND"),
     description: "Der FEND Sweater aus Bio-Baumwolle für den Weg ins Studio und die Pause danach.",
   },
+  // Gift pages: the original's own order, no sort option chosen, no text.
+  geschenkideen: {
+    title: "Geschenkideen",
+    nav: ["Geschenke"],
+    shortcuts: giftShortcuts("yogaSets", "meditationSets", "vouchers", "under50", "under100", "under120"),
+    models: giftsNamed("BECCA Leggings", "Gutscheinkarte", "Yoga-Zubehör Set", "DANA Overall", "Yogablock Kork 2er Set", "Yogamatte PURE Set",
+      "Yoga Mini-Rolle (Nackenrolle) Ø12 cm", "Yoga Set Yin Yoga Restorative S", "MIKO Bralette", "Yoga Bolster Set Yin Yoga", "NIA Womens Sweater",
+      "FEND Mens Sweater", "Meditations-Set Lotus 15cm inkl. GRATIS Meditationskurs", "QUINN Mens Pants", "Yogamatte ARISE Set", "Yogamatten Tragegurt",
+      "Bio Yogamatten Spray", "Yogamatte MUDRA PRO", "Yoga Tasche + Gurt Set", "Yogamatte ARISE Travel", "Yogamatten-Sticker „Ich bin dankbar“",
+      "Yogamatten-Sticker „I am enough“", "Yoga Zubehör + Reinigungs Set", "Yogamatte MUDRA PRO Set", "Meditations-Set Lotus 20cm",
+      "Yogarolle Set Yin Yoga", "ELI Womens Tee (Short Sleeve)", "Yogamatte MUDRA", "Meditationskissen Lotus KLEIN (H: 10 cm)",
+      "Meditationskissen Lotus (H: 15cm)", "Yoga Bolster RESTORATIVE S", "Yoga Bolster RESTORATIVE L",
+      "Meditations-Set Lotus 15cm (Ohne Stick) inkl. GRATIS Meditationskurs", "Travel Essentials Set", "Deep Release Set", "Restore Comfort Set",
+      "Practice Anywhere Set"),
+    sort: "standard",
+    filterValues: { colors: GIFT_FILTER_COLORS },
+  },
+  "unter-50": {
+    title: "Geschenke unter 50€",
+    nav: ["Geschenke"],
+    shortcuts: giftShortcuts("yogaSets", "meditationSets", "vouchers", "under120", "under100"),
+    models: giftsNamed("Gutscheinkarte", "MIKO Bralette", "Yoga-Zubehör Set", "Yoga Mini-Rolle (Nackenrolle) Ø12 cm", "Yoga Tasche + Gurt Set",
+      "Yogamatte MUDRA", "ELI Womens Tee (Short Sleeve)", "Yogablock Kork 2er Set", "Yoga Bolster RESTORATIVE S", "Yogamatten-Sticker „I am enough“",
+      "Yogamatten Tragegurt", "Meditationskissen Lotus (H: 15cm)", "Yogamatten-Sticker „Ich bin dankbar“", "Bio Yogamatten Spray",
+      "Meditationskissen Lotus KLEIN (H: 10 cm)"),
+    sort: "standard",
+    filterValues: { colors: GIFT_FILTER_COLORS },
+  },
+  "unter-100": {
+    title: "Geschenke unter 100€",
+    nav: ["Geschenke"],
+    shortcuts: giftShortcuts("yogaSets", "meditationSets", "vouchers", "under50", "under120"),
+    models: giftsNamed("Yogamatte PURE Set", "Gutscheinkarte", "BECCA Leggings", "DANA Overall", "Yoga Set Yin Yoga Restorative S", "Yogamatte MUDRA PRO",
+      "NIA Womens Sweater", "Yogarolle Set Yin Yoga", "FEND Mens Sweater", "Yoga Bolster RESTORATIVE L", "QUINN Mens Pants",
+      "Meditations-Set Lotus 15cm inkl. GRATIS Meditationskurs", "Yogamatte ARISE Travel", "Yogamatte ARISE Set", "Yoga Zubehör + Reinigungs Set",
+      "Meditations-Set Lotus 15cm (Ohne Stick) inkl. GRATIS Meditationskurs"),
+    sort: "standard",
+  },
+  // Here the original shows the gift card's "ab" price.
+  "unter-120": {
+    title: "Geschenke unter 120€",
+    nav: ["Geschenke"],
+    shortcuts: giftShortcuts("yogaSets", "meditationSets", "vouchers", "under50", "under100"),
+    models: giftsNamed("Yogamatte MUDRA PRO Set", "Gutscheinkarte", "Yoga Bolster Set Yin Yoga", "Yogamatte ARISE Set", "Yogarolle Set Yin Yoga",
+      "Meditations-Set Lotus 20cm").map((model) => (model === giftCard ? { ...giftCard, fromPrice: true } : model)),
+    sort: "standard",
+  },
+  // "Gutscheine" sits in the Yoga, Meditation and Geschenke menus.
+  "geschenk-gutscheine-1": {
+    title: "Gutscheine",
+    nav: ["Yoga", "Meditation", "Geschenke"],
+    shortcuts: [],
+    models: [giftCard],
+    description: "Wenn du nicht weißt, was gefällt: Mit einer Gutscheinkarte von 20 € bis 200 € sucht sich die beschenkte Person ihr Lieblingsstück selbst aus. In diesem Studentenprojekt ist sie nur ein Beispiel und lässt sich nicht kaufen.",
+  },
+  "sets-bundles": {
+    title: "Yoga & Meditation Set",
+    nav: [],
+    shortcuts: [],
+    models: giftsNamed("Yogamatte PURE Set", "Yoga-Zubehör Set", "Yogamatte ARISE Set", "Meditations-Set Lotus 15cm inkl. GRATIS Meditationskurs",
+      "Yoga Tasche + Gurt Set", "Meditations-Set Lotus 15cm (Ohne Stick) inkl. GRATIS Meditationskurs", "Meditations-Set Lotus 20cm",
+      "Yoga Zubehör + Reinigungs Set", "Yogamatte MUDRA PRO Set", "Yogarolle Set Yin Yoga", "Yoga Set Yin Yoga Restorative S", "Yoga Bolster Set Yin Yoga",
+      "Travel Essentials Set", "Deep Release Set", "Restore Comfort Set", "Practice Anywhere Set"),
+    sort: "standard",
+    description: "Alle Sets auf einen Blick: Yoga- und Meditations-Sets aus Teilen, die zusammenpassen – jeweils 10 % günstiger als einzeln gekauft.",
+  },
   "bezug-yogabolster": {
     title: "Bezug Yogarolle",
     shortcuts: [],
@@ -1235,6 +1327,12 @@ const sitePages = [
   { title: "Tanktops", href: "kategorie.html?k=tanktops", keywords: "bekleidung tanktop tank top herren kategorie" },
   { title: "Trainingshosen", href: "kategorie.html?k=trainingshose-jogginghose-herren", keywords: "bekleidung hose hosen jogginghose trainingshose herren kategorie" },
   { title: "Sweatshirts", href: "kategorie.html?k=yoga-sweatshirt-herren", keywords: "bekleidung sweatshirt pullover sweater herren kategorie" },
+  { title: "Geschenkideen", href: "kategorie.html?k=geschenkideen", keywords: "geschenk geschenke geschenkideen schenken kategorie" },
+  { title: "Geschenke unter 50€", href: "kategorie.html?k=unter-50", keywords: "geschenk geschenke unter 50 günstig kategorie" },
+  { title: "Geschenke unter 100€", href: "kategorie.html?k=unter-100", keywords: "geschenk geschenke unter 100 kategorie" },
+  { title: "Geschenke unter 120€", href: "kategorie.html?k=unter-120", keywords: "geschenk geschenke unter 120 kategorie" },
+  { title: "Gutscheine", href: "kategorie.html?k=geschenk-gutscheine-1", keywords: "gutschein gutscheine gutscheinkarte geschenk kategorie" },
+  { title: "Yoga & Meditation Set", href: "kategorie.html?k=sets-bundles", keywords: "set sets bundle bundles angebote sparen kategorie" },
   { title: "Startseite", href: "index.html", keywords: "start home lotuscraft bestseller sets" },
 ];
 
@@ -1304,7 +1402,7 @@ const menu = [
     { label: "Damen", icon: "clothing", children: ["Alles in Damen-Kleidung", "Hosen", "Leggings", "Bra-Tops", "Shirts", "Overalls", "Pullover"] },
     { label: "Herren", icon: "clothing", children: ["Alles in Herren-Kleidung", "Tanktops", "Trainingshosen", "Sweatshirts & Pullover"] },
   ] },
-  { label: "Geschenke", icon: "gift", promo: { kicker: "Angebote", title: "Spare beim Set-Kauf", product: "accessorySet" }, children: [
+  { label: "Geschenke", icon: "gift", promo: { kicker: "Angebote", title: "Spare beim Set-Kauf", key: "sets-bundles", product: "accessorySet" }, children: [
     { label: "Geschenkideen", icon: "gift", children: ["Alle Geschenkideen", "Geschenkideen unter 50€", "Geschenkideen unter 100€", "Geschenkideen unter 120€"] },
     { label: "Yoga-Sets", icon: "set" },
     { label: "Meditations-Sets", icon: "set" },
@@ -1397,6 +1495,12 @@ const menuLinks = {
   "Tanktops": "kategorie.html?k=tanktops",
   "Trainingshosen": "kategorie.html?k=trainingshose-jogginghose-herren",
   "Sweatshirts & Pullover": "kategorie.html?k=yoga-sweatshirt-herren",
+  "Alle Geschenkideen": "kategorie.html?k=geschenkideen",
+  "Geschenkideen unter 50€": "kategorie.html?k=unter-50",
+  "Geschenkideen unter 100€": "kategorie.html?k=unter-100",
+  "Geschenkideen unter 120€": "kategorie.html?k=unter-120",
+  "Gutscheine": "kategorie.html?k=geschenk-gutscheine-1",
+  "Alle Gutscheine": "kategorie.html?k=geschenk-gutscheine-1",
 };
 
 // Desktop dropdown links that get a more specific icon than their column.

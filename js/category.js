@@ -22,7 +22,7 @@ const colorFamilies = [
   // The original shows a photo of wood grain here; this is a drawn stand-in.
   { name: "Wood Grain", swatch: "repeating-linear-gradient(100deg, #ded6c9 0 3px, #cbc1b0 3px 5px, #d7cebf 5px 9px)" },
 ];
-const materials = ["Bio-Baumwolle (kbA)", "Naturkautschuk", "Polyester", "PU (Polyurethan)", "PVC (Polyvinylchlorid)", "Naturkork", "Schurwolle", "Rotes Sandelholz", "Tulsi", "Rudraksha", "Polymere Klebefolie mit UV-Schutz", "Recyceltes Polyester", "Viskose"];
+const materials = ["Bio-Baumwolle (kbA)", "Naturkautschuk", "Polyester", "Recyceltes Polyester", "PU (Polyurethan)", "PVC (Polyvinylchlorid)", "Naturkork", "Schurwolle", "Rotes Sandelholz", "Tulsi", "Rudraksha", "Polymere Klebefolie mit UV-Schutz", "Viskose"];
 const fillings = ["Bio-Dinkelspelz (kbA)", "Kapokwolle"];
 const forms = ["Rund", "Halbrund", "Zafu"];
 const seatHeights = { 10: "10 cm (niedrig)", 15: "15 cm (standard)", 20: "20 cm (hoch)" };
@@ -81,7 +81,7 @@ const bestSellingRanking = [
   "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Lavender Fog", "Meditationskissen Lotus (H: 15cm) / Schwarz", "Yogakissen Halbmond Shanti / Bordeaux",
   "Zafu-Meditationskissen Zen / Anthrazit", "Zafu-Meditationskissen Zen / Kurkuma", "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Anthrazit",
   "Zafu-Meditationskissen Zen Kapok / Anthrazit", "Meditationskissen Lotus HOCH (H: 20cm) / Kurkuma", "Meditationskissen Lotus KLEIN (H: 10 cm) / Kurkuma",
-  "Meditationskissen Lotus KLEIN (H: 10 cm) / Anthrazit", "Meditationskissen Lotus KLEIN (H: 10 cm) / Marine Blue",
+  "Meditationskissen Lotus KLEIN (H: 10 cm) / Anthrazit",
   "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Aubergine", "Meditationskissen Lotus KLEIN (H: 10 cm) / Aubergine",
   "Meditationskissen Lotus HOCH (H: 20cm) / Aubergine", "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Grassland",
   "Meditationskissen Lotus KLEIN (H: 10 cm) / Bordeaux",
@@ -256,13 +256,14 @@ function categoryMarkup(category) {
   const materialOptions = options("material", "materials", materials);
   const fillingOptions = options("filling", "fillings", fillings);
   const sizeOptions = options("sizes", "sizes", clothingSizes);
+  // In the original's order (the gift pages show nearly all of them).
   const groups = [
     families.length > 1 && { key: "colors", label: "Farbe", options: swatchList(families) },
+    materialOptions.length > 1 && { key: "materials", label: "Material", options: checkboxList(materialOptions) },
+    sizeOptions.length > 1 && { key: "sizes", label: "Größe", options: checkboxList(sizeOptions) },
     heightOptions.length > 1 && { key: "heights", label: "Sitzhöhe", options: checkboxList(heightOptions, seatHeights) },
     formOptions.length > 1 && { key: "forms", label: "Form", options: checkboxList(formOptions) },
-    materialOptions.length > 1 && { key: "materials", label: "Material", options: checkboxList(materialOptions) },
     fillingOptions.length > 1 && { key: "fillings", label: "Füllung", options: checkboxList(fillingOptions) },
-    sizeOptions.length > 1 && { key: "sizes", label: "Größe", options: checkboxList(sizeOptions) },
     { key: "availability", label: "Verfügbarkeit", options: checkboxList(availabilities) },
   ].filter(Boolean);
 

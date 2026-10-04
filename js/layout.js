@@ -68,7 +68,7 @@ document.getElementById("site-header").outerHTML = `
         <li class="nav__item" data-menu="Yoga"><a href="#" class="nav__link">Yoga</a></li>
         <li class="nav__item" data-menu="Meditation"><a href="#" class="nav__link">Meditation</a></li>
         <li class="nav__item" data-menu="Bekleidung"><a href="kategorie.html?k=yoga-kleidung" class="nav__link">Bekleidung</a></li>
-        <li class="nav__item" data-menu="Geschenke"><a href="#" class="nav__link">Geschenke</a></li>
+        <li class="nav__item" data-menu="Geschenke"><a href="kategorie.html?k=geschenkideen" class="nav__link">Geschenke</a></li>
         <li class="nav__item"><a href="#" class="nav__link">Sale</a></li>
       </ul>
     </nav>
