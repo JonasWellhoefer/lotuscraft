@@ -58,15 +58,15 @@ const bestsellers = {
 // into the product photo, here they are real elements.
 const bundles = {
   "yoga-bundles": [
-    { name: "Yogamatte ARISE Set", price: 107.91, compareAt: 119.9, bundle: true, shape: "matSet", tint: "#6d7d93", accent: "#8f8c84", swatches: ["#8a3d4f", "#6d7d93", "#4b4b4d"] },
-    { name: "Yogamatte PURE Set", price: 98.91, compareAt: 109.9, bundle: true, shape: "matSet", tint: "#9a5a6a", accent: "#ddd3c4", swatches: ["#b3a596", "#7a2a3a", "#6b7c95"] },
-    { name: "Yoga-Zubehör Set", price: 38.61, compareAt: 42.9, bundle: true, fromPrice: true, shape: "accessorySet", tint: COTTON, swatches: [COTTON, "#7a3445", "#6b7a52", "#4a4a4c", "#647892"] },
-    { name: "Yoga Set Yin Yoga Restorative S", price: 83.57, compareAt: 92.85, bundle: true, fromPrice: true, shape: "yinSet", tint: "#7f93ad", swatches: [COTTON, "#7d2f3c", "#8a4253", "#2f3a5c", "#7f93ad", "#6d655c"] },
+    { name: "Yogamatte ARISE Set", slug: "yoga-set-arise", price: 107.91, compareAt: 119.9, bundle: true, shape: "matSet", tint: "#6d7d93", accent: "#8f8c84", swatches: ["#8a3d4f", "#6d7d93", "#4b4b4d"] },
+    { name: "Yogamatte PURE Set", slug: "yoga-set-pure", price: 98.91, compareAt: 109.9, bundle: true, shape: "matSet", tint: "#9a5a6a", accent: "#ddd3c4", swatches: ["#b3a596", "#7a2a3a", "#6b7c95"] },
+    { name: "Yoga-Zubehör Set", slug: "yogazubehor-set-essentials-1", price: 38.61, compareAt: 42.9, bundle: true, fromPrice: true, shape: "accessorySet", tint: COTTON, swatches: [COTTON, "#7a3445", "#6b7a52", "#4a4a4c", "#647892"] },
+    { name: "Yoga Set Yin Yoga Restorative S", slug: "yoga-set-yin-yoga-restorative-s", price: 83.57, compareAt: 92.85, bundle: true, fromPrice: true, shape: "yinSet", tint: "#7f93ad", swatches: [COTTON, "#7d2f3c", "#8a4253", "#2f3a5c", "#7f93ad", "#6d655c"] },
   ],
   "meditation-bundles": [
-    { name: "Meditations-Set Lotus 15cm", price: 89.91, compareAt: 99.9, bundle: true, fromPrice: true, shape: "meditationSet", tint: "#5f6b78", swatches: ["#8a4253", "#7d2f3c", "#5b7290", "#7f93ad", "#5a5752"] },
-    { name: "Meditations-Set Lotus 20cm", price: 94.41, compareAt: 104.9, bundle: true, fromPrice: true, shape: "meditationSet", tint: "#5f6b78", swatches: ["#8a4253", "#7d2f3c", "#5b7290", "#7f93ad", "#5a5752"] },
-    { name: "Yogarolle Set Yin Yoga", price: 101.57, compareAt: 112.85, bundle: true, fromPrice: true, shape: "bolsterSet", tint: COTTON, swatches: [COTTON, "#7d2f3c", "#3f3f42", "#5b7290"] },
+    { name: "Meditations-Set Lotus 15cm", slug: "meditations-set-lotus-15cm-inkl-gratis-meditationskurs", price: 89.91, compareAt: 99.9, bundle: true, fromPrice: true, shape: "meditationSet", tint: "#5f6b78", swatches: ["#8a4253", "#7d2f3c", "#5b7290", "#7f93ad", "#5a5752"] },
+    { name: "Meditations-Set Lotus 20cm", slug: "meditations-set-lotus-1", price: 94.41, compareAt: 104.9, bundle: true, fromPrice: true, shape: "meditationSet", tint: "#5f6b78", swatches: ["#8a4253", "#7d2f3c", "#5b7290", "#7f93ad", "#5a5752"] },
+    { name: "Yogarolle Set Yin Yoga", slug: "yoga-set-yin-yoga-restorative-rolle", price: 101.57, compareAt: 112.85, bundle: true, fromPrice: true, shape: "bolsterSet", tint: COTTON, swatches: [COTTON, "#7d2f3c", "#3f3f42", "#5b7290"] },
   ],
 };
 
@@ -439,17 +439,17 @@ const productLink = (slug, text) => `<a href="produkt.html?p=${slug}">${text}</a
 const setNamed = (name) => Object.values(bundles).flat().find((set) => set.name === name);
 const yogaSets = [
   setNamed("Yogamatte ARISE Set"),
-  { name: "Practice Anywhere Set", price: 80.91, compareAt: 89.9, bundle: true, shape: "travelTowelSet", tint: "#647892", accent: "#56697c", swatches: ["#505256", "#607c97", "#586666"] },
-  { name: "Restore Comfort Set", price: 58.41, compareAt: 64.9, bundle: true, shape: "rollTowelSet", tint: "#cdc4b6", accent: "#586666", swatches: ["#ad9f94", "#5f7d97", "#586666", "#a5939e"] },
-  { name: "Deep Release Set", price: 43.11, compareAt: 47.9, bundle: true, fromPrice: true, shape: "rollBeltSet", tint: "#cdc4b6", accent: "#586666", swatches: ["#ad9f92", "#5f7d97", "#586666", "#a593a0"] },
-  { name: "Travel Essentials Set", price: 65.61, compareAt: 72.9, bundle: true, fromPrice: true, shape: "travelBeltSet", tint: "#647a97", accent: "#576565", swatches: ["#505256", "#647a97", "#576565"] },
-  { name: "Yoga Tasche + Gurt Set", price: 38.61, compareAt: 42.9, bundle: true, fromPrice: true, material: ORGANIC_COTTON, shape: "bagBeltSet", tint: "#b3a596", accent: "#844657", swatches: ["#844657", "#697386", "#4d5156", "#ad9f94", "#6f7253", "#415d74"] },
-  { name: "Yoga Zubehör + Reinigungs Set", price: 50.27, compareAt: 55.85, bundle: true, fromPrice: true, shape: "cleaningSet", tint: COTTON, swatches: [COTTON, "#854858", "#6e7152", "#4d4a4e", "#677283"] },
-  { name: "Yogamatte MUDRA PRO Set", price: 116.91, compareAt: 129.9, bundle: true, fromPrice: true, shape: "matSet", tint: "#4e4c4f", accent: "#8f8c84", swatches: ["#ad9f92", "#4e4c4f"] },
+  { name: "Practice Anywhere Set", slug: "practice-anywhere-set", price: 80.91, compareAt: 89.9, bundle: true, shape: "travelTowelSet", tint: "#647892", accent: "#56697c", swatches: ["#505256", "#607c97", "#586666"] },
+  { name: "Restore Comfort Set", slug: "restore-comfort-set", price: 58.41, compareAt: 64.9, bundle: true, shape: "rollTowelSet", tint: "#cdc4b6", accent: "#586666", swatches: ["#ad9f94", "#5f7d97", "#586666", "#a5939e"] },
+  { name: "Deep Release Set", slug: "deep-release-set", price: 43.11, compareAt: 47.9, bundle: true, fromPrice: true, shape: "rollBeltSet", tint: "#cdc4b6", accent: "#586666", swatches: ["#ad9f92", "#5f7d97", "#586666", "#a593a0"] },
+  { name: "Travel Essentials Set", slug: "travel-essentials-set", price: 65.61, compareAt: 72.9, bundle: true, fromPrice: true, shape: "travelBeltSet", tint: "#647a97", accent: "#576565", swatches: ["#505256", "#647a97", "#576565"] },
+  { name: "Yoga Tasche + Gurt Set", slug: "yoga-tasche-gurt-set", price: 38.61, compareAt: 42.9, bundle: true, fromPrice: true, material: ORGANIC_COTTON, shape: "bagBeltSet", tint: "#b3a596", accent: "#844657", swatches: ["#844657", "#697386", "#4d5156", "#ad9f94", "#6f7253", "#415d74"] },
+  { name: "Yoga Zubehör + Reinigungs Set", slug: "yogazubehor-set", price: 50.27, compareAt: 55.85, bundle: true, fromPrice: true, shape: "cleaningSet", tint: COTTON, swatches: [COTTON, "#854858", "#6e7152", "#4d4a4e", "#677283"] },
+  { name: "Yogamatte MUDRA PRO Set", slug: "yogamatte-mudra-pro-set", price: 116.91, compareAt: 129.9, bundle: true, fromPrice: true, shape: "matSet", tint: "#4e4c4f", accent: "#8f8c84", swatches: ["#ad9f92", "#4e4c4f"] },
   setNamed("Yoga-Zubehör Set"),
   setNamed("Yogarolle Set Yin Yoga"),
   setNamed("Yoga Set Yin Yoga Restorative S"),
-  { name: "Yoga Bolster Set Yin Yoga", price: 110.57, compareAt: 122.85, bundle: true, fromPrice: true, shape: "bolsterBlanketSet", tint: "#667383", swatches: [COTTON, "#854856", "#4e4c4f", "#667383"] },
+  { name: "Yoga Bolster Set Yin Yoga", slug: "yoga-set-yin-yoga-restorative-l", price: 110.57, compareAt: 122.85, bundle: true, fromPrice: true, shape: "bolsterBlanketSet", tint: "#667383", swatches: [COTTON, "#854856", "#4e4c4f", "#667383"] },
   setNamed("Yogamatte PURE Set"),
 ];
 
@@ -696,7 +696,7 @@ const zabuton = { name: "Meditationsmatte Zabuton", slug: "meditationsmatte-zabu
 // The category page lists the sets under their full names; the home page
 // (like the original's) uses shorter ones for two of them.
 const meditationSets = [
-  { name: "Meditations-Set Lotus 15cm (Ohne Stick) inkl. GRATIS Meditationskurs", price: 85.41, compareAt: 94.9, bundle: true, fromPrice: true, shape: "meditationSet", tint: "#b3a596", swatches: ["#ad9f94", "#607c97", "#5a6566", "#88505a"] },
+  { name: "Meditations-Set Lotus 15cm (Ohne Stick) inkl. GRATIS Meditationskurs", slug: "meditations-set-lotus-15cm-ohne-stick-inkl-gratis-meditationskurs", price: 85.41, compareAt: 94.9, bundle: true, fromPrice: true, shape: "meditationSet", tint: "#b3a596", swatches: ["#ad9f94", "#607c97", "#5a6566", "#88505a"] },
   { ...setNamed("Meditations-Set Lotus 15cm"), name: "Meditations-Set Lotus 15cm inkl. GRATIS Meditationskurs" },
   setNamed("Meditations-Set Lotus 20cm"),
 ];
@@ -835,7 +835,7 @@ const CLOTHES_FILTER_COLORS = ["Beige", "Blau", "Rot", "Schwarz", "Rosa", "Braun
 
 // ---------- Gifts ----------
 // The gift card comes in 20 to 200 €; like everything here it's only shown.
-const giftCard = { name: "Gutscheinkarte", price: 20, shape: "giftCard", tint: "#b8975a" };
+const giftCard = { name: "Gutscheinkarte", slug: "gutschein", price: 20, shape: "giftCard", tint: "#b8975a" };
 // Yellow comes from sold-out cushion colours the original hides.
 const GIFT_FILTER_COLORS = ["Beige", "Blau", "Rot", "Grün", "Terra", "Schwarz", "Rosa", "Gelb", "Wood Grain"];
 

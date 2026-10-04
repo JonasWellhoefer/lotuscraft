@@ -95,7 +95,7 @@ lotuscraft/
 │   ├── shared.js   # Gemeinsame Daten & Helfer: Produkte, Kategorien, Menü, Suchindex, Zeichnungen
 │   ├── layout.js   # Header, Menüs (Handy + Desktop), Suche, Footer, Warenkorb (Demo)
 │   ├── home.js     # Startseite: Produkt-Tabs, Community, Bewertungs-Karussell
-│   ├── product.js  # Produktseiten: Daten aller Matten, „Almost Perfect“-Matten, Kissen, Kleidung, Bolster, Zabuton, Bank, Bezüge und des Zubehörs, Zeichnungen, Galerie, Farb-, Größen- und Optionsauswahl, Warenkorb-Button
+│   ├── product.js  # Produktseiten: Daten aller Matten, „Almost Perfect“-Matten, Kissen, Kleidung, Bolster, Zabuton, Bank, Bezüge, Sets, Gutschein und des Zubehörs, Zeichnungen, Galerie, Farb-, Größen- und Optionsauswahl, Warenkorb-Button
 │   └── category.js # Kategorieseite: Filter (Farbe, Sitzhöhe, Form, Material, Füllung, Größe, Verfügbarkeit), Sortierung
 └── README.md
 ```
@@ -151,7 +151,10 @@ die Werte stammen direkt aus dem CSS des Originals.
 - [x] Alle 8 „Almost Perfect“-Matten (MUDRA PRO, PURE, MUDRA, ARISE Travel, MUDRA XL, ARISE, ARISE Cork, MUDRA PRO XL): die Seite der regulären Matte mit durchgestrichenem Preis (−15 %), den Farben, die das Original zeigt, den eigenen Angaben unter „Details“ (oft nur das Gewicht), eigenen Bewertungen – und einer Zeichnung des kleinen Schönheitsfehlers unter der Lupe
 - [x] Wie im Original: ARISE Travel und MUDRA XL sind ausverkauft (rote Meldung statt Warenkorb-Button, bei MUDRA XL mit „Nicht auf Lager“); ARISE zeigt keine Sterne in der Kaufbox, MUDRA PRO XL Sterne ohne Bewertungsliste; die ausverkaufte ARISE-Travel-Karte steht nicht mehr in den Kategorien und Empfehlungen
 - [x] „Basierend auf 1 Bewertung“ statt „1 Bewertungen“
-- [x] Bewertungen, Farben und verwandte Produkte aller 69 Produktseiten mit dem Original abgeglichen (Stand 4. Oktober 2026)
+- [x] Alle 16 Sets (13 Yoga-Sets, 3 Meditations-Sets) mit „Dieses N-teilige Set enthält:“ wie im Original: jedes Teil mit Bild, Name (Link zu seiner Seite), Sternen und eigener Auswahl (Farbe, Länge, Dicke, Block-Größe, Inhalt); der Preis liegt 10 % unter der Summe der Teile und folgt der Auswahl, Bilder und Infozeilen zeigen die gewählten Teile
+- [x] Sets zeigen wie im Original keine Sterne in der Kaufbox und keinen Bewertungsbereich, nur „inkl. MwSt.“ und unter „Details“ das Gewicht (auch Eigenheiten wie „0,0 kg“); ist ein gewähltes Teil ausverkauft, steht „Nicht auf Lager“, in der Demo wird dann nichts eingelegt
+- [x] Gutscheinkarte: Gutscheinwert 20 bis 200 € (die Karte zeigt den Wert), „Versand sofort per Email“, Bewertungsbereich ohne Sterne in der Kaufbox – damit hat jede Karte im Shop eine eigene Seite
+- [x] Bewertungen, Farben, Preise und verwandte Produkte aller 86 Produktseiten mit dem Original abgeglichen (Stand 4. Oktober 2026)
 
 **Kategorieseiten** (Hero-Button „Yogamatten“, Menü → „Yoga“ oder die Kreise oben):
 
@@ -172,7 +175,7 @@ die Werte stammen direkt aus dem CSS des Originals.
 - [x] Sortierung wie im Original, voreingestellt „meistverkauft“ (Rangliste des Originals vom 4. Oktober 2026); dazu Relevanz, A–Z, Z–A und Preis. Einige Bekleidungsseiten zeigen wie dort die eigene Reihenfolge des Shops, ohne gewählte Sortierung
 - [x] Alle 52 Kategorieseiten automatisch Karte für Karte mit dem Original abgeglichen (Stand 4. Oktober 2026: Reihenfolge, Farben, Preise, Lagerstand, Filterwerte)
 - [x] Kurzer eigener Text unter dem Raster, mit Links zu den Produktseiten
-- [x] Jede Karte für Matten, Kissen, Kleidung, Bolster, Rollen, Zabuton, Meditationsbank, Bezüge, „Almost Perfect“-Matten und Zubehör öffnet die passende Produktseite, gleich in der richtigen Farbe oder Option (Kleidung in der ersten lieferbaren Größe); nur die Sets und die Gutscheinkarte haben noch keine eigenen Produktseiten
+- [x] Jede Karte im Shop öffnet die passende Produktseite, gleich in der richtigen Farbe oder Option (Kleidung in der ersten lieferbaren Größe, Sets mit der gewählten Auswahl im Warenkorb-Link)
 
 **Warenkorb** (Icon oben rechts oder „In den Warenkorb“ auf der Produktseite):
 

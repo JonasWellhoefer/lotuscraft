@@ -2397,6 +2397,258 @@ Object.values(almostPerfectDetails).forEach((item) => {
 });
 Object.assign(productDetails, almostPerfectDetails);
 
+// ---------- Sets ----------
+// A set is built from the pages of its parts (colours, choices, ratings, info
+// rows); only what is about the set itself is written here. The original's
+// sets have no rating of their own and no reviews section.
+const SET_PART = {
+  arise: "yogamatte-arise", travel: "yogamatte-arise-travel", pure: "yogamatte-pure", mudraPro: "yogamatte-mudra-pro",
+  bag: "yogatasche-pune", strap: "yoga-gurt-bio-baumwolle", towel: "yoga-handtuch", neck: "nackenrolle",
+  block: "yogablock-aus-kork-alle", spray: "yogamatten-spray", roll: "yogarolle-restorative-o24-cm",
+  bolsterS: "yoga-bolster-restorative-s", bolsterL: "yoga-bolster-restorative-l", blanket: "yogadecke-savasana-100-baumwolle-kba",
+  cushion: "meditationskissen-lotus-h-15cm", plain: "meditationskissen-lotus-h-15cm-ohne-bestickung",
+  tall: "meditationskissen-lotus-hoch-h-20cm", zabuton: "meditationsmatte-zabuton",
+};
+// The free online courses are no product page here, only a line in the set.
+const COURSE_PART = { name: "inkl. GRATIS Onlinekurse", rating: 5, reviewCount: 3, price: 0, colors: [{ name: null, hex: "#b8975a" }], gallery: ["course"], specs: {} };
+
+const careOf = (...slugs) => slugs.map((slug) => productDetails[slug].care).filter(Boolean).join("");
+const sustainabilityOf = (...slugs) => slugs.map((slug) => productDetails[slug].sustainability).filter(Boolean).join("");
+
+function setPage({ parts, rows, ...details }) {
+  const resolved = parts.map((part) => (typeof part === "string" ? { slug: part, ...productDetails[part] } : part));
+  return {
+    colors: [],
+    gallery: ["setAll", ...resolved.map((_, i) => `setPart${i}`)],
+    specs: { parts: resolved },
+    parts: resolved,
+    price: setColor({ parts: resolved }, resolved.map((part) => startPick(part))).price,
+    buyboxRating: false,
+    noReviews: true,
+    reviews: [],
+    shippingNote: false,
+    features: rows.map(([slug, index]) => ({ ...productDetails[slug].features[index], part: parts.indexOf(slug) })),
+    ...details,
+  };
+}
+const relatedFrom = (name) => ({ ...relatedCard(name), fromPrice: true });
+const SET_HINT = "Im Set sparst du 10 % gegenüber den Einzelpreisen.";
+
+const setDetails = {
+  "yoga-set-arise": setPage({
+    name: "Yogamatte ARISE Set",
+    parts: [SET_PART.arise, SET_PART.bag],
+    rows: [[SET_PART.bag, 0], [SET_PART.bag, 1], [SET_PART.arise, 0], [SET_PART.arise, 2]],
+    description: `
+        <p>Matte und Tasche in einem Set: Die ARISE aus Naturkautschuk hält auch bei viel Schweiß, die Yogatasche aus Bio-Baumwolle trägt sie samt Zubehör.</p>
+        <p>Beide Teile wählst du in deiner Farbe. ${SET_HINT}</p>`,
+    facts: [["Gewicht", "1,0 kg"]],
+    related: ["Yogamatte ARISE", "„Almost Perfect“ Yogamatte ARISE", "Yogamatte ARISE Travel", "Yogamatte ARISE CORK"],
+  }),
+  "practice-anywhere-set": setPage({
+    name: "Practice Anywhere Set",
+    subtitle: "Reisematte und Handtuch in einem Set: leicht, griffig und überall einsatzbereit.",
+    parts: [SET_PART.towel, SET_PART.travel],
+    rows: [[SET_PART.travel, 0], [SET_PART.travel, 1], [SET_PART.travel, 2], [SET_PART.towel, 0], [SET_PART.towel, 1]],
+    description: `
+        <p>Die faltbare ARISE Travel und das saugfähige Yoga Handtuch ergänzen sich: Die Matte liegt fest auf dem Boden, das Handtuch gibt zusätzlichen Halt, wenn die Hände feucht werden.</p>
+        <p>Das Set passt in jeden Koffer. ${SET_HINT}</p>`,
+    facts: [["Gewicht", "0,0 kg"]],
+    care: careOf(SET_PART.travel, SET_PART.towel),
+    sustainability: sustainabilityOf(SET_PART.travel, SET_PART.towel),
+    related: ["Travel Essentials Set", relatedFrom("Yogamatte ARISE Travel"), "Yogamatte ARISE Set", "Yogamatte ARISE CORK"],
+  }),
+  "restore-comfort-set": setPage({
+    name: "Restore Comfort Set",
+    subtitle: "Mini-Rolle und Handtuch für sanfte Unterstützung bei Yoga, Meditation und Regeneration.",
+    parts: [SET_PART.towel, SET_PART.neck],
+    rows: [[SET_PART.neck, 0], [SET_PART.neck, 2], [SET_PART.towel, 0], [SET_PART.towel, 1]],
+    description: `
+        <p>Die kleine Rolle stützt Nacken, Knie oder Rücken, das Handtuch macht die Unterlage griffig – ein Set für Yin Yoga, Meditation und ruhige Pausen.</p>
+        <p>Beide Teile gibt es in mehreren Farben. ${SET_HINT}</p>`,
+    facts: [["Gewicht", "0,0 kg"]],
+    care: careOf(SET_PART.neck, SET_PART.towel),
+    sustainability: sustainabilityOf(SET_PART.neck, SET_PART.towel),
+    related: ["Deep Release Set", "Yogarolle Set Yin Yoga", relatedFrom("Yogarolle RESTORATIVE Ø24 cm"), relatedFrom("Yoga Mini-Rolle (Nackenrolle) Ø12 cm")],
+  }),
+  "deep-release-set": setPage({
+    name: "Deep Release Set",
+    subtitle: "Mini-Rolle und Yogagurt für sanftes Dehnen und gezielte Entspannung von Nacken, Schultern und Rücken.",
+    parts: [SET_PART.strap, SET_PART.neck],
+    rows: [[SET_PART.neck, 0], [SET_PART.neck, 1], [SET_PART.neck, 2], [SET_PART.strap, 0]],
+    description: `
+        <p>Mini-Rolle und Yogagurt helfen beim sanften Dehnen: Die Rolle entspannt Nacken, Schultern und Rücken, der Gurt verlängert deine Reichweite in jeder Haltung.</p>
+        <p>${SET_HINT}</p>`,
+    facts: [["Gewicht", "0,0 kg"]],
+    care: careOf(SET_PART.strap, SET_PART.neck),
+    sustainability: sustainabilityOf(SET_PART.strap, SET_PART.neck),
+    related: ["Yoga Mini-Rolle (Nackenrolle) Ø12 cm", "Restore Comfort Set", "Yogarolle RESTORATIVE Ø24 cm", "Yogarolle Set Yin Yoga"],
+  }),
+  "travel-essentials-set": setPage({
+    name: "Travel Essentials Set",
+    subtitle: "Leichte Reisematte plus Yogagurt – alles, was du für unterwegs brauchst.",
+    parts: [SET_PART.strap, SET_PART.travel],
+    rows: [[SET_PART.travel, 0], [SET_PART.travel, 1], [SET_PART.strap, 0]],
+    description: `
+        <p>Eine leichte, faltbare Reisematte und ein Yogagurt – mehr braucht deine Praxis im Hotel, im Park oder im Retreat nicht.</p>
+        <p>Matte und Gurt wählst du in je einer Farbe. ${SET_HINT}</p>`,
+    facts: [["Gewicht", "0,0 kg"]],
+    care: careOf(SET_PART.travel, SET_PART.strap),
+    sustainability: sustainabilityOf(SET_PART.travel, SET_PART.strap),
+    related: ["Practice Anywhere Set", "Yogamatte ARISE Travel", "Yogamatte ARISE Set", "„Almost Perfect“ Yogamatte ARISE"],
+  }),
+  "yoga-tasche-gurt-set": setPage({
+    name: "Yoga Tasche + Gurt Set",
+    subtitle: "Stilvolle Tasche und Yogagurt aus Bio-Baumwolle – nachhaltig und immer einsatzbereit.",
+    parts: [SET_PART.strap, SET_PART.bag],
+    rows: [[SET_PART.bag, 0], [SET_PART.bag, 2], [SET_PART.strap, 0], [SET_PART.strap, 1]],
+    description: `
+        <p>Eine geräumige Yogatasche und ein Yogagurt, beide aus Bio-Baumwolle: das Set für alle, die schon eine Matte haben und sie bequem tragen wollen.</p>
+        <p>Beide Teile wählst du einzeln in deiner Farbe. ${SET_HINT}</p>`,
+    facts: [["Material", ORGANIC], ["Gewicht", "500 g"]],
+    care: careOf(SET_PART.bag, SET_PART.strap),
+    sustainability: sustainabilityOf(SET_PART.bag, SET_PART.strap),
+    related: ["Yogamatten Tragegurt", "Yogagurt 100% Bio-Baumwolle", "Yogatasche NANDI", "Yogamatte ARISE Set"],
+  }),
+  "yogazubehor-set": setPage({
+    name: "Yoga Zubehör + Reinigungs Set",
+    parts: [SET_PART.block, SET_PART.strap, SET_PART.spray],
+    rows: [[SET_PART.block, 0], [SET_PART.block, 1], [SET_PART.strap, 0]],
+    description: `
+        <p>Ein Korkblock für Stabilität, ein Yogagurt für mehr Reichweite und das Bio-Spray zum Reinigen deiner Matte: die Grundausstattung für saubere, sichere Übungen.</p>
+        <p>Block-Größe und Spray-Inhalt wählst du selbst, der Preis folgt. ${SET_HINT}</p>`,
+    facts: [["Gewicht", "1,0 kg"]],
+    related: ["Yoga-Zubehör Set", "Yoga Set Yin Yoga Restorative S", "Yoga Bolster Set Yin Yoga", "Yogarolle Set Yin Yoga"],
+  }),
+  "yogamatte-mudra-pro-set": setPage({
+    name: "Yogamatte MUDRA PRO Set",
+    subtitle: "Das Basis-Set: robuste Matte und geräumige Tasche für deine Praxis.",
+    parts: [SET_PART.mudraPro, SET_PART.bag, COURSE_PART],
+    rows: [[SET_PART.mudraPro, 0], [SET_PART.bag, 0], [SET_PART.bag, 1], [SET_PART.mudraPro, 3]],
+    description: `
+        <p>Die robuste MUDRA PRO, eine geräumige Yogatasche und die gratis Onlinekurse: ein Einstieg, der dich trägt.</p>
+        <p>Die Matte gibt es in 180 und 200 cm Länge, der Set-Preis passt sich an. ${SET_HINT}</p>`,
+    facts: [["Gewicht", "1,0 kg"]],
+    related: ["Yogamatte MUDRA PRO", "„Almost Perfect“ Yogamatte MUDRA PRO XL", "„Almost Perfect“ Yogamatte MUDRA PRO", "Yogamatte MUDRA"],
+  }),
+  "yogazubehor-set-essentials-1": setPage({
+    name: "Yoga-Zubehör Set",
+    parts: [SET_PART.block, SET_PART.strap],
+    rows: [[SET_PART.block, 0], [SET_PART.block, 1], [SET_PART.strap, 0]],
+    description: `
+        <p>Korkblock und Yogagurt – zwei Helfer für mehr Stabilität und Reichweite in deinen Haltungen.</p>
+        <p>Block-Größe und Gurtfarbe wählst du selbst. ${SET_HINT}</p>`,
+    facts: [["Gewicht", "1,0 kg"]],
+    related: ["Yoga Zubehör + Reinigungs Set", "Yoga Bolster Set Yin Yoga", "Yoga Set Yin Yoga Restorative S", "Yogarolle Set Yin Yoga"],
+  }),
+  "yoga-set-yin-yoga-restorative-rolle": setPage({
+    name: "Yogarolle Set Yin Yoga",
+    parts: [SET_PART.roll, SET_PART.blanket, SET_PART.strap],
+    rows: [[SET_PART.roll, 0], [SET_PART.roll, 2], [SET_PART.blanket, 0], [SET_PART.strap, 0]],
+    description: `
+        <p>Rolle, Decke und Gurt für lange, ruhige Haltungen im Yin und Restorative Yoga: Die Rolle öffnet den Brustkorb, die Decke wärmt und polstert, der Gurt gibt Halt.</p>
+        <p>Alle Teile wählst du in deinen Farben. ${SET_HINT}</p>`,
+    facts: [["Gewicht", "1,0 kg"]],
+    related: ["Yoga Set Yin Yoga Restorative S", "Yoga Bolster Set Yin Yoga", "Yoga Zubehör + Reinigungs Set", relatedFrom("Yogarolle RESTORATIVE Ø24 cm")],
+  }),
+  "yoga-set-yin-yoga-restorative-s": setPage({
+    name: "Yoga Set Yin Yoga Restorative S",
+    parts: [SET_PART.bolsterS, SET_PART.strap, SET_PART.block],
+    rows: [[SET_PART.bolsterS, 1], [SET_PART.strap, 0], [SET_PART.block, 0]],
+    description: `
+        <p>Das flache Bolster S, ein Yogagurt und zwei Korkblöcke: die Grundausstattung für sanfte, unterstützte Haltungen mit geringer Höhe.</p>
+        <p>${SET_HINT}</p>`,
+    facts: [["Gewicht", "1,0 kg"]],
+    related: ["Yoga Bolster Set Yin Yoga", "Yogarolle Set Yin Yoga", "Yoga-Zubehör Set", "Yoga Zubehör + Reinigungs Set"],
+  }),
+  "yoga-set-yin-yoga-restorative-l": setPage({
+    name: "Yoga Bolster Set Yin Yoga",
+    parts: [SET_PART.bolsterL, SET_PART.blanket, SET_PART.strap],
+    rows: [[SET_PART.bolsterL, 1], [SET_PART.blanket, 0], [SET_PART.strap, 0]],
+    description: `
+        <p>Das breite Bolster L, eine Yogadecke und ein Gurt: stabile Unterstützung für Vorbeugen und regenerative Haltungen.</p>
+        <p>${SET_HINT}</p>`,
+    facts: [["Gewicht", "1,0 kg"]],
+    related: ["Yoga Set Yin Yoga Restorative S", "Yogarolle Set Yin Yoga", "Yoga-Zubehör Set", "Yoga Zubehör + Reinigungs Set"],
+  }),
+  "yoga-set-pure": setPage({
+    name: "Yogamatte PURE Set",
+    parts: [SET_PART.pure, SET_PART.bag],
+    rows: [[SET_PART.bag, 0], [SET_PART.bag, 1], [SET_PART.pure, 2], [SET_PART.pure, 1]],
+    description: `
+        <p>Die PURE mit griffiger PU-Oberfläche und die geräumige Yogatasche: dynamisches Yoga, bequem verpackt.</p>
+        <p>Beide Teile wählst du in deiner Farbe. ${SET_HINT}</p>`,
+    facts: [["Gewicht", "1,0 kg"]],
+    related: ["Yogamatte MUDRA PRO Set", relatedFrom("Yogamatte PURE"), "Yoga Zubehör + Reinigungs Set", relatedFrom("„Almost Perfect“ Yogamatte PURE")],
+  }),
+  "meditations-set-lotus-15cm-ohne-stick-inkl-gratis-meditationskurs": setPage({
+    name: "Meditations-Set Lotus 15cm (Ohne Stick) inkl. GRATIS Meditationskurs",
+    parts: [SET_PART.plain, SET_PART.zabuton, COURSE_PART],
+    rows: [[SET_PART.plain, 0], [SET_PART.zabuton, 0], [SET_PART.plain, 1]],
+    description: `
+        <p>Ein schlichtes Meditationskissen ohne Stickerei, die weiche Meditationsmatte Zabuton als Unterlage und gratis Onlinekurse: alles für einen festen Meditationsplatz.</p>
+        <p>Farbe und Dicke der Matte (4 oder 7 cm) wählst du selbst. ${SET_HINT}</p>`,
+    facts: [["Gewicht", "4,0 kg"]],
+    related: ["Meditations-Set Lotus 15cm inkl. GRATIS Meditationskurs", "Meditations-Set Lotus 20cm", relatedFrom("Meditationskissen Lotus (H: 15cm) - Ohne Bestickung"), relatedFrom("Meditationskissen Lotus (H: 15cm)")],
+  }),
+  "meditations-set-lotus-15cm-inkl-gratis-meditationskurs": setPage({
+    name: "Meditations-Set Lotus 15cm inkl. GRATIS Meditationskurs",
+    parts: [SET_PART.cushion, SET_PART.zabuton, COURSE_PART],
+    rows: [[SET_PART.cushion, 0], [SET_PART.zabuton, 0], [SET_PART.cushion, 1]],
+    description: `
+        <p>Das Lotus-Kissen mit gesticktem Lotus (Höhe 15 cm), die Meditationsmatte Zabuton und gratis Onlinekurse: dein Meditationsplatz in einem Set.</p>
+        <p>Farbe und Dicke der Matte (4 oder 7 cm) wählst du selbst. ${SET_HINT}</p>`,
+    facts: [["Gewicht", "1,0 kg"]],
+    related: ["Meditations-Set Lotus 15cm (Ohne Stick) inkl. GRATIS Meditationskurs", "Meditations-Set Lotus 20cm", relatedFrom("Meditationskissen Lotus (H: 15cm) - Ohne Bestickung"), relatedFrom("Meditationskissen Lotus (H: 15cm)")],
+  }),
+  "meditations-set-lotus-1": setPage({
+    name: "Meditations-Set Lotus 20cm",
+    parts: [SET_PART.tall, SET_PART.zabuton],
+    rows: [[SET_PART.tall, 0], [SET_PART.zabuton, 0]],
+    description: `
+        <p>Das höhere Lotus-Kissen (20 cm) auf der weichen Meditationsmatte Zabuton: für alle, die etwas höher sitzen möchten.</p>
+        <p>Farbe und Dicke der Matte (4 oder 7 cm) wählst du selbst. ${SET_HINT}</p>`,
+    facts: [["Gewicht", "1,0 kg"]],
+    related: ["Meditations-Set Lotus 15cm inkl. GRATIS Meditationskurs", "Meditations-Set Lotus 15cm (Ohne Stick) inkl. GRATIS Meditationskurs", relatedFrom("Meditationsmatte Zabuton"), relatedFrom("Meditationskissen Lotus HOCH (H: 20cm)")],
+  }),
+};
+
+// The gift card: a value instead of a colour, delivered by mail. As on the
+// original there are no stars in the buy box, but a reviews section.
+const giftDetails = {
+  gutschein: {
+    name: "Gutscheinkarte",
+    price: 20,
+    colors: [{ name: null, hex: "#b8975a" }],
+    choices: { name: "Gutscheinwert", values: [20, 40, 60, 80, 100, 125, 150, 200].map((value) => ({ label: `€${value}.00`, price: value, specs: { value } })) },
+    specs: { value: 20 },
+    gallery: ["giftFront", "giftMail"],
+    buyboxRating: false,
+    shippingNote: false,
+    inStock: "Auf Lager - Versand sofort per Email",
+    rating: 4.2,
+    reviewCount: 5,
+    description: `
+        <p>Mit dem Gutschein verschenkst du Yoga und Meditation, ohne etwas auszusuchen: Er kommt als PDF per E-Mail und lässt sich ausdrucken oder direkt weiterleiten.</p>
+        <p>Den Wert wählst du zwischen 20 und 200 €.</p>`,
+    facts: [["Gewicht", "0,0 kg"]],
+    features: [],
+    reviews: [
+      { name: "Annika", place: "Gera, DE", stars: 5, days: 40, text: "Als Geschenk für meine Schwester ideal. Die E-Mail kam sofort an." },
+      { name: "Anonym", place: "", stars: 5, days: 120, text: "Unkompliziert und schnell." },
+      { name: "Wolfgang", place: "Villach, AT", stars: 5, days: 300, text: "Der Gutschein ließ sich gut ausdrucken und hübsch verpacken." },
+      { name: "Heike", place: "Cottbus, DE", stars: 1, days: 330, text: "Ich hatte mir etwas Schöneres zum Verschenken vorgestellt." },
+      { name: "Anonym", place: "", stars: 5, days: 700, text: "Genau das Richtige, wenn man nicht weiß, welche Farbe." },
+    ],
+    related: ["Meditationskissen Lotus KLEIN (H: 10 cm)", "Yoga Zubehör + Reinigungs Set", relatedFrom("Meditationskissen Lotus (H: 15cm) - Ohne Bestickung"), relatedFrom("Yoga Handtuch")],
+  },
+};
+
+Object.values({ ...setDetails, ...giftDetails }).forEach((item) => {
+  item.related = item.related.map((entry) => (typeof entry === "string" ? relatedCard(entry) : entry));
+});
+Object.assign(productDetails, setDetails, giftDetails);
+
 // ---------- Drawn product pictures ----------
 // Stand-ins for the original's photos, drawn in the selected colour.
 // All are 200×250 (the original's 4:5 format) on the photo-grey background.
@@ -2757,6 +3009,14 @@ const galleryPictures = {
   huskRefill: { label: "beim Nachfüllen", draw: (color, specs) => huskRefillPicture(color, specs) },
   // "Almost Perfect" mats
   flaw: { label: "mit kleinem Schönheitsfehler", draw: (color, specs) => flawPicture(color, specs) },
+  // Sets and the gift card
+  setAll: { label: "alle Teile des Sets", draw: (color, specs) => setAllPicture(color, specs) },
+  setPart0: { label: "erstes Teil des Sets", draw: (color, specs) => partPicture(specs.parts[0], color.picks[0]) },
+  setPart1: { label: "zweites Teil des Sets", draw: (color, specs) => partPicture(specs.parts[1], color.picks[1]) },
+  setPart2: { label: "drittes Teil des Sets", draw: (color, specs) => partPicture(specs.parts[2], color.picks[2]) },
+  course: { label: "gratis Onlinekurse", draw: () => coursePicture() },
+  giftFront: { label: "die Karte mit ihrem Wert", draw: (color, specs) => giftFrontPicture(color, specs) },
+  giftMail: { label: "der Gutschein per E-Mail", draw: (color) => giftMailPicture(color) },
 };
 
 // ---------- Drawn cushion pictures ----------
@@ -3907,6 +4167,57 @@ const flawWide = (color, specs) => widePhoto(`
       ${alignPrint(color, 28, 30, 226, 104)}${flawLens(color, 226, 84, 44)}
       <text x="165" y="184" text-anchor="middle" ${LABEL_STYLE}>Kleiner Schönheitsfehler, volle Funktion</text>`);
 
+// ---------- Pictures for sets and the gift card ----------
+// A set's gallery shows all its parts together, then each part in the colour
+// (and choice) picked for it, drawn by the part's own first picture.
+const partPicture = (part, pick) => galleryPictures[part.setPicture || part.gallery[0]].draw(pick.color, specsFor(part, pick.choice));
+
+// A picture's inside without its svg tag and background, to nest it.
+const pictureContent = (markup) => markup
+  .replace(/^\s*<svg[^>]*>/, "")
+  .replace(/<\/svg>\s*$/, "")
+  .replace(/<rect width="200" height="250" fill="[^"]*"\/>/, "");
+
+// [x, y, scale] of each part, by the number of parts.
+const SET_LAYOUT = {
+  2: [[-4, 6, 0.76], [52, 62, 0.76]],
+  3: [[-8, 0, 0.62], [76, 20, 0.62], [34, 92, 0.62]],
+};
+function setAllPicture(color, specs) {
+  const layout = SET_LAYOUT[specs.parts.length];
+  const parts = specs.parts.map((part, i) => {
+    const [x, y, scale] = layout[i];
+    return `<svg x="${x}" y="${y}" width="${r1(200 * scale)}" height="${r1(250 * scale)}" viewBox="0 0 200 250">${pictureContent(partPicture(part, color.picks[i]))}</svg>`;
+  }).join("");
+  return `
+    <svg viewBox="0 0 200 250" aria-hidden="true">
+      <rect width="200" height="250" fill="${PHOTO_BG}"/>${parts}
+    </svg>`;
+}
+
+// The free online courses that come with some sets.
+const coursePicture = () => galleryPhoto(`
+      <rect x="34" y="62" width="132" height="86" rx="8" fill="#ffffff" stroke="#c9b9a3" stroke-width="2"/>
+      <rect x="42" y="70" width="116" height="70" rx="4" fill="#e6dfd3"/>
+      <circle cx="100" cy="105" r="17" fill="#b8975a"/>
+      <path d="M95 96l15 9-15 9z" fill="#ffffff"/>
+      <path d="M66 160h68" stroke="#c9b9a3" stroke-width="4" stroke-linecap="round"/>
+      <text x="100" y="196" text-anchor="middle" ${LABEL_STYLE}>Gratis Onlinekurse</text>`);
+
+// The gift card with its value, and the mail it comes in.
+const giftFrontPicture = (color, specs) => galleryPhoto(`
+      <rect x="22" y="70" width="156" height="98" rx="10" fill="${color.hex}"/>
+      <rect x="22" y="70" width="156" height="98" rx="10" fill="rgba(255, 255, 255, .12)"/>
+      <path d="M100 86c-5 5-5 11 0 16 5-5 5-11 0-16zm0 16c-7-2-12 1-14 5 5 2 10 1 14-5zm0 0c7-2 12 1 14 5-5 2-10 1-14-5z" fill="rgba(255, 255, 255, .8)"/>
+      <text x="100" y="146" text-anchor="middle" font-size="24" font-weight="700" fill="rgba(255, 255, 255, .95)" font-family="Hanken Grotesk, sans-serif">${specs.value} €</text>
+      <text x="100" y="206" text-anchor="middle" ${LABEL_STYLE}>Gutscheinkarte</text>`);
+const giftMailPicture = (color) => galleryPhoto(`
+      <rect x="52" y="58" width="96" height="62" rx="6" fill="${color.hex}"/>
+      <rect x="28" y="88" width="144" height="88" rx="8" fill="#ffffff" stroke="#c9b9a3" stroke-width="2"/>
+      <path d="M30 92l70 50 70-50" fill="none" stroke="#c9b9a3" stroke-width="2"/>
+      <text x="100" y="206" text-anchor="middle" ${LABEL_STYLE}>Kommt per E-Mail:</text>
+      <text x="100" y="221" text-anchor="middle" ${LABEL_STYLE}>ausdrucken oder weiterleiten</text>`);
+
 // ---------- Small line icons for the buy box ----------
 const buyboxIcons = {
   truck: '<path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>',
@@ -3932,7 +4243,7 @@ const galleryBadge = (product, color) => (product.unavailable ? "Ausverkauft" : 
 // Clothing sells out per size, everything else per colour.
 const isSoldOut = (color, size) => (size ? !color.stock.includes(size) : Boolean(color.soldOut));
 const cartLabel = (soldOut) => (soldOut ? "Benachrichtige mich" : "In den Warenkorb");
-const stockText = (soldOut) => (soldOut ? "Nicht auf Lager" : "Auf Lager: In 1-3 Tagen bei dir");
+const stockText = (soldOut, product) => (soldOut ? "Nicht auf Lager" : product?.inStock || "Auf Lager: In 1-3 Tagen bei dir");
 
 // A choice (MUDRA PRO's length, the zabuton's thickness) or a colour
 // (clothing) can bring its own price; reduced clothing colours also show
@@ -4026,9 +4337,11 @@ function detailsFor(product, choice) {
 // `color`, `size` and `choice` are what the page opens with.
 function productMarkup(product, color, size, choice) {
   const soldOut = isSoldOut(color, size);
+  // A set keeps its "In den Warenkorb" even when a part is sold out, as on the original.
+  const remindable = soldOut && !product.parts;
   const specs = specsFor(product, choice);
 
-  const swatches = product.colors.map((c, i) => `
+  const swatches = !product.colors.some((c) => c.name) ? "" : product.colors.map((c, i) => `
               <label class="color-swatch">
                 <input type="radio" name="color" value="${i}" class="visually-hidden"${c === color ? " checked" : ""}>
                 <span class="color-swatch__thumb">${galleryPictures[product.swatch || "rolled"].draw(c, specs)}</span>
@@ -4130,17 +4443,17 @@ function productMarkup(product, color, size, choice) {
         <a href="#bewertungen" class="buybox__rating">${starRating(product.rating)}<span>(${product.reviewCount})</span></a>` : ""}
         <p class="buybox__price">
           <span class="buybox__prices">${priceMarkup(priceOf(product, color, choice))}</span>
-          <span class="buybox__tax">inkl. MwSt. zzgl. <a href="#">Versandkosten</a></span>
+          <span class="buybox__tax">${product.shippingNote === false ? "inkl. MwSt." : `inkl. MwSt. zzgl. <a href="#">Versandkosten</a>`}</span>
         </p>
 
-${colorPicker}${choices}${fixedOptions}${sizes}
+${product.parts ? bundleMarkup(product, color) : ""}${colorPicker}${choices}${fixedOptions}${sizes}
 
 ${product.unavailable ? `
         <p class="buybox__alert"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5v.5"/></svg>Dieser Artikel ist nicht mehr verfügbar, versuche es mit einer anderen Variante.</p>${color.name ? `
         <p class="buybox__stock buybox__stock--out">${stockText(true)}</p>` : ""}` : `
-        <button class="btn btn--primary btn--block buybox__cart" type="button">${cartLabel(soldOut)}</button>
-        <p class="buybox__note"${soldOut ? "" : " hidden"}>Du erhältst eine Benachrichtigung per E-Mail, sobald der Artikel wieder auf Lager ist.</p>
-        <p class="buybox__stock${soldOut ? " buybox__stock--out" : ""}">${stockText(soldOut)}</p>`}
+        <button class="btn btn--primary btn--block buybox__cart" type="button">${cartLabel(remindable)}</button>
+        <p class="buybox__note"${remindable ? "" : " hidden"}>Du erhältst eine Benachrichtigung per E-Mail, sobald der Artikel wieder auf Lager ist.</p>
+        <p class="buybox__stock${soldOut ? " buybox__stock--out" : ""}">${stockText(soldOut, product)}</p>`}
         <p class="buybox__added" role="status"></p>
         <div class="buybox__payments" role="img" aria-label="Zahlungsarten (neutrale Platzhalter-Icons)">${PAYMENT_ICONS}
         </div>
@@ -4174,18 +4487,120 @@ ${reviewsMarkup(product)}
     </section>${product.sizes ? sizeChartMarkup(product) : ""}`;
 }
 
+// A set's info rows come from its parts and are drawn in that part's pick.
+function featureContext(product, part, color, specs) {
+  if (part === undefined || !color.picks) return [color, specs];
+  const pick = color.picks[part];
+  return [pick.color, specsFor(product.parts[part], pick.choice)];
+}
+
 function featureRows(product, color, specs = product.specs) {
   return product.features.map((feature, i) => {
     const picture = featurePictures[feature.picture];
+    const [pictureColor, pictureSpecs] = featureContext(product, feature.part, color, specs);
     return `
       <div class="feature${i % 2 ? " feature--reverse" : ""}">
         <div class="feature__text">
           <h2 class="feature__title">${feature.title}</h2>
           <p>${feature.text}</p>
         </div>
-        <div class="feature__media" role="img" aria-label="${picture.label(specs)}" data-picture="${feature.picture}">${picture.draw(color, specs)}</div>
+        <div class="feature__media" role="img" aria-label="${picture.label(pictureSpecs)}" data-picture="${feature.picture}"${feature.part === undefined ? "" : ` data-part="${feature.part}"`}>${picture.draw(pictureColor, pictureSpecs)}</div>
       </div>`;
   }).join("");
+}
+
+// ---------- Sets ----------
+// A set's page lists its parts like the original's bundle configurator: each
+// part has its own colour (and choices such as length or thickness), and the
+// set costs 10 % less than its parts together, so price and "statt" price
+// follow the picks. Colours that a choice rules out on the part's own page
+// stay pickable here, as on the original.
+
+// What a part starts with: the colour a link names, else the first one in
+// stock, plus the first (or the named) choice.
+function startPick(part, label = "") {
+  const [wantedColor, wantedChoice] = label.split(" / ");
+  return {
+    color: part.colors.find((c) => c.name && c.name === wantedColor) || part.colors.find((c) => !c.soldOut) || part.colors[0],
+    choice: part.choices && (part.choices.values.find((value) => [wantedChoice, wantedColor].includes(value.label)) || part.choices.values[0]),
+  };
+}
+const pickLabel = (pick) => [pick.color.name, pick.choice?.label].filter(Boolean).join(" / ");
+
+// What a part costs with its pick (a choice or a colour can bring its own price).
+function partPrice(part, pick) {
+  return pick.choice?.price ?? pick.color.price ?? part.price;
+}
+
+// The "colour" a set's page works with: the picks and the prices they make.
+function setColor(product, picks) {
+  const cents = picks.reduce((sum, pick, i) => sum + Math.round(partPrice(product.parts[i], pick) * 100), 0);
+  return {
+    name: null,
+    hex: picks[0].color.hex,
+    picks,
+    soldOut: picks.some((pick) => pick.color.soldOut),
+    compareAt: cents / 100,
+    price: Math.round((cents * 9) / 10) / 100,
+  };
+}
+
+function bundleMarkup(product, color) {
+  return `
+
+        <div class="bundle">${bundleInner(product, color)}
+        </div>`;
+}
+
+function bundleInner(product, color) {
+  return `
+          <p class="bundle__lead">Dieses ${product.parts.length}-teilige Set enthält:</p>${product.parts.map((part, i) => bundleItem(part, i, color.picks[i])).join("")}`;
+}
+
+// One part: its picture, name, rating and pickers (names start with
+// "part-" so the page's own pickers don't react to them).
+function bundleItem(part, i, pick) {
+  const specs = specsFor(part, pick.choice);
+  const colorPicker = part.colors.some((c) => c.name) ? `
+              <fieldset class="option-picker bundle-picker">
+                <legend class="color-picker__legend"><strong>Farbe:</strong> <span>${pick.color.name}</span></legend>
+                <div class="color-picker__options">${part.colors.map((c, j) => `
+                  <label class="color-swatch">
+                    <input type="radio" name="part-${i}-color" value="${j}" class="visually-hidden"${c === pick.color ? " checked" : ""}>
+                    <span class="color-swatch__thumb">${galleryPictures[part.swatch || "rolled"].draw(c, specs)}</span>
+                    <span class="visually-hidden">${c.name}</span>
+                  </label>`).join("")}
+                </div>
+              </fieldset>` : "";
+  const choices = part.choices ? `
+              <fieldset class="option-picker bundle-picker">
+                <legend class="color-picker__legend"><strong>${part.choices.name}:</strong> <span>${pick.choice.label}</span></legend>
+                <div class="option-picker__options">${part.choices.values.map((value, j) => `
+                  <label class="option-pill">
+                    <input type="radio" name="part-${i}-choice" value="${j}" class="visually-hidden"${value === pick.choice ? " checked" : ""}>
+                    <span class="option-pill__label">${value.label}</span>
+                  </label>`).join("")}
+                </div>
+              </fieldset>` : "";
+  const fixed = (part.fixedOptions || []).map(({ name, value }) => `
+              <fieldset class="option-picker bundle-picker">
+                <legend class="color-picker__legend"><strong>${name}:</strong> <span>${value}</span></legend>
+                <div class="option-picker__options">
+                  <label class="option-pill">
+                    <input type="radio" name="part-${i}-${name}" value="${value}" class="visually-hidden" checked>
+                    <span class="option-pill__label">${value}</span>
+                  </label>
+                </div>
+              </fieldset>`).join("");
+  const image = `<span class="bundle-item__image">${partPicture(part, pick)}</span>`;
+  return `
+          <div class="bundle-item">
+            ${part.slug ? `<a href="produkt.html?p=${part.slug}" class="bundle-item__link" tabindex="-1" aria-hidden="true">${image}</a>` : image}
+            <div class="bundle-item__aside">
+              <p class="bundle-item__name">${part.slug ? `<a href="produkt.html?p=${part.slug}">${part.name}</a>` : part.name}</p>
+              <p class="bundle-item__rating">${starRating(part.rating)}<span>(${part.reviewCount})</span></p>${colorPicker}${choices}${fixed}
+            </div>
+          </div>`;
 }
 
 // ---------- Reviews ----------
@@ -4227,6 +4642,8 @@ function reviewItem(product, review) {
 }
 
 function reviewsMarkup(product) {
+  // A set has no reviews section (its parts carry the ratings).
+  if (product.noReviews) return "";
   // Without any reviews the original only says so.
   if (!product.reviews.length) return `
     <section class="reviews-section" id="bewertungen" aria-labelledby="reviews-title">
@@ -4321,7 +4738,12 @@ if (!product) {
   // category card or the cart. Like the original, a page otherwise opens on
   // the first colour in stock and clothing in its first size in stock.
   const [wantedColor, wantedChoice] = (pageParams.get("farbe") || "").split(" / ");
-  let color = product.colors.find((c) => c.name === wantedColor)
+  // A set (&auswahl=Balsam Green|Light Taupe, one pick per part) works with
+  // one "colour" that holds the picks of all its parts.
+  const wantedPicks = (pageParams.get("auswahl") || "").split("|");
+  let color = product.parts
+    ? setColor(product, product.parts.map((part, i) => startPick(part, wantedPicks[i])))
+    : product.colors.find((c) => c.name === wantedColor)
     || product.colors.find((c) => !c.soldOut)
     || product.colors[0];
   let size = product.sizes && (product.sizes.find((s) => s === pageParams.get("groesse")) || color.stock[0] || product.sizes[0]);
@@ -4380,8 +4802,9 @@ if (!product) {
     thumbs.innerHTML = galleryThumbs(product, color, currentPicture(), specs);
     productRoot.querySelectorAll(".feature__media").forEach((media) => {
       const picture = featurePictures[media.dataset.picture];
-      media.innerHTML = picture.draw(color, specs);
-      media.setAttribute("aria-label", picture.label(specs));
+      const [pictureColor, pictureSpecs] = featureContext(product, media.dataset.part === undefined ? undefined : Number(media.dataset.part), color, specs);
+      media.innerHTML = picture.draw(pictureColor, pictureSpecs);
+      media.setAttribute("aria-label", picture.label(pictureSpecs));
     });
   }
 
@@ -4393,9 +4816,10 @@ if (!product) {
     prices.innerHTML = priceMarkup(priceOf(product, color, choice));
     added.textContent = "";
     if (cartButton) {
-      cartButton.textContent = cartLabel(soldOut);
-      note.hidden = !soldOut;
-      stock.textContent = stockText(soldOut);
+      const remindable = soldOut && !product.parts;
+      cartButton.textContent = cartLabel(remindable);
+      note.hidden = !remindable;
+      stock.textContent = stockText(soldOut, product);
       stock.classList.toggle("buybox__stock--out", soldOut);
     }
     if (size) {
@@ -4434,6 +4858,21 @@ if (!product) {
     updateBuybox();
   });
 
+  // A set: every part has its own colour and choices; price and pictures follow.
+  const bundle = productRoot.querySelector(".bundle");
+  bundle?.addEventListener("change", (e) => {
+    const [, index, kind] = e.target.name.match(/^part-(\d+)-(color|choice)$/) || [];
+    if (!kind) return;
+    const part = product.parts[index];
+    const options = kind === "color" ? part.colors : part.choices.values;
+    color = setColor(product, color.picks.map((pick, i) => (i === Number(index) ? { ...pick, [kind]: options[Number(e.target.value)] } : pick)));
+    // The configurator is drawn anew; keyboard focus stays on the same option.
+    bundle.innerHTML = bundleInner(product, color);
+    bundle.querySelector(`input[name="${e.target.name}"]:checked`)?.focus();
+    redraw();
+    updateBuybox();
+  });
+
   // The size chart closes with its button, Escape or a click on the dark
   // backdrop (outside the inner box the click lands on the dialog itself).
   productRoot.querySelector(".size-picker__chart")?.addEventListener("click", () => sizeChart.showModal());
@@ -4446,18 +4885,25 @@ if (!product) {
   // reminder is stored.
   cartButton?.addEventListener("click", () => {
     if (isSoldOut(color, size)) {
-      added.textContent = "Nur eine Demo: In diesem Studentenprojekt gibt es keine Benachrichtigungen, es wird nichts gespeichert.";
+      added.textContent = product.parts
+        ? "Nur eine Demo: Diese Auswahl ist nicht auf Lager, es wird nichts bestellt."
+        : "Nur eine Demo: In diesem Studentenprojekt gibt es keine Benachrichtigungen, es wird nichts gespeichert.";
       return;
     }
-    const variant = [color.name, choice?.label, ...(product.fixedOptions || []).map((option) => option.value), size].filter(Boolean).join(" / ");
+    const variant = product.parts
+      ? color.picks.map(pickLabel).filter(Boolean).join(" + ")
+      : [color.name, choice?.label, ...(product.fixedOptions || []).map((option) => option.value), size].filter(Boolean).join(" / ");
     const colorParam = [color.name, choice?.label].filter(Boolean).join(" / ");
+    const wanted = product.parts
+      ? `&auswahl=${encodeURIComponent(color.picks.map(pickLabel).join("|"))}`
+      : `${colorParam ? `&farbe=${encodeURIComponent(colorParam)}` : ""}${size ? `&groesse=${size}` : ""}`;
     addToCart({
       id: variant ? `${slug}:${variant}` : slug,
       name: product.name,
       variant,
       hex: color.hex,
       price: priceOf(product, color, choice).price,
-      href: `produkt.html?p=${slug}${colorParam ? `&farbe=${encodeURIComponent(colorParam)}` : ""}${size ? `&groesse=${size}` : ""}`,
+      href: `produkt.html?p=${slug}${wanted}`,
     });
     openCart();
     added.textContent = `${product.name}${variant ? ` (${variant})` : ""} liegt im Warenkorb – nur eine Demo, es wird nichts bestellt.`;
