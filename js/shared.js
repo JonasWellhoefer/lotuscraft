@@ -45,10 +45,10 @@ const bestsellers = {
     { name: "Meditationskissen Lotus KLEIN (H: 10 cm)", slug: "meditationskissen-lotus-klein-h-10-cm", price: 37.95, shape: "lotusCushion10", tint: "#5d6b73" },
   ],
   bekleidung: [
-    { name: "BECCA Leggings", price: 55.95, compareAt: 69.95, shape: "leggings", tint: "#5f6062" },
-    { name: "MIKO Bralette", price: 31.49, compareAt: 44.95, shape: "bralette", tint: "#ebe7e0" },
-    { name: "NIA Womens Sweater", price: 62.99, compareAt: 89.95, shape: "sweater", tint: "#56595a" },
-    { name: "FEND Mens Sweater", price: 44.99, compareAt: 89.95, shape: "sweater", tint: "#9aa6aa" },
+    { name: "BECCA Leggings", slug: "becca-leggings", price: 55.95, compareAt: 69.95, shape: "leggings", tint: "#5f6062" },
+    { name: "MIKO Bralette", slug: "miko-bralette", price: 31.49, compareAt: 44.95, shape: "bralette", tint: "#ebe7e0" },
+    { name: "NIA Womens Sweater", slug: "nia-womens-sweater", price: 62.99, compareAt: 89.95, shape: "sweater", tint: "#56595a" },
+    { name: "FEND Mens Sweater", slug: "fend-mens-sweater", price: 44.99, compareAt: 89.95, shape: "sweater", tint: "#9aa6aa" },
   ],
 };
 
@@ -765,44 +765,44 @@ const ALL_SIZES = "XS S M L XL XXL";
 const outfit = (color, stock, extra = {}) => ({ color, ...CLOTHING_TONES[color], stock: sizeList(stock), soldOut: !stock, ...extra });
 const newIn = { badge: "New in" };
 const clothes = [
-  { name: "Amina Wrap Top", price: 59.95, shape: "wrapTop", material: VISCOSE, sizes: sizeList(ALL_SIZES), variants: [
+  { name: "Amina Wrap Top", slug: "amina-wrap-top", price: 59.95, shape: "wrapTop", material: VISCOSE, sizes: sizeList(ALL_SIZES), variants: [
     outfit("Dark Cranberry", ALL_SIZES, newIn), outfit("Midnight Blue", ALL_SIZES, newIn), outfit("Almond Milk", ALL_SIZES, newIn),
   ] },
-  { name: "Naima Top", price: 39.95, shape: "top", material: VISCOSE, sizes: sizeList(ALL_SIZES), variants: [
+  { name: "Naima Top", slug: "naima-top", price: 39.95, shape: "top", material: VISCOSE, sizes: sizeList(ALL_SIZES), variants: [
     outfit("Dark Cranberry", ALL_SIZES, newIn), outfit("Midnight Blue", "XS S M L XL", newIn), outfit("Almond Milk", "M L XL XXL", newIn),
   ] },
-  { name: "Heya Culotte", price: 69.95, shape: "culotte", material: VISCOSE, sizes: sizeList(ALL_SIZES), variants: [
-    outfit("Midnight Blue", "", newIn), outfit("Dark Cranberry", "S M L XXL", newIn), outfit("Almond Milk", "M L XXL", newIn),
+  { name: "Heya Culotte", slug: "heya-culotte", price: 69.95, shape: "culotte", material: VISCOSE, sizes: sizeList(ALL_SIZES), variants: [
+    outfit("Midnight Blue", "", newIn), outfit("Dark Cranberry", "M L XXL", newIn), outfit("Almond Milk", "M L XXL", newIn),
   ] },
-  { name: "MIKO Bralette", price: 31.49, compareAt: 44.95, shape: "bralette", material: RECYCLED_POLYESTER, sizes: sizeList(ALL_SIZES), variants: [
-    outfit("Marshmallow", "XS S M L"), outfit("Anthrazit", "XS S M L"), outfit("Violetta", ALL_SIZES),
+  { name: "MIKO Bralette", slug: "miko-bralette", price: 31.49, compareAt: 44.95, shape: "bralette", material: RECYCLED_POLYESTER, sizes: sizeList(ALL_SIZES), variants: [
+    outfit("Marshmallow", "XS S M L"), outfit("Anthrazit", "XS S M L"), outfit("Violetta", "XS S M L XXL"),
   ] },
-  { name: "ALA Tank Tee", price: 41.99, compareAt: 59.95, shape: "tankTee", material: RECYCLED_POLYESTER, sizes: sizeList(ALL_SIZES), variants: [
+  { name: "ALA Tank Tee", slug: "ala-tank-tee", price: 41.99, compareAt: 59.95, shape: "tankTee", material: RECYCLED_POLYESTER, sizes: sizeList(ALL_SIZES), variants: [
     outfit("Marshmallow", "XS S M L XL"), outfit("Anthrazit", ALL_SIZES, { price: 47.95 }), outfit("Violetta", ALL_SIZES),
   ] },
   // The sold-out colour isn't reduced.
-  { name: "DANA Overall", price: 71.95, compareAt: 89.95, shape: "overall", material: RECYCLED_POLYESTER, sizes: sizeList(ALL_SIZES), variants: [
+  { name: "DANA Overall", slug: "dana-overall", price: 71.95, compareAt: 89.95, shape: "overall", material: RECYCLED_POLYESTER, sizes: sizeList(ALL_SIZES), variants: [
     outfit("Marshmallow", "S M L"), outfit("Anthrazit", "", { price: 89.95, compareAt: null }),
   ] },
-  { name: "BECCA Leggings", price: 55.95, compareAt: 69.95, shape: "leggings", material: RECYCLED_POLYESTER, sizes: sizeList(ALL_SIZES), variants: [
+  { name: "BECCA Leggings", slug: "becca-leggings", price: 55.95, compareAt: 69.95, shape: "leggings", material: RECYCLED_POLYESTER, sizes: sizeList(ALL_SIZES), variants: [
     outfit("Anthrazit", "XS S M XL"), outfit("Marshmallow", ALL_SIZES, { price: 48.99 }), outfit("Violetta", "XS S M L XL"),
   ] },
-  { name: "FIONA Womens Pants", price: 89.95, shape: "pants", material: ORGANIC_COTTON, sizes: sizeList(ALL_SIZES), variants: [
+  { name: "FIONA Womens Pants", slug: "fiona-womens-pants", price: 89.95, shape: "pants", material: ORGANIC_COTTON, sizes: sizeList(ALL_SIZES), variants: [
     outfit("Anthrazit", "XS S L"), outfit("Stone Blue", "XS S M L XL", { price: 71.95, compareAt: 89.95 }),
   ] },
-  { name: "QUINN Mens Pants", price: 99.95, shape: "pants", material: ORGANIC_COTTON, sizes: sizeList("S M L XL XXL"), variants: [
+  { name: "QUINN Mens Pants", slug: "quinn-mens-pants", price: 99.95, shape: "pants", material: ORGANIC_COTTON, sizes: sizeList("S M L XL XXL"), variants: [
     outfit("Deep Taupe", "S M L XL XXL", newIn), outfit("Anthrazit", "S M L XL XXL"), outfit("Stone Blue", "S M L XXL", { price: 69.95, compareAt: 99.95 }),
   ] },
-  { name: "ELI Womens Tee (Short Sleeve)", price: 35.95, compareAt: 44.95, shape: "tee", material: ORGANIC_COTTON, sizes: sizeList("XS S M L XL"), variants: [
+  { name: "ELI Womens Tee (Short Sleeve)", slug: "eli-womens-tee-short-sleeve", price: 35.95, compareAt: 44.95, shape: "tee", material: ORGANIC_COTTON, sizes: sizeList("XS S M L XL"), variants: [
     outfit("Violetta", "S M L XL"), outfit("Marshmallow", "L XL"), outfit("Anthrazit", "L"),
   ] },
-  { name: "REID Mens Tank-Top", price: 35.95, compareAt: 44.95, shape: "tankTop", material: ORGANIC_COTTON, sizes: sizeList("S M L XL"), variants: [
+  { name: "REID Mens Tank-Top", slug: "reid-mens-tank-top", price: 35.95, compareAt: 44.95, shape: "tankTop", material: ORGANIC_COTTON, sizes: sizeList("S M L XL"), variants: [
     outfit("Marshmallow", "S M L XL", { price: 31.49 }), outfit("Anthrazit", "S M L XL"), outfit("Stone Blue", "S M L XL"),
   ] },
-  { name: "FEND Mens Sweater", price: 44.99, compareAt: 89.95, shape: "sweater", material: ORGANIC_COTTON, sizes: sizeList("S M L XL"), variants: [
+  { name: "FEND Mens Sweater", slug: "fend-mens-sweater", price: 44.99, compareAt: 89.95, shape: "sweater", material: ORGANIC_COTTON, sizes: sizeList("S M L XL"), variants: [
     outfit("Stone Blue", "S M L XL"), outfit("Marshmallow", "S M L XL"), outfit("Anthrazit", "S M L XL"),
   ] },
-  { name: "NIA Womens Sweater", price: 71.95, compareAt: 89.95, shape: "sweater", material: ORGANIC_COTTON, sizes: sizeList("XS S M L XL"), variants: [
+  { name: "NIA Womens Sweater", slug: "nia-womens-sweater", price: 71.95, compareAt: 89.95, shape: "sweater", material: ORGANIC_COTTON, sizes: sizeList("XS S M L XL"), variants: [
     outfit("Anthrazit", "XS S M L XL", { price: 62.99 }), outfit("Marshmallow", "XS S M L XL"), outfit("Stone Blue", "XS S M L XL"),
   ] },
 ];

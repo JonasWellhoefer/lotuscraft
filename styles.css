@@ -751,6 +751,9 @@ button { font: inherit; background: none; border: 0; padding: 0; cursor: pointer
 .buybox__rating { display: flex; width: fit-content; align-items: center; gap: 4px; margin-top: 16px; line-height: 20px; }
 .buybox__price { margin-top: 16px; display: flex; align-items: baseline; gap: 8px; line-height: 24px; }
 .buybox__amount { font-size: 20px; color: var(--text-muted); }
+.buybox__prices { display: contents; }
+.buybox__compare { line-height: 20px; color: var(--text-muted); }
+.buybox__amount--sale { color: var(--sale); font-weight: 600; }
 .buybox__tax { font-size: 12.8px; line-height: 16px; color: var(--text-muted); }
 .buybox__tax a { text-decoration: underline; }
 
@@ -789,6 +792,26 @@ button { font: inherit; background: none; border: 0; padding: 0; cursor: pointer
 .option-pill:hover .option-pill__label,
 .option-pill input:checked + .option-pill__label { border-color: var(--text); }
 .option-pill input:focus-visible + .option-pill__label { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+/* Size choice (clothing): round pills; sizes sold out in the picked colour
+   lose their light fill, as on the original */
+.size-picker .option-picker__options { margin-top: 3px; }
+.option-pill--size .option-pill__label { min-width: 40px; justify-content: center; }
+.option-pill--out .option-pill__label { background: transparent; }
+.size-picker__chart {
+  display: block;
+  margin-top: 4px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  line-height: 22px;
+  color: var(--text-muted);
+  text-decoration: underline;
+  cursor: pointer;
+}
+.size-picker__chart:hover { color: var(--text); }
+.size-picker__chart:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 
 .buybox__cart { margin-top: 32px; border: 0; } /* 52px high like the original's */
 .buybox__note { margin-top: 4px; text-align: center; font-size: 12.8px; line-height: 1.2; color: var(--text-muted); }
@@ -858,6 +881,9 @@ button { font: inherit; background: none; border: 0; padding: 0; cursor: pointer
 .accordion__item[open] .accordion__icon-v { transform: scaleY(0); }
 .accordion__content { padding: 16px; line-height: 1.5; color: var(--text-muted); }
 .accordion__content p + p { margin-top: 12px; }
+.accordion__content p + .care-list { margin-top: 12px; }
+.care-list { margin: 0; padding-left: 20px; }
+.care-list li + li { margin-top: 4px; }
 .facts { display: grid; grid-template-columns: max-content 1fr; gap: 8px 24px; margin: 0; }
 .facts dt { font-weight: 600; color: var(--text); }
 .facts dd { margin: 0; }
@@ -965,6 +991,10 @@ button { font: inherit; background: none; border: 0; padding: 0; cursor: pointer
 }
 .review-item__name { margin-top: 4px; font-weight: 600; }
 .review-item__place { margin-top: 6px; font-size: 11px; font-weight: 500; }
+.review-item__fit { margin: 10px 0 0; font-size: 11px; font-weight: 500; }
+.review-item__fit div + div { margin-top: 4px; }
+.review-item__fit dt { display: inline; }
+.review-item__fit dd { display: inline; margin: 0; font-weight: 600; }
 .review-item__body {
   display: flex;
   flex-direction: column;
@@ -994,6 +1024,59 @@ button { font: inherit; background: none; border: 0; padding: 0; cursor: pointer
 .pagination__page:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 
 .product-missing { padding: 64px 0; display: grid; gap: 16px; justify-items: start; }
+
+/* Size chart (clothing): a modal box over the dark veil, as on the original */
+.size-chart {
+  width: min(720px, calc(100% - 38px));
+  max-width: none;
+  max-height: 75vh;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--background);
+  color: var(--text);
+  overflow: auto;
+}
+.size-chart::backdrop { background: rgba(24, 23, 20, .85); }
+@media (prefers-reduced-motion: no-preference) {
+  .size-chart[open] { animation: size-chart-in .25s ease; }
+}
+@keyframes size-chart-in {
+  from { opacity: 0; transform: translateY(16px); }
+}
+.size-chart__inner { padding: 16px; }
+.size-chart__head { padding-right: 34px; }
+.size-chart__title { font-family: var(--font-heading); font-weight: 400; font-size: 25px; line-height: 30px; }
+.size-chart__close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: grid;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius);
+  background: none;
+  color: var(--text);
+  cursor: pointer;
+}
+.size-chart__close svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
+.size-chart__close:focus-visible { outline: 2px solid var(--gold); outline-offset: -4px; }
+/* The table can scroll sideways on phones; it runs to the box's edges */
+.size-chart__scroll { margin: 24px -16px 0; padding: 0 16px; overflow-x: auto; }
+.size-chart__scroll:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
+.size-chart__table { width: 100%; border-collapse: collapse; white-space: nowrap; }
+.size-chart__table th,
+.size-chart__table td { padding: 16px 8px; text-align: left; line-height: 20px; }
+.size-chart__table th { font-weight: 700; }
+.size-chart__table tbody th { font-weight: 400; }
+.size-chart__table tbody th,
+.size-chart__table td { border-bottom: 1px solid #e3e3e3; }
+.size-chart__table tbody tr:nth-child(odd) { background: var(--background-soft); }
+.size-chart__note { margin-top: 16px; font-size: 12.8px; color: var(--text-muted); }
+.size-chart__picture svg { display: block; width: 100%; max-width: 480px; margin: 8px auto 0; }
 
 /* ---------- Category page ---------- */
 .category { padding: 34px 0 23px; }
@@ -1614,6 +1697,8 @@ body:has(dialog[open]) { overflow: hidden; }
   .community-tile__handle { font-size: 14px; }
   .product { padding-top: 0; }
   .reviews-section { padding: 40px 0; }
+  .size-chart { max-height: calc(100% - 38px); }
+  .size-chart__title { font-size: 20px; }
   .search__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
   .category { padding-top: 32px; }
   /* Four 80px circles don't fit: the row scrolls sideways, as on the original */

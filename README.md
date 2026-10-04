@@ -95,7 +95,7 @@ lotuscraft/
 │   ├── shared.js   # Gemeinsame Daten & Helfer: Produkte, Kategorien, Menü, Suchindex, Zeichnungen
 │   ├── layout.js   # Header, Menüs (Handy + Desktop), Suche, Footer, Warenkorb (Demo)
 │   ├── home.js     # Startseite: Produkt-Tabs, Community, Bewertungs-Karussell
-│   ├── product.js  # Produktseiten: Daten aller Matten und Meditationskissen, Zeichnungen, Galerie, Farbauswahl, Warenkorb-Button
+│   ├── product.js  # Produktseiten: Daten aller Matten, Meditationskissen und Kleidungsstücke, Zeichnungen, Galerie, Farb- und Größenauswahl, Warenkorb-Button
 │   └── category.js # Kategorieseite: Filter (Farbe, Sitzhöhe, Form, Material, Füllung, Größe, Verfügbarkeit), Sortierung
 └── README.md
 ```
@@ -124,7 +124,7 @@ die Werte stammen direkt aus dem CSS des Originals.
 - [x] Mobiles Menü (3 Ebenen, per Tastatur bedienbar)
 - [x] Desktop-Dropdowns (Mega-Menü mit Werbekacheln, per Tastatur bedienbar)
 
-**Produktseiten** (Klick auf eine Matte bei den Bestsellern oder in der Kategorie):
+**Produktseiten** (Klick auf eine Matte, ein Kissen oder ein Kleidungsstück bei den Bestsellern oder in der Kategorie):
 
 - [x] Galerie (Desktop: Raster, Handy: Wisch-Galerie mit Vorschaubildern)
 - [x] Kaufbox: Preis, Bewertung, Farbauswahl (zeichnet die Bilder neu), Warenkorb-Button (Demo)
@@ -137,6 +137,10 @@ die Werte stammen direkt aus dem CSS des Originals.
 - [x] Produkte mit nur einer Ausführung (WOOL) zeigen wie im Original keine Farbauswahl
 - [x] Längenauswahl wie im Original (MUDRA PRO: 180 / 200 cm mit eigenem Preis; Kombinationen, die es nicht gibt, werden ausgeblendet)
 - [x] Alle 7 Meditationskissen (Lotus 15 cm, ohne Stickerei, HOCH, KLEIN, Zafu, Zafu Kapok, Halbmond) mit derselben Vorlage: eigene Zeichnungen (von vorn, beim Sitzen, von oben, Maße, Füllung, Stoff), Detailangaben wie im Original (Sitzhöhe, Maße, Füllung, Öffnung …), Bewertungsübersicht und verwandte Produkte
+- [x] Alle 13 Kleidungsstücke (Damen und Herren) mit Größenauswahl wie im Original: runde Größen-Buttons; eine Größe, die in der gewählten Farbe ausverkauft ist, zeigt „Benachrichtige mich“ und „Nicht auf Lager“; die Größe bleibt beim Farbwechsel erhalten; reduzierte Farben mit Streichpreis
+- [x] „Größentabelle“ als Dialog: die Maße jeder Größe wie im Original (z. B. Taille und Innenbeinlänge) und eine eigene Zeichnung mit nummerierten Messstellen – schließt mit Escape, dem X oder einem Klick daneben
+- [x] Eigene Zeichnungen für die Kleidung (flach ausgelegt, getragen beim Üben, Stoff mit Zusammensetzung, Maße in Größe M, zusammengelegt) und Beispielbewertungen mit Körpergröße und gekaufter Größe
+- [x] Bewertungen und verwandte Produkte aller 28 Produktseiten mit dem Original abgeglichen (Stand 4. Oktober 2026)
 
 **Kategorieseiten** (Hero-Button „Yogamatten“, Menü → „Yoga“ oder die Kreise oben):
 
@@ -157,12 +161,13 @@ die Werte stammen direkt aus dem CSS des Originals.
 - [x] Sortierung wie im Original, voreingestellt „meistverkauft“ (Rangliste des Originals vom 4. Oktober 2026); dazu Relevanz, A–Z, Z–A und Preis. Einige Bekleidungsseiten zeigen wie dort die eigene Reihenfolge des Shops, ohne gewählte Sortierung
 - [x] Alle 52 Kategorieseiten automatisch Karte für Karte mit dem Original abgeglichen (Stand 4. Oktober 2026: Reihenfolge, Farben, Preise, Lagerstand, Filterwerte)
 - [x] Kurzer eigener Text unter dem Raster, mit Links zu den Produktseiten
-- [x] Jede Matten- und Kissenkarte öffnet die passende Produktseite, gleich in der richtigen Farbe (Zubehör, Bezüge und Kleidung haben noch keine eigenen Produktseiten)
+- [x] Jede Karte für Matten, Kissen und Kleidung öffnet die passende Produktseite, gleich in der richtigen Farbe (Kleidung in der ersten lieferbaren Größe); Zubehör und Bezüge haben noch keine eigenen Produktseiten
 
 **Warenkorb** (Icon oben rechts oder „In den Warenkorb“ auf der Produktseite):
 
 - [x] Seitenleiste wie im Original, mit leerem Zustand
 - [x] Artikel mit Menge (− / +), Entfernen, Zwischensumme und Balken bis „kostenloser Versand ab 69 €“
+- [x] Kleidung mit Farbe und Größe (z. B. „Marshmallow / L“); der Link im Warenkorb führt zurück zu genau dieser Auswahl
 - [x] Bleibt beim Seitenwechsel erhalten (nur in diesem Browser gespeichert) – „Zur Kasse“ ist nur eine Demo, es wird nichts bestellt
 
 **Suche** (Lupe oben rechts):

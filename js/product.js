@@ -14,7 +14,6 @@ const relatedCards = {
   strap: { name: "Yogamatten Tragegurt", price: 14.95, shape: "strap", tint: COTTON },
   towel: { name: "Yoga Handtuch", price: 29.95, shape: "towel", tint: "#8f9a8c" },
   spray: { name: "Bio Yogamatten Spray", price: 12.95, shape: "spray", tint: "#e6e1d6" },
-  belt: { name: "Yogagurt 100% Bio-Baumwolle", price: 6.49, compareAt: 12.95, shape: "strap", tint: "#8a7f72" },
   mudraPro: { name: "Yogamatte MUDRA PRO", slug: "yogamatte-mudra-pro", price: 99.95, shape: "mat", tint: "#3d3d3f" },
   eyePillow: { name: "Augenkissen", price: 27.95, shape: "eyePillow", tint: "#7f93ad" },
   ariseCork: { name: "Yogamatte ARISE CORK", slug: "yogamatte-arise-cork", price: 99.95, shape: "mat", tint: "#d6a571" },
@@ -62,11 +61,24 @@ const colorsOf = (name) => allModels.find((model) => model.name === name).varian
   .map((variant) => ({ name: variant.color, hex: variant.hex, soldOut: Boolean(variant.soldOut) }));
 
 // A card for "Verwandte Produkte" from the category data: like the original,
-// it shows the first colour that is in stock.
+// it shows the first colour that is in stock, with that colour's price and
+// badge. Sets keep their "Set" tag and "ab" price; mats have no `shape`.
 function relatedCard(name) {
   const model = allModels.find((candidate) => candidate.name === name);
   const first = model.variants?.find((variant) => !variant.soldOut) || model.variants?.[0] || {};
-  return { name: model.name, slug: model.slug, price: first.price ?? model.price, compareAt: model.compareAt, shape: first.shape || model.shape, tint: first.hex || model.tint, badge: model.badge };
+  return {
+    name: model.name,
+    slug: model.slug,
+    price: first.price ?? model.price,
+    compareAt: "compareAt" in first ? first.compareAt : model.compareAt,
+    shape: first.shape || model.shape || "mat",
+    tint: first.hex || model.tint,
+    accent: model.accent,
+    badge: first.badge ?? model.badge,
+    bundle: model.bundle,
+    fromPrice: model.fromPrice,
+    swatches: model.swatches,
+  };
 }
 
 const ORGANIC = "Bio-Baumwolle (kbA)";
@@ -82,11 +94,7 @@ const CUSHION_SUSTAINABILITY = `
 const cushionGallery = ["cushionFront", "cushionSeated", "cushionTop", "cushionSize", "cushionInside", "cushionFabric"];
 // The two-part opening as the original lists it.
 const OPENING = (cover) => `Bezug: ${cover}; Innenkissen: Reißverschluss`;
-const CUSHION_SCALES = (material, quality, filling) => [
-  ["Material", material],
-  ...(quality ? [["Qualität & Langlebigkeit", quality]] : []),
-  ["Füllmaterial", filling],
-];
+const CUSHION_SCALES = (material, quality, filling) => [["Material", material], ["Qualität & Langlebigkeit", quality], ["Füllmaterial", filling]];
 
 const cushionDetails = {
   "meditationskissen-lotus-h-15cm": {
@@ -122,8 +130,8 @@ const cushionDetails = {
   "meditationskissen-lotus-h-15cm-ohne-bestickung": {
     name: "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung",
     price: 34.95,
-    rating: 4.89,
-    reviewCount: 502,
+    rating: 4.9,
+    reviewCount: 679,
     ratingScales: CUSHION_SCALES(4.87, 4.88, 4.84),
     // The original lists 20 cm as the height here, although it sits at 15 cm.
     specs: { shape: "plainCushion", seat: 15, size: "Ø 31", dimensions: [31, 31, 20], filling: SPELT_FILLING },
@@ -182,7 +190,7 @@ const cushionDetails = {
     name: "Meditationskissen Lotus KLEIN (H: 10 cm)",
     price: 37.95,
     rating: 4.9,
-    reviewCount: 247,
+    reviewCount: 243,
     ratingScales: CUSHION_SCALES(4.89, 4.88, 4.8),
     specs: { shape: "lotusCushion10", seat: 10, size: "Ø 31", dimensions: [31, 31, 10], filling: SPELT_FILLING },
     facts: [["Material", ORGANIC], ["Sitzhöhe", "10 cm (niedrig)"], ["Maße (L × B × H)", "31 × 31 × 10 cm"], ["Gewicht", "1,2 kg"], ["Form", "Rund"], ["Herkunft", ORIGIN]],
@@ -209,8 +217,8 @@ const cushionDetails = {
   "zafu-meditationskissen-zen": {
     name: "Zafu-Meditationskissen Zen",
     price: 39.95,
-    rating: 4.83,
-    reviewCount: 269,
+    rating: 4.84,
+    reviewCount: 381,
     ratingScales: CUSHION_SCALES(4.87, 4.88, 4.75),
     specs: { shape: "zafu", seat: 15, size: "Ø 35", dimensions: [35, 35, 15], filling: SPELT_FILLING },
     facts: [["Material", ORGANIC], ["Sitzhöhe", "15 cm (standard)"], ["Maße (L × B × H)", "35 × 35 × 15 cm"], ["Gewicht", "1,7 kg"], ["Form", "Zafu"], ["Herkunft", ORIGIN]],
@@ -238,10 +246,9 @@ const cushionDetails = {
   "zafu-meditationskissen-zen-kapok": {
     name: "Zafu-Meditationskissen Zen Kapok",
     price: 44.95,
-    rating: 4.86,
-    reviewCount: 49,
-    buyboxCount: 73, // the original counts more reviews up top than in its review list
-    ratingScales: CUSHION_SCALES(4.96, null, 4.95),
+    rating: 4.89,
+    reviewCount: 73,
+    ratingScales: CUSHION_SCALES(4.96, 5, 4.95),
     specs: { shape: "zafu", seat: 15, size: "Ø 35", dimensions: [35, 35, 15], filling: "Kapokwolle" },
     facts: [["Material", ORGANIC], ["Füllung", "Kapokwolle"], ["Sitzhöhe", "15 cm (standard)"], ["Maße (L × B × H)", "35 × 35 × 15 cm"], ["Gewicht", "0,9 kg"], ["Form", "Zafu"],
       ["Oberstoff", `100 % ${ORGANIC}`], ["Innenstoff", `100 % ${ORGANIC}`], ["Öffnung", OPENING("Reißverschluss")], ["Herkunft", ORIGIN]],
@@ -302,13 +309,487 @@ Object.values(cushionDetails).forEach((cushion) => Object.assign(cushion, {
   related: cushion.related.map(relatedCard),
 }));
 
+// ---------- Clothing ----------
+// Colours, sizes in stock and prices come from the category data in shared.js;
+// ratings, details, size charts and related products were read from the
+// original (Oct 2026). As there, a size that is sold out in the picked colour
+// can still be chosen and then offers "Benachrichtige mich".
+const outfitsOf = (name) => {
+  const model = clothes.find((candidate) => candidate.name === name);
+  return model.variants.map((variant) => ({
+    name: variant.color,
+    hex: variant.hex,
+    stock: variant.stock,
+    soldOut: Boolean(variant.soldOut),
+    price: variant.price ?? model.price,
+    compareAt: ("compareAt" in variant ? variant.compareAt : model.compareAt) || null,
+  }));
+};
+
+// One row per size: "size EU-size value value …", all values in cm.
+const chartRows = (text) => text.split(" | ").map((row) => row.split(" "));
+const CLOTHING_SCALES = (length, fit, quality) => [["Länge", length], ["Passform", fit], ["Material & Qualität", quality]];
+const VISCOSE_MIX = "95 % Viskose, 5 % Elasthan";
+const RECYCLED_MIX = "72 % recyceltes Polyester, 28 % Elasthan";
+const MODAL_MIX = "42,5 % Modal, 42,5 % Bio-Baumwolle, 15 % Elasthan";
+const SWEAT_MIX = "70 % Bio-Baumwolle, 30 % Modal";
+const clothingFacts = (material, mix, weight, origin, inseam) => [
+  ["Material", material],
+  ...(mix ? [["Zusammensetzung", mix]] : []),
+  ["Gewicht", weight],
+  ...(inseam ? [["Beinlänge", inseam]] : []),
+  ["Herkunft", origin],
+];
+
+// Care and sustainability per fabric, in our own words.
+const careList = (...steps) => `
+        <ul class="care-list">${steps.map((step) => `
+          <li>${step}</li>`).join("")}
+        </ul>`;
+const WASH_30 = "Bei höchstens 30 °C mit ähnlichen Farben waschen";
+const HANG_DRY = "Zum Trocknen aufhängen oder flach auslegen";
+const NO_BLEACH = "Nicht bleichen";
+const NO_DRY_CLEANING = "Nicht chemisch reinigen";
+const NO_DRYER = "Nicht in den Trockner";
+const clothingCare = {
+  viscose: careList("Bei 30 °C waschen", NO_BLEACH, NO_DRYER, "Vorsichtig dämpfen oder bügeln"),
+  recycled: careList(WASH_30, HANG_DRY, "Nicht bügeln", NO_BLEACH, NO_DRY_CLEANING),
+  pants: careList(WASH_30, HANG_DRY, NO_BLEACH, NO_DRY_CLEANING),
+  cotton: careList(WASH_30, `${HANG_DRY}, vorher in Form ziehen`, NO_DRYER, NO_BLEACH, NO_DRY_CLEANING),
+  sweater: `
+        <p>Der Stoff ist sanforisiert, also so vorbehandelt, dass er formstabil bleibt und kaum einläuft. Weil Baumwolle eine Naturfaser ist, kann er beim ersten Waschen trotzdem minimal einlaufen.</p>${careList(WASH_30, `${HANG_DRY}, vorher in Form ziehen`, NO_DRYER, NO_BLEACH, NO_DRY_CLEANING)}`,
+};
+const sustainabilityText = (...points) => points.map(([title, text]) => `
+        <p><strong>${title}</strong> – ${text}</p>`).join("");
+const MADE_IN_UKRAINE = ["Genäht in Europa", "gefertigt in der Ukraine, mit kurzen Wegen bis zu dir."];
+const MADE_IN_PORTUGAL = ["Genäht in Portugal", "gefertigt in der EU, mit kurzen Lieferwegen."];
+const clothingSustainability = {
+  viscose: sustainabilityText(MADE_IN_UKRAINE, ["Viskose aus zertifiziertem Holz", "das Holz für die Fasern stammt aus PEFC- bzw. FSC-zertifizierter Forstwirtschaft."]),
+  recycled: sustainabilityText(MADE_IN_UKRAINE, ["Hoher Recyclinganteil", "72 % des Stoffs sind recyceltes Polyester. Das spart neue Rohstoffe."]),
+  cotton: sustainabilityText(MADE_IN_PORTUGAL, ["Bio-Baumwolle", "die Baumwolle stammt aus kontrolliert biologischem Anbau (kbA)."]),
+};
+const clothingGallery = ["garmentFront", "garmentWarrior", "garmentFabric", "garmentTree", "garmentMeasure", "garmentFolded"];
+
+// `fabric` labels the fabric pictures, `madeIn` the origin picture, `chart`
+// is the size chart (its columns are numbered in the drawings), `pair` the
+// garment shown alongside (same colour unless it has its own `hex`).
+// Reviews add body height, bought and usual size, like the original's.
+const clothingDetails = {
+  "amina-wrap-top": {
+    name: "Amina Wrap Top",
+    subtitle: "Wickeltop mit langen Ärmeln – zum Binden, so eng oder locker du magst.",
+    rating: 4.79,
+    reviewCount: 14,
+    ratingScales: CLOTHING_SCALES(2.7, 2.82, 4.09),
+    specs: {
+      fabric: VISCOSE_MIX,
+      madeIn: "in der Ukraine",
+      chart: { columns: ["Brustweite", "Saumweite", "Länge", "Armlänge"], rows: chartRows("XS 34 41,5 33,5 41,4 59,8 | S 36/38 44 36 42 60 | M 40 46,5 38,5 42,5 60,2 | L 42 49 41 43 60,4 | XL 44 51,5 43,5 43,5 60,6 | XXL 46 54 46 44 60,8") },
+      pair: { shape: "culotte", label: "Kombiniert mit der Heya Culotte in derselben Farbe" },
+    },
+    facts: clothingFacts("Viskose", VISCOSE_MIX, "260 g", "Ukraine"),
+    care: clothingCare.viscose,
+    sustainability: clothingSustainability.viscose,
+    description: `
+        <p>Das Amina Wrap Top wird vorne übereinandergelegt und an der Seite gebunden. So entscheidest du selbst, wie eng es sitzt: beim Üben etwas fester, im Alltag lockerer. Die langen Ärmel halten dich warm, wenn du auf der Matte ankommst.</p>
+        <p>Der Viskose-Jersey mit 5 % Elasthan fällt weich und fließend, dehnt sich mit und findet danach in seine Form zurück.</p>`,
+    features: [
+      { title: "Gebunden statt geknöpft", text: "Die beiden Vorderteile legst du übereinander und knotest sie an der Seite. Kein Knopf und kein Reißverschluss drückt, wenn du dich auf den Bauch legst oder tief nach vorn beugst.", picture: "outfitWarrior" },
+      { title: "Weich und fließend", text: "95 % Viskose und 5 % Elasthan ergeben einen leichten Jersey, der sich kühl auf der Haut anfühlt und schön fällt.", picture: "fabricClose" },
+      { title: "Ein ruhiger Look in einer Farbe", text: "Zusammen mit der Heya Culotte in derselben Farbe wird aus zwei Teilen ein Outfit – für die Matte genauso wie für unterwegs.", picture: "pair" },
+    ],
+    reviews: [
+      { name: "Lea", place: "Freiburg, DE", color: "Dark Cranberry", height: "~168 cm", size: "S", usual: "S", stars: 5, days: 3, text: "Wunderschöne Farbe, und der Stoff fällt richtig schön. Beim Yoga binde ich es etwas enger, im Büro locker." },
+      { name: "Anonym", place: "", color: "Almond Milk", height: "~172 cm", size: "M", usual: "M", stars: 5, days: 8, text: "Fühlt sich weich und kühl an, perfekt für Yin Yoga. Die langen Ärmel mag ich sehr." },
+      { name: "Katrin", place: "Salzburg, AT", color: "Midnight Blue", height: "~165 cm", size: "L", usual: "L", stars: 4, days: 12, text: "Sitzt gut. Für meinen Geschmack dürfte es ein wenig länger sein, über einer hohen Hose passt es aber perfekt." },
+      { name: "Mira", place: "Leipzig, DE", color: "Dark Cranberry", height: "~158 cm", size: "XS", usual: "XS", stars: 5, days: 17, text: "Das Binden geht schnell, und beim Üben sitzt es angenehm." },
+      { name: "Johanna", place: "Bern, CH", color: "Almond Milk", height: "~170 cm", size: "S", usual: "S", stars: 5, days: 25, text: "Schlicht und elegant. Ich trage es auch zur Jeans." },
+      { name: "Nora", place: "Kassel, DE", color: "Midnight Blue", height: "~175 cm", size: "M", usual: "M", stars: 5, days: 33, text: "Mit der Heya Culotte in derselben Farbe ein sehr ruhiger, schöner Look." },
+    ],
+    related: ["Heya Culotte", "ALA Tank Tee", "Naima Top", "NIA Womens Sweater"],
+  },
+  "naima-top": {
+    name: "Naima Top",
+    subtitle: "Leichtes Top mit kurzen Flügelärmeln für warme Tage und ruhige Flows.",
+    rating: 4.69,
+    reviewCount: 16,
+    ratingScales: CLOTHING_SCALES(3, 3.06, 4.13),
+    specs: {
+      fabric: VISCOSE_MIX,
+      madeIn: "in der Ukraine",
+      chart: { columns: ["Brustweite", "Saumweite", "Länge"], rows: chartRows("XS 34 43,5 47,5 59 | S 36/38 46 50 60 | M 40 48,5 52,5 61 | L 42 51 55 62 | XL 44 53,5 57,5 63 | XXL 46 56 60 64") },
+      pair: { shape: "culotte", label: "Kombiniert mit der Heya Culotte in derselben Farbe" },
+    },
+    facts: clothingFacts("Viskose", VISCOSE_MIX, "160 g", "Ukraine"),
+    care: clothingCare.viscose,
+    sustainability: clothingSustainability.viscose,
+    description: `
+        <p>Das Naima Top ist schlicht geschnitten und sitzt locker, ohne aufzutragen. Die kurzen, angeschnittenen Ärmel lassen deinen Schultern Raum – beim Üben genauso wie im Café danach.</p>
+        <p>Mit 160 g ist der Viskose-Jersey angenehm leicht. 5 % Elasthan sorgen dafür, dass das Top auch nach vielen Sonnengrüßen in Form bleibt.</p>`,
+    features: [
+      { title: "Leicht wie ein T-Shirt", text: "Der dünne Jersey aus Viskose fühlt sich kühl an und trägt kaum auf. Gerade an warmen Tagen und in geheizten Räumen ist das angenehm.", picture: "fabricClose" },
+      { title: "Raum für die Schultern", text: "Die kurzen Flügelärmel sind direkt angeschnitten. Wenn du die Arme hebst, spannt nichts unter den Achseln.", picture: "outfitTree" },
+      { title: "Ein Teil, viele Kombinationen", text: "Zur Heya Culotte in derselben Farbe, zur Leggings oder zur Jeans – das Naima Top passt sich deinem Tag an.", picture: "pair" },
+    ],
+    reviews: [
+      { name: "Sophie", place: "Mainz, DE", color: "Dark Cranberry", height: "~170 cm", size: "M", usual: "M", stars: 5, days: 2, text: "Leicht, luftig und eine wunderschöne Farbe. Mein Lieblingstop für den Sommer." },
+      { name: "Anonym", place: "", color: "Midnight Blue", height: "~163 cm", size: "S", usual: "S", stars: 5, days: 6, text: "Sitzt locker, aber nicht zu weit. Die kurzen Ärmel stören in keiner Haltung." },
+      { name: "Carla", place: "Graz, AT", color: "Almond Milk", height: "~168 cm", size: "L", usual: "L", stars: 4, days: 11, text: "Schönes Basic. Ich hätte es gern noch in mehr Farben." },
+      { name: "Ella", place: "Rostock, DE", color: "Dark Cranberry", height: "~160 cm", size: "XS", usual: "XS", stars: 5, days: 15, text: "Gleich in zwei Farben bestellt. Passt zu allem." },
+      { name: "Vanessa", place: "Basel, CH", color: "Midnight Blue", height: "~174 cm", size: "M", usual: "M", stars: 5, days: 22, text: "Weich und angenehm auf der Haut. Ich trage es zum Yoga und im Alltag." },
+      { name: "Anonym", place: "", color: "Almond Milk", height: "~178 cm", size: "XL", usual: "XL", stars: 4, days: 30, text: "Gute Länge, bequemer Schnitt. Die Farbe ist etwas heller als auf meinem Bildschirm." },
+    ],
+    related: ["Heya Culotte", "ALA Tank Tee", "Amina Wrap Top", "DANA Overall"],
+  },
+  "heya-culotte": {
+    name: "Heya Culotte",
+    subtitle: "Weite Culotte mit hohem Bund: luftig wie ein Rock und frei in jeder Bewegung.",
+    rating: 4.65,
+    reviewCount: 23,
+    ratingScales: CLOTHING_SCALES(2.96, 3.17, 4.04),
+    specs: {
+      fabric: VISCOSE_MIX,
+      madeIn: "in der Ukraine",
+      chart: { columns: ["Taille", "Hüfte", "Oberschenkel", "Innenbeinlänge"], rows: chartRows("XS 34 30,5 48,5 29,5 65 | S 36/38 33 51 31 65 | M 40 35,5 53,5 32,5 65 | L 42 38 56 34 65 | XL 44 40,5 58,5 35,5 65 | XXL 46 43 61 37 65") },
+      pair: { shape: "top", label: "Kombiniert mit dem Naima Top in derselben Farbe" },
+    },
+    facts: clothingFacts("Viskose", VISCOSE_MIX, "340 g", "Ukraine", "65 cm"),
+    care: clothingCare.viscose,
+    sustainability: clothingSustainability.viscose,
+    description: `
+        <p>Die Heya Culotte hat weite, wadenlange Beine und einen breiten, hohen Bund, der nicht einschneidet. Beim Gehen schwingt der Stoff mit, beim Üben lässt er dir viel Bewegungsfreiheit.</p>
+        <p>Mit 65 cm Innenbeinlänge in allen Größen endet sie über dem Knöchel – so trittst du auch im Ausfallschritt nicht auf den Saum.</p>`,
+    features: [
+      { title: "Hoher, weicher Bund", text: "Der breite Bund sitzt in der Taille und liegt flach an. Im Sitzen und in Vorbeugen drückt er nicht in den Bauch.", picture: "measure" },
+      { title: "Weite, die mitschwingt", text: "Die weiten Beine fallen locker und geben dir Platz für weite Schritte, tiefe Hocken und den Weg nach Hause.", picture: "outfitWarrior" },
+      { title: "Fließender Viskose-Jersey", text: "95 % Viskose und 5 % Elasthan machen den Stoff weich und schwer genug, dass er schön fällt.", picture: "fabricClose" },
+      { title: "Passt zu Naima und Amina", text: "Mit einem Top in derselben Farbe wirkt die Culotte fast wie ein Jumpsuit – nur bequemer an- und auszuziehen.", picture: "pair" },
+    ],
+    reviews: [
+      { name: "Maja", place: "Würzburg, DE", color: "Dark Cranberry", height: "~167 cm", size: "M", usual: "M", stars: 5, days: 4, text: "Die bequemste Hose, die ich habe. Der hohe Bund drückt überhaupt nicht." },
+      { name: "Anonym", place: "", color: "Almond Milk", height: "~171 cm", size: "L", usual: "L", stars: 5, days: 9, text: "Fühlt sich an wie ein Rock und ist doch eine Hose. Perfekt für warme Tage." },
+      { name: "Tamara", place: "Innsbruck, AT", color: "Midnight Blue", height: "~176 cm", size: "S", usual: "S", stars: 4, days: 14, text: "Bei meiner Größe endet sie ein gutes Stück über dem Knöchel. Mir gefällt das, man sollte es aber wissen." },
+      { name: "Ines", place: "Bonn, DE", color: "Dark Cranberry", height: "~169 cm", size: "XXL", usual: "XXL", stars: 5, days: 20, text: "Schöner, fließender Stoff und eine tolle Farbe." },
+      { name: "Paula", place: "Ulm, DE", color: "Almond Milk", height: "~162 cm", size: "M", usual: "S", stars: 4, days: 27, text: "Fällt eher groß aus, beim nächsten Mal nehme ich eine Nummer kleiner." },
+      { name: "Anonym", place: "", color: "Midnight Blue", height: "~170 cm", size: "M", usual: "M", stars: 5, days: 35, text: "Mit dem Naima Top in derselben Farbe sieht das fast wie ein Jumpsuit aus." },
+    ],
+    related: ["Naima Top", "Amina Wrap Top", "MIKO Bralette", "ELI Womens Tee (Short Sleeve)"],
+  },
+  "miko-bralette": {
+    name: "MIKO Bralette",
+    subtitle: "Bralette mit schmalen Trägern – leichter Halt für ruhige und fließende Stunden.",
+    rating: 4,
+    reviewCount: 2,
+    ratingScales: CLOTHING_SCALES(3, 3.4, 3.8),
+    specs: {
+      fabric: RECYCLED_MIX,
+      madeIn: "in der Ukraine",
+      chart: { columns: ["Brustweite", "Saumweite", "Länge"], rows: chartRows("XS 34 36,5 32,5 31,5 | S 36-38 39 35 32 | M 40-42 41,5 37,5 32,5 | L 42-44 44 40 33 | XL 44-46 46,5 42,5 33,5 | XXL 46-48 49 45 34") },
+      pair: { shape: "leggings", hex: "#3d3d3f", label: "Kombiniert mit der BECCA Leggings in Anthrazit" },
+    },
+    facts: clothingFacts("Recyceltes Polyester", RECYCLED_MIX, "120 g", "Ukraine"),
+    care: clothingCare.recycled,
+    sustainability: clothingSustainability.recycled,
+    description: `
+        <p>Die MIKO Bralette kommt ohne Bügel und ohne Verschluss aus. Ein breiter, elastischer Bund unter der Brust gibt leichten Halt, die schmalen Träger stören in keiner Haltung.</p>
+        <p>Der glatte Stoff aus 72 % recyceltem Polyester und 28 % Elasthan liegt eng an und trocknet schnell.</p>`,
+    features: [
+      { title: "Ohne Bügel, ohne Druck", text: "Nichts drückt oder schneidet ein, auch nicht im Liegen. Die Bralette ist für ruhige und fließende Stunden gedacht.", picture: "outfitTree" },
+      { title: "Aus recyceltem Polyester", text: "Fast drei Viertel des Stoffs bestehen aus recyceltem Polyester. Elasthan sorgt dafür, dass er dehnbar bleibt.", picture: "fabricClose" },
+      { title: "Passt zur BECCA Leggings", text: "Gleicher Stoff, gleiche Farben: Mit der BECCA Leggings ergibt die Bralette ein schlichtes Set.", picture: "pair" },
+    ],
+    reviews: [
+      { name: "Lina", place: "Potsdam, DE", color: "Violetta", height: "~166 cm", size: "S", usual: "S", stars: 5, days: 10, text: "Angenehm leicht, nichts drückt. Für ruhige Stunden genau richtig." },
+      { name: "Anonym", place: "", color: "Anthrazit", height: "~172 cm", size: "M", usual: "M", stars: 3, days: 26, text: "Schöner Stoff, für dynamische Flows hätte ich mir aber mehr Halt gewünscht. Für Yin Yoga ist sie top." },
+    ],
+    related: ["BECCA Leggings", "DANA Overall", "ALA Tank Tee", "„Almost Perfect“ Yogamatte MUDRA PRO XL"],
+  },
+  "ala-tank-tee": {
+    name: "ALA Tank Tee",
+    subtitle: "Eng anliegendes Tank-Top, das in Umkehrhaltungen bleibt, wo es hingehört.",
+    rating: 3.75,
+    reviewCount: 4,
+    ratingScales: CLOTHING_SCALES(3.29, 2.43, 3.71),
+    specs: {
+      fabric: RECYCLED_MIX,
+      madeIn: "in der Ukraine",
+      chart: { columns: ["Brustweite", "Saumweite", "Länge"], rows: chartRows("XS 34 34,5 34 58 | S 36-38 37 36,5 59 | M 40-42 39,5 39 60 | L 42-44 42 41,5 61 | XL 44-46 44,5 44 62 | XXL 46-48 47 46,5 63") },
+      pair: { shape: "leggings", label: "Kombiniert mit der BECCA Leggings in derselben Farbe" },
+    },
+    facts: clothingFacts("Recyceltes Polyester", RECYCLED_MIX, "200 g", "Ukraine"),
+    care: clothingCare.recycled,
+    sustainability: clothingSustainability.recycled,
+    description: `
+        <p>Das ALA Tank Tee sitzt eng am Körper und rutscht auch im herabschauenden Hund nicht über den Kopf. Mit rundem Ausschnitt und breiten Trägern ist es ein ruhiges Basic für jede Stunde.</p>
+        <p>72 % recyceltes Polyester und 28 % Elasthan machen den Stoff dehnbar, formstabil und schnell trocken.</p>`,
+    features: [
+      { title: "Bleibt, wo es hingehört", text: "Weil das Tee eng anliegt, musst du es auch in Umkehrhaltungen nicht festhalten oder zurechtziehen.", picture: "outfitDog" },
+      { title: "Aus recyceltem Polyester", text: "Der dehnbare Stoff besteht zu 72 % aus recyceltem Polyester und trocknet nach schweißtreibenden Stunden schnell.", picture: "fabricClose" },
+      { title: "Das Basic zur BECCA", text: "In denselben Farben wie die BECCA Leggings: zusammen ein schlichtes Outfit für dynamische Stunden.", picture: "pair" },
+    ],
+    reviews: [
+      { name: "Rebecca", place: "Hannover, DE", color: "Violetta", height: "~170 cm", size: "M", usual: "M", stars: 5, days: 5, text: "Sitzt eng und bleibt auch in der Kerze, wo es sein soll. Tolle Farbe." },
+      { name: "Anonym", place: "", color: "Anthrazit", height: "~168 cm", size: "L", usual: "M", stars: 4, days: 13, text: "Fällt klein aus – ich trage sonst M und habe L genommen. Damit passt es gut." },
+      { name: "Svenja", place: "Lübeck, DE", color: "Marshmallow", height: "~164 cm", size: "S", usual: "S", stars: 4, days: 21, text: "Schönes Basic für unter einen Pullover. Etwas enger, als ich dachte." },
+      { name: "Daniela", place: "Wels, AT", color: "Anthrazit", height: "~173 cm", size: "M", usual: "M", stars: 2, days: 34, text: "In meiner üblichen Größe zu eng. Ich tausche gegen eine Nummer größer." },
+    ],
+    related: ["BECCA Leggings", "ELI Womens Tee (Short Sleeve)", "MIKO Bralette", "DANA Overall"],
+  },
+  "dana-overall": {
+    name: "DANA Overall",
+    subtitle: "Einteiler in Leggings-Länge: ein Teil an, und du bist bereit für die Matte.",
+    rating: 4.25,
+    reviewCount: 4,
+    ratingScales: CLOTHING_SCALES(3.75, 2.75, 4.5),
+    specs: {
+      fabric: RECYCLED_MIX,
+      madeIn: "in der Ukraine",
+      chart: { columns: ["Brustweite", "Oberschenkel", "Beinlänge", "Länge"], rows: chartRows("XS 34 31,5 17,3 89,5 47,7 | S 36-38 34 18,2 90,5 47,4 | M 40-42 36,5 19,1 91,5 48,1 | L 42-44 39 20 92,5 48,8 | XL 44-46 41,5 20,9 93,5 49,5 | XXL 46-48 44 21,8 94,5 50,2") },
+    },
+    facts: clothingFacts("Recyceltes Polyester", RECYCLED_MIX, "380 g", "Ukraine"),
+    care: clothingCare.recycled,
+    sustainability: clothingSustainability.recycled,
+    description: `
+        <p>Der DANA Overall verbindet Top und Leggings zu einem Teil. Nichts rutscht, nichts verdreht sich, und kein Bund schneidet in den Bauch – angenehm in Stunden mit vielen Umkehrhaltungen.</p>
+        <p>Der dehnbare Stoff aus 72 % recyceltem Polyester und 28 % Elasthan liegt eng an und bleibt in Form.</p>`,
+    features: [
+      { title: "Ein Teil, kein Bund", text: "Weil Ober- und Unterteil verbunden sind, gibt es keinen Bund, der rollt oder drückt. Du ziehst den Overall an und musst danach nicht mehr an ihm zupfen.", picture: "outfitDog" },
+      { title: "Mit dir in Bewegung", text: "28 % Elasthan geben dem Stoff viel Dehnung – für weite Ausfallschritte genauso wie für die Kerze.", picture: "outfitWarrior" },
+      { title: "Aus recyceltem Polyester", text: "Fast drei Viertel des Stoffs bestehen aus recyceltem Polyester. Er trocknet schnell und bleibt lange in Form.", picture: "fabricClose" },
+    ],
+    reviews: [
+      { name: "Alina", place: "Erfurt, DE", color: "Marshmallow", height: "~165 cm", size: "S", usual: "S", stars: 5, days: 7, text: "Ein Teil anziehen und fertig – nichts rutscht, nichts zwickt am Bauch." },
+      { name: "Anonym", place: "", color: "Anthrazit", height: "~170 cm", size: "M", usual: "M", stars: 5, days: 16, text: "Sitzt eng und trotzdem bequem. Für Umkehrhaltungen ideal." },
+      { name: "Franziska", place: "Regensburg, DE", color: "Marshmallow", height: "~178 cm", size: "L", usual: "M", stars: 4, days: 24, text: "Oben herum etwas knapp, mit L passt es. Die Beinlänge ist für mich super." },
+      { name: "Selin", place: "Zürich, CH", color: "Marshmallow", height: "~160 cm", size: "M", usual: "M", stars: 3, days: 38, text: "Schönes Material, aber die Beine sind mir zu lang. Für große Menschen sicher perfekt." },
+    ],
+    related: ["ALA Tank Tee", "MIKO Bralette", "NIA Womens Sweater", "BECCA Leggings"],
+  },
+  "becca-leggings": {
+    name: "BECCA Leggings",
+    subtitle: "Leggings mit hohem, breitem Bund aus recyceltem Polyester.",
+    rating: 2.4,
+    reviewCount: 5,
+    ratingScales: CLOTHING_SCALES(4.1, 2.56, 4),
+    specs: {
+      fabric: RECYCLED_MIX,
+      madeIn: "in der Ukraine",
+      chart: { columns: ["Taille", "Innenbeinlänge"], rows: chartRows("XS 34 29 71,9 | S 36-38 31,5 72,2 | M 40-42 34 72,5 | L 42-44 36,5 72,8 | XL 44-46 39 73,1 | XXL 46-48 41,5 73,4") },
+    },
+    facts: clothingFacts("Recyceltes Polyester", RECYCLED_MIX, "230 g", "Ukraine", "71,9 cm"),
+    care: clothingCare.recycled,
+    sustainability: clothingSustainability.recycled,
+    description: `
+        <p>Die BECCA Leggings sitzt hoch in der Taille, ihr breiter Bund liegt flach am Bauch an. Die Beine sind lang geschnitten und reichen bis zum Knöchel.</p>
+        <p>Der glatte Stoff aus 72 % recyceltem Polyester und 28 % Elasthan ist dehnbar und trocknet schnell. Miss am besten vorher nach: Die Größentabelle zeigt Taille und Innenbeinlänge für jede Größe.</p>`,
+    features: [
+      { title: "Hoher, breiter Bund", text: "Der Bund reicht bis in die Taille und hält die Leggings an ihrem Platz – im Stehen, im Sitzen und in Vorbeugen.", picture: "measure" },
+      { title: "Dehnbar in jede Richtung", text: "Dank 28 % Elasthan geht der Stoff jede Bewegung mit und findet danach wieder in seine Form.", picture: "outfitDog" },
+      { title: "Aus recyceltem Polyester", text: "Fast drei Viertel des Stoffs bestehen aus recyceltem Polyester – das spart neue Rohstoffe.", picture: "fabricClose" },
+    ],
+    reviews: [
+      { name: "Kim", place: "Bochum, DE", color: "Anthrazit", height: "~176 cm", size: "M", usual: "M", stars: 4, days: 3, text: "Angenehmer Stoff und ein hoher Bund, der gut sitzt. Bei meiner Größe passt auch die Länge." },
+      { name: "Anonym", place: "", color: "Marshmallow", height: "~163 cm", size: "S", usual: "S", stars: 3, days: 9, text: "Das Material gefällt mir, die Beine sind mir aber deutlich zu lang." },
+      { name: "Lisa", place: "Gießen, DE", color: "Violetta", height: "~168 cm", size: "M", usual: "M", stars: 2, days: 18, text: "Fällt klein aus, an den Oberschenkeln zu eng. Lieber eine Größe größer bestellen." },
+      { name: "Anonym", place: "", color: "Anthrazit", height: "~158 cm", size: "XS", usual: "XS", stars: 2, days: 29, text: "Für meine Größe zu lang, am Knöchel schlägt der Stoff Falten." },
+      { name: "Merle", place: "Oldenburg, DE", color: "Marshmallow", height: "~170 cm", size: "L", usual: "L", stars: 1, days: 41, text: "Die Passform passt leider nicht zu meiner Figur. Am besten vorher mit der Größentabelle nachmessen." },
+    ],
+    related: ["ALA Tank Tee", "MIKO Bralette", "NIA Womens Sweater", "DANA Overall"],
+  },
+  "fiona-womens-pants": {
+    name: "FIONA Womens Pants",
+    subtitle: "Bequeme Hose aus Bio-Baumwolle und Modal – für die Matte und den Weg dorthin.",
+    rating: 3,
+    reviewCount: 3,
+    ratingScales: CLOTHING_SCALES(3, 3, 4.5),
+    specs: {
+      fabric: MODAL_MIX,
+      madeIn: "in Portugal",
+      chart: { columns: ["Taille", "Oberschenkel", "Innenbeinlänge"], rows: chartRows("XS 34 31 23,5 70,5 | S 36-38 33 24,5 71,5 | M 40-42 35 25,5 72,5 | L 42-44 37 26,5 73,5 | XL 44-46 39 27,5 74,5 | XXL 46-48 41 28,5 75,5") },
+    },
+    facts: clothingFacts("Bio-Baumwolle (kbA)", MODAL_MIX, "470 g", "Portugal", "70,5 cm"),
+    care: clothingCare.pants,
+    sustainability: clothingSustainability.cotton,
+    description: `
+        <p>Die FIONA Pants ist eine gerade geschnittene Hose mit weichem Bund. Sie ist bequem genug für Yin Yoga und Meditation und sieht trotzdem ordentlich aus, wenn du danach noch etwas vorhast.</p>
+        <p>Je 42,5 % Modal und Bio-Baumwolle und 15 % Elasthan machen den Stoff weich, dehnbar und angenehm griffig.</p>`,
+    features: [
+      { title: "Für lange, ruhige Sitzungen", text: "Der weiche Bund drückt auch nach einer langen Meditation nicht, und der Stoff spannt nicht über den Knien.", picture: "outfitSeated" },
+      { title: "Weich durch Modal", text: "Modal ist eine Faser aus Holz und macht die Baumwolle besonders weich und geschmeidig.", picture: "fabricClose" },
+      { title: "Bewegungsfreiheit inklusive", text: "15 % Elasthan geben genug Dehnung für tiefe Ausfallschritte und den herabschauenden Hund.", picture: "outfitDog" },
+      { title: "Genäht in Portugal", text: "Die FIONA Pants entsteht in Portugal, also in der EU und mit kurzen Wegen.", picture: "origin" },
+    ],
+    reviews: [
+      { name: "Judith", place: "Konstanz, DE", color: "Anthrazit", height: "~167 cm", size: "S", usual: "S", stars: 4, days: 12, text: "Sehr weich und bequem, ich trage sie auch im Homeoffice." },
+      { name: "Anonym", place: "", color: "Stone Blue", height: "~171 cm", size: "M", usual: "M", stars: 3, days: 27, text: "Schöner Stoff, an der Hüfte ist sie mir aber etwas zu weit." },
+      { name: "Helena", place: "Linz, AT", color: "Anthrazit", height: "~162 cm", size: "L", usual: "L", stars: 2, days: 44, text: "Für mich nicht die richtige Passform. Der Stoff selbst ist aber schön." },
+    ],
+    related: ["NIA Womens Sweater", "QUINN Mens Pants", "BECCA Leggings", "DANA Overall"],
+  },
+  "quinn-mens-pants": {
+    name: "QUINN Mens Pants",
+    subtitle: "Yogahose für Männer aus Bio-Baumwolle und Modal mit weichem Bund.",
+    rating: 3.67,
+    reviewCount: 3,
+    ratingScales: CLOTHING_SCALES(2.5, 3.17, 4.67),
+    specs: {
+      fabric: MODAL_MIX,
+      madeIn: "in Portugal",
+      chart: { columns: ["Taille", "Oberschenkel", "Innenbeinlänge"], rows: chartRows("S 44-46 37 26 69,5 | M 46-48 39 27 70,5 | L 48-50 41 28 71,5 | XL 52-54 43 29 72,5 | XXL 56-58 45 30 73,5") },
+    },
+    facts: clothingFacts("Bio-Baumwolle (kbA)", MODAL_MIX, "440 g", "Portugal"),
+    care: clothingCare.pants,
+    sustainability: clothingSustainability.cotton,
+    description: `
+        <p>Die QUINN Pants ist eine bequeme Herrenhose mit elastischem Bund und leicht schmal zulaufenden Beinen. Sie gibt dir Raum für tiefe Ausfallschritte und sieht auch nach der Stunde noch gut aus.</p>
+        <p>Je 42,5 % Modal und Bio-Baumwolle und 15 % Elasthan machen den Stoff weich und dehnbar.</p>`,
+    features: [
+      { title: "Raum für jede Bewegung", text: "Im Krieger, in der Hocke oder im Lotussitz: Der dehnbare Stoff geht mit und spannt nicht.", picture: "outfitWarrior" },
+      { title: "Weich und griffig", text: "Die Mischung aus Modal und Bio-Baumwolle fühlt sich weich an und ist trotzdem kräftig genug für den Alltag.", picture: "fabricClose" },
+      { title: "Genäht in Portugal", text: "Die QUINN Pants entsteht in Portugal, also in der EU und mit kurzen Wegen.", picture: "origin" },
+    ],
+    reviews: [
+      { name: "Felix", place: "Münster, DE", color: "Deep Taupe", height: "~182 cm", size: "L", usual: "L", stars: 5, days: 6, text: "Endlich eine Yogahose für Männer, die nicht nach Jogginghose aussieht. Sehr bequem." },
+      { name: "Anonym", place: "", color: "Anthrazit", height: "~178 cm", size: "M", usual: "M", stars: 4, days: 19, text: "Weicher Stoff und ein guter Bund. Die Beine dürften für mich etwas länger sein." },
+      { name: "Tobias", place: "Chur, CH", color: "Stone Blue", height: "~190 cm", size: "XL", usual: "XL", stars: 2, days: 37, text: "Bei 1,90 m leider zu kurz. Stoff und Verarbeitung gefallen mir aber." },
+    ],
+    related: ["REID Mens Tank-Top", "FIONA Womens Pants", "FEND Mens Sweater", "Yogatasche PUNE"],
+  },
+  "eli-womens-tee-short-sleeve": {
+    name: "ELI Womens Tee (Short Sleeve)",
+    subtitle: "Kurzarm-Shirt aus 100 % Bio-Baumwolle mit entspanntem Schnitt.",
+    rating: 5,
+    reviewCount: 3,
+    ratingScales: CLOTHING_SCALES(3.25, 3.25, 3.75),
+    specs: {
+      fabric: "100 % Bio-Baumwolle",
+      madeIn: "in Portugal",
+      chart: { columns: ["Brustweite", "Saumweite", "Länge"], rows: chartRows("XS 34 60,5 62,5 48 | S 36-38 62,5 64,5 50 | M 40-42 64,5 66,5 52 | L 42-44 66,5 68,5 54 | XL 44-46 68,5 70,5 56") },
+      pair: { shape: "leggings", hex: "#3d3d3f", label: "Kombiniert mit der BECCA Leggings in Anthrazit" },
+    },
+    facts: clothingFacts("Bio-Baumwolle (kbA)", "100 % Bio-Baumwolle", "180 g", "Portugal"),
+    care: clothingCare.cotton,
+    sustainability: clothingSustainability.cotton,
+    description: `
+        <p>Das ELI Tee ist ein T-Shirt mit kurzen Ärmeln und entspanntem Schnitt. Über Leggings sieht es genauso gut aus wie zur Jeans.</p>
+        <p>Der Jersey aus 100 % Bio-Baumwolle ist weich und atmungsaktiv – angenehm auf der Haut, gerade an warmen Tagen.</p>`,
+    features: [
+      { title: "Reine Bio-Baumwolle", text: "Ein Stoff, nur eine Faser: 100 % Bio-Baumwolle aus kontrolliert biologischem Anbau.", picture: "fabricClose" },
+      { title: "Entspannt, nicht weit", text: "Das Tee sitzt locker, flattert aber nicht. So bleibt es auch beim Üben, wo es hingehört.", picture: "outfitTree" },
+      { title: "Über Leggings und Hosen", text: "Zur BECCA Leggings, zur FIONA Pants oder zur Jeans – ein Basic für jeden Tag.", picture: "pair" },
+    ],
+    reviews: [
+      { name: "Hannah", place: "Jena, DE", color: "Violetta", height: "~169 cm", size: "M", usual: "M", stars: 5, days: 8, text: "Weich, locker und eine wunderschöne Farbe. Mein neues Lieblingsshirt." },
+      { name: "Anonym", place: "", color: "Marshmallow", height: "~174 cm", size: "L", usual: "L", stars: 5, days: 20, text: "Passt über Leggings und Jeans gleichermaßen gut." },
+      { name: "Eva", place: "Villach, AT", color: "Anthrazit", height: "~166 cm", size: "L", usual: "L", stars: 5, days: 31, text: "Angenehm auf der Haut, auch an heißen Tagen." },
+    ],
+    related: ["BECCA Leggings", "ALA Tank Tee", "MIKO Bralette", "NIA Womens Sweater"],
+  },
+  "reid-mens-tank-top": {
+    name: "REID Mens Tank-Top",
+    subtitle: "Tank-Top für Männer aus Bio-Baumwolle – luftig für schweißtreibende Stunden.",
+    rating: 5,
+    reviewCount: 1,
+    ratingScales: CLOTHING_SCALES(3.13, 2.88, 4.71),
+    specs: {
+      madeIn: "in Portugal",
+      chart: { columns: ["Brustweite", "Saumweite", "Länge"], rows: chartRows("S 36-38 53 54,5 69 | M 40-42 55 56,5 71 | L 42-44 57 58,5 73 | XL 44-46 59 60,5 75") },
+      pair: { shape: "pants", hex: "#9a8878", label: "Kombiniert mit der QUINN Pants in Deep Taupe" },
+    },
+    facts: clothingFacts("Bio-Baumwolle (kbA)", null, "190 g", "Portugal"),
+    care: clothingCare.cotton,
+    sustainability: clothingSustainability.cotton,
+    description: `
+        <p>Das REID Tank-Top hat weite Armausschnitte und lässt deinen Schultern volle Bewegungsfreiheit – ideal für kraftvolle Flows und warme Räume.</p>
+        <p>Der Stoff aus Bio-Baumwolle ist weich und atmungsaktiv.</p>`,
+    features: [
+      { title: "Freie Schultern", text: "Die weiten Armausschnitte geben dir Platz für Sonnengrüße, Krieger und alles, was die Arme über den Kopf bringt.", picture: "outfitWarrior" },
+      { title: "Aus Bio-Baumwolle", text: "Weich, atmungsaktiv und angenehm auf der Haut – auch wenn die Stunde schweißtreibend wird.", picture: "fabricClose" },
+      { title: "Passt zur QUINN Pants", text: "Zusammen mit der QUINN Pants hast du ein bequemes Outfit für die Matte und den Weg dorthin.", picture: "pair" },
+    ],
+    reviews: [
+      { name: "Lukas", place: "Darmstadt, DE", color: "Marshmallow", height: "~180 cm", size: "M", usual: "M", stars: 5, days: 14, text: "Luftig, bequem und viel Platz für die Schultern. Genau richtig für Power Yoga." },
+    ],
+    related: ["QUINN Mens Pants", "ALA Tank Tee", "FEND Mens Sweater", "Naima Top"],
+  },
+  "fend-mens-sweater": {
+    name: "FEND Mens Sweater",
+    subtitle: "Sweater für Männer aus Bio-Baumwolle und Modal – warm nach der Stunde.",
+    rating: 4,
+    reviewCount: 1,
+    ratingScales: CLOTHING_SCALES(1.5, 1.5, 4.5),
+    specs: {
+      fabric: SWEAT_MIX,
+      madeIn: "in Portugal",
+      chart: { columns: ["Brustweite", "Saumweite", "Länge"], rows: chartRows("S 36 56 42 63 | M 38 58 44 65 | L 40-42 60 46 67 | XL 44-46 62 48 69") },
+    },
+    facts: clothingFacts("Bio-Baumwolle (kbA)", SWEAT_MIX, "500 g", "Portugal"),
+    care: clothingCare.sweater,
+    sustainability: clothingSustainability.cotton,
+    description: `
+        <p>Der FEND Sweater ist ein schlichter Pullover mit Rundhalsausschnitt. Zieh ihn nach der Stunde über, für die Schlussentspannung oder für den Weg nach Hause.</p>
+        <p>70 % Bio-Baumwolle und 30 % Modal machen ihn mit 500 g schön warm und trotzdem weich.</p>`,
+    features: [
+      { title: "Warm für die Schlussentspannung", text: "Wenn der Körper zur Ruhe kommt, wird es schnell kühl. Der dichte Stoff hält dich in Savasana und in der Meditation warm.", picture: "outfitSeated" },
+      { title: "Weich durch Modal", text: "30 % Modal machen die Bio-Baumwolle besonders weich und geschmeidig.", picture: "fabricClose" },
+      { title: "Vorbehandelt gegen Einlaufen", text: "Der Stoff ist sanforisiert. Er behält auch nach dem Waschen bei 30 °C seine Form.", picture: "garmentWash" },
+    ],
+    reviews: [
+      { name: "Anonym", place: "", color: "Stone Blue", height: "~183 cm", size: "L", usual: "M", stars: 4, days: 22, text: "Sehr weicher, schwerer Stoff. Fällt kürzer und enger aus, als ich dachte – lieber eine Nummer größer." },
+    ],
+    related: ["QUINN Mens Pants", "NIA Womens Sweater", "REID Mens Tank-Top", "Yoga Zubehör + Reinigungs Set"],
+  },
+  "nia-womens-sweater": {
+    name: "NIA Womens Sweater",
+    subtitle: "Weicher Sweater für Frauen aus Bio-Baumwolle und Modal.",
+    rating: 4,
+    reviewCount: 2,
+    ratingScales: CLOTHING_SCALES(3.25, 3.25, 4.5),
+    specs: {
+      fabric: SWEAT_MIX,
+      madeIn: "in Portugal",
+      chart: { columns: ["Brustweite", "Saumweite", "Länge"], rows: chartRows("XS 34 64 60 48 | S 36-38 66 62 50 | M 40-42 68 64 52 | L 42-44 70 66 54 | XL 44-46 72 68 56") },
+    },
+    facts: clothingFacts("Bio-Baumwolle (kbA)", SWEAT_MIX, "480 g", "Portugal"),
+    care: clothingCare.sweater,
+    sustainability: clothingSustainability.cotton,
+    description: `
+        <p>Der NIA Sweater ist bequem geschnitten und hält dich vor und nach der Stunde warm. Er passt über Tops und Shirts und zu Leggings genauso wie zur weiten Hose.</p>
+        <p>70 % Bio-Baumwolle und 30 % Modal ergeben einen dichten, weichen Stoff, der vorbehandelt ist, damit er beim Waschen kaum einläuft.</p>`,
+    features: [
+      { title: "Warm vor und nach der Stunde", text: "Auf dem Weg ins Studio, in der Schlussentspannung oder bei der Meditation: Der NIA Sweater hält dich warm.", picture: "outfitSeated" },
+      { title: "Weich durch Modal", text: "30 % Modal machen die Bio-Baumwolle besonders weich und geschmeidig.", picture: "fabricClose" },
+      { title: "Vorbehandelt gegen Einlaufen", text: "Der Stoff ist sanforisiert. Er behält auch nach dem Waschen bei 30 °C seine Form.", picture: "garmentWash" },
+      { title: "Genäht in Portugal", text: "Der NIA Sweater entsteht in Portugal, also in der EU und mit kurzen Wegen.", picture: "origin" },
+    ],
+    reviews: [
+      { name: "Clara", place: "Göttingen, DE", color: "Anthrazit", height: "~165 cm", size: "S", usual: "S", stars: 5, days: 9, text: "Kuschelig und trotzdem nicht zu warm. Ich ziehe ihn nach jeder Stunde über." },
+      { name: "Anonym", place: "", color: "Marshmallow", height: "~172 cm", size: "M", usual: "M", stars: 3, days: 28, text: "Schöner Pullover, der Schnitt ist mir aber etwas zu weit." },
+    ],
+    related: ["FIONA Womens Pants", "ELI Womens Tee (Short Sleeve)", "BECCA Leggings", "DANA Overall"],
+  },
+};
+// Everything a clothing page shares with the others.
+Object.values(clothingDetails).forEach((item) => {
+  const model = clothes.find((candidate) => candidate.name === item.name);
+  item.specs.shape = model.shape;
+  Object.assign(item, {
+    colors: outfitsOf(item.name),
+    sizes: model.sizes,
+    gallery: clothingGallery,
+    swatch: "garmentFront",
+    related: item.related.map(relatedCard),
+  });
+});
+
 const productDetails = {
   ...cushionDetails,
+  ...clothingDetails,
   "yogamatte-pure": {
     name: "Yogamatte PURE",
     subtitle: "Die Dynamische: Rutschfestigkeit und Stabilität in perfekter Balance.",
     price: 79.95,
-    rating: 4.61,
+    rating: 4.62,
     reviewCount: 866,
     ratingScales: [
       ["Rutschfestigkeit", 4.89],
@@ -388,11 +869,11 @@ const productDetails = {
     name: "Yogamatte ARISE",
     subtitle: "Die Rutschfeste: Maximaler Grip in allen Posen - Made in Spain",
     price: 89.95,
-    rating: 4.71,
-    reviewCount: 320,
+    rating: 4.7,
+    reviewCount: 323,
     ratingScales: [
       ["Rutschfestigkeit", 4.9],
-      ["Dämpfung", 4.57],
+      ["Dämpfung", 4.58],
       ["Qualität und Langlebigkeit", 4.65],
     ],
     specs: { material: "Naturkautschuk mit 15 % Recycling-Latex", short: "Naturkautschuk", length: 185, width: 65, mm: 4, weight: "2,0 kg", origin: "Spanien" },
@@ -456,7 +937,7 @@ const productDetails = {
     name: "Yogamatte ARISE Travel",
     subtitle: "Die Ultraleichte - Extrem rutschfest und ideal für Reisen - Made in Spain",
     price: 59.95,
-    rating: 4.46,
+    rating: 4.48,
     reviewCount: 169,
     ratingScales: [
       ["Rutschfestigkeit", 4.76],
@@ -523,8 +1004,8 @@ const productDetails = {
     name: "Yogamatte MUDRA",
     subtitle: "Die Vielseitige: Perfekt für Einsteiger - ideal für alle Yoga-Stile und als Studioausstattung.",
     price: 39.95,
-    rating: 4.56,
-    reviewCount: 1637,
+    rating: 4.57,
+    reviewCount: 1645,
     ratingScales: [
       ["Rutschfestigkeit", 4.35],
       ["Dämpfung", 4.47],
@@ -568,7 +1049,7 @@ const productDetails = {
       bestsellers.yoga[0], // Yogablock Kork 2er Set
       relatedCards.bag,
       relatedCards.mudraPro,
-      relatedCards.belt,
+      relatedCard("Yogagurt 100% Bio-Baumwolle"),
     ],
   },
 
@@ -614,7 +1095,7 @@ const productDetails = {
     related: [
       relatedCards.mudraPro,
       relatedCards.eyePillow,
-      { name: "Naima Top", price: 39.95, shape: "top", tint: "#d8d0c4" },
+      relatedCard("Naima Top"),
       relatedCards.almostPerfectProXl,
     ],
   },
@@ -623,7 +1104,7 @@ const productDetails = {
     name: "Yogamatte MUDRA PRO",
     subtitle: "Die Leistungsstarke: Extra robust für Yoga und Workouts - Made in Germany",
     price: 99.95,
-    rating: 4.46,
+    rating: 4.48,
     reviewCount: 48,
     ratingScales: [
       ["Rutschfestigkeit", 4.45],
@@ -765,7 +1246,7 @@ const productDetails = {
     name: "Yogamatte WOOL aus Schurwolle",
     subtitle: "Natürlich warm, weich & kuschelig - Made in Germany.",
     price: 119.95,
-    rating: 4.95,
+    rating: 4.94,
     reviewCount: 16,
     ratingScales: [
       ["Rutschfestigkeit", 4.65],
@@ -1055,6 +1536,16 @@ const featurePictures = {
   fillings: { label: () => "Dinkelspelz und Kapok im Vergleich", draw: () => cushionFillingsWide() },
   topView: { label: (specs) => `Kissen von oben, ${specs.size} cm`, draw: (color, specs) => cushionTopWide(color, specs) },
   sideView: { label: (specs) => `Kissen von der Seite, ${specs.dimensions[2]} cm hoch`, draw: (color, specs) => cushionSizeWide(color, specs) },
+  // Clothing
+  outfitWarrior: { label: () => "Figur im Krieger, die das Kleidungsstück trägt", draw: (color, specs) => outfitScene(color, specs, "warrior", "-40 -2 180 110") },
+  outfitTree: { label: () => "Figur im Baum, die das Kleidungsstück trägt", draw: (color, specs) => outfitScene(color, specs, "tree", "-40 -2 180 110") },
+  outfitDog: { label: () => "Figur im herabschauenden Hund, die das Kleidungsstück trägt", draw: (color, specs) => outfitScene(color, specs, "dog", "-40 -2 180 110") },
+  outfitSeated: { label: () => "Figur im Schneidersitz, die das Kleidungsstück trägt", draw: (color, specs) => outfitScene(color, specs, "seated", "-40 -2 180 110") },
+  fabricClose: { label: (specs) => `Stoff aus der Nähe: ${specs.fabric || "Bio-Baumwolle (kbA)"}`, draw: (color, specs) => fabricWidePicture(color, specs) },
+  measure: { label: (specs) => `Maße in Größe M: ${specs.chart.columns.join(", ")}`, draw: (color, specs) => measureWidePicture(color, specs) },
+  pair: { label: (specs) => specs.pair.label, draw: (color, specs) => pairWidePicture(color, specs) },
+  origin: { label: (specs) => `Garnrolle und Nähnadel – genäht ${specs.madeIn}`, draw: (color, specs) => originWidePicture(color, specs) },
+  garmentWash: { label: () => "Kleidungsstück und Waschsymbol für 30 °C", draw: (color, specs) => garmentWashWide(color, specs) },
 };
 
 const galleryPictures = {
@@ -1079,6 +1570,13 @@ const galleryPictures = {
   cushionSize: { label: "Maße von der Seite", draw: (color, specs) => cushionSizePicture(color, specs) },
   cushionInside: { label: "geöffnet mit Füllung", draw: (color, specs) => cushionInsidePicture(color, specs) },
   cushionFabric: { label: "Stoff aus Bio-Baumwolle", draw: (color) => cushionFabricPicture(color) },
+  // Clothing
+  garmentFront: { label: "flach ausgelegt", draw: (color, specs) => garmentFrontPicture(color, specs) },
+  garmentWarrior: { label: "beim Üben im Krieger", draw: (color, specs) => outfitScene(color, specs, "warrior", "0 0 100 100") },
+  garmentFabric: { label: "Stoff aus der Nähe", draw: (color, specs) => garmentFabricPicture(color, specs) },
+  garmentTree: { label: "beim Üben im Baum", draw: (color, specs) => outfitScene(color, specs, "tree", "0 0 100 100") },
+  garmentMeasure: { label: "mit den Maßen in Größe M", draw: (color, specs) => garmentMeasurePicture(color, specs) },
+  garmentFolded: { label: "zusammengelegt", draw: (color) => garmentFoldedPicture(color) },
 };
 
 // ---------- Drawn cushion pictures ----------
@@ -1287,6 +1785,242 @@ function cushionFillingsWide() {
     </svg>`;
 }
 
+// ---------- Drawn clothing pictures ----------
+// The garments reuse their card drawings from shared.js (a 180×180 box).
+// `GARMENT_BOX` is the area a garment covers there, so any garment can be
+// fitted into a picture; worn, it colours its part of a stick figure.
+// Worn garments sit on a light wooden figure, so dark colours stand out.
+const MANNEQUIN = "#b39373";
+const GOLD = "#ac8700";
+const isLight = (hex) => {
+  const n = parseInt(hex.slice(1), 16);
+  return ((n >> 16) * 299 + ((n >> 8) & 255) * 587 + (n & 255) * 114) / 1000 > 180;
+};
+const GARMENT_BOX = {
+  leggings: [56, 30, 124, 160], pants: [60, 34, 120, 142], culotte: [44, 38, 138, 124],
+  top: [56, 34, 124, 136], tee: [44, 34, 136, 138], tankTop: [60, 36, 120, 140], tankTee: [52, 36, 128, 138],
+  bralette: [58, 38, 122, 104], wrapTop: [40, 34, 140, 142], sweater: [26, 30, 154, 154], overall: [60, 26, 120, 144],
+};
+
+// Fits the garment into a box around (cx, cy); `point` maps a spot on the
+// garment (in card coordinates) into the picture.
+function garmentPlacement(specs, cx, cy, maxWidth, maxHeight) {
+  const [x1, y1, x2, y2] = GARMENT_BOX[specs.shape];
+  const scale = Math.min(maxWidth / (x2 - x1), maxHeight / (y2 - y1), 2);
+  const point = (x, y) => [cx + (x - (x1 + x2) / 2) * scale, cy + (y - (y1 + y2) / 2) * scale].map((v) => Math.round(v * 10) / 10);
+  const [left, top] = point(0, 0);
+  return { point, draw: (hex) => `<g transform="translate(${left} ${top}) scale(${Math.round(scale * 1000) / 1000})">${shapes[specs.shape](hex)}</g>` };
+}
+
+// Where each size chart value is measured: a line in card coordinates,
+// optionally with the spot (0–1) for its number.
+const MEASURES = {
+  leggings: { Taille: [62, 35, 118, 35], Innenbeinlänge: [95, 70, 106, 156] },
+  pants: { Taille: [64, 38, 116, 38], Oberschenkel: [91, 76, 117, 76], Innenbeinlänge: [94, 72, 101, 138, 0.6] },
+  culotte: { Taille: [62, 42, 118, 42], Hüfte: [61, 56, 121, 56], Oberschenkel: [91, 84, 127, 84, 0.6], Innenbeinlänge: [94, 78, 99, 120, 0.65] },
+  top: { Brustweite: [66, 68, 114, 68], Saumweite: [66, 130, 114, 130], Länge: [104, 37, 104, 135] },
+  tee: { Brustweite: [66, 74, 114, 74], Saumweite: [66, 132, 114, 132], Länge: [104, 37, 104, 137] },
+  tankTop: { Brustweite: [60, 68, 120, 68], Saumweite: [60, 134, 120, 134], Länge: [106, 38, 106, 139] },
+  tankTee: { Brustweite: [52, 70, 128, 70], Saumweite: [52, 132, 128, 132], Länge: [110, 38, 110, 137] },
+  bralette: { Brustweite: [58, 80, 122, 80], Saumweite: [60, 98, 120, 98], Länge: [108, 42, 108, 100, 0.3] },
+  wrapTop: { Brustweite: [66, 78, 114, 78], Saumweite: [66, 136, 114, 136], Länge: [106, 38, 106, 141], Armlänge: [116, 46, 134, 102] },
+  sweater: { Brustweite: [54, 82, 126, 82], Saumweite: [54, 148, 126, 148], Länge: [110, 36, 110, 153] },
+  overall: { Brustweite: [70, 62, 110, 62], Oberschenkel: [91, 96, 116, 96], Beinlänge: [94, 90, 100, 140, 0.65], Länge: [104, 31, 104, 84, 0.25] },
+};
+
+// Gold measuring lines with numbered dots, like the original's size charts.
+function measureMarks(specs, place) {
+  const lines = specs.chart.columns.map((column, i) => {
+    const [x1, y1, x2, y2, at = 0.5] = MEASURES[specs.shape][column];
+    const [ax, ay] = place.point(x1, y1);
+    const [bx, by] = place.point(x2, y2);
+    const length = Math.hypot(bx - ax, by - ay);
+    const [nx, ny] = [((ay - by) / length) * 4, ((bx - ax) / length) * 4];
+    const tick = (x, y) => `M${Math.round((x - nx) * 10) / 10} ${Math.round((y - ny) * 10) / 10}l${Math.round(nx * 20) / 10} ${Math.round(ny * 20) / 10}`;
+    const d = `M${ax} ${ay}L${bx} ${by}${tick(ax, ay)}${tick(bx, by)}`;
+    const [dx, dy] = [ax + (bx - ax) * at, ay + (by - ay) * at].map((v) => Math.round(v * 10) / 10);
+    return { d, dot: `
+      <circle cx="${dx}" cy="${dy}" r="6.5" fill="${GOLD}" stroke="#fff"/>
+      <text x="${dx}" y="${dy + 3}" text-anchor="middle" font-size="8.5" font-weight="700" fill="#fff" font-family="Hanken Grotesk, sans-serif">${i + 1}</text>` };
+  });
+  return `
+      <g fill="none" stroke-linecap="round">${lines.map(({ d }) => `<path d="${d}" stroke="rgba(255, 255, 255, .8)" stroke-width="3.5"/>`).join("")}${lines.map(({ d }) => `<path d="${d}" stroke="${GOLD}" stroke-width="1.4"/>`).join("")}</g>${lines.map(({ dot }) => dot).join("")}`;
+}
+
+// The poses of the drawn scenes, split into legs, torso and arms.
+const outfitPoses = {
+  warrior: { head: [50, 30], legs: "M30 84L50 60L66 66L70 84", torso: "M50 60V38", arms: "M28 40H72" },
+  tree: { head: [50, 33], legs: "M50 84V60L40 66L49 72", torso: "M50 60V41", arms: "M50 41L42 31L50 19L58 31Z" },
+  dog: { head: [36, 73], legs: "M54 46L72 84", torso: "M34 66L54 46", arms: "M24 84L34 66" },
+  seated: { head: [50, 44], legs: "M32 84Q50 74 68 84", torso: "M50 78V52", arms: "M50 56L38 70L34 80M50 56L62 70L66 80", prop: '<ellipse cx="50" cy="86" rx="18" ry="5" fill="#6f6355"/>' },
+};
+const GARMENT_PARTS = {
+  leggings: ["legs"], pants: ["legs"], culotte: ["legs"],
+  top: ["torso"], tankTop: ["torso"], tankTee: ["torso"], bralette: ["torso"],
+  tee: ["torso", "arms"], sweater: ["torso", "arms"], wrapTop: ["torso", "arms"],
+  overall: ["torso", "legs"],
+};
+
+// A yoga scene whose figure wears the garment; light colours get a darker room.
+function outfitScene(color, specs, poseName, viewBox) {
+  const pose = outfitPoses[poseName];
+  const parts = GARMENT_PARTS[specs.shape];
+  const width = (part) => ((part === "legs" && specs.shape === "culotte") || (part === "torso" && specs.shape === "sweater") ? 7 : 5);
+  const line = (d, stroke, strokeWidth) => `<path d="${d}" fill="none" stroke="${stroke}" stroke-width="${strokeWidth}" stroke-linecap="round" stroke-linejoin="round"/>`;
+  const light = isLight(color.hex);
+  return `
+      <svg viewBox="${viewBox}" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <rect x="-100" y="-100" width="300" height="172" fill="${light ? "#d3c9bb" : "#ece6dc"}"/>
+        <rect x="-100" y="72" width="300" height="128" fill="${light ? "#a8957d" : "#c9b9a3"}"/>
+        <path d="M10 80H90L96 90H4Z" fill="#8b8378"/>
+        ${pose.prop || ""}
+        ${["legs", "torso", "arms"].filter((part) => !parts.includes(part)).map((part) => line(pose[part], MANNEQUIN, 5)).join("")}
+        ${parts.map((part) => line(pose[part], "rgba(0, 0, 0, .3)", width(part) + 1.4)).join("")}
+        ${parts.map((part) => line(pose[part], color.hex, width(part))).join("")}
+        <circle cx="${pose.head[0]}" cy="${pose.head[1]}" r="5" fill="${MANNEQUIN}"/>
+      </svg>`;
+}
+
+// Jersey up close: rows of little stitches.
+function knitPattern() {
+  const id = `knit-${++patternCount}`;
+  return { id, defs: `<defs><pattern id="${id}" width="6" height="5" patternUnits="userSpaceOnUse"><path d="M0 0L1.5 4.5L3 0M3 0L4.5 4.5L6 0" fill="none" stroke="rgba(0, 0, 0, .14)" stroke-width=".8"/><path d="M0 1L1.5 5.5L3 1M3 1L4.5 5.5L6 1" fill="none" stroke="rgba(255, 255, 255, .16)" stroke-width=".8"/></pattern></defs>` };
+}
+
+// The fabric's composition on a label, one fibre per line.
+function fabricLabel(specs, cx, top) {
+  const lines = (specs.fabric || "Bio-Baumwolle (kbA)").split(", ");
+  return `
+      <rect x="${cx - 80}" y="${top}" width="160" height="${lines.length * 14 + 12}" rx="13" fill="rgba(255, 255, 255, .88)"/>
+      ${lines.map((text, i) => `<text x="${cx}" y="${top + 20 + i * 14}" text-anchor="middle" ${LABEL_STYLE}>${text}</text>`).join("")}`;
+}
+
+// Size M's measures next to their numbers.
+function measureLegend(specs, x, top, anchor) {
+  const sizeM = specs.chart.rows.find(([size]) => size === "M");
+  return `
+      <text x="${x}" y="${top}" text-anchor="${anchor}" ${LABEL_STYLE} font-weight="700">Größe M</text>
+      ${specs.chart.columns.map((column, i) => `<text x="${x}" y="${top + 15 + i * 14}" text-anchor="${anchor}" ${LABEL_STYLE}>(${i + 1}) ${column}: ${sizeM[i + 2]} cm</text>`).join("")}`;
+}
+
+function garmentFrontPicture(color, specs) {
+  return `
+    <svg viewBox="0 0 200 250" aria-hidden="true">
+      <rect width="200" height="250" fill="${PHOTO_BG}"/>
+      ${garmentPlacement(specs, 100, 125, 170, 200).draw(color.hex)}
+    </svg>`;
+}
+
+function garmentFabricPicture(color, specs) {
+  const knit = knitPattern();
+  return `
+    <svg viewBox="0 0 200 250" aria-hidden="true">
+      ${knit.defs}
+      <rect width="200" height="250" fill="${color.hex}"/>
+      <rect width="200" height="250" fill="url(#${knit.id})"/>
+      ${fabricLabel(specs, 100, 186)}
+    </svg>`;
+}
+
+// The legend takes the bottom, the garment the space above it.
+function garmentMeasurePicture(color, specs) {
+  const top = 250 - specs.chart.columns.length * 14 - 22;
+  const place = garmentPlacement(specs, 100, (top - 4) / 2, 150, top - 32);
+  return `
+    <svg viewBox="0 0 200 250" aria-hidden="true">
+      <rect width="200" height="250" fill="${PHOTO_BG}"/>
+      ${place.draw(color.hex)}${measureMarks(specs, place)}
+      ${measureLegend(specs, 100, top, "middle")}
+    </svg>`;
+}
+
+// Two folded pieces on top of each other.
+function garmentFoldedPicture(color) {
+  return `
+    <svg viewBox="0 0 200 250" aria-hidden="true">
+      <rect width="200" height="250" fill="${PHOTO_BG}"/>
+      <ellipse cx="100" cy="176" rx="74" ry="6" fill="rgba(0, 0, 0, .08)"/>
+      <rect x="34" y="128" width="132" height="46" rx="8" fill="${color.hex}" stroke="${GARMENT_LINE}"/>
+      <rect x="34" y="150" width="132" height="24" rx="8" fill="rgba(0, 0, 0, .06)"/>
+      <rect x="40" y="86" width="120" height="44" rx="8" fill="${color.hex}" stroke="${GARMENT_LINE}"/>
+      <path d="M40 102H160M100 86V130" stroke="rgba(0, 0, 0, .08)"/>
+    </svg>`;
+}
+
+// Wide pictures for the info rows (330×202, like the mats').
+function fabricWidePicture(color, specs) {
+  const knit = knitPattern();
+  const lines = (specs.fabric || "Bio-Baumwolle (kbA)").split(", ").length;
+  return `
+    <svg viewBox="0 0 330 202" aria-hidden="true">
+      ${knit.defs}
+      <rect width="330" height="202" fill="${color.hex}"/>
+      <rect width="330" height="202" fill="url(#${knit.id})"/>
+      ${fabricLabel(specs, 165, 101 - (lines * 14 + 12) / 2)}
+    </svg>`;
+}
+
+function measureWidePicture(color, specs) {
+  const place = garmentPlacement(specs, 110, 101, 170, 172);
+  return `
+    <svg viewBox="0 0 330 202" aria-hidden="true">
+      <rect width="330" height="202" fill="${PHOTO_BG}"/>
+      ${place.draw(color.hex)}${measureMarks(specs, place)}
+      ${measureLegend(specs, 214, 101 - specs.chart.columns.length * 7, "start")}
+    </svg>`;
+}
+
+function pairWidePicture(color, specs) {
+  const partner = specs.pair;
+  return `
+    <svg viewBox="0 0 330 202" aria-hidden="true">
+      <rect width="330" height="202" fill="${PHOTO_BG}"/>
+      ${garmentPlacement(specs, 102, 90, 116, 140).draw(color.hex)}
+      ${garmentPlacement(partner, 228, 90, 116, 140).draw(partner.hex || color.hex)}
+      <text x="165" y="186" text-anchor="middle" ${LABEL_STYLE}>${partner.label}</text>
+    </svg>`;
+}
+
+// A spool of thread in the garment's colour and a needle.
+function originWidePicture(color, specs) {
+  return `
+    <svg viewBox="0 0 330 202" aria-hidden="true">
+      <rect width="330" height="202" fill="${PHOTO_BG}"/>
+      <rect x="120" y="40" width="76" height="12" rx="3" fill="#c9a77e"/>
+      <rect x="120" y="128" width="76" height="12" rx="3" fill="#c9a77e"/>
+      <rect x="128" y="52" width="60" height="76" fill="${color.hex}" stroke="${GARMENT_LINE}"/>
+      <path d="M128 62H188M128 72H188M128 82H188M128 92H188M128 102H188M128 112H188M128 122H188" stroke="rgba(0, 0, 0, .1)"/>
+      <path d="M188 88C222 92 226 128 250 134" fill="none" stroke="${color.hex}" stroke-width="2"/>
+      <path d="M188 88C222 92 226 128 250 134" fill="none" stroke="rgba(0, 0, 0, .15)" stroke-width=".6"/>
+      <path d="M236 58L274 142" stroke="#8c8778" stroke-width="2.5" stroke-linecap="round"/>
+      <ellipse cx="239" cy="65" rx="1.2" ry="3.4" transform="rotate(-24 239 65)" fill="${PHOTO_BG}"/>
+      <text x="165" y="176" text-anchor="middle" ${LABEL_STYLE}>Genäht ${specs.madeIn}</text>
+    </svg>`;
+}
+
+// The garment next to a wash tub at 30 °C.
+function garmentWashWide(color, specs) {
+  return `
+    <svg viewBox="0 0 330 202" aria-hidden="true">
+      <rect width="330" height="202" fill="${PHOTO_BG}"/>
+      ${garmentPlacement(specs, 106, 90, 150, 140).draw(color.hex)}
+      <path d="M200 66h86l-10 74h-66z" fill="none" stroke="#5f5c52" stroke-width="2"/>
+      <path d="M204 84c12 6 22-6 34 0s22 6 34 0" fill="none" stroke="#5f5c52" stroke-width="1.5"/>
+      <text x="243" y="122" text-anchor="middle" font-size="16" fill="#5f5c52" font-family="Hanken Grotesk, sans-serif">30°</text>
+      <text x="165" y="186" text-anchor="middle" ${LABEL_STYLE}>Vorbehandelt, waschbar bei 30 °C</text>
+    </svg>`;
+}
+
+// The drawing in the size chart: the garment in a neutral tone, so the
+// numbers stay readable whatever colour is picked.
+function sizeChartDrawing(specs) {
+  const place = garmentPlacement(specs, 180, 140, 230, 250);
+  return `
+        <svg viewBox="0 0 360 280" aria-hidden="true">
+          ${place.draw("#ebe7df")}${measureMarks(specs, place)}
+        </svg>`;
+}
+
 // ---------- Small line icons for the buy box ----------
 const buyboxIcons = {
   truck: '<path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>',
@@ -1304,9 +2038,50 @@ const buyboxUsps = [
   ["heart", "Designed with love in Vienna"],
 ];
 
-// Buy box texts for the picked colour; sold-out colours read as on the original.
-const cartLabel = (color) => (color.soldOut ? "Benachrichtige mich" : "In den Warenkorb");
-const stockText = (color) => (color.soldOut ? "Nicht auf Lager" : "Auf Lager: In 1-3 Tagen bei dir");
+// Buy box texts for the picked choice; sold-out choices read as on the original.
+// Clothing sells out per size, everything else per colour.
+const isSoldOut = (color, size) => (size ? !color.stock.includes(size) : Boolean(color.soldOut));
+const cartLabel = (soldOut) => (soldOut ? "Benachrichtige mich" : "In den Warenkorb");
+const stockText = (soldOut) => (soldOut ? "Nicht auf Lager" : "Auf Lager: In 1-3 Tagen bei dir");
+
+// A length (MUDRA PRO) or a colour (clothing) can bring its own price;
+// reduced clothing colours also show the old price, crossed out.
+const priceOf = (product, color, length) => ({ price: length?.price ?? color.price ?? product.price, compareAt: color.compareAt || null });
+function priceMarkup({ price, compareAt }) {
+  return compareAt ? `
+          <s class="buybox__compare"><span class="visually-hidden">statt </span>${formatPrice(compareAt)}</s>
+          <span class="buybox__amount buybox__amount--sale"><span class="visually-hidden">jetzt </span>${formatPrice(price)}</span>` : `
+          <span class="buybox__amount">${formatPrice(price)}</span>`;
+}
+
+// The original's size chart: a table per size and a drawing with numbered
+// measures. It is a <dialog>, so focus, Escape and the backdrop work natively.
+function sizeChartMarkup(product) {
+  const { columns, rows } = product.specs.chart;
+  return `
+    <dialog class="size-chart" aria-labelledby="size-chart-title">
+      <div class="size-chart__inner">
+        <div class="size-chart__head">
+          <h2 class="size-chart__title" id="size-chart-title">Größentabelle</h2>
+          <button class="size-chart__close" type="button" aria-label="Größentabelle schließen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+        </div>
+        <div class="size-chart__scroll" tabindex="0" role="region" aria-label="Maßtabelle">
+          <table class="size-chart__table">
+            <caption class="visually-hidden">Maße der ${product.name} in cm</caption>
+            <thead>
+              <tr><th scope="col"><span class="visually-hidden">Größe</span></th><th scope="col">EU Größen</th>${columns.map((column, i) => `<th scope="col">${column} (${i + 1})</th>`).join("")}</tr>
+            </thead>
+            <tbody>${rows.map(([size, eu, ...values]) => `
+              <tr><th scope="row">${size}</th><td>${eu}</td>${values.map((value) => `<td>${value}</td>`).join("")}</tr>`).join("")}
+            </tbody>
+          </table>
+        </div>
+        <p class="size-chart__note">Alle Maße in cm. Die Nummern zeigen, wo gemessen wird.</p>
+        <div class="size-chart__picture" role="img" aria-label="Zeichnung der ${product.name} mit den Messstellen: ${columns.map((column, i) => `${i + 1} ${column}`).join(", ")}">${sizeChartDrawing(product.specs)}
+        </div>
+      </div>
+    </dialog>`;
+}
 
 // ---------- Page markup ----------
 function galleryItems(product, color) {
@@ -1347,12 +2122,13 @@ function factsMarkup(facts) {
         </dl>`;
 }
 
-function productMarkup(product) {
-  const color = product.colors[0];
+// `color` and `size` are the choices the page opens with.
+function productMarkup(product, color, size) {
+  const soldOut = isSoldOut(color, size);
 
   const swatches = product.colors.map((c, i) => `
               <label class="color-swatch">
-                <input type="radio" name="color" value="${i}" class="visually-hidden"${i === 0 ? " checked" : ""}>
+                <input type="radio" name="color" value="${i}" class="visually-hidden"${c === color ? " checked" : ""}>
                 <span class="color-swatch__thumb">${galleryPictures[product.swatch || "rolled"].draw(c, product.specs)}</span>
                 <span class="visually-hidden">${c.name}</span>
               </label>`).join("");
@@ -1369,14 +2145,29 @@ function productMarkup(product) {
 
   const lengths = product.lengths ? `
 
-        <fieldset class="option-picker">
-          <legend class="color-picker__legend"><strong>Länge:</strong> <span class="option-picker__value">${product.lengths[0].label}</span></legend>
+        <fieldset class="option-picker length-picker">
+          <legend class="color-picker__legend"><strong>Länge:</strong> <span class="length-picker__value">${product.lengths[0].label}</span></legend>
           <div class="option-picker__options">${product.lengths.map((length, i) => `
             <label class="option-pill">
               <input type="radio" name="length" value="${i}" class="visually-hidden"${i === 0 ? " checked" : ""}>
               <span class="option-pill__label">${length.label}</span>
             </label>`).join("")}
           </div>
+        </fieldset>` : "";
+
+  // Sizes sold out in the picked colour look like the others (as on the
+  // original) but say so to screen readers; picking one offers a reminder.
+  const sizes = product.sizes ? `
+
+        <fieldset class="option-picker size-picker">
+          <legend class="color-picker__legend"><strong>Größe:</strong> <span class="size-picker__value">${size}</span></legend>
+          <div class="option-picker__options">${product.sizes.map((label) => `
+            <label class="option-pill option-pill--size${color.stock.includes(label) ? "" : " option-pill--out"}">
+              <input type="radio" name="size" value="${label}" class="visually-hidden"${label === size ? " checked" : ""}>
+              <span class="option-pill__label">${label}<span class="visually-hidden">${color.stock.includes(label) ? "" : " (ausverkauft)"}</span></span>
+            </label>`).join("")}
+          </div>
+          <button class="size-picker__chart" type="button" aria-haspopup="dialog">Größentabelle</button>
         </fieldset>` : "";
 
   const usps = buyboxUsps.map(([icon, text]) => `
@@ -1395,7 +2186,7 @@ function productMarkup(product) {
 
   const scales = product.ratingScales.map(([label, value]) => `
             <li class="rating-scale">
-              <div class="rating-scale__row"><span>${label}</span><span>${value.toFixed(2)} / 5.00</span></div>
+              <div class="rating-scale__row"><span>${label}</span><span>${value} / 5.00</span></div>
               <div class="rating-scale__bar"><span style="width: ${(value / 5) * 100}%"></span></div>
             </li>`).join("");
 
@@ -1412,17 +2203,17 @@ function productMarkup(product) {
       <div class="buybox">
         <h1 class="buybox__title">${product.name}</h1>${product.subtitle ? `
         <p class="buybox__subtitle">${product.subtitle}</p>` : ""}
-        <a href="#bewertungen" class="buybox__rating">${starRating(product.rating)}<span>(${product.buyboxCount || product.reviewCount})</span></a>
+        <a href="#bewertungen" class="buybox__rating">${starRating(product.rating)}<span>(${product.reviewCount})</span></a>
         <p class="buybox__price">
-          <span class="buybox__amount">${formatPrice(product.price)}</span>
+          <span class="buybox__prices">${priceMarkup(priceOf(product, color, product.lengths?.[0]))}</span>
           <span class="buybox__tax">inkl. MwSt. zzgl. <a href="#">Versandkosten</a></span>
         </p>
 
-${colorPicker}${lengths}
+${colorPicker}${lengths}${sizes}
 
-        <button class="btn btn--primary btn--block buybox__cart" type="button">${cartLabel(color)}</button>
-        <p class="buybox__note"${color.soldOut ? "" : " hidden"}>Du erhältst eine Benachrichtigung per E-Mail, sobald der Artikel wieder auf Lager ist.</p>
-        <p class="buybox__stock${color.soldOut ? " buybox__stock--out" : ""}">${stockText(color)}</p>
+        <button class="btn btn--primary btn--block buybox__cart" type="button">${cartLabel(soldOut)}</button>
+        <p class="buybox__note"${soldOut ? "" : " hidden"}>Du erhältst eine Benachrichtigung per E-Mail, sobald der Artikel wieder auf Lager ist.</p>
+        <p class="buybox__stock${soldOut ? " buybox__stock--out" : ""}">${stockText(soldOut)}</p>
         <p class="buybox__added" role="status"></p>
         <div class="buybox__payments" role="img" aria-label="Zahlungsarten (neutrale Platzhalter-Icons)">${PAYMENT_ICONS}
         </div>
@@ -1454,7 +2245,7 @@ ${reviewsMarkup(product)}
         <div class="product-grid">${product.related.map(productCard).join("")}
         </div>
       </div>
-    </section>`;
+    </section>${product.sizes ? sizeChartMarkup(product) : ""}`;
 }
 
 function featureRows(product, color) {
@@ -1487,17 +2278,22 @@ function ago(days) {
   return `vor ${Math.floor(days / 7)} Wochen`;
 }
 
+// Clothing reviews also say how tall the reviewer is and which size fits.
 function reviewItem(product, review) {
+  const fit = [["Körpergröße", review.height], ["Gekaufte Größe", review.size], ["Übliche Größe", review.usual]].filter(([, value]) => value);
   return `
           <li class="review-item">
             <div class="review-item__meta">
               <p class="review-item__badge"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.4"/></svg>Verifizierter Kauf</p>
               <p class="review-item__name">${review.name}</p>
-              ${review.place ? `<p class="review-item__place">${review.place}</p>` : ""}
+              ${review.place ? `<p class="review-item__place">${review.place}</p>` : ""}${fit.length ? `
+              <dl class="review-item__fit">${fit.map(([term, value]) => `
+                <div><dt>${term}:</dt> <dd>${value}</dd></div>`).join("")}
+              </dl>` : ""}
             </div>
             <div class="review-item__body">
               ${starRating(review.stars, `${review.stars} von 5 Sternen`)}
-              <p class="review-item__product">${product.name}${review.color ? ` ${review.color}` : ""}</p>
+              <p class="review-item__product">${product.name}${review.color ? ` ${review.color}` : ""}${review.size ? ` / ${review.size}` : ""}</p>
               <p class="review-item__text">${review.text}</p>
               <p class="review-item__date">${ago(review.days)}</p>
             </div>
@@ -1576,15 +2372,25 @@ function missingMarkup() {
 }
 
 // ---------- Render + behaviour ----------
-const slug = new URLSearchParams(location.search).get("p") || "yogamatte-pure";
+const pageParams = new URLSearchParams(location.search);
+const slug = pageParams.get("p") || "yogamatte-pure";
 const product = productDetails[slug];
 const productRoot = document.getElementById("product");
 
 if (!product) {
   productRoot.innerHTML = missingMarkup();
 } else {
+  // A link can preselect a colour (&farbe=Light Taupe) and a size (&groesse=M),
+  // e.g. from a category card or the cart. Like the original, clothing
+  // otherwise opens on the first colour in stock, in its first size in stock.
+  let color = product.colors.find((c) => c.name === pageParams.get("farbe"))
+    || (product.sizes && product.colors.find((c) => !c.soldOut))
+    || product.colors[0];
+  let size = product.sizes && (product.sizes.find((s) => s === pageParams.get("groesse")) || color.stock[0] || product.sizes[0]);
+  let length = product.lengths?.[0]; // only for products with a length choice
+
   document.title = `${product.name} – LotusCraft Student Rebuild`;
-  productRoot.innerHTML = productMarkup(product);
+  productRoot.innerHTML = productMarkup(product, color, size);
   setupReviews(product);
 
   const track = productRoot.querySelector(".gallery__track");
@@ -1593,13 +2399,13 @@ if (!product) {
   const colorValue = productRoot.querySelector(".color-picker__value");
   const colorInputs = productRoot.querySelectorAll('input[name="color"]');
   const lengthInputs = productRoot.querySelectorAll('input[name="length"]');
-  const amount = productRoot.querySelector(".buybox__amount");
+  const sizeInputs = productRoot.querySelectorAll('input[name="size"]');
+  const prices = productRoot.querySelector(".buybox__prices");
   const cartButton = productRoot.querySelector(".buybox__cart");
   const note = productRoot.querySelector(".buybox__note");
   const stock = productRoot.querySelector(".buybox__stock");
   const added = productRoot.querySelector(".buybox__added");
-  let color = product.colors[0];
-  let length = product.lengths?.[0]; // only for products with a length choice
+  const sizeChart = productRoot.querySelector(".size-chart");
 
   // On tablets and phones the gallery is a swipe slider; thumbnails jump to
   // a picture and follow along while swiping. One step = picture + gap.
@@ -1627,22 +2433,33 @@ if (!product) {
   // Like the original, such combinations are hidden rather than sold out.
   const offered = (c, l) => !l?.without?.includes(c.name);
 
-  // Buy box texts, price and offered choices for the picked colour (and length).
+  // Buy box texts, price and offered choices for the picked colour (and
+  // length or size).
   function updateBuybox() {
+    const soldOut = isSoldOut(color, size);
     if (colorValue) colorValue.textContent = color.name;
-    cartButton.textContent = cartLabel(color);
-    note.hidden = !color.soldOut;
-    stock.textContent = stockText(color);
-    stock.classList.toggle("buybox__stock--out", Boolean(color.soldOut));
+    prices.innerHTML = priceMarkup(priceOf(product, color, length));
+    cartButton.textContent = cartLabel(soldOut);
+    note.hidden = !soldOut;
+    stock.textContent = stockText(soldOut);
+    stock.classList.toggle("buybox__stock--out", soldOut);
     added.textContent = "";
+    if (size) {
+      productRoot.querySelector(".size-picker__value").textContent = size;
+      sizeInputs.forEach((input) => {
+        const out = !color.stock.includes(input.value);
+        input.closest("label").classList.toggle("option-pill--out", out);
+        input.nextElementSibling.lastElementChild.textContent = out ? " (ausverkauft)" : "";
+      });
+    }
     if (!length) return;
-    productRoot.querySelector(".option-picker__value").textContent = length.label;
-    amount.textContent = formatPrice(length.price);
+    productRoot.querySelector(".length-picker__value").textContent = length.label;
     colorInputs.forEach((input, i) => (input.closest("label").hidden = !offered(product.colors[i], length)));
     lengthInputs.forEach((input, i) => (input.closest("label").hidden = !offered(color, product.lengths[i])));
   }
 
-  // Picking a colour redraws every picture in that colour.
+  // Picking a colour redraws every picture in that colour. Clothing keeps
+  // the picked size, as on the original, even if it is sold out in the new colour.
   productRoot.querySelector(".color-picker")?.addEventListener("change", (e) => {
     color = product.colors[Number(e.target.value)];
     badge.hidden = !color.matte;
@@ -1654,34 +2471,45 @@ if (!product) {
     updateBuybox();
   });
 
-  productRoot.querySelector(".option-picker")?.addEventListener("change", (e) => {
+  productRoot.querySelector(".length-picker")?.addEventListener("change", (e) => {
     length = product.lengths[Number(e.target.value)];
     updateBuybox();
   });
 
-  // Demo cart: adds the picked colour and opens the cart; nothing is ordered.
-  // For a sold-out colour the button only explains that no reminder is stored.
+  productRoot.querySelector(".size-picker")?.addEventListener("change", (e) => {
+    size = e.target.value;
+    updateBuybox();
+  });
+
+  // The size chart closes with its button, Escape or a click on the dark
+  // backdrop (outside the inner box the click lands on the dialog itself).
+  productRoot.querySelector(".size-picker__chart")?.addEventListener("click", () => sizeChart.showModal());
+  sizeChart?.addEventListener("click", (e) => {
+    if (e.target === sizeChart || e.target.closest(".size-chart__close")) sizeChart.close();
+  });
+
+  // Demo cart: adds the picked colour (and size) and opens the cart; nothing
+  // is ordered. For a sold-out choice the button only explains that no
+  // reminder is stored.
   cartButton.addEventListener("click", () => {
-    if (color.soldOut) {
+    if (isSoldOut(color, size)) {
       added.textContent = "Nur eine Demo: In diesem Studentenprojekt gibt es keine Benachrichtigungen, es wird nichts gespeichert.";
       return;
     }
-    const variant = [color.name, length?.label].filter(Boolean).join(" / ");
+    const variant = [color.name, length?.label, size].filter(Boolean).join(" / ");
     addToCart({
       id: variant ? `${slug}:${variant}` : slug,
       name: product.name,
       variant,
       hex: color.hex,
-      price: length ? length.price : product.price,
-      href: `produkt.html?p=${slug}${color.name ? `&farbe=${encodeURIComponent(color.name)}` : ""}`,
+      price: priceOf(product, color, length).price,
+      href: `produkt.html?p=${slug}${color.name ? `&farbe=${encodeURIComponent(color.name)}` : ""}${size ? `&groesse=${size}` : ""}`,
     });
     openCart();
     added.textContent = `${product.name}${variant ? ` (${variant})` : ""} liegt im Warenkorb – nur eine Demo, es wird nichts bestellt.`;
     cartButton.textContent = "Hinzugefügt ✓";
-    setTimeout(() => (cartButton.textContent = cartLabel(color)), 2000);
+    setTimeout(() => (cartButton.textContent = cartLabel(isSoldOut(color, size))), 2000);
   });
 
-  // A link can preselect a colour, e.g. from the category page (&farbe=Light Taupe).
-  const wanted = product.colors.findIndex((c) => c.name === new URLSearchParams(location.search).get("farbe"));
-  if (wanted > 0) colorInputs[wanted].click();
+  updateBuybox();
 }
