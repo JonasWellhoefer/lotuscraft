@@ -77,7 +77,7 @@ document.getElementById("site-header").outerHTML = `
       <button class="icon-btn search-toggle" type="button" aria-label="Suche öffnen" aria-controls="search-dialog" aria-haspopup="dialog" aria-expanded="false">
         <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>
       </button>
-      <a href="#" class="icon-btn hide-sm" aria-label="Konto">
+      <a href="seite.html?s=konto" class="icon-btn hide-sm" aria-label="Konto">
         <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-3.5 3.6-5.5 7-5.5s6.2 2 7 5.5"/></svg>
       </a>
       <button class="icon-btn cart-link" type="button" aria-label="Warenkorb öffnen" aria-controls="cart-drawer" aria-haspopup="dialog" aria-expanded="false">
@@ -109,38 +109,38 @@ document.getElementById("site-footer").outerHTML = `
     <nav class="footer__col" aria-labelledby="footer-service">
       <h3 class="footer__heading" id="footer-service">Kundenservice</h3>
       <ul>
-        <li><a href="#">Hilfe &amp; Kontakt</a></li>
-        <li><a href="#">FAQ</a></li>
-        <li><a href="#">Retouren &amp; Umtausch</a></li>
-        <li><a href="#">Versandkosten</a></li>
-        <li><a href="#">Widerrufsbelehrung</a></li>
-        <li><a href="#">Vertrag widerrufen</a></li>
-        <li><a href="#">AGB</a></li>
-        <li><a href="#">Datenschutz</a></li>
-        <li><a href="#">Cookie Einstellungen</a></li>
-        <li><a href="#">Impressum</a></li>
+        <li><a href="seite.html?s=hilfe-kontakt">Hilfe &amp; Kontakt</a></li>
+        <li><a href="seite.html?s=faq">FAQ</a></li>
+        <li><a href="seite.html?s=retouren">Retouren &amp; Umtausch</a></li>
+        <li><a href="seite.html?s=versand">Versandkosten</a></li>
+        <li><a href="seite.html?s=widerruf">Widerrufsbelehrung</a></li>
+        <li><a href="seite.html?s=vertrag-widerrufen">Vertrag widerrufen</a></li>
+        <li><a href="seite.html?s=agb">AGB</a></li>
+        <li><a href="seite.html?s=datenschutz">Datenschutz</a></li>
+        <li><a href="seite.html?s=cookies">Cookie Einstellungen</a></li>
+        <li><a href="seite.html?s=impressum">Impressum</a></li>
       </ul>
     </nav>
     <nav class="footer__col" aria-labelledby="footer-about">
       <h3 class="footer__heading" id="footer-about">Über uns &amp; Inspiration</h3>
       <ul>
-        <li><a href="#">Über Uns</a></li>
-        <li><a href="#">Blog</a></li>
-        <li><a href="#">Nachhaltigkeit</a></li>
-        <li><a href="#">Store Wien</a></li>
-        <li><a href="#">Jobs @ LotusCraft</a></li>
-        <li><a href="#">Online Yogakurse</a></li>
+        <li><a href="seite.html?s=ueber-uns">Über Uns</a></li>
+        <li><a href="seite.html?s=blog">Blog</a></li>
+        <li><a href="seite.html?s=nachhaltigkeit">Nachhaltigkeit</a></li>
+        <li><a href="seite.html?s=store">Store Wien</a></li>
+        <li><a href="seite.html?s=jobs">Jobs @ LotusCraft</a></li>
+        <li><a href="seite.html?s=onlinekurse">Online Yogakurse</a></li>
       </ul>
     </nav>
     <nav class="footer__col" aria-labelledby="footer-products">
       <h3 class="footer__heading" id="footer-products">Produkte &amp; Beratung</h3>
       <ul>
-        <li><a href="#">Yogamatten im Vergleich</a></li>
-        <li><a href="#">Yogamatten Quiz - Finde die richtige Matte</a></li>
-        <li><a href="#">Produktguide – Meditationskissen</a></li>
-        <li><a href="#">Produktguide – Yogabolster</a></li>
-        <li><a href="#">Rabatt für Yoga-Studios</a></li>
-        <li><a href="#">Rabatt für B2B &amp; Gewerbekunden</a></li>
+        <li><a href="seite.html?s=yogamatten-vergleich">Yogamatten im Vergleich</a></li>
+        <li><a href="seite.html?s=quiz">Yogamatten Quiz - Finde die richtige Matte</a></li>
+        <li><a href="seite.html?s=guide-kissen">Produktguide – Meditationskissen</a></li>
+        <li><a href="seite.html?s=guide-bolster">Produktguide – Yogabolster</a></li>
+        <li><a href="seite.html?s=rabatt-studios">Rabatt für Yoga-Studios</a></li>
+        <li><a href="seite.html?s=rabatt-gewerbe">Rabatt für B2B &amp; Gewerbekunden</a></li>
       </ul>
     </nav>
     <div class="footer__col">
@@ -204,9 +204,9 @@ document.getElementById("site-footer").outerHTML = `
   <nav class="drawer__nav" aria-label="Mobile Navigation"></nav>
 
   <div class="drawer__footer">
-    <a href="#">Kontakt &amp; Hilfe</a>
-    <a href="#">Account</a>
-    <a href="#">Über Uns</a>
+    <a href="seite.html?s=hilfe-kontakt">Kontakt &amp; Hilfe</a>
+    <a href="seite.html?s=konto">Account</a>
+    <a href="seite.html?s=ueber-uns">Über Uns</a>
     <div class="language">
       <svg class="language__flag" viewBox="0 0 30 20" aria-hidden="true"><rect width="30" height="7" fill="#000"/><rect y="6.6" width="30" height="6.8" fill="#dd0000"/><rect y="13.3" width="30" height="6.7" fill="#ffce00"/></svg>
       <label class="visually-hidden" for="drawer-language-select">Sprache</label>

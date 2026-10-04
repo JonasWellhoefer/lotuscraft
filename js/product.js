@@ -4443,7 +4443,7 @@ function productMarkup(product, color, size, choice) {
         <a href="#bewertungen" class="buybox__rating">${starRating(product.rating)}<span>(${product.reviewCount})</span></a>` : ""}
         <p class="buybox__price">
           <span class="buybox__prices">${priceMarkup(priceOf(product, color, choice))}</span>
-          <span class="buybox__tax">${product.shippingNote === false ? "inkl. MwSt." : `inkl. MwSt. zzgl. <a href="#">Versandkosten</a>`}</span>
+          <span class="buybox__tax">${product.shippingNote === false ? "inkl. MwSt." : `inkl. MwSt. zzgl. <a href="seite.html?s=versand">Versandkosten</a>`}</span>
         </p>
 
 ${product.parts ? bundleMarkup(product, color) : ""}${colorPicker}${choices}${fixedOptions}${sizes}
@@ -4729,7 +4729,9 @@ const slug = pageParams.get("p") || "yogamatte-pure";
 const product = productDetails[slug];
 const productRoot = document.getElementById("product");
 
-if (!product) {
+if (!productRoot) {
+  // Another page (the guides on seite.html) only uses the data above.
+} else if (!product) {
   productRoot.innerHTML = missingMarkup();
 } else {
   // A link can preselect a colour (&farbe=Light Taupe), with a choice

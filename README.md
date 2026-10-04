@@ -90,13 +90,15 @@ lotuscraft/
 ├── index.html      # Startseite (nur der Inhalt zwischen Header und Footer)
 ├── produkt.html    # Produktseite, z. B. produkt.html?p=yogamatte-pure
 ├── kategorie.html  # Kategorieseiten mit Filtern, z. B. kategorie.html?k=yogamatten oder ?k=reise-yogamatte
+├── seite.html      # Info-Seiten (Footer, Guides, Quiz, Konto), z. B. seite.html?s=faq
 ├── styles.css      # Gestaltung: Farben, Schriften, Layout, Mobilansicht
 ├── js/
 │   ├── shared.js   # Gemeinsame Daten & Helfer: Produkte, Kategorien, Menü, Suchindex, Zeichnungen
 │   ├── layout.js   # Header, Menüs (Handy + Desktop), Suche, Footer, Warenkorb (Demo)
 │   ├── home.js     # Startseite: Produkt-Tabs, Community, Bewertungs-Karussell
 │   ├── product.js  # Produktseiten: Daten aller Matten, „Almost Perfect“-Matten, Kissen, Kleidung, Bolster, Zabuton, Bank, Bezüge, Sets, Gutschein und des Zubehörs, Zeichnungen, Galerie, Farb-, Größen- und Optionsauswahl, Warenkorb-Button
-│   └── category.js # Kategorieseite: Filter (Farbe, Sitzhöhe, Form, Material, Füllung, Größe, Verfügbarkeit), Sortierung
+│   ├── category.js # Kategorieseite: Filter (Farbe, Sitzhöhe, Form, Material, Füllung, Größe, Verfügbarkeit), Sortierung
+│   └── seite.js    # Info-Seiten: eine Vorlage, alle Texte, Vergleichstabellen aus den Produktdaten, Quiz
 └── README.md
 ```
 
@@ -177,6 +179,15 @@ die Werte stammen direkt aus dem CSS des Originals.
 - [x] Kurzer eigener Text unter dem Raster, mit Links zu den Produktseiten
 - [x] Jede Karte im Shop öffnet die passende Produktseite, gleich in der richtigen Farbe oder Option (Kleidung in der ersten lieferbaren Größe, Sets mit der gewählten Auswahl im Warenkorb-Link)
 
+**Info-Seiten** (Footer, Handy-Menü, Konto-Symbol, „Versandkosten“ in der Kaufbox):
+
+- [x] 23 Seiten über `seite.html?s=…`: Hilfe & Kontakt, FAQ (11 Fragen als Akkordeon), Retouren & Umtausch, Versandkosten, Widerrufsbelehrung, Vertrag widerrufen, AGB, Datenschutz, Cookie Einstellungen, Impressum, Über uns, Blog, Nachhaltigkeit, Store Wien, Jobs, Online Yogakurse, Rabatt für Yoga-Studios und für Gewerbekunden, Konto – dazu eine Seite „nicht gefunden“
+- [x] Alle Texte selbst geschrieben und mit einem Hinweiskasten als Studentenprojekt gekennzeichnet: keine echten Rechtstexte, keine Firmenadresse, keine E-Mail-Adresse, keine Formulare, die Daten sammeln, und beim Konto kein Passwort
+- [x] Datenschutz und „Cookie Einstellungen“ sagen ehrlich, was gespeichert wird (nur der Warenkorb im Browser, dazu Schriften von Google Fonts); ein Knopf löscht den Warenkorb
+- [x] „Yogamatten im Vergleich“, „Produktguide – Meditationskissen“ und „– Yogabolster“ mit Tabellen, die aus den Produktdaten gebaut werden (auf dem Handy scrollt die Tabelle in ihrem Kasten, die erste Spalte bleibt stehen)
+- [x] Yogamatten-Quiz mit vier Fragen und einem Vorschlag samt Zweitplatziertem im gewählten Budget – läuft nur auf der Seite, nichts wird gespeichert oder gesendet
+- [x] Auch auf der Startseite führen der Hero-Knopf „Yoga-Sets“, die Kategorie-Kacheln und „Jetzt shoppen“ jetzt in den Shop; ohne Ziel bleiben nur die Platzhalter für Community-Beiträge und Social Media
+
 **Warenkorb** (Icon oben rechts oder „In den Warenkorb“ auf der Produktseite):
 
 - [x] Seitenleiste wie im Original, mit leerem Zustand
@@ -188,7 +199,7 @@ die Werte stammen direkt aus dem CSS des Originals.
 
 - [x] Suchfenster wie im Original, Ergebnisse schon beim Tippen (erste vier, „Alle anzeigen“ zeigt alle)
 - [x] Findet Produkte auch über Material, Farbname und Farbgruppe (z. B. „grün“, „kork“), ohne Rücksicht auf Groß-/Kleinschreibung und Umlaute
-- [x] Passende Seiten (z. B. „Yogamatten“); Escape leert erst das Feld, das zweite Escape schließt
+- [x] Passende Seiten (z. B. „Yogamatten“, „Versandkosten“, „Quiz“); Escape leert erst das Feld, das zweite Escape schließt
 
 ## Hinweis
 
