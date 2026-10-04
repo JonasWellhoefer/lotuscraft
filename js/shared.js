@@ -253,6 +253,9 @@ const shapes = {
                    <path d="M70 114h40M77 122h26" stroke="rgba(0,0,0,.3)" stroke-width="3" stroke-linecap="round"/>`,
   eyePillow: (c) => `<path d="M28 96c0-17 24-26 62-26s62 9 62 26-24 26-62 26-62-9-62-26z" fill="${c}"/>
                      <path d="M40 92c4-9 24-14 50-14s46 5 50 14" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="2"/>`,
+  sprayRefill: (c) => `<rect x="58" y="56" width="64" height="102" rx="12" fill="${c}" stroke="rgba(0,0,0,.12)"/>
+                       <rect x="76" y="38" width="28" height="20" rx="3" fill="#5b5b5b"/>
+                       <rect x="68" y="88" width="44" height="44" rx="3" fill="rgba(255,255,255,.7)"/>`,
   spray: (c) => `<rect x="66" y="74" width="48" height="82" rx="10" fill="${c}" stroke="rgba(0,0,0,.12)"/>
                  <rect x="80" y="58" width="20" height="17" rx="2" fill="#8b8b8b"/>
                  <path d="M74 38h30a6 6 0 0 1 6 6v14H74z" fill="#5b5b5b"/>
@@ -477,16 +480,16 @@ const yogaAccessories = [
     { color: "Klein", hex: CORK },
     { color: "Groß", hex: CORK, price: 34.95 },
   ] },
-  { name: "Yogadecke „Savasana“ 100% Baumwolle (kbA)", price: 44.95, shape: "blanket", material: ORGANIC_COTTON, variants: [
+  { name: "Yogadecke „Savasana“ 100% Baumwolle (kbA)", slug: "yogadecke-savasana-100-baumwolle-kba", price: 44.95, shape: "blanket", material: ORGANIC_COTTON, variants: [
     { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
     { color: "Natur", hex: COTTON, family: "Beige" },
     { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz" },
   ] },
-  { name: "Bio Yogamatten Spray", price: 12.95, shape: "spray", material: null, variants: [
+  { name: "Bio Yogamatten Spray", slug: "yogamatten-spray", price: 12.95, shape: "spray", material: null, variants: [
     { color: "60ml", hex: "#e6e1d6" },
-    { color: "500ml", hex: "#e6e1d6", price: 24.95 },
+    { color: "500ml", hex: "#e6e1d6", price: 24.95, shape: "sprayRefill" },
   ] },
-  { name: "Yoga Handtuch", price: 29.95, shape: "towel", material: null, variants: [
+  { name: "Yoga Handtuch", slug: "yoga-handtuch", price: 29.95, shape: "towel", material: null, variants: [
     { color: "Light Taupe", hex: "#c4b6a6", family: "Beige" },
     { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
     { color: "Balsam Green", hex: "#5d7366", family: "Grün", material: "Polyester" },
@@ -497,17 +500,17 @@ const yogaAccessories = [
     { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz", soldOut: true },
     { color: "Natur", hex: COTTON, family: "Beige" },
   ] },
-  { name: "Augenkissen", price: 27.95, shape: "eyePillow", material: null, filling: "95% Leinsaat, 5% Lavendel", variants: [
+  { name: "Augenkissen", slug: "augenkissen", price: 27.95, shape: "eyePillow", material: null, filling: "95% Leinsaat, 5% Lavendel", variants: [
     { color: "Light Taupe", hex: "#c4b6a6", family: "Beige", material: ORGANIC_COTTON },
     { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
     { color: "Lavender Fog", hex: "#b7a3b6", family: "Rosa", material: ORGANIC_COTTON },
     { color: "Natur", hex: COTTON, family: "Beige", material: ORGANIC_COTTON },
   ] },
   // Stickers come in one version each: one card without a colour line.
-  { name: "Yogamatten-Sticker „I am enough“", price: 2.95, shape: "sticker", tint: "#eadbc6", material: "Polymere Klebefolie mit UV-Schutz", soldOut: true },
-  { name: "Yogamatten-Sticker „einatmen. ausatmen.“", price: 2.95, shape: "sticker", tint: "#d3ddd5", soldOut: true },
-  { name: "Yogamatten-Sticker „Ich bin dankbar“", price: 2.95, shape: "sticker", tint: "#f0d9d0", material: "Polymere Klebefolie mit UV-Schutz" },
-  { name: "Yogamatten-Sticker „good vibes only“", price: 2.95, shape: "sticker", tint: "#dcd7e8", soldOut: true },
+  { name: "Yogamatten-Sticker „I am enough“", slug: "yogamatten-sticker-i-am-enough", price: 2.95, shape: "sticker", tint: "#eadbc6", material: "Polymere Klebefolie mit UV-Schutz", soldOut: true },
+  { name: "Yogamatten-Sticker „einatmen. ausatmen.“", slug: "yogamatten-sticker-einatmen-ausatmen", price: 2.95, shape: "sticker", tint: "#d3ddd5", soldOut: true },
+  { name: "Yogamatten-Sticker „Ich bin dankbar“", slug: "yogamatten-sticker-ich-bin-dankbar", price: 2.95, shape: "sticker", tint: "#f0d9d0", material: "Polymere Klebefolie mit UV-Schutz" },
+  { name: "Yogamatten-Sticker „good vibes only“", slug: "yogamatten-sticker-good-vibes-only", price: 2.95, shape: "sticker", tint: "#dcd7e8", soldOut: true },
 ];
 const accessoriesNamed = (...names) => yogaAccessories.filter((item) => names.includes(item.name));
 

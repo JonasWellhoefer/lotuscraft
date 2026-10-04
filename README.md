@@ -95,7 +95,7 @@ lotuscraft/
 │   ├── shared.js   # Gemeinsame Daten & Helfer: Produkte, Kategorien, Menü, Suchindex, Zeichnungen
 │   ├── layout.js   # Header, Menüs (Handy + Desktop), Suche, Footer, Warenkorb (Demo)
 │   ├── home.js     # Startseite: Produkt-Tabs, Community, Bewertungs-Karussell
-│   ├── product.js  # Produktseiten: Daten von Matten, Kissen, Kleidung, Bolstern, Zabuton, Bank, Taschen, Blöcken und Gurten, Zeichnungen, Galerie, Farb-, Größen- und Optionsauswahl, Warenkorb-Button
+│   ├── product.js  # Produktseiten: Daten aller Matten, Kissen, Kleidung, Bolster, Zabuton, Bank und des Yoga-Zubehörs, Zeichnungen, Galerie, Farb-, Größen- und Optionsauswahl, Warenkorb-Button
 │   └── category.js # Kategorieseite: Filter (Farbe, Sitzhöhe, Form, Material, Füllung, Größe, Verfügbarkeit), Sortierung
 └── README.md
 ```
@@ -143,7 +143,9 @@ die Werte stammen direkt aus dem CSS des Originals.
 - [x] Bolster und Rollen (Yogarolle Ø24 cm, Bolster RESTORATIVE L und S, Nackenrolle), Meditationsmatte Zabuton und Meditationsbank DHARMA: eigene Zeichnungen (beim Üben, Maße, Querschnitt, Füllung, Holz und Polster) und Detailangaben wie im Original – ohne Bewertungsbalken oder Pflegehinweise, wo das Original keine hat
 - [x] Zabuton mit Auswahl „Dicke“ (4 cm / 7 cm) wie im Original: Preis, Detailangaben und Zeichnungen ändern sich mit
 - [x] Yogataschen PUNE und NANDI, Yogablock Kork (2er-Set und einzeln), Yogagurt und Matten-Tragegurt: eigene Zeichnungen (unterwegs, was in die Tasche passt, Kork, drei Höhen eines Blocks, Metall-D-Ringe), Optionen wie im Original („Block-Größe“, „Pack: 2er Pack“) – der einzelne Block zeigt wie dort keine Sterne und keine Bewertungsübersicht
-- [x] Bewertungen und verwandte Produkte aller 40 Produktseiten mit dem Original abgeglichen (Stand 4. Oktober 2026)
+- [x] Yogadecke „Savasana“, Yoga Handtuch, Augenkissen, Bio Yogamatten Spray (Auswahl „Inhalt“: 60 ml Sprühflasche / 500 ml Nachfüllflasche) und die vier Yogamatten-Sticker – damit hat jede Karte auf „Yoga-Zubehör“ eine eigene Seite
+- [x] Wie im Original: Spray und Sticker ohne Infozeilen; ausverkaufte Sticker mit „Ausverkauft“-Schild und rotem Hinweis statt Warenkorb-Button
+- [x] Bewertungen und verwandte Produkte aller 48 Produktseiten mit dem Original abgeglichen (Stand 4. Oktober 2026)
 
 **Kategorieseiten** (Hero-Button „Yogamatten“, Menü → „Yoga“ oder die Kreise oben):
 
@@ -164,7 +166,7 @@ die Werte stammen direkt aus dem CSS des Originals.
 - [x] Sortierung wie im Original, voreingestellt „meistverkauft“ (Rangliste des Originals vom 4. Oktober 2026); dazu Relevanz, A–Z, Z–A und Preis. Einige Bekleidungsseiten zeigen wie dort die eigene Reihenfolge des Shops, ohne gewählte Sortierung
 - [x] Alle 52 Kategorieseiten automatisch Karte für Karte mit dem Original abgeglichen (Stand 4. Oktober 2026: Reihenfolge, Farben, Preise, Lagerstand, Filterwerte)
 - [x] Kurzer eigener Text unter dem Raster, mit Links zu den Produktseiten
-- [x] Jede Karte für Matten, Kissen, Kleidung, Bolster, Rollen, Zabuton, Meditationsbank, Taschen, Korkblöcke und Gurte öffnet die passende Produktseite, gleich in der richtigen Farbe oder Option (Kleidung in der ersten lieferbaren Größe); Decke, Handtuch, Augenkissen, Spray, Sticker und Bezüge haben noch keine eigenen Produktseiten
+- [x] Jede Karte für Matten, Kissen, Kleidung, Bolster, Rollen, Zabuton, Meditationsbank und Yoga-Zubehör öffnet die passende Produktseite, gleich in der richtigen Farbe oder Option (Kleidung in der ersten lieferbaren Größe); Bezüge, Malas, Dinkelspelz und Sets haben noch keine eigenen Produktseiten
 
 **Warenkorb** (Icon oben rechts oder „In den Warenkorb“ auf der Produktseite):
 

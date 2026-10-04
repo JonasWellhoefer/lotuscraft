@@ -817,6 +817,9 @@ button { font: inherit; background: none; border: 0; padding: 0; cursor: pointer
 .buybox__note { margin-top: 4px; text-align: center; font-size: 12.8px; line-height: 1.2; color: var(--text-muted); }
 .buybox__stock { margin-top: 16px; text-align: center; color: #028849; }
 .buybox__stock--out { color: var(--sale); }
+/* A product sold out as a whole: a red notice instead of the button */
+.buybox__alert { display: flex; gap: 8px; margin-top: 32px; line-height: 1.35; color: var(--sale); }
+.buybox__alert svg { flex: none; width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
 .buybox__added:empty { display: none; }
 .buybox__added { margin-top: 8px; text-align: center; font-size: 14px; color: var(--text-muted); }
 .buybox__payments {

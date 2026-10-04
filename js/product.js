@@ -1004,15 +1004,38 @@ Object.values(propDetails).forEach((item) => Object.assign(item, {
   related: item.related.map((entry) => (typeof entry === "string" ? relatedCard(entry) : entry)),
 }));
 
-// ---------- Bags, cork blocks and straps ----------
+// ---------- Bags, cork blocks, straps and the other accessories ----------
 // Colours come from the category data in shared.js; ratings, details (which
-// for the blocks differ by size, as on the original) and related products
-// were read from the original (Oct 2026).
+// for the blocks and the spray differ by option, as on the original) and
+// related products were read from the original (Oct 2026).
 const ORGANIC_BAG = ["Bio-Baumwolle", "genäht aus Baumwolle aus kontrolliert biologischem Anbau."];
 const CORK_SOURCE = ["Nachwachsender Rohstoff", "Kork ist die Rinde der Korkeiche. Sie wird geschält und wächst danach wieder nach."];
 const CORK_COLOR = [{ hex: CORK }];
 const CORK_SCALES = [["Material", 4.92], ["Haptik", 4.92], ["Qualität & Verarbeitung", 4.93]];
 const SMALL_BLOCK = [22, 12, 7.5]; // the original only gives the small block's size
+const SPRAY_INGREDIENTS = "Aqua**, Ethanol*, 1–5 % anionische Tenside** (Candida Bombicola Glucose, Methyl Rapeseedate Ferment**), Salbeiöl*, Curcuma Xanthorrhiza Root Extract** (Kurkuma) – * aus kontrolliert biologischem Anbau (kbA), ** natürlich";
+
+// The four stickers share one layout: our own design with the quote. Three
+// are sold out as a whole, so their page can't order anything (as on the
+// original); none has info rows.
+const STICKER_TEXT = `
+        <p>Ein kleiner Sticker mit großer Wirkung: Er erinnert dich auf der Matte daran, worum es dir beim Üben geht. Er klebt auf Yogamatten, Trinkflaschen, Laptops und vielem mehr.</p>
+        <p>Der Sticker hält auch beim Hot Yoga und verträgt bis zu +90 °C. Er haftet dauerhaft – direkt nach dem Aufkleben kannst du ihn aber noch einmal abziehen und neu platzieren.</p>`;
+const STICKER_FACTS = [["Material", "Polymere Klebefolie mit UV-Schutz"], ["Gewicht", "5 g"], ["Herkunft", "Deutschland"]];
+function sticker(name, quote, details) {
+  const model = allModels.find((candidate) => candidate.name === name);
+  return {
+    name,
+    price: model.price,
+    unavailable: Boolean(model.soldOut),
+    colors: [{ hex: model.tint, soldOut: Boolean(model.soldOut) }],
+    specs: { shape: "sticker", quote },
+    gallery: ["stickerFront", "stickerOnMat"],
+    description: STICKER_TEXT,
+    features: [],
+    ...details,
+  };
+}
 
 const accessoryDetails = {
   "yogatasche-pune": {
@@ -1202,6 +1225,179 @@ const accessoryDetails = {
     // The original shows "ab" on the MUDRA PRO only here.
     related: ["Yogamatte PURE", "Yogamatte ARISE", "Yoga Tasche + Gurt Set", { ...relatedCard("Yogamatte MUDRA PRO"), fromPrice: true }],
   },
+  "yogadecke-savasana-100-baumwolle-kba": {
+    name: "Yogadecke „Savasana“ 100% Baumwolle (kbA)",
+    price: 44.95,
+    rating: 4.72,
+    reviewCount: 343,
+    specs: { shape: "blanket", scene: "covered", dimensions: [200, 150, 1] },
+    facts: [["Material", ORGANIC], ["Zusammensetzung", "100 % Baumwolle (kbA)"], ["Maße (L × B)", "200 × 150 cm"], ["Gewicht", "1,5 kg"], ["Herkunft", "Indien"]],
+    colors: colorsOf("Yogadecke „Savasana“ 100% Baumwolle (kbA)"),
+    gallery: ["propFront", "propInUse", "blanketSeated", "blanketTop", "cushionFabric"],
+    description: `
+        <p>Die Savasana ist eine große Decke aus 100 % Bio-Baumwolle, traditionell von Hand gewebt. Mit 200 × 150 cm deckt sie dich in der Schlussentspannung ganz zu.</p>
+        <p>Gefaltet wird sie zur Stütze: unter dem Becken im Sitzen, unter den Knien oder als Kissen unter dem Kopf.</p>`,
+    care: `${careList("Bei 30 °C waschen", NO_DRYER)}
+        <p>Kleine dunkle Pünktchen im Stoff sind Reste der Baumwollkapsel. Sie gehören zu Bio-Baumwolle, die ohne chemische Entlaubung geerntet wird. Falls sie beim Waschen leicht abfärben, hilft etwas Fleckensalz.</p>`,
+    sustainability: sustainabilityText(["Bio-Baumwolle", "die Decke ist aus Baumwolle aus kontrolliert biologischem Anbau gewebt."]),
+    features: [
+      { title: "Warm in der Schlussentspannung", text: "Wenn der Körper zur Ruhe kommt, wird es schnell kühl. Mit 200 × 150 cm deckt dich die Decke von den Schultern bis zu den Füßen zu.", picture: "propCovered" },
+      { title: "Gefaltet eine feste Stütze", text: "Zusammengelegt hebt sie das Becken im Sitzen an, polstert die Knie oder stützt den Kopf.", picture: "propBlanketSeat" },
+      { title: "Von Hand gewebt", text: "Die Decke ist traditionell von Hand gewebt, aus 100 % Bio-Baumwolle. Kleine Unregelmäßigkeiten machen jedes Stück einzigartig.", picture: "fabricWeave" },
+    ],
+    reviews: [
+      { name: "Theresa", place: "Rosenheim, DE", color: "Indigo Dust", stars: 5, days: 3, text: "Groß, schwer und kuschelig. In der Schlussentspannung decke ich mich ganz damit zu." },
+      { name: "Anonym", place: "", color: "Natur", stars: 5, days: 10, text: "Gefaltet unter dem Becken ideal zum Meditieren." },
+      { name: "Georg", place: "Wels, AT", color: "Anthrazit", stars: 4, days: 16, text: "Schöne Decke, für den Sommer fast zu warm." },
+      { name: "Ronja", place: "Hildesheim, DE", color: "Indigo Dust", stars: 5, days: 24, text: "Die Farbe ist noch schöner als auf dem Bildschirm." },
+      { name: "Anonym", place: "", color: "Natur", stars: 5, days: 33, text: "Man sieht, dass sie von Hand gewebt ist. Jede ein kleines Unikat." },
+      { name: "Beatrice", place: "Lugano, CH", color: "Anthrazit", stars: 4, days: 45, text: "Sehr gemütlich. Die kleinen dunklen Pünktchen im Stoff haben mich erst überrascht – das ist bei Bio-Baumwolle normal." },
+    ],
+    // The original shows "ab" on these two only here.
+    related: ["Yogagurt 100% Bio-Baumwolle", "Yogarolle Set Yin Yoga", { ...relatedCard("Yoga Bolster RESTORATIVE L"), fromPrice: true },
+      { ...relatedCard("Yogarolle RESTORATIVE Ø24 cm"), fromPrice: true }],
+  },
+  "yoga-handtuch": {
+    name: "Yoga Handtuch",
+    subtitle: "Rutschfestes Handtuch für die Matte – für schweißtreibende Flows und Hot Yoga.",
+    price: 29.95,
+    rating: 4.73,
+    reviewCount: 234,
+    // The original shows the three bars without labels.
+    ratingScales: [["", 4.54], ["", 4.6], ["", 4.81]],
+    specs: { shape: "towel" },
+    facts: [["Gewicht", "580 g"]],
+    colors: colorsOf("Yoga Handtuch"),
+    gallery: ["propFront", "towelOnMat", "towelUnderside", "towelFabric"],
+    description: `
+        <p>Das Yoga Handtuch legst du über deine Matte, wenn es beim Üben richtig warm wird. Die Oberfläche greift auch dann, wenn sie feucht ist, und der Stoff nimmt Schweiß gut auf.</p>
+        <p>Hergestellt ist es aus recyceltem Polyester mit GRS-Zertifikat. Unterwegs dient es auch als leichte Unterlage.</p>`,
+    care: careList("Bei 30 °C waschen", NO_DRYER),
+    features: [
+      { title: "Griffig, auch wenn es feucht wird", text: "Die Oberfläche hält deine Hände und Füße sicher – gerade dann, wenn du ins Schwitzen kommst.", picture: "towelDog" },
+      { title: "Bleibt auf der Matte liegen", text: "Die ganze Unterseite ist mit Silikon beschichtet. So verrutscht das Handtuch auch in schnellen Flows nicht.", picture: "towelUnderside" },
+      { title: "Für Hot Yoga, Pilates und Reisen", text: "Zusammengerollt ist es klein und leicht – für den Kurs, das Fitnessstudio oder als Unterlage im Urlaub.", picture: "towelTravel" },
+    ],
+    reviews: [
+      { name: "Leonie", place: "Kiel, DE", color: "Light Taupe", stars: 5, days: 2, text: "Beim Hot Yoga rutsche ich nicht mehr. Endlich!" },
+      { name: "Anonym", place: "", color: "Anthrazit", stars: 5, days: 8, text: "Nimmt den Schweiß gut auf und liegt glatt auf der Matte." },
+      { name: "Fabian", place: "Graz, AT", color: "Indigo Dust", stars: 4, days: 15, text: "Gutes Handtuch. Leicht angefeuchtet greift es bei mir am besten." },
+      { name: "Selma", place: "Essen, DE", color: "Lavender Fog", stars: 5, days: 23, text: "Schöne Farbe und angenehm weich." },
+      { name: "Anonym", place: "", color: "Balsam Green", stars: 5, days: 31, text: "Im Urlaub nutze ich es als leichte Unterlage. Praktisch." },
+      { name: "Dario", place: "Bern, CH", color: "Light Taupe", stars: 4, days: 46, text: "Gute Qualität. Ich hätte es gern noch in mehr Farben." },
+    ],
+    // The original shows "ab" on the bag only here.
+    related: ["Yogamatte ARISE Travel", "Yoga Zubehör + Reinigungs Set", { ...relatedCard("Yogatasche PUNE"), fromPrice: true }, "Yogamatte PURE Set"],
+  },
+  augenkissen: {
+    name: "Augenkissen",
+    subtitle: "Mit Leinsamen und Bio-Lavendel gefüllt – zum Abschalten in der Schlussentspannung.",
+    price: 27.95,
+    rating: 4.9,
+    reviewCount: 38,
+    specs: { shape: "eyePillow", scene: "eyes", filling: "95 % Leinsaat, 5 % Lavendel", dimensions: [22, 11.5, 1.7] },
+    facts: [["Material", ORGANIC], ["Füllung", "95 % Leinsaat, 5 % Lavendel"], ["Maße (L × B × H)", "11,5 × 22 × 1,7 cm"], ["Gewicht", "225 g"], COVER_FABRIC, ["Herkunft", ORIGIN]],
+    colors: colorsOf("Augenkissen"),
+    gallery: ["propFront", "propInUse", "eyePillowSize", "cushionInside", "cushionFabric"],
+    description: `
+        <p>Das Augenkissen legst du in der Schlussentspannung oder beim Meditieren auf die Augen. Mit etwa 22 × 11,5 cm deckt es die Augenpartie gut ab, sein sanftes Gewicht hilft dir loszulassen.</p>
+        <p>Gefüllt ist es mit Leinsamen und 5 % Lavendel. Bezug und Innenkissen sind aus Bio-Baumwolle, den Bezug wäschst du bei 30 °C.</p>`,
+    care: careList("Bezug bei 30 °C waschen", NO_DRYER),
+    sustainability: sustainabilityText(ORGANIC_COVER, ["Natürliche Füllung", "Leinsamen und Lavendel wachsen nach."], GOTS),
+    features: [
+      { title: "Zur Ruhe kommen", text: "Das Kissen dunkelt ab und liegt angenehm schwer auf den Augen. So fällt es leichter, in der Schlussentspannung wirklich abzuschalten.", picture: "propEyes" },
+      { title: "Mit Bio-Lavendel", text: "Leinsamen schmiegen sich an, 5 % Lavendel geben einen feinen, beruhigenden Duft.", picture: "eyeFilling" },
+      { title: "In Bio-Qualität", text: "Bezug und Innenkissen sind aus GOTS-zertifizierter Bio-Baumwolle.", picture: "fabricWeave" },
+    ],
+    reviews: [
+      { name: "Miriam", place: "Aachen, DE", color: "Lavender Fog", stars: 5, days: 4, text: "Das leichte Gewicht auf den Augen entspannt sofort. Der Lavendelduft ist dezent." },
+      { name: "Anonym", place: "", color: "Light Taupe", stars: 5, days: 11, text: "Ich nutze es jeden Abend zum Einschlafen." },
+      { name: "Jonas", place: "Innsbruck, AT", color: "Balsam Green", stars: 5, days: 17, text: "Perfekt für die Schlussentspannung. Hält das Licht gut ab." },
+      { name: "Anonym", place: "", color: "Natur", stars: 4, days: 25, text: "Schön, der Duft dürfte für mich etwas stärker sein." },
+      { name: "Christine", place: "Görlitz, DE", color: "Lavender Fog", stars: 5, days: 34, text: "Den Bezug kann man waschen, das ist mir wichtig." },
+      { name: "Gian", place: "Chur, CH", color: "Light Taupe", stars: 5, days: 49, text: "Ein schönes Geschenk, kam gut an." },
+    ],
+    related: ["Yoga Bolster RESTORATIVE L", "Bezug für Meditationskissen Lotus KLEIN (H: 10 cm)", "Yoga Mini-Rolle (Nackenrolle) Ø12 cm", "Bezug für Halbmond Kissen"],
+  },
+  "yogamatten-spray": {
+    name: "Bio Yogamatten Spray",
+    price: 12.95,
+    rating: 4.63,
+    reviewCount: 85,
+    specs: { shape: "spray" },
+    colors: [{ hex: "#e6e1d6" }],
+    choices: { name: "Inhalt", values: [{ label: "60ml", price: 12.95 }, { label: "500ml", price: 24.95, specs: { shape: "sprayRefill" } }] },
+    facts: (choice) => {
+      const small = choice.label === "60ml";
+      return [["Füllmenge", small ? "60 ml" : "500 ml"], ["Inhaltsstoffe", SPRAY_INGREDIENTS], ["Gewicht", small ? "60 g" : "500 g"], ["Herkunft", "Österreich"]];
+    },
+    gallery: ["propFront", "sprayMist", "sprayBottles", "sprayIngredients"],
+    description: `
+        <p>Das Spray reinigt und erfrischt deine Matte nach dem Üben. Die Rezeptur ist natürlich: Bio-Ethanol, milde Tenside aus Raps, Salbeiöl und Kurkuma – ohne synthetische Inhaltsstoffe und darum auch mild zur Haut.</p>
+        <p>Die 500-ml-Flasche ist eine Nachfüllflasche ohne Sprühkopf; zum Sprühen gibt es das Spray in der 60-ml-Flasche. Beide Flaschen sind aus recyceltem Kunststoff und lassen sich wieder befüllen.</p>
+        <p>Wichtig: Sprühe die Matte nur leicht ein und tränke sie nicht mit Flüssigkeit.</p>`,
+    features: [],
+    reviews: [
+      { name: "Nele", place: "Oldenburg, DE", color: "60ml", stars: 5, days: 3, text: "Riecht frisch nach Salbei, und die Matte ist danach angenehm sauber." },
+      { name: "Anonym", place: "", color: "500ml", stars: 5, days: 9, text: "Damit fülle ich meine kleine Flasche immer wieder auf." },
+      { name: "Harald", place: "Steyr, AT", color: "60ml", stars: 4, days: 16, text: "Gutes Spray. Der Duft ist mir etwas zu kräftig." },
+      { name: "Anonym", place: "", color: "60ml", stars: 5, days: 22, text: "Passt in jede Tasche und reicht lange." },
+      { name: "Paula", place: "Bamberg, DE", color: "500ml", stars: 4, days: 30, text: "Gut, aber ich hatte übersehen, dass die große Flasche keinen Sprühkopf hat." },
+      { name: "Luca", place: "Sion, CH", color: "60ml", stars: 5, days: 44, text: "Natürliche Inhaltsstoffe und ein angenehmer Duft. Gerne wieder." },
+    ],
+    // The original shows "ab" on the bag only here.
+    related: ["Yogamatte ARISE Travel", "Yoga Zubehör + Reinigungs Set", { ...relatedCard("Yogatasche PUNE"), fromPrice: true }, "Yogamatte ARISE Set"],
+  },
+  "yogamatten-sticker-i-am-enough": sticker("Yogamatten-Sticker „I am enough“", "I am enough", {
+    rating: 5,
+    reviewCount: 7,
+    facts: STICKER_FACTS,
+    reviews: [
+      { name: "Mila", place: "Kassel, DE", stars: 5, days: 6, text: "Klebt seit Wochen auf meiner Matte und sieht noch aus wie neu." },
+      { name: "Anonym", place: "", stars: 5, days: 13, text: "Eine schöne kleine Erinnerung in jeder Stunde." },
+      { name: "Sara", place: "Linz, AT", stars: 5, days: 21, text: "Hält auch beim Hot Yoga." },
+      { name: "Anonym", place: "", stars: 5, days: 38, text: "Ziert jetzt meine Trinkflasche." },
+    ],
+    related: ["Yogamatten-Sticker „Ich bin dankbar“", "„Almost Perfect“ Yogamatte PURE", "Yogamatten Tragegurt", "Bio Yogamatten Spray"],
+  }),
+  "yogamatten-sticker-einatmen-ausatmen": sticker("Yogamatten-Sticker „einatmen. ausatmen.“", "einatmen. ausatmen.", {
+    rating: 4.86,
+    reviewCount: 7,
+    facts: [["Gewicht", "5 g"]],
+    reviews: [
+      { name: "Ole", place: "Husum, DE", stars: 5, days: 5, text: "Genau die richtige Erinnerung zu Beginn jeder Stunde." },
+      { name: "Anonym", place: "", stars: 5, days: 12, text: "Schlicht und schön, klebt gut." },
+      { name: "Vera", place: "Graz, AT", stars: 5, days: 26, text: "Ließ sich direkt nach dem Aufkleben noch einmal versetzen." },
+      { name: "Anonym", place: "", stars: 4, days: 41, text: "Hübsch, für meinen Geschmack etwas klein." },
+    ],
+    related: ["Yogatasche NANDI", "Yogamatten-Sticker „Ich bin dankbar“", "Yogamatten Tragegurt", "„Almost Perfect“ Yogamatte PURE"],
+  }),
+  "yogamatten-sticker-ich-bin-dankbar": sticker("Yogamatten-Sticker „Ich bin dankbar“", "Ich bin dankbar", {
+    rating: 3.67,
+    reviewCount: 6,
+    facts: STICKER_FACTS,
+    reviews: [
+      { name: "Ina", place: "Bremen, DE", stars: 5, days: 7, text: "Schöner Spruch, klebt gut auf meiner Matte." },
+      { name: "Anonym", place: "", stars: 4, days: 18, text: "Nett für den kleinen Preis." },
+      { name: "Karin", place: "Wien, AT", stars: 3, days: 29, text: "Die Farbe ist blasser, als ich dachte." },
+      { name: "Anonym", place: "", stars: 3, days: 47, text: "Ganz okay, aber kleiner als erwartet." },
+    ],
+    related: ["Yogamatten Tragegurt", "Yogatasche NANDI", "Bio Yogamatten Spray", "„Almost Perfect“ Yogamatte MUDRA PRO XL"],
+  }),
+  "yogamatten-sticker-good-vibes-only": sticker("Yogamatten-Sticker „good vibes only“", "good vibes only", {
+    rating: 4.33,
+    reviewCount: 12,
+    // The original shows a mat's rating scales here.
+    ratingScales: [["Rutschfestigkeit", 4.8], ["Dämpfung", 4.5], ["Qualität und Langlebigkeit", 5]],
+    facts: [["Gewicht", "5 g"]],
+    reviews: [
+      { name: "Timo", place: "Ulm, DE", stars: 5, days: 4, text: "Macht gute Laune, jedes Mal, wenn ich die Matte ausrolle." },
+      { name: "Anonym", place: "", stars: 5, days: 15, text: "Hält bombenfest, auch nach vielen Stunden." },
+      { name: "Elena", place: "Basel, CH", stars: 4, days: 27, text: "Schön, nur das Aufkleben braucht etwas Geduld." },
+      { name: "Anonym", place: "", stars: 3, days: 40, text: "Ganz okay, ich hätte mir eine größere Variante gewünscht." },
+    ],
+    related: ["„Almost Perfect“ Yogamatte PURE", "Yogamatten-Sticker „Ich bin dankbar“", "Yogatasche NANDI", "Yogamatte PURE"],
+  }),
 };
 Object.values(accessoryDetails).forEach((item) => Object.assign(item, {
   swatch: "propFront",
@@ -2002,6 +2198,14 @@ const featurePictures = {
   blockHeights: { label: () => "Ein Yogablock flach, auf der Seite und hochkant: 7,5, 12 und 22 cm hoch", draw: (color, specs) => blockHeightsWide(color, specs) },
   cork: { label: () => "Kork aus der Nähe", draw: (color) => corkWide(color) },
   strapRings: { label: () => "Das Gurtende durch zwei Metall-D-Ringe gezogen", draw: (color) => strapRingsWide(color) },
+  // Blanket, towel and eye pillow
+  propCovered: { label: () => "Figur in Rückenlage, mit der Decke zugedeckt", draw: (color, specs) => propSceneSvg(color, specs, "covered", true) },
+  propBlanketSeat: { label: () => "Figur im Schneidersitz auf der gefalteten Decke", draw: (color, specs) => propSceneSvg(color, specs, "blanketSeat", true) },
+  propEyes: { label: () => "Figur in Rückenlage, das Augenkissen auf den Augen", draw: (color, specs) => propSceneSvg(color, specs, "eyes", true) },
+  towelDog: { label: () => "Figur im herabschauenden Hund auf dem Handtuch über der Matte", draw: (color) => wideScene(color, "dog", "#e4ded5", "#b49a7e") },
+  towelUnderside: { label: () => "Handtuch mit umgeschlagener Ecke: die Unterseite mit Silikon-Noppen", draw: (color) => towelUndersideWide(color) },
+  towelTravel: { label: () => "Das aufgerollte Handtuch neben einer Tasche", draw: (color) => towelTravelWide(color) },
+  eyeFilling: { label: (specs) => `Das Augenkissen geöffnet, Füllung aus ${specs.filling}`, draw: (color, specs) => eyeFillingWide(color, specs) },
 };
 
 const galleryPictures = {
@@ -2052,6 +2256,18 @@ const galleryPictures = {
   cork: { label: "Kork aus der Nähe", draw: (color) => corkPicture(color) },
   strapRings: { label: "Metall-D-Ringe", draw: (color) => strapRingsPicture(color) },
   strapLoops: { label: "um eine Matte geschlungen", draw: (color) => strapLoopsPicture(color) },
+  // Blanket, towel, eye pillow, spray and stickers
+  blanketSeated: { label: "gefaltet als Sitzunterlage", draw: (color, specs) => propSceneSvg(color, specs, "blanketSeat") },
+  blanketTop: { label: "ausgebreitet mit Maßen", draw: (color, specs) => blanketTopPicture(color, specs) },
+  towelOnMat: { label: "beim Üben auf der Matte", draw: (color) => scenePicture(color, "dog", "#e4ded5", "#b49a7e") },
+  towelUnderside: { label: "Unterseite mit Silikon-Noppen", draw: (color) => towelUndersidePicture(color) },
+  towelFabric: { label: "Stoff aus recyceltem Polyester", draw: (color) => cushionFabricPicture(color, "Recyceltes Polyester") },
+  eyePillowSize: { label: "Maße von oben", draw: (color, specs) => eyePillowSizePicture(color, specs) },
+  sprayMist: { label: "beim Einsprühen einer Matte", draw: (color) => sprayMistPicture(color) },
+  sprayBottles: { label: "Sprühflasche und Nachfüllflasche", draw: (color) => sprayBottlesPicture(color) },
+  sprayIngredients: { label: "Salbei, Kurkuma und Bio-Ethanol", draw: () => sprayIngredientsPicture() },
+  stickerFront: { label: "Sticker", draw: (color, specs) => stickerFrontPicture(color, specs) },
+  stickerOnMat: { label: "auf einer Matte", draw: (color, specs) => stickerOnMatPicture(color, specs) },
 };
 
 // ---------- Drawn cushion pictures ----------
@@ -2069,16 +2285,18 @@ const sittingFigure = (x, y, scale = 1) => `
         <circle cx="0" cy="-51" r="8" fill="#3a3530" stroke="none"/>
       </g>`;
 
-// Spelt husks (little grains), kapok (soft tufts) or cotton fleece (soft
-// layers, the zabuton's) as a fill pattern: [width, height, tile].
+// Spelt husks (little grains), kapok (soft tufts), cotton fleece (soft
+// layers, the zabuton's) or linseed with lavender (the eye pillow's) as a
+// fill pattern: [width, height, tile].
 const FILLING_TILES = {
   spelt: [6, 6, '<rect width="6" height="6" fill="#d9c69e"/><ellipse cx="2" cy="2" rx="1.6" ry=".8" fill="#b89a62" transform="rotate(30 2 2)"/><ellipse cx="4.5" cy="4.6" rx="1.4" ry=".7" fill="#c9ad74" transform="rotate(-40 4.5 4.6)"/>'],
   kapok: [10, 10, '<rect width="10" height="10" fill="#f3efe6"/><circle cx="3" cy="3" r="2.6" fill="#fff"/><circle cx="8" cy="7" r="2.2" fill="#e9e3d6"/>'],
   fleece: [12, 8, '<rect width="12" height="8" fill="#f6f2ea"/><path d="M0 4c3-3 6 3 12 0" fill="none" stroke="#e2dacb" stroke-width="1.2"/>'],
+  linseed: [8, 8, '<rect width="8" height="8" fill="#8a5a33"/><ellipse cx="2.2" cy="2.4" rx="1.6" ry=".9" fill="#a8743f" transform="rotate(25 2.2 2.4)"/><ellipse cx="5.8" cy="5.8" rx="1.5" ry=".85" fill="#b07a44" transform="rotate(-35 5.8 5.8)"/><circle cx="6" cy="1.8" r=".8" fill="#9a86b8"/>'],
 };
 function fillingPattern(specs) {
   const id = `filling-${++patternCount}`;
-  const kind = /Kapok/.test(specs.filling) ? "kapok" : /vlies/i.test(specs.filling) ? "fleece" : "spelt";
+  const kind = /Kapok/.test(specs.filling) ? "kapok" : /vlies/i.test(specs.filling) ? "fleece" : /Leinsaat/.test(specs.filling) ? "linseed" : "spelt";
   const [width, height, tile] = FILLING_TILES[kind];
   return { id, defs: `<defs><pattern id="${id}" width="${width}" height="${height}" patternUnits="userSpaceOnUse">${tile}</pattern></defs>` };
 }
@@ -2183,8 +2401,8 @@ function cushionInsidePicture(color, specs) {
     </svg>`;
 }
 
-// The cotton fabric up close.
-function cushionFabricPicture(color) {
+// The fabric up close (cotton unless a label says otherwise).
+function cushionFabricPicture(color, label = "Bio-Baumwolle (kbA)") {
   const id = `weave-${++patternCount}`;
   return `
     <svg viewBox="0 0 200 250" aria-hidden="true">
@@ -2192,7 +2410,7 @@ function cushionFabricPicture(color) {
       <rect width="200" height="250" fill="${color.hex}"/>
       <rect width="200" height="250" fill="url(#${id})"/>
       <rect x="40" y="196" width="120" height="26" rx="13" fill="rgba(255,255,255,.85)"/>
-      <text x="100" y="213" text-anchor="middle" ${LABEL_STYLE}>Bio-Baumwolle (kbA)</text>
+      <text x="100" y="213" text-anchor="middle" ${LABEL_STYLE}>${label}</text>
     </svg>`;
 }
 
@@ -2283,6 +2501,8 @@ const SHAPE_BOX = {
   roll: [24, 64, 156, 132], bolster: [20, 74, 160, 130], bolsterS: [34, 80, 146, 130], neckRoll: [42, 84, 138, 125],
   zabuton: [22, 80, 158, 118], zabutonThick: [22, 68, 158, 118], bench: [24, 66, 156, 143],
   bag: [22, 46, 158, 118], sack: [30, 52, 160, 129], block: [38, 48, 140, 150], singleBlock: [56, 50, 124, 146], strap: [33, 60, 147, 134],
+  blanket: [28, 56, 152, 142], towel: [32, 56, 148, 141], eyePillow: [28, 70, 152, 122], spray: [58, 38, 114, 156], sprayRefill: [58, 38, 122, 158],
+  sticker: [42, 42, 138, 138],
 };
 
 // Fits the drawing into a box around (cx, cy); `point` maps a spot on it
@@ -2516,7 +2736,7 @@ const SCENE_CM = 0.45; // scene units (of 100) per cm
 // figures), and for the info rows one close to the floor (lying poses) or
 // one with room for a sitting or standing figure.
 const SCENE_VIEWS = { gallery: "8 34 84 105", galleryStanding: "8 18 84 105", lying: "-2 46 104 64", upright: "-24 24 148 91" };
-const LYING_SCENES = ["knees", "fish", "child", "neck"];
+const LYING_SCENES = ["knees", "fish", "child", "neck", "covered", "eyes"];
 const STANDING_SCENES = ["carry", "strapCarry"];
 const MEASURE_LINE = 'stroke="#5f5c52" fill="none"';
 
@@ -2613,6 +2833,17 @@ Object.assign(propScenes, {
   // The rolled mat across the back, the strap over the shoulder.
   strapCarry: (color) => `<g transform="rotate(-70 40 57)"><rect x="18" y="52" width="44" height="10" rx="5" fill="${MAT_ROLL}"/></g>`
     + standingFigure() + colorLine("M34 72L52 42L45 39", color.hex, 1.4),
+  // Lying under the blanket, only the head showing.
+  covered: (color) => SCENE_MAT + limb("M21 81H30") + headAt(16, 79)
+    + `<path d="M25 85V79Q26 74 34 74H74Q83 74 85 81V85Z" fill="${color.hex}" stroke="${GARMENT_LINE}"/>
+       <path d="M85 77v8M88 78v7" stroke="${color.hex}" stroke-width="1.2" stroke-linecap="round"/>`,
+  // Sitting cross-legged on the folded blanket.
+  blanketSeat: (color) => `${SCENE_MAT}<rect x="36" y="79" width="28" height="10" rx="2" fill="${color.hex}" stroke="${GARMENT_LINE}"/>
+       <path d="M36 82.5h28M36 86h28" stroke="rgba(0, 0, 0, .12)"/>`
+    + limb("M30 90Q50 82 70 90") + limb("M50 78V53") + limb("M50 57L38 72L33 86M50 57L62 72L67 86") + headAt(50, 45),
+  // Lying flat, the eye pillow over the eyes.
+  eyes: (color) => SCENE_MAT + limb("M21 82H52L84 83") + limb("M31 82L45 86") + headAt(16, 80)
+    + `<rect x="10" y="74.5" width="11" height="4.5" rx="2.25" fill="${color.hex}" stroke="${GARMENT_LINE}" transform="rotate(-12 15.5 76.75)"/>`,
 });
 
 // A scene in a room (light colours get a darker one), for the gallery or,
@@ -2798,14 +3029,14 @@ function propTravelWide(color, specs) {
       <text x="165" y="176" text-anchor="middle" ${LABEL_STYLE}>Nur 830 g – passt in jede Tasche</text>`);
 }
 
-// Woven cotton up close, wide.
-function weaveWidePicture(color) {
+// Woven fabric up close, wide.
+function weaveWidePicture(color, label = "Bio-Baumwolle (kbA)") {
   const id = `weave-${++patternCount}`;
   return widePhoto(`
       <rect width="330" height="202" fill="${color.hex}"/>
       <rect width="330" height="202" fill="url(#${id})"/>
       <rect x="85" y="88" width="160" height="26" rx="13" fill="rgba(255, 255, 255, .88)"/>
-      <text x="165" y="105" text-anchor="middle" ${LABEL_STYLE}>Bio-Baumwolle (kbA)</text>`,
+      <text x="165" y="105" text-anchor="middle" ${LABEL_STYLE}>${label}</text>`,
   `<defs><pattern id="${id}" width="6" height="6" patternUnits="userSpaceOnUse"><path d="M0 1.5H6M0 4.5H6" stroke="rgba(255,255,255,.18)" stroke-width="1.4"/><path d="M1.5 0V6M4.5 0V6" stroke="rgba(0,0,0,.1)"/></pattern></defs>`);
 }
 
@@ -2930,6 +3161,131 @@ function strapLoopsPicture(color) {
       <text x="100" y="221" text-anchor="middle" ${LABEL_STYLE}>Gurt über die Schulter</text>`);
 }
 
+// ---------- Drawn pictures for blanket, towel, eye pillow, spray and stickers ----------
+// The blanket from above with its size (fringes at the short ends).
+function blanketTopPicture(color, specs) {
+  const [length, width] = specs.dimensions;
+  const perCm = 0.75;
+  const w = r1(width * perCm);
+  const h = r1(length * perCm);
+  const x = r1(96 - w / 2);
+  const y = 40;
+  const fringes = (top) => Array.from({ length: 12 }, (_, i) => `M${r1(x + 6 + i * ((w - 12) / 11))} ${top}v6`).join("");
+  return galleryPhoto(`
+      <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="${color.hex}" stroke="${GARMENT_LINE}"/>
+      <path d="M${x} ${r1(y + h / 3)}h${w}M${x} ${r1(y + (2 * h) / 3)}h${w}" stroke="rgba(0, 0, 0, .1)" stroke-width="2"/>
+      <path d="${fringes(y - 6)}${fringes(r1(y + h))}" stroke="${color.hex}" stroke-width="1.6" stroke-linecap="round"/>
+      ${heightMark(r1(x + w + 12), y, r1(y + h), `${length} cm`)}
+      ${widthMark(x, r1(x + w), r1(y + h + 18), `${width} cm`)}`);
+}
+
+// The towel with one corner turned over: the dotted grip underneath.
+function towelCorner(color, x, y, w, h) {
+  const id = `dots-${++patternCount}`;
+  const fold = r1(Math.min(w, h) * 0.45);
+  return {
+    defs: `<defs><pattern id="${id}" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="${color.hex}"/><rect width="6" height="6" fill="rgba(0, 0, 0, .12)"/><circle cx="3" cy="3" r="1.3" fill="rgba(255, 255, 255, .45)"/></pattern></defs>`,
+    content: `
+      <path d="M${x} ${y}H${x + w}V${r1(y + h - fold)}L${r1(x + w - fold)} ${y + h}H${x}Z" fill="${color.hex}" stroke="${GARMENT_LINE}"/>
+      <path d="M${x + w} ${r1(y + h - fold)}L${r1(x + w - fold)} ${y + h}L${r1(x + w - fold)} ${r1(y + h - fold)}Z" fill="url(#${id})" stroke="${GARMENT_LINE}"/>`,
+  };
+}
+function towelUndersidePicture(color) {
+  const towel = towelCorner(color, 30, 50, 140, 150);
+  return galleryPhoto(`${towel.content}
+      <text x="100" y="226" text-anchor="middle" ${LABEL_STYLE}>Unterseite mit Silikon-Noppen</text>`, towel.defs);
+}
+function towelUndersideWide(color) {
+  const towel = towelCorner(color, 85, 30, 160, 120);
+  return widePhoto(`${towel.content}
+      <text x="165" y="176" text-anchor="middle" ${LABEL_STYLE}>Ganzflächig mit Silikon beschichtet</text>`, towel.defs);
+}
+
+// Rolled up next to a bag: small enough for travelling.
+function towelTravelWide(color) {
+  return widePhoto(`
+      <rect x="70" y="76" width="110" height="40" rx="20" fill="${color.hex}" stroke="${GARMENT_LINE}"/>
+      <ellipse cx="172" cy="96" rx="8" ry="20" fill="rgba(0, 0, 0, .1)"/>
+      <path d="M216 78c0-22 46-22 46 0" fill="none" stroke="#8c8778" stroke-width="3"/>
+      <rect x="200" y="76" width="78" height="64" rx="10" fill="#d9cfc0" stroke="${GARMENT_LINE}"/>
+      <text x="165" y="176" text-anchor="middle" ${LABEL_STYLE}>Hot Yoga, Pilates oder unterwegs</text>`);
+}
+
+// The eye pillow from above with its size.
+function eyePillowSizePicture(color, specs) {
+  const [length, width] = specs.dimensions;
+  const place = shapePlacement(specs, 90, 110, 136, 90);
+  const [left, top] = place.point(28, 70);
+  const [right, bottom] = place.point(152, 122);
+  return galleryPhoto(`${place.draw(color.hex)}
+      ${heightMark(r1(right + 10), top, bottom, `${decimal(width)} cm`)}
+      ${widthMark(left, right, r1(bottom + 18), `${length} cm`)}`);
+}
+
+// The 60 ml spray and the 500 ml refill bottle side by side.
+const sprayBottles = (color, cx, cy, size) => `
+      ${shapePlacement({ shape: "spray" }, cx - size * 0.45, cy, size * 0.7, size).draw(color.hex)}
+      ${shapePlacement({ shape: "sprayRefill" }, cx + size * 0.45, cy + size * 0.06, size * 0.8, size * 1.15).draw(color.hex)}`;
+const sprayBottlesPicture = (color) => galleryPhoto(`${sprayBottles(color, 100, 110, 120)}
+      <text x="100" y="206" text-anchor="middle" ${LABEL_STYLE}>Sprühflasche 60 ml</text>
+      <text x="100" y="221" text-anchor="middle" ${LABEL_STYLE}>Nachfüllflasche 500 ml</text>`);
+
+// The spray over a mat, with a fine mist.
+function sprayMistPicture(color) {
+  const mist = Array.from({ length: 18 }, (_, i) => `<circle cx="${r1(46 + (i % 6) * 9 + (i % 2) * 3)}" cy="${r1(96 + Math.floor(i / 6) * 9 + (i % 3) * 2)}" r="${i % 3 ? 1.4 : 2}" fill="rgba(140, 170, 190, .55)"/>`).join("");
+  return galleryPhoto(`
+      <path d="M14 170L54 132H196V190H14Z" fill="#7d8a7f"/>
+      <path d="M54 132H196" stroke="rgba(255, 255, 255, .25)"/>
+      ${mist}
+      <g transform="rotate(-24 140 90)">${shapePlacement({ shape: "spray" }, 140, 90, 70, 120).draw(color.hex)}</g>`);
+}
+
+// The eye pillow opened: its cover around linseed and lavender.
+function eyeFillingWide(color, specs) {
+  const filling = fillingPattern(specs);
+  return widePhoto(`
+      <rect x="55" y="46" width="220" height="100" rx="50" fill="${color.hex}" stroke="${GARMENT_LINE}"/>
+      <rect x="67" y="56" width="196" height="80" rx="40" fill="url(#${filling.id})"/>
+      <text x="165" y="176" text-anchor="middle" ${LABEL_STYLE}>Füllung: ${specs.filling}</text>`, filling.defs);
+}
+
+// What is in it: sage, turmeric and organic ethanol.
+function sprayIngredientsPicture() {
+  return galleryPhoto(`
+      <path d="M58 96c-22-6-30-30-20-48 18 6 28 26 20 48zM58 96c2-20 14-34 32-38 2 20-12 36-32 38z" fill="#8a9a7b"/>
+      <path d="M58 96V122" stroke="#6d7c60" stroke-width="2"/>
+      <text x="58" y="142" text-anchor="middle" ${LABEL_STYLE}>Salbeiöl</text>
+      <path d="M124 104c8-14 26-16 34-6 6 8 0 18-10 20-8 2-14 8-24 4-6-3-6-12 0-18z" fill="#d79a3c"/>
+      <path d="M134 112c4-4 10-5 14-2" stroke="rgba(0, 0, 0, .2)" fill="none"/>
+      <text x="140" y="142" text-anchor="middle" ${LABEL_STYLE}>Kurkuma</text>
+      <path d="M92 168c-8 8-8 22 6 26 14-4 14-18 6-26l-6-12z" fill="#cfe0e8" stroke="${GARMENT_LINE}"/>
+      <text x="98" y="218" text-anchor="middle" ${LABEL_STYLE}>Bio-Ethanol</text>`);
+}
+
+// Our own sticker design: the quote around a small lotus.
+function stickerArt(color, specs, cx, cy, r) {
+  // Longer quotes take two lines.
+  const words = specs.quote.split(" ");
+  const half = Math.ceil(words.length / 2);
+  const lines = specs.quote.length > 12 && words.length > 1 ? [words.slice(0, half).join(" "), words.slice(half).join(" ")] : [specs.quote];
+  const size = r1(r * 0.2);
+  return `
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="${color.hex}" stroke="rgba(0, 0, 0, .12)"/>
+      <g transform="translate(${cx} ${r1(cy - r * 0.32)}) scale(${r1(r / 48)})" fill="rgba(0, 0, 0, .3)">
+        <path d="M0 -16c-6 7-6 15 0 22 6-7 6-15 0-22zM0 6c-9-2-15 1-18 7 7 2 13 0 18-7zM0 6c9-2 15 1 18 7-7 2-13 0-18-7z"/>
+      </g>
+      ${lines.map((line, i) => `<text x="${cx}" y="${r1(cy + r * 0.2 + i * size * 1.25)}" text-anchor="middle" font-size="${size}" fill="rgba(0, 0, 0, .62)" font-family="Playfair Display, serif">${line}</text>`).join("")}`;
+}
+const stickerFrontPicture = (color, specs) => galleryPhoto(stickerArt(color, specs, 100, 120, 76));
+
+// The sticker on the corner of a rolled-out mat.
+function stickerOnMatPicture(color, specs) {
+  return galleryPhoto(`
+      <path d="M0 250V110L120 40H200V250Z" fill="#5d7366"/>
+      <path d="M0 110L120 40" stroke="rgba(255, 255, 255, .2)" stroke-width="2"/>
+      <g transform="rotate(-8 120 140)">${stickerArt(color, specs, 120, 140, 34)}</g>`);
+}
+
 // ---------- Small line icons for the buy box ----------
 const buyboxIcons = {
   truck: '<path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>',
@@ -2946,6 +3302,10 @@ const buyboxUsps = [
   ["invoice", "Kauf auf Rechnung"],
   ["heart", "Designed with love in Vienna"],
 ];
+
+// The tag on the gallery: matte mats say so, products sold out as a whole
+// (some stickers) say "Ausverkauft", as on the original.
+const galleryBadge = (product, color) => (product.unavailable ? "Ausverkauft" : color.matte ? "Matte Oberfläche" : "");
 
 // Buy box texts for the picked choice; sold-out choices read as on the original.
 // Clothing sells out per size, everything else per colour.
@@ -3136,7 +3496,7 @@ function productMarkup(product, color, size, choice) {
   return `
     <div class="container product__main">
       <div class="gallery">
-        <span class="gallery__badge"${color.matte ? "" : " hidden"}>Matte Oberfläche</span>
+        <span class="gallery__badge"${galleryBadge(product, color) ? "" : " hidden"}>${galleryBadge(product, color)}</span>
         <div class="gallery__track" tabindex="0" aria-label="Produktbilder">${galleryItems(product, color, specs)}
         </div>
         <div class="gallery__thumbs">${galleryThumbs(product, color, 0, specs)}
@@ -3154,9 +3514,11 @@ function productMarkup(product, color, size, choice) {
 
 ${colorPicker}${choices}${fixedOptions}${sizes}
 
+${product.unavailable ? `
+        <p class="buybox__alert"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5v.5"/></svg>Dieser Artikel ist nicht mehr verfügbar, versuche es mit einer anderen Variante.</p>` : `
         <button class="btn btn--primary btn--block buybox__cart" type="button">${cartLabel(soldOut)}</button>
         <p class="buybox__note"${soldOut ? "" : " hidden"}>Du erhältst eine Benachrichtigung per E-Mail, sobald der Artikel wieder auf Lager ist.</p>
-        <p class="buybox__stock${soldOut ? " buybox__stock--out" : ""}">${stockText(soldOut)}</p>
+        <p class="buybox__stock${soldOut ? " buybox__stock--out" : ""}">${stockText(soldOut)}</p>`}
         <p class="buybox__added" role="status"></p>
         <div class="buybox__payments" role="img" aria-label="Zahlungsarten (neutrale Platzhalter-Icons)">${PAYMENT_ICONS}
         </div>
@@ -3175,8 +3537,9 @@ ${colorPicker}${choices}${fixedOptions}${sizes}
       </div>` : ""}
     </div>
 
+${product.features.length ? `
     <section class="container product-features" aria-label="Mehr über die ${product.name}">${featureRows(product, color, specs)}
-    </section>
+    </section>` : ""}
 ${reviewsMarkup(product)}
     <section class="section related" aria-labelledby="related-title">
       <div class="container">
@@ -3380,7 +3743,8 @@ if (!product) {
   // Every picture in the picked colour (and the picked choice's specs).
   function redraw() {
     const specs = specsFor(product, choice);
-    badge.hidden = !color.matte;
+    badge.textContent = galleryBadge(product, color);
+    badge.hidden = !badge.textContent;
     track.innerHTML = galleryItems(product, color, specs);
     thumbs.innerHTML = galleryThumbs(product, color, currentPicture(), specs);
     productRoot.querySelectorAll(".feature__media").forEach((media) => {
@@ -3396,11 +3760,13 @@ if (!product) {
     const soldOut = isSoldOut(color, size);
     if (colorValue) colorValue.textContent = color.name;
     prices.innerHTML = priceMarkup(priceOf(product, color, choice));
-    cartButton.textContent = cartLabel(soldOut);
-    note.hidden = !soldOut;
-    stock.textContent = stockText(soldOut);
-    stock.classList.toggle("buybox__stock--out", soldOut);
     added.textContent = "";
+    if (cartButton) {
+      cartButton.textContent = cartLabel(soldOut);
+      note.hidden = !soldOut;
+      stock.textContent = stockText(soldOut);
+      stock.classList.toggle("buybox__stock--out", soldOut);
+    }
     if (size) {
       productRoot.querySelector(".size-picker__value").textContent = size;
       sizeInputs.forEach((input) => {
@@ -3447,7 +3813,7 @@ if (!product) {
   // Demo cart: adds the picked colour (and size) and opens the cart; nothing
   // is ordered. For a sold-out choice the button only explains that no
   // reminder is stored.
-  cartButton.addEventListener("click", () => {
+  cartButton?.addEventListener("click", () => {
     if (isSoldOut(color, size)) {
       added.textContent = "Nur eine Demo: In diesem Studentenprojekt gibt es keine Benachrichtigungen, es wird nichts gespeichert.";
       return;
