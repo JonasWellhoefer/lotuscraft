@@ -563,7 +563,7 @@ const bolsters = [
   { name: "Yoga Bolster RESTORATIVE S", slug: "yoga-bolster-restorative-s", price: 49.95, shape: "bolsterS", variants: bolsterColors(KAPOK) },
   neckRoll,
 ];
-const rollCover = { name: "Bezug für Yogarolle COVER Ø24 cm", price: 29.95, shape: "rollCover", badge: "NUR BEZUG", material: ORGANIC_COTTON, variants: [
+const rollCover = { name: "Bezug für Yogarolle COVER Ø24 cm", slug: "yogarolle-cover-o24-cm", price: 29.95, shape: "rollCover", badge: "NUR BEZUG", material: ORGANIC_COTTON, variants: [
   { color: "Light Taupe", hex: "#c4b6a6", family: "Beige" },
   { color: "Natur", hex: COTTON, family: "Beige" },
   { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz" },
@@ -576,13 +576,13 @@ const rollCover = { name: "Bezug für Yogarolle COVER Ø24 cm", price: 29.95, sh
 // "Meditation Zubehör".
 const stickers = yogaAccessories.filter((item) => item.shape === "sticker");
 const malas = [
-  { name: "Rosenholz Mala (Dunkles Rosenholz)", price: 22.95, shape: "mala", tint: "#6b3a2c", material: "Rotes Sandelholz", soldOut: true },
-  { name: "Tulsi Mala", price: 24.95, shape: "mala", tint: "#c8a77a", material: "Tulsi", soldOut: true },
-  { name: "Rudraksha Mala", price: 19.95, shape: "mala", tint: "#7a4a32", material: "Rudraksha", soldOut: true },
+  { name: "Rosenholz Mala (Dunkles Rosenholz)", slug: "rosenholz-mala-rotes-sandelholz", price: 22.95, shape: "mala", tint: "#6b3a2c", material: "Rotes Sandelholz", soldOut: true },
+  { name: "Tulsi Mala", slug: "tulsi-mala", price: 24.95, shape: "mala", tint: "#c8a77a", material: "Tulsi", soldOut: true },
+  { name: "Rudraksha Mala", slug: "rudraksha-mala", price: 19.95, shape: "mala", tint: "#7a4a32", material: "Rudraksha", soldOut: true },
 ];
 const speltHusks = [
-  { name: "Bio Dinkelspelzen - Dinkelspreu (kbA) 2kg", price: 14.95, shape: "husks", tint: "#d9c69e" },
-  { name: "Bio Dinkelspelzen -Dinkelspreu (kbA) 1kg", price: 9.95, shape: "husks", tint: "#d9c69e" },
+  { name: "Bio Dinkelspelzen - Dinkelspreu (kbA) 2kg", slug: "bio-dinkelspelzen-dinkelspreu-kba-2kg", price: 14.95, shape: "husks", tint: "#d9c69e" },
+  { name: "Bio Dinkelspelzen -Dinkelspreu (kbA) 1kg", slug: "bio-dinkelspelzen-dinkelspreu-kba-1kg", price: 9.95, shape: "husks", tint: "#d9c69e" },
 ];
 const matAddOns = [
   ...accessoriesNamed("Bio Yogamatten Spray"),
@@ -719,32 +719,32 @@ const giftShortcuts = (...names) => names.map((name) => giftLinks[name]);
 const coverFor = (name, shape, extra, variants) => ({ name: `Bezug für ${name}`, price: 19.95, shape, badge: "NUR BEZUG", material: ORGANIC_COTTON, ...extra, variants });
 const coverSoldOut = { soldOut: true };
 const cushionCovers = [
-  coverFor("Meditationskissen Lotus (H: 15cm)", "lotusCover15", { height: "15", form: "Rund" }, [
+  coverFor("Meditationskissen Lotus (H: 15cm)", "lotusCover15", { slug: "meditationskissen-cover-lotus-h-15cm", height: "15", form: "Rund" }, [
     cushionColor("Anthrazit"), cushionColor("Aubergine", coverSoldOut), cushionColor("Balsam Green"), cushionColor("Schwarz"),
     cushionColor("Indigo Dust"), cushionColor("Kurkuma"), cushionColor("Light Taupe"), cushionColor("Natur"),
   ]),
-  coverFor("Meditationskissen Lotus (H: 15cm) - Ohne Bestickung", "plainCover", { height: "15", form: "Rund" }, [
+  coverFor("Meditationskissen Lotus (H: 15cm) - Ohne Bestickung", "plainCover", { slug: "meditationskissen-cover-lotus-h-15cm-ohne-bestickung", height: "15", form: "Rund" }, [
     cushionColor("Anthrazit"), cushionColor("Aubergine", coverSoldOut), cushionColor("Indigo Dust"), cushionColor("Lavender Fog"),
     cushionColor("Light Taupe"), cushionColor("Natur"), cushionColor("Balsam Green"),
   ]),
-  coverFor("Zafu-Meditationskissen Zen", "zafuCover", { height: "15", form: "Zafu" }, [
+  coverFor("Zafu-Meditationskissen Zen", "zafuCover", { slug: "zafu-meditationskissen-cover-zen", height: "15", form: "Zafu" }, [
     cushionColor("Anthrazit", coverSoldOut), cushionColor("Light Taupe"), cushionColor("Indigo Dust"), cushionColor("Balsam Green"),
     cushionColor("Kurkuma"), cushionColor("Natur"),
   ]),
-  coverFor("Halbmond Kissen", "crescentCover", { height: "15" }, [
+  coverFor("Halbmond Kissen", "crescentCover", { slug: "halbmond-kissen-cover", height: "15" }, [
     cushionColor("Anthrazit", { form: "Halbrund" }), cushionColor("Aubergine", coverSoldOut), cushionColor("Balsam Green"), cushionColor("Indigo Dust"),
     cushionColor("Light Taupe"), cushionColor("Natur"), cushionColor("Midnight Blue"),
   ]),
-  coverFor("Meditationskissen Lotus KLEIN (H: 10 cm)", "lotusCover10", { height: "10", form: "Rund" }, [
+  coverFor("Meditationskissen Lotus KLEIN (H: 10 cm)", "lotusCover10", { slug: "meditationskissen-cover-lotus-klein-h-10-cm", height: "10", form: "Rund" }, [
     cushionColor("Anthrazit"), cushionColor("Aubergine", coverSoldOut), cushionColor("Balsam Green", coverSoldOut), cushionColor("Indigo Dust"),
     cushionColor("Kurkuma"), cushionColor("Light Taupe"), cushionColor("Marine Blue", coverSoldOut), cushionColor("Natur"),
   ]),
-  coverFor("Meditationskissen Lotus HOCH (H: 20cm)", "lotusCover20", { height: "20", form: "Rund" }, [
+  coverFor("Meditationskissen Lotus HOCH (H: 20cm)", "lotusCover20", { slug: "meditationskissen-cover-lotus-hoch-h-20cm", height: "20", form: "Rund" }, [
     cushionColor("Balsam Green"), cushionColor("Indigo Dust"), cushionColor("Natur"), cushionColor("Anthrazit"),
     cushionColor("Aubergine", coverSoldOut), cushionColor("Kurkuma"), cushionColor("Light Taupe"),
   ]),
 ];
-const zabutonCover = coverFor("Zabuton", "zabutonCover", { price: 39.95 }, [
+const zabutonCover = coverFor("Zabuton", "zabutonCover", { slug: "zabuton-cover", price: 39.95 }, [
   cushionColor("Anthrazit"), cushionColor("Aubergine", coverSoldOut), cushionColor("Bordeaux"), cushionColor("Indigo Dust"),
   cushionColor("Light Taupe"), cushionColor("Natur"), cushionColor("Balsam Green"), cushionColor("Schwarz"),
 ]);

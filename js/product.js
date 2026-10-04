@@ -1404,11 +1404,298 @@ Object.values(accessoryDetails).forEach((item) => Object.assign(item, {
   related: item.related.map((entry) => (typeof entry === "string" ? relatedCard(entry) : entry)),
 }));
 
+// ---------- Covers, malas and spelt husks ----------
+// Colours come from the category data in shared.js; ratings, details and
+// related products were read from the original (Oct 2026). Several covers
+// have no rating of their own there (no stars, no summary); their review
+// list shows what the original's shows, sometimes nothing at all.
+const COVER_NOTE = "Nur der Bezug – ohne Innenkissen und ohne Füllung.";
+const COVER_GALLERY = ["propFront", "coverOn", "coverOnly", "cushionSize", "cushionFabric"];
+const coverFacts = (seat, size, weight, form, origin = ORIGIN) => [["Material", ORGANIC], ["Sitzhöhe", seat], ["Maße (L × B × H)", size], ["Gewicht", weight], ["Form", form], ["Herkunft", origin]];
+function coverPage(name, details) {
+  const model = allModels.find((candidate) => candidate.name === name);
+  return {
+    name,
+    price: model.price,
+    colors: colorsOf(name),
+    gallery: COVER_GALLERY,
+    care: careList("Bezug bei 30 °C waschen", NO_DRYER),
+    sustainability: sustainabilityText(GOTS),
+    ...details,
+    specs: { shape: model.shape, ...details.specs },
+  };
+}
+
+// The malas are sold out as a whole on the original.
+function malaPage(name, beads, details) {
+  const model = allModels.find((candidate) => candidate.name === name);
+  return {
+    name,
+    price: model.price,
+    unavailable: Boolean(model.soldOut),
+    colors: [{ hex: model.tint, soldOut: Boolean(model.soldOut) }],
+    specs: { shape: "mala", material: beads },
+    facts: [["Material", model.material], ["Maße (L)", "80 cm"], ["Gewicht", "110 g"], ["Perlen", "108"], ["Herkunft", "Indien"]],
+    gallery: ["propFront", "malaClose", "malaLength"],
+    features: [],
+    ...details,
+  };
+}
+
+const coverDetails = {
+  "meditationskissen-cover-lotus-h-15cm": coverPage("Bezug für Meditationskissen Lotus (H: 15cm)", {
+    subtitle: "Ein neuer Bezug in deiner Lieblingsfarbe – mit gesticktem Lotus, passend zum Lotus-Kissen mit 15 cm Höhe.",
+    buyboxRating: false,
+    rating: 5,
+    reviewCount: 1,
+    specs: { cushion: "lotusCushion15", dimensions: [31, 31, 15] },
+    facts: coverFacts("15 cm (standard)", "31 × 31 × 15 cm", "120 g", "Rund"),
+    sustainability: sustainabilityText(PLASTIC_FREE, GOTS),
+    description: `
+        <p>${COVER_NOTE} Der Bezug passt auf das Meditationskissen Lotus mit 15 cm Höhe und schließt mit einem Kordelzug.</p>
+        <p>Er ist aus Bio-Baumwolle genäht und trägt den kleinen gestickten Lotus. So bekommt dein Kissen eine neue Farbe – oder du hast einen zweiten Bezug, wenn der erste in der Wäsche ist.</p>`,
+    features: [
+      { title: "Ein neuer Look für dein Kissen", text: "Statt eines neuen Kissens bekommt dein altes einfach einen neuen Bezug. Das Innenkissen mit der Füllung bleibt, wie es ist.", picture: "coverSwap" },
+      { title: "Mit gesticktem Lotus", text: "Wie beim Kissen selbst ziert ein kleiner gestickter Lotus den Bezug.", picture: "coverEmbroidery" },
+      { title: "Einfach wechseln und waschen", text: "Kordelzug öffnen, Bezug abziehen und bei 30 °C waschen. Mit einem zweiten Bezug ist dein Kissen auch am Waschtag bereit.", picture: "coverWash" },
+    ],
+    reviews: [
+      { name: "Anonym", place: "", color: "Balsam Green", stars: 5, days: 12, text: "Passt perfekt auf mein altes Kissen, das jetzt wieder aussieht wie neu." },
+    ],
+    related: ["Bio Dinkelspelzen -Dinkelspreu (kbA) 1kg", "Bezug für Meditationskissen Lotus (H: 15cm) - Ohne Bestickung", "Bezug für Zabuton", "Bezug für Meditationskissen Lotus HOCH (H: 20cm)"],
+  }),
+  "meditationskissen-cover-lotus-h-15cm-ohne-bestickung": coverPage("Bezug für Meditationskissen Lotus (H: 15cm) - Ohne Bestickung", {
+    subtitle: "Schlichter Bezug ohne Stickerei für das runde Lotus-Kissen ohne Bestickung.",
+    buyboxRating: false,
+    reviewCount: 0,
+    reviews: [],
+    // The original states 20 cm as the height here.
+    specs: { cushion: "plainCushion", dimensions: [31, 31, 20] },
+    facts: coverFacts("15 cm (standard)", "31 × 31 × 20 cm", "110 g", "Rund"),
+    sustainability: sustainabilityText(GOTS, PLASTIC_FREE),
+    description: `
+        <p>${COVER_NOTE} Der Bezug passt auf das Meditationskissen Lotus ohne Bestickung mit 15 cm Höhe.</p>
+        <p>Schlicht, aus robuster Bio-Baumwolle und in vielen Farben – für einen neuen Look oder als zweiter Bezug zum Wechseln.</p>`,
+    features: [
+      { title: "Schlicht und ruhig", text: "Ohne Stickerei wirkt der Bezug besonders zurückhaltend und passt in jeden Raum.", picture: "coverSwap" },
+      { title: "Nur der Bezug", text: "Dein Innenkissen mit der Füllung behältst du – du tauschst nur den Bezug und bekommst so eine neue Farbe.", picture: "coverOnlyWide" },
+      { title: "Pflegeleicht", text: "Abziehen, bei 30 °C waschen, an der Luft trocknen lassen und wieder aufziehen.", picture: "coverWash" },
+    ],
+    related: ["Bezug für Halbmond Kissen", "Bezug für Meditationskissen Lotus (H: 15cm)", "Bezug für Yogarolle COVER Ø24 cm", "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung"],
+  }),
+  "zafu-meditationskissen-cover-zen": coverPage("Bezug für Zafu-Meditationskissen Zen", {
+    subtitle: "Zafu-Bezug mit Falten und gesticktem Lotus am Griff – für dein Zafu-Kissen Zen.",
+    buyboxRating: false,
+    rating: 5,
+    reviewCount: 2,
+    specs: { cushion: "zafu", dimensions: [35, 35, 15] },
+    facts: coverFacts("15 cm (standard)", "35 × 35 × 15 cm", "140 g", "Zafu", "Bezug aus Indien"),
+    care: `${careList("Bezug bei 30 °C waschen", NO_DRYER)}
+        <p>Nass kann die Farbe abfärben. Zieh den Bezug deshalb erst wieder auf, wenn er ganz trocken ist.</p>`,
+    description: `
+        <p>${COVER_NOTE} Der Bezug passt auf das Zafu-Meditationskissen Zen: rund, mit den typischen Falten und einem kleinen gestickten Lotus am Haltegriff.</p>
+        <p>Genäht ist er aus Bio-Baumwolle. Mit einem zweiten Bezug bekommt dein Zafu eine neue Farbe.</p>`,
+    features: [
+      { title: "Welche Füllung passt zu dir?", text: "Unter dem Bezug steckt das Innenkissen – beim Zafu Zen mit Dinkelspelz, beim Zafu Kapok mit der leichten Kapokfaser.", picture: "fillings" },
+      { title: "Nur der Bezug", text: "Das Innenkissen mit der Füllung behältst du. Der neue Bezug wird einfach darübergezogen.", picture: "coverOnlyWide" },
+    ],
+    reviews: [
+      { name: "Katja", place: "Leipzig, DE", color: "Kurkuma", stars: 5, days: 9, text: "Die Farbe ist wunderschön und der Bezug sitzt perfekt." },
+      { name: "Anonym", place: "", color: "Light Taupe", stars: 5, days: 27, text: "Endlich ein zweiter Bezug zum Wechseln. Sehr gute Qualität." },
+    ],
+    related: ["Bezug für Yogarolle COVER Ø24 cm", "Bezug für Meditationskissen Lotus HOCH (H: 20cm)", "Zafu-Meditationskissen Zen", "Bezug für Halbmond Kissen"],
+  }),
+  "halbmond-kissen-cover": coverPage("Bezug für Halbmond Kissen", {
+    subtitle: "Bezug für das Halbmond-Kissen – mehr Platz für die Beine, in neuer Farbe.",
+    buyboxRating: false,
+    reviewCount: 0,
+    reviews: [],
+    specs: { cushion: "crescent", dimensions: [40, 28, 12], size: "40 × 28" },
+    facts: coverFacts("15 cm (standard)", "28 × 40 × 12 cm", "110 g", "Halbrund"),
+    sustainability: sustainabilityText(PLASTIC_FREE, GOTS),
+    description: `
+        <p>${COVER_NOTE} Der Bezug passt auf das Yogakissen Halbmond Shanti. Durch die gewölbte Form liegen deine Oberschenkel frei – angenehm, wenn du mit gekreuzten Beinen sitzt.</p>
+        <p>Genäht aus Bio-Baumwolle, abnehmbar und bei 30 °C waschbar.</p>`,
+    features: [
+      { title: "Die Halbmondform", text: "Vorne nach innen gewölbt, gibt das Kissen deinen Beinen Raum. Der Bezug folgt genau dieser Form.", picture: "coverTopView" },
+      { title: "Neue Farbe für dein Kissen", text: "Das Innenkissen mit Dinkelspelz bleibt, wie es ist – nur die Farbe ändert sich.", picture: "coverSwap" },
+      { title: "Einfach waschbar", text: "Abziehen, bei 30 °C waschen und nach dem Trocknen wieder aufziehen.", picture: "coverWash" },
+    ],
+    related: ["Bezug für Yogarolle COVER Ø24 cm", "Yogakissen Halbmond Shanti", "Bezug für Meditationskissen Lotus KLEIN (H: 10 cm)", "Bezug für Meditationskissen Lotus (H: 15cm) - Ohne Bestickung"],
+  }),
+  "meditationskissen-cover-lotus-klein-h-10-cm": coverPage("Bezug für Meditationskissen Lotus KLEIN (H: 10 cm)", {
+    buyboxRating: false,
+    reviewCount: 0,
+    reviews: [],
+    specs: { cushion: "lotusCushion10", dimensions: [31, 31, 10] },
+    facts: coverFacts("10 cm (niedrig)", "31 × 31 × 10 cm", "110 g", "Rund"),
+    description: `
+        <p>${COVER_NOTE} Der Bezug passt auf das niedrige Meditationskissen Lotus KLEIN mit 10 cm Höhe und schließt mit einem Kordelzug.</p>
+        <p>Wie das Kissen trägt er einen kleinen gestickten Lotus am Haltegriff und ist aus robuster Bio-Baumwolle genäht.</p>`,
+    features: [
+      { title: "Passend zum niedrigen Kissen", text: "Zugeschnitten auf das Lotus KLEIN mit 10 cm Höhe – für alle, die gern nah am Boden sitzen.", picture: "coverSwap" },
+      { title: "Mit gesticktem Lotus", text: "Auch dieser Bezug trägt den kleinen gestickten Lotus – das bekannte Detail der Lotus-Kissen.", picture: "coverEmbroidery" },
+      { title: "Einfach wechseln", text: "Kordelzug öffnen, Bezug abziehen und bei 30 °C waschen.", picture: "coverWash" },
+    ],
+    related: ["Bio Dinkelspelzen -Dinkelspreu (kbA) 1kg", "Bezug für Meditationskissen Lotus (H: 15cm)", "Bezug für Zabuton", "Meditationskissen Lotus KLEIN (H: 10 cm)"],
+  }),
+  "meditationskissen-cover-lotus-hoch-h-20cm": coverPage("Bezug für Meditationskissen Lotus HOCH (H: 20cm)", {
+    rating: 5,
+    reviewCount: 2,
+    specs: { cushion: "lotusCushion20", dimensions: [31, 31, 20] },
+    facts: coverFacts("20 cm (hoch)", "31 × 31 × 20 cm", "140 g", "Rund"),
+    description: `
+        <p>${COVER_NOTE} Der Bezug passt auf das hohe Meditationskissen Lotus HOCH mit 20 cm und schließt mit einem Kordelzug.</p>
+        <p>Aus robuster Bio-Baumwolle und in vielen Farben – für einen neuen Look oder als zweiter Bezug für den Waschtag.</p>`,
+    features: [
+      { title: "Passend zum hohen Kissen", text: "Zugeschnitten auf das Lotus HOCH mit 20 cm – für alle, die gern etwas höher sitzen.", picture: "coverSwap" },
+      { title: "Klassisch mit Lotus", text: "Der kleine gestickte Lotus gehört zu jedem Lotus-Kissen dazu, auch zum neuen Bezug.", picture: "coverEmbroidery" },
+      { title: "Waschbar und schnell getauscht", text: "Kordelzug öffnen, Bezug abziehen und bei 30 °C waschen.", picture: "coverWash" },
+    ],
+    reviews: [
+      { name: "Stefanie", place: "Darmstadt, DE", color: "Balsam Green", stars: 5, days: 14, text: "Schöne Farbe, sitzt wie angegossen." },
+      { name: "Anonym", place: "", color: "Indigo Dust", stars: 5, days: 40, text: "Gute Qualität, mein Kissen sieht wieder aus wie neu." },
+    ],
+    related: ["Bezug für Zafu-Meditationskissen Zen", "Bezug für Meditationskissen Lotus (H: 15cm)", "Bezug für Zabuton", "Meditationskissen Lotus HOCH (H: 20cm)"],
+  }),
+  "zabuton-cover": coverPage("Bezug für Zabuton", {
+    rating: 5,
+    reviewCount: 1,
+    specs: { cushion: "zabuton", dimensions: [80, 75, 2] },
+    gallery: ["propFront", "coverOn", "coverOnly", "zabutonTop", "cushionFabric"],
+    facts: [["Material", ORGANIC], ["Maße (L × B × H)", "80 × 75 × 2 cm"], ["Gewicht", "400 g"], ["Herkunft", "Indien"]],
+    description: `
+        <p>${COVER_NOTE} Der Bezug passt auf die Meditationsmatte Zabuton mit 80 × 75 cm und gibt ihr eine neue Farbe – passend zu deinem Meditationskissen.</p>
+        <p>Genäht aus GOTS-zertifizierter Bio-Baumwolle, abnehmbar und bei 30 °C waschbar.</p>`,
+    features: [
+      { title: "Eine bequeme Basis", text: "Mit frischem Bezug bleibt der Zabuton dein Meditationsplatz – weich unter Knien und Knöcheln.", picture: "propSeated" },
+      { title: "Passend zum Kissen", text: "Den Bezug gibt es in den Farben der Meditationskissen. So passen Matte und Kissen zusammen.", picture: "zabutonCushion" },
+    ],
+    reviews: [
+      { name: "Anonym", place: "", color: "Anthrazit", stars: 5, days: 21, text: "Ließ sich leicht aufziehen, und die Farbe passt gut zu meinem Kissen." },
+    ],
+    related: ["Bezug für Meditationskissen Lotus (H: 15cm)", "Meditationsmatte Zabuton", "Bezug für Meditationskissen Lotus HOCH (H: 20cm)", "Bezug für Meditationskissen Lotus KLEIN (H: 10 cm)"],
+  }),
+  "yogarolle-cover-o24-cm": coverPage("Bezug für Yogarolle COVER Ø24 cm", {
+    // The page lists the colours in another order than the category.
+    colors: ["Anthrazit", "Indigo Dust", "Light Taupe", "Natur", "Dark Cranberry"].map((name) => colorsOf("Bezug für Yogarolle COVER Ø24 cm").find((color) => color.name === name)),
+    subtitle: "Neuer Bezug für deine Yogarolle RESTORATIVE Ø24 cm – aus Bio-Baumwolle, mit Kordelzug.",
+    buyboxRating: false,
+    reviewCount: 0,
+    reviews: [],
+    specs: { cushion: "roll", round: true, dimensions: [64, 24, 24], article: "der Rolle", compare: [{ ...ROLL_END, self: true }, { ...BOLSTER_L_END, label: "Bolster L: 30 × 20 cm" }] },
+    facts: [["Material", ORGANIC], ["Maße (L × B × H)", "64 × 24 × 24 cm"], ["Gewicht", "230 g"], ["Herkunft", "Bezug aus Indien, befüllt mit Dinkelspelzen in Deutschland"]],
+    care: careList("Bezug bei 30 °C waschen"),
+    description: `
+        <p>${COVER_NOTE} Der Bezug passt auf die Yogarolle RESTORATIVE mit 24 cm Durchmesser und schließt mit einem Kordelzug.</p>
+        <p>Genäht aus Bio-Baumwolle – für einen neuen Look oder als zweiter Bezug, wenn der erste in der Wäsche ist.</p>`,
+    features: [
+      { title: "Für Yin und Restorative Yoga", text: "Mit neuem Bezug ist deine Rolle bereit für die nächste ruhige Stunde – unter den Knien, unter dem Rücken oder unter den Fersen.", picture: "propKnees" },
+      { title: "Rolle oder Bolster?", text: "Die runde Rolle ist höher als das flache Bolster L. Dieser Bezug passt auf die Rolle mit 24 cm Durchmesser.", picture: "propCompare" },
+      { title: "Einfach waschbar", text: "Kordelzug öffnen, Bezug abziehen und bei 30 °C waschen.", picture: "coverWash" },
+    ],
+    related: ["Bezug für Zafu-Meditationskissen Zen", "Yogarolle RESTORATIVE Ø24 cm", "Bezug für Halbmond Kissen", "Yoga Bolster RESTORATIVE S"],
+  }),
+  "rosenholz-mala-rotes-sandelholz": malaPage("Rosenholz Mala (Dunkles Rosenholz)", "Rosenholz", {
+    rating: 4.88,
+    reviewCount: 67,
+    description: `
+        <p>Eine traditionelle indische Gebetskette mit 108 Perlen aus dunklem Rosenholz. Beim Meditieren gleitet Perle für Perle durch deine Finger – das hilft, beim Mantra oder beim Atem zu bleiben.</p>
+        <p>Gefertigt wird die Mala von einem Partnerbetrieb in Haridwar, Indien.</p>`,
+    reviews: [
+      { name: "Anja", place: "Freiburg, DE", stars: 5, days: 8, text: "Die Perlen liegen angenehm in der Hand und duften leicht nach Holz." },
+      { name: "Anonym", place: "", stars: 5, days: 19, text: "Hilft mir sehr, bei der Meditation bei meinem Mantra zu bleiben." },
+      { name: "Bernhard", place: "Salzburg, AT", stars: 5, days: 33, text: "Schön verarbeitet, die Quaste ist sauber gebunden." },
+      { name: "Anonym", place: "", stars: 4, days: 52, text: "Schöne Mala, etwas dunkler als gedacht." },
+    ],
+    // The original shows "ab" on the cover only here.
+    related: ["Restore Comfort Set", "Bezug für Meditationskissen Lotus (H: 15cm)", "Meditations-Set Lotus 15cm inkl. GRATIS Meditationskurs",
+      { ...relatedCard("Bezug für Meditationskissen Lotus (H: 15cm) - Ohne Bestickung"), fromPrice: true }],
+  }),
+  "tulsi-mala": malaPage("Tulsi Mala", "Tulsi-Holz", {
+    rating: 4.85,
+    reviewCount: 53,
+    description: `
+        <p>Eine Gebetskette mit 108 Perlen aus Tulsi-Holz, dem Holz des Indischen Basilikums. Die hellen Perlen sind leicht und liegen angenehm in der Hand.</p>
+        <p>Gefertigt wird die Mala von einem Partnerbetrieb in Haridwar, Indien.</p>`,
+    reviews: [
+      { name: "Ruth", place: "Bonn, DE", stars: 5, days: 6, text: "Leicht und schön hell. Begleitet mich jeden Morgen beim Meditieren." },
+      { name: "Anonym", place: "", stars: 5, days: 17, text: "Sorgfältig gefertigt, die Perlen sind schön gleichmäßig." },
+      { name: "Lukas", place: "Graz, AT", stars: 5, days: 30, text: "Ein schönes Geschenk für meine Schwester." },
+      { name: "Anonym", place: "", stars: 4, days: 48, text: "Gute Mala, die Quaste hätte ich mir etwas voller gewünscht." },
+    ],
+    related: ["Yoga Mini-Rolle (Nackenrolle) Ø12 cm", "Yoga Bolster RESTORATIVE L", "Meditationsmatte Zabuton", "Yogamatte MUDRA"],
+  }),
+  "rudraksha-mala": malaPage("Rudraksha Mala", "Rudraksha-Samen", {
+    rating: 4.68,
+    reviewCount: 38,
+    description: `
+        <p>Eine Mala mit 108 Rudraksha-Perlen: getrocknete Samen des Rudraksha-Baums mit ihrer typischen, gefurchten Oberfläche. Beim Meditieren zählst du mit ihnen deine Atemzüge oder Mantras.</p>
+        <p>Gefertigt wird die Mala von einem Partnerbetrieb in Haridwar, Indien.</p>`,
+    reviews: [
+      { name: "Daniel", place: "Kassel, DE", stars: 5, days: 10, text: "Die Struktur der Perlen fühlt sich beim Zählen sehr angenehm an." },
+      { name: "Anonym", place: "", stars: 5, days: 23, text: "Wunderschön natürlich, jede Perle ist ein bisschen anders." },
+      { name: "Petra", place: "Linz, AT", stars: 4, days: 37, text: "Schöne Mala, etwas kleiner als erwartet." },
+      { name: "Anonym", place: "", stars: 4, days: 55, text: "Gut verarbeitet, die Perlen sind etwas unregelmäßig – das ist bei Samen wohl normal." },
+    ],
+    related: ["Yogamatte MUDRA", "Yogagurt 100% Bio-Baumwolle", "Yogamatte PURE", "Yogatasche PUNE"],
+  }),
+  "bio-dinkelspelzen-dinkelspreu-kba-2kg": {
+    name: "Bio Dinkelspelzen - Dinkelspreu (kbA) 2kg",
+    subtitle: "Nachfüllpack mit Bio-Dinkelspelzen aus Deutschland – für Meditations- und Sitzkissen.",
+    price: 14.95,
+    rating: 5,
+    reviewCount: 21,
+    specs: { shape: "husks", weight: "2 kg" },
+    facts: [["Gewicht", "1,0 g"]], // as the original states
+    colors: [{ hex: "#d9c69e" }],
+    gallery: ["huskBag", "huskClose", "huskRefill"],
+    description: `
+        <p>Zwei Kilo Bio-Dinkelspelzen aus Deutschland zum Nachfüllen deiner Kissen. Die Spelzen sind die Hüllen des Dinkelkorns: leicht, innen hohl und rein pflanzlich. Sie passen sich deinem Körper an und bleiben trotzdem formstabil.</p>
+        <p>Dinkelspelzen sind atmungsaktiv, verteilen die Wärme gleichmäßig und bleiben auch nach langer Zeit locker. Ausgedient kommen sie auf den Kompost.</p>`,
+    features: [],
+    reviews: [
+      { name: "Monika", place: "Ulm, DE", stars: 5, days: 7, text: "Mein altes Kissen ist wieder schön fest. Kaum Staub beim Umfüllen." },
+      { name: "Anonym", place: "", stars: 5, days: 16, text: "Genug für zwei Kissen, gute Qualität." },
+      { name: "Jürgen", place: "Wels, AT", stars: 5, days: 29, text: "Schnell nachgefüllt, das Kissen sitzt sich wie neu." },
+      { name: "Anonym", place: "", stars: 5, days: 44, text: "Gute Spelzen, riecht angenehm nach Getreide." },
+    ],
+    related: ["Meditationskissen Lotus KLEIN (H: 10 cm)", "Bio Dinkelspelzen -Dinkelspreu (kbA) 1kg", "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung", "Yoga Bolster RESTORATIVE S"],
+  },
+  "bio-dinkelspelzen-dinkelspreu-kba-1kg": {
+    name: "Bio Dinkelspelzen -Dinkelspreu (kbA) 1kg",
+    subtitle: "Ein Kilo Bio-Dinkelspelzen, gereinigt und entstaubt – zum Nachfüllen deiner Kissen.",
+    price: 9.95,
+    rating: 4.83,
+    reviewCount: 12,
+    specs: { shape: "husks", weight: "1 kg" },
+    facts: [["Gewicht", "1,0 g"]], // as the original states
+    colors: [{ hex: "#d9c69e" }],
+    gallery: ["huskBag", "huskClose", "huskRefill"],
+    description: `
+        <p>Ein Kilo Bio-Dinkelspelzen aus kontrolliert biologischem Anbau, besonders gereinigt und entstaubt.</p>
+        <p>Damit füllst du Meditationskissen, Sitzkissen und Kopfkissen nach – oder machst ein zu weiches Kissen wieder fest.</p>`,
+    features: [],
+    reviews: [
+      { name: "Hanna", place: "Gotha, DE", stars: 5, days: 5, text: "Genau richtig, um mein Kissen ein wenig aufzufüllen." },
+      { name: "Anonym", place: "", stars: 5, days: 14, text: "Sauber und kaum Staub. Gerne wieder." },
+      { name: "Thomas", place: "Krems, AT", stars: 5, days: 26, text: "Lässt sich gut einfüllen und verteilt sich gleichmäßig." },
+      { name: "Anonym", place: "", stars: 4, days: 41, text: "Gute Qualität, für ein großes Kissen reicht ein Kilo aber nicht ganz." },
+    ],
+    related: ["Bezug für Meditationskissen Lotus (H: 15cm)", "Bio Dinkelspelzen - Dinkelspreu (kbA) 2kg", "Bezug für Meditationskissen Lotus KLEIN (H: 10 cm)", "Yoga Bolster RESTORATIVE S"],
+  },
+};
+Object.values(coverDetails).forEach((item) => Object.assign(item, {
+  swatch: "propFront",
+  related: item.related.map((entry) => (typeof entry === "string" ? relatedCard(entry) : entry)),
+}));
+
 const productDetails = {
   ...cushionDetails,
   ...clothingDetails,
   ...propDetails,
   ...accessoryDetails,
+  ...coverDetails,
   "yogamatte-pure": {
     name: "Yogamatte PURE",
     subtitle: "Die Dynamische: Rutschfestigkeit und Stabilität in perfekter Balance.",
@@ -2206,6 +2493,12 @@ const featurePictures = {
   towelUnderside: { label: () => "Handtuch mit umgeschlagener Ecke: die Unterseite mit Silikon-Noppen", draw: (color) => towelUndersideWide(color) },
   towelTravel: { label: () => "Das aufgerollte Handtuch neben einer Tasche", draw: (color) => towelTravelWide(color) },
   eyeFilling: { label: (specs) => `Das Augenkissen geöffnet, Füllung aus ${specs.filling}`, draw: (color, specs) => eyeFillingWide(color, specs) },
+  // Covers
+  coverSwap: { label: () => "Dasselbe Kissen vorher und mit neuem Bezug in neuer Farbe", draw: (color, specs) => coverSwapWide(color, specs) },
+  coverOnlyWide: { label: () => "Nur der Bezug, Innenkissen und Füllung sind nicht dabei", draw: (color, specs) => coverOnlyWide(color, specs) },
+  coverEmbroidery: { label: () => "Der gestickte Lotus aus der Nähe", draw: (color) => coverEmbroideryWide(color) },
+  coverWash: { label: () => "Bezug und Waschsymbol für 30 °C", draw: (color, specs) => cushionWashWide(color, specs) },
+  coverTopView: { label: (specs) => `Das Kissen von oben, ${specs.size} cm`, draw: (color, specs) => cushionTopWide(color, onCushion(specs)) },
 };
 
 const galleryPictures = {
@@ -2268,6 +2561,14 @@ const galleryPictures = {
   sprayIngredients: { label: "Salbei, Kurkuma und Bio-Ethanol", draw: () => sprayIngredientsPicture() },
   stickerFront: { label: "Sticker", draw: (color, specs) => stickerFrontPicture(color, specs) },
   stickerOnMat: { label: "auf einer Matte", draw: (color, specs) => stickerOnMatPicture(color, specs) },
+  // Covers, malas and spelt husks
+  coverOn: { label: "auf dem Kissen", draw: (color, specs) => cushionFrontPicture(color, onCushion(specs)) },
+  coverOnly: { label: "nur der Bezug", draw: (color, specs) => coverOnlyPicture(color, specs) },
+  malaClose: { label: "Perlen aus der Nähe", draw: (color, specs) => malaClosePicture(color, specs) },
+  malaLength: { label: "ausgelegt, 80 cm lang", draw: (color) => malaLengthPicture(color) },
+  huskBag: { label: "Nachfüllbeutel", draw: (color, specs) => huskBagPicture(color, specs) },
+  huskClose: { label: "Dinkelspelzen aus der Nähe", draw: () => huskClosePicture() },
+  huskRefill: { label: "beim Nachfüllen", draw: (color, specs) => huskRefillPicture(color, specs) },
 };
 
 // ---------- Drawn cushion pictures ----------
@@ -2503,6 +2804,11 @@ const SHAPE_BOX = {
   bag: [22, 46, 158, 118], sack: [30, 52, 160, 129], block: [38, 48, 140, 150], singleBlock: [56, 50, 124, 146], strap: [33, 60, 147, 134],
   blanket: [28, 56, 152, 142], towel: [32, 56, 148, 141], eyePillow: [28, 70, 152, 122], spray: [58, 38, 114, 156], sprayRefill: [58, 38, 122, 158],
   sticker: [42, 42, 138, 138],
+  lotusCover10: [24, 70, 156, 135], lotusCover15: [24, 68, 156, 137], lotusCover20: [24, 67, 156, 138], plainCover: [24, 68, 156, 137],
+  zafuCover: [24, 68, 156, 137], crescentCover: [22, 76, 158, 132], zabutonCover: [18, 70, 162, 125], rollCover: [30, 56, 150, 128],
+  mala: [41, 29, 139, 160], husks: [44, 44, 136, 152],
+  lotusCushion10: [28, 74, 152, 136], lotusCushion15: [28, 66, 152, 136], lotusCushion20: [28, 58, 152, 136], plainCushion: [28, 66, 152, 136],
+  zafu: [34, 54, 146, 136], crescent: [24, 50, 156, 133],
 };
 
 // Fits the drawing into a box around (cx, cy); `point` maps a spot on it
@@ -3286,6 +3592,105 @@ function stickerOnMatPicture(color, specs) {
       <g transform="rotate(-8 120 140)">${stickerArt(color, specs, 120, 140, 34)}</g>`);
 }
 
+// ---------- Drawn pictures for covers, malas and spelt husks ----------
+// A cover's page also knows its cushion (`specs.cushion`), to show the
+// cover pulled on and, for comparison, the cushion in a neutral colour.
+const OLD_COVER = "#cfc8bc";
+const onCushion = (specs) => ({ ...specs, shape: specs.cushion });
+
+// Only the cover: the inner cushion is drawn as a dashed outline.
+function coverOnly(color, specs, cx, cover, inner, scale) {
+  const round = !["zabutonCover", "rollCover"].includes(specs.shape);
+  const w = r1(120 * scale);
+  const h = r1((round ? 44 : 34) * scale);
+  return `
+      ${shapePlacement(specs, cx, cover, 160 * scale, 90 * scale).draw(color.hex)}
+      <rect x="${r1(cx - w / 2)}" y="${r1(inner - h / 2)}" width="${w}" height="${h}" rx="${r1(round ? h / 2 : 8)}" fill="none" stroke="#8c8778" stroke-width="1.5" stroke-dasharray="5 4"/>`;
+}
+const coverOnlyPicture = (color, specs) => galleryPhoto(`${coverOnly(color, specs, 100, 84, 158, 1)}
+      <text x="100" y="208" text-anchor="middle" ${LABEL_STYLE}>Nur der Bezug: Innenkissen</text>
+      <text x="100" y="223" text-anchor="middle" ${LABEL_STYLE}>und Füllung sind nicht dabei</text>`);
+const coverOnlyWide = (color, specs) => widePhoto(`${coverOnly(color, specs, 165, 66, 128, 0.9)}
+      <text x="165" y="178" text-anchor="middle" ${LABEL_STYLE}>Nur der Bezug – Innenkissen und Füllung sind nicht dabei</text>`);
+
+// The same cushion before and after: neutral, then in the new colour.
+function coverSwapWide(color, specs) {
+  const cushionSpecs = onCushion(specs);
+  return widePhoto(`
+      ${shapePlacement(cushionSpecs, 92, 92, 118, 120).draw(OLD_COVER)}
+      <path d="M155 92h20m-7-6 7 6-7 6" fill="none" stroke="#5f5c52" stroke-width="1.5"/>
+      ${shapePlacement(cushionSpecs, 238, 92, 118, 120).draw(color.hex)}
+      <text x="165" y="182" text-anchor="middle" ${LABEL_STYLE}>Neuer Bezug, neue Farbe – dasselbe Kissen</text>`);
+}
+
+// The embroidered lotus up close, stitched onto the cotton.
+function coverEmbroideryWide(color) {
+  const id = `weave-${++patternCount}`;
+  const stitch = 'fill="none" stroke="rgba(255, 255, 255, .75)" stroke-width="2.2" stroke-dasharray="4 2.5" stroke-linecap="round"';
+  return widePhoto(`
+      <rect width="330" height="202" fill="${color.hex}"/>
+      <rect width="330" height="202" fill="url(#${id})"/>
+      <g transform="translate(165 86) scale(2.4)">
+        <path d="M0 -16c-6 7-6 15 0 22 6-7 6-15 0-22z" ${stitch}/>
+        <path d="M0 6c-9-2-15 1-18 7 7 2 13 0 18-7z" ${stitch}/>
+        <path d="M0 6c9-2 15 1 18 7-7 2-13 0-18-7z" ${stitch}/>
+      </g>
+      <rect x="105" y="150" width="120" height="26" rx="13" fill="rgba(255, 255, 255, .88)"/>
+      <text x="165" y="167" text-anchor="middle" ${LABEL_STYLE}>Gestickter Lotus</text>`,
+  `<defs><pattern id="${id}" width="6" height="6" patternUnits="userSpaceOnUse"><path d="M0 1.5H6M0 4.5H6" stroke="rgba(255,255,255,.18)" stroke-width="1.4"/><path d="M1.5 0V6M4.5 0V6" stroke="rgba(0,0,0,.1)"/></pattern></defs>`);
+}
+
+// A mala: the beads up close with the guru bead and the tassel.
+function malaClosePicture(color, specs) {
+  const centers = Array.from({ length: 7 }, (_, i) => [30 + i * 24, r1(70 + Math.sin(i / 2) * 10)]);
+  const beads = centers.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="11" fill="${color.hex}"/><circle cx="${x - 3}" cy="${r1(y - 4)}" r="3" fill="rgba(255, 255, 255, .25)"/>`).join("");
+  return galleryPhoto(`
+      <path d="M${centers.map(([x, y]) => `${x} ${y}`).join("L")}M${centers[3][0]} ${centers[3][1]}L100 132" fill="none" stroke="#8c8778" stroke-width="1.2"/>
+      ${beads}
+      <circle cx="100" cy="132" r="15" fill="${color.hex}"/><circle cx="95" cy="126" r="4" fill="rgba(255, 255, 255, .25)"/>
+      <path d="M92 146h16l8 52H84z" fill="${color.hex}"/>
+      <path d="M90 160h20M88 176h24" stroke="rgba(0, 0, 0, .15)"/>
+      <text x="100" y="226" text-anchor="middle" ${LABEL_STYLE}>108 Perlen aus ${specs.material}</text>`);
+}
+
+// The mala laid out: about 80 cm long.
+function malaLengthPicture(color) {
+  const beads = Array.from({ length: 30 }, (_, i) => {
+    const angle = (i / 30) * Math.PI * 2;
+    return `<circle cx="${r1(100 + 30 * Math.cos(angle))}" cy="${r1(112 + 74 * Math.sin(angle))}" r="5" fill="${color.hex}"/>`;
+  }).join("");
+  return galleryPhoto(`${beads}
+      ${heightMark(160, 38, 186, "80 cm")}`);
+}
+
+// A bag of spelt husks with its weight on the label.
+function huskBagPicture(color, specs) {
+  const place = shapePlacement(specs, 100, 120, 150, 180);
+  const [x, y] = place.point(90, 112);
+  return galleryPhoto(`${place.draw(color.hex)}
+      <text x="${x}" y="${y}" text-anchor="middle" font-size="18" font-weight="700" fill="#5f5c52" font-family="Hanken Grotesk, sans-serif">${specs.weight}</text>`);
+}
+
+// The husks up close.
+function huskClosePicture() {
+  const filling = fillingPattern({ filling: "Dinkelspelz" });
+  return galleryPhoto(`<rect width="200" height="250" fill="url(#${filling.id})"/>
+      <rect x="30" y="200" width="140" height="26" rx="13" fill="rgba(255, 255, 255, .88)"/>
+      <text x="100" y="217" text-anchor="middle" ${LABEL_STYLE}>Bio-Dinkelspelz (kbA)</text>`, filling.defs);
+}
+
+// Refilling a cushion from the bag.
+function huskRefillPicture(color, specs) {
+  const filling = fillingPattern({ filling: "Dinkelspelz" });
+  const grains = Array.from({ length: 14 }, (_, i) => `<ellipse cx="${r1(118 + (i % 4) * 5 + (i % 3))}" cy="${r1(112 + Math.floor(i / 4) * 9)}" rx="2" ry="1" fill="#b89a62" transform="rotate(${i * 25} ${r1(118 + (i % 4) * 5)} ${r1(112 + Math.floor(i / 4) * 9)})"/>`).join("");
+  return galleryPhoto(`
+      <g transform="rotate(-35 120 70)">${shapePlacement(specs, 120, 70, 60, 80).draw(color.hex)}</g>
+      ${grains}
+      <rect x="40" y="150" width="120" height="56" rx="24" fill="${OLD_COVER}"/>
+      <rect x="54" y="160" width="92" height="36" rx="16" fill="url(#${filling.id})"/>
+      <text x="100" y="230" text-anchor="middle" ${LABEL_STYLE}>Zum Nachfüllen deiner Kissen</text>`, filling.defs);
+}
+
 // ---------- Small line icons for the buy box ----------
 const buyboxIcons = {
   truck: '<path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>',
@@ -3605,6 +4010,14 @@ function reviewItem(product, review) {
 }
 
 function reviewsMarkup(product) {
+  // Without any reviews the original only says so.
+  if (!product.reviews.length) return `
+    <section class="reviews-section" id="bewertungen" aria-labelledby="reviews-title">
+      <div class="container">
+        <h2 class="visually-hidden" id="reviews-title">Bewertungen</h2>
+        <p class="reviews__empty">– Für dieses Produkt wurden noch keine Bewertungen abgegeben –</p>
+      </div>
+    </section>`;
   return `
     <section class="reviews-section" id="bewertungen" aria-labelledby="reviews-title">
       <div class="container">
@@ -3633,6 +4046,7 @@ function reviewsMarkup(product) {
 }
 
 function setupReviews(product) {
+  if (!product.reviews.length) return;
   const section = productRoot.querySelector("#bewertungen");
   const list = section.querySelector(".reviews__list");
   const pager = section.querySelector(".pagination");
