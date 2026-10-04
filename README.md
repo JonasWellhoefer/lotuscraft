@@ -95,7 +95,7 @@ lotuscraft/
 │   ├── shared.js   # Gemeinsame Daten & Helfer: Produkte, Kategorien, Menü, Suchindex, Zeichnungen
 │   ├── layout.js   # Header, Menüs (Handy + Desktop), Suche, Footer, Warenkorb (Demo)
 │   ├── home.js     # Startseite: Produkt-Tabs, Community, Bewertungs-Karussell
-│   ├── product.js  # Produktseiten: Daten aller Matten, Zeichnungen, Galerie, Farbauswahl, Warenkorb-Button
+│   ├── product.js  # Produktseiten: Daten aller Matten und Meditationskissen, Zeichnungen, Galerie, Farbauswahl, Warenkorb-Button
 │   └── category.js # Kategorieseite: Filter (Farbe, Sitzhöhe, Form, Material, Füllung, Größe, Verfügbarkeit), Sortierung
 └── README.md
 ```
@@ -136,6 +136,7 @@ die Werte stammen direkt aus dem CSS des Originals.
 - [x] Alle 8 Yogamatten: PURE, ARISE, ARISE Travel (faltbar), MUDRA (Waffelstruktur), Mudra XL, MUDRA PRO, ARISE CORK (Kork, Variante „Align“ mit Linienmuster) und WOOL (Schurwolle) – alle Seiten nutzen dieselbe Vorlage, Maße und Material stehen in den Daten
 - [x] Produkte mit nur einer Ausführung (WOOL) zeigen wie im Original keine Farbauswahl
 - [x] Längenauswahl wie im Original (MUDRA PRO: 180 / 200 cm mit eigenem Preis; Kombinationen, die es nicht gibt, werden ausgeblendet)
+- [x] Alle 7 Meditationskissen (Lotus 15 cm, ohne Stickerei, HOCH, KLEIN, Zafu, Zafu Kapok, Halbmond) mit derselben Vorlage: eigene Zeichnungen (von vorn, beim Sitzen, von oben, Maße, Füllung, Stoff), Detailangaben wie im Original (Sitzhöhe, Maße, Füllung, Öffnung …), Bewertungsübersicht und verwandte Produkte
 
 **Kategorieseiten** (Hero-Button „Yogamatten“, Menü → „Yoga“ oder die Kreise oben):
 
@@ -156,7 +157,7 @@ die Werte stammen direkt aus dem CSS des Originals.
 - [x] Sortierung wie im Original, voreingestellt „meistverkauft“ (Rangliste des Originals vom 4. Oktober 2026); dazu Relevanz, A–Z, Z–A und Preis. Einige Bekleidungsseiten zeigen wie dort die eigene Reihenfolge des Shops, ohne gewählte Sortierung
 - [x] Alle 52 Kategorieseiten automatisch Karte für Karte mit dem Original abgeglichen (Stand 4. Oktober 2026: Reihenfolge, Farben, Preise, Lagerstand, Filterwerte)
 - [x] Kurzer eigener Text unter dem Raster, mit Links zu den Produktseiten
-- [x] Jede Mattenkarte öffnet die passende Produktseite, gleich in der richtigen Farbe (Zubehör hat noch keine eigenen Produktseiten)
+- [x] Jede Matten- und Kissenkarte öffnet die passende Produktseite, gleich in der richtigen Farbe (Zubehör, Bezüge und Kleidung haben noch keine eigenen Produktseiten)
 
 **Warenkorb** (Icon oben rechts oder „In den Warenkorb“ auf der Produktseite):
 

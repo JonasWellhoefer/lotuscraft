@@ -55,7 +55,255 @@ const mudraFeatures = [
   },
 ];
 
+// ---------- Meditation cushions ----------
+// Colours (and which are sold out) come from the category data in shared.js;
+// ratings, details and related products were read from the original.
+const colorsOf = (name) => allModels.find((model) => model.name === name).variants
+  .map((variant) => ({ name: variant.color, hex: variant.hex, soldOut: Boolean(variant.soldOut) }));
+
+// A card for "Verwandte Produkte" from the category data: like the original,
+// it shows the first colour that is in stock.
+function relatedCard(name) {
+  const model = allModels.find((candidate) => candidate.name === name);
+  const first = model.variants?.find((variant) => !variant.soldOut) || model.variants?.[0] || {};
+  return { name: model.name, slug: model.slug, price: first.price ?? model.price, compareAt: model.compareAt, shape: first.shape || model.shape, tint: first.hex || model.tint, badge: model.badge };
+}
+
+const ORGANIC = "Bio-Baumwolle (kbA)";
+const SPELT_FILLING = "Bio-Dinkelspelz (kbA)";
+const ORIGIN = "Bezug aus Indien, befüllt in Deutschland";
+const cushionCare = (filling) => `
+        <p>Den Bezug nimmst du einfach ab und wäschst ihn bei 30 °C. Bitte nicht in den Trockner geben, sondern an der Luft trocknen lassen.</p>
+        <p>Das Innenkissen mit der ${filling === "Kapokwolle" ? "Kapokfüllung" : "Dinkelspelz-Füllung"} wird nicht gewaschen. Lüfte es ab und zu gut durch, dann bleibt die Füllung trocken und locker.</p>`;
+const CUSHION_SUSTAINABILITY = `
+        <p><strong>Plastikfreie Verpackung</strong> – ohne PVC und ohne erdölbasierte Kunststoffe.</p>
+        <p><strong>Wertschöpfung in der EU</strong> – befüllt wird das Kissen in Deutschland.</p>
+        <p><strong>GOTS-zertifizierte Bio-Baumwolle</strong> – der Standard prüft die ganze Lieferkette auf ökologische und faire Herstellung.</p>`;
+const cushionGallery = ["cushionFront", "cushionSeated", "cushionTop", "cushionSize", "cushionInside", "cushionFabric"];
+// The two-part opening as the original lists it.
+const OPENING = (cover) => `Bezug: ${cover}; Innenkissen: Reißverschluss`;
+const CUSHION_SCALES = (material, quality, filling) => [
+  ["Material", material],
+  ...(quality ? [["Qualität & Langlebigkeit", quality]] : []),
+  ["Füllmaterial", filling],
+];
+
+const cushionDetails = {
+  "meditationskissen-lotus-h-15cm": {
+    name: "Meditationskissen Lotus (H: 15cm)",
+    price: 39.95,
+    rating: 4.86,
+    reviewCount: 456,
+    ratingScales: CUSHION_SCALES(4.86, 4.88, 4.8),
+    // `size` labels the view from above, `dimensions` the side view (L, B, H in cm).
+    specs: { shape: "lotusCushion15", seat: 15, size: "Ø 31", dimensions: [31, 31, 15], filling: SPELT_FILLING },
+    facts: [["Material", ORGANIC], ["Sitzhöhe", "15 cm (standard)"], ["Maße (L × B × H)", "31 × 31 × 15 cm"], ["Gewicht", "1,6 kg"], ["Form", "Rund"], ["Herkunft", ORIGIN]],
+    colors: colorsOf("Meditationskissen Lotus (H: 15cm)"),
+    description: `
+        <p>Das runde Lotus-Kissen ist der Allrounder für die Meditation: 15 cm hoch, 31 cm im Durchmesser und mit Bio-Dinkelspelz gefüllt. Die Füllung gibt nach, wenn du dich setzt, und hält dich trotzdem stabil – so kippt dein Becken leicht nach vorn und der Rücken bleibt von selbst aufrecht.</p>
+        <p>Der Bezug aus Bio-Baumwolle trägt einen kleinen gestickten Lotus und lässt sich zum Waschen abnehmen.</p>`,
+    features: [
+      { title: "Passt zu fast jeder Sitzhaltung", text: "Ob Schneidersitz, halber Lotus oder Fersensitz: Mit 15 cm Höhe ist das Kissen für die meisten Menschen und Haltungen genau richtig. Wenn du nicht sicher bist, welche Höhe du brauchst, ist es ein guter Anfang.", picture: "sitting" },
+      { title: "Höhe und Festigkeit selbst bestimmen", text: "Über die Öffnung nimmst du etwas Dinkelspelz heraus oder füllst nach. So wird das Kissen ein wenig flacher oder fester – ganz so, wie es sich für dich gut anfühlt.", picture: "refill" },
+      { title: "Natürlich und pflegeleicht", text: "Bezug und Innenkissen sind aus Bio-Baumwolle, die Füllung ist Bio-Dinkelspelz. Den Bezug nimmst du ab und wäschst ihn bei 30 °C.", picture: "wash" },
+      { title: "Drei Höhen zur Wahl", text: "Neben 15 cm gibt es das Lotus-Kissen auch mit 10 cm für bewegliche Hüften und mit 20 cm, wenn du mehr Unterstützung brauchst.", picture: "heights" },
+    ],
+    reviews: [
+      { name: "Hanna", place: "Bremen, DE", color: "Natur", stars: 5, days: 2, text: "Endlich sitze ich 20 Minuten, ohne dass mir die Füße einschlafen. Das Kissen ist fester, als ich dachte – genau richtig." },
+      { name: "Jonas", place: "Linz, AT", color: "Anthrazit", stars: 5, days: 4, text: "Gute Höhe für den Schneidersitz. Ich habe etwas Füllung herausgenommen, jetzt passt es perfekt." },
+      { name: "Anonym", place: "", color: "Balsam Green", stars: 5, days: 6, text: "Die Farbe ist ruhig und schön, die Stickerei dezent. Steht bei mir auch tagsüber gern im Wohnzimmer." },
+      { name: "Petra", place: "Dortmund, DE", color: "Light Taupe", stars: 4, days: 9, text: "Sehr bequem. Am Anfang raschelt der Dinkelspelz etwas, daran gewöhnt man sich schnell." },
+      { name: "Simon", place: "Luzern, CH", color: "Indigo Dust", stars: 5, days: 13, text: "Bezug abgenommen, gewaschen, wieder drauf – sieht aus wie neu. Praktisch, wenn man täglich übt." },
+      { name: "Clara", place: "Kiel, DE", color: "Kurkuma", stars: 3, days: 20, text: "Für meine steifen Hüften etwas zu niedrig, ich hätte die hohe Variante nehmen sollen. Verarbeitung top." },
+    ],
+    related: ["Meditationskissen Lotus (H: 15cm) - Ohne Bestickung", "Meditationsmatte Zabuton", "Meditationskissen Lotus KLEIN (H: 10 cm)", "Yogarolle RESTORATIVE Ø24 cm"],
+  },
+
+  "meditationskissen-lotus-h-15cm-ohne-bestickung": {
+    name: "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung",
+    price: 34.95,
+    rating: 4.89,
+    reviewCount: 502,
+    ratingScales: CUSHION_SCALES(4.87, 4.88, 4.84),
+    // The original lists 20 cm as the height here, although it sits at 15 cm.
+    specs: { shape: "plainCushion", seat: 15, size: "Ø 31", dimensions: [31, 31, 20], filling: SPELT_FILLING },
+    facts: [["Material", ORGANIC], ["Füllung", SPELT_FILLING], ["Sitzhöhe", "15 cm (standard)"], ["Maße (L × B × H)", "31 × 31 × 20 cm"], ["Gewicht", "1,5 kg"], ["Form", "Rund"],
+      ["Oberstoff", `100 % ${ORGANIC}`], ["Innenstoff", `100 % ${ORGANIC}`], ["Öffnung", OPENING("Reißverschluss")], ["Herkunft", ORIGIN]],
+    colors: colorsOf("Meditationskissen Lotus (H: 15cm) - Ohne Bestickung"),
+    description: `
+        <p>Das Lotus-Kissen in seiner schlichtesten Form: ohne Stickerei, sonst genau wie das Original mit 15 cm Sitzhöhe und einer Füllung aus Bio-Dinkelspelz.</p>
+        <p>Bezug und Innenkissen schließen beide mit Reißverschluss. So kommst du leicht an die Füllung und nimmst den Bezug zum Waschen ab.</p>`,
+    features: [
+      { title: "Schlicht und vertraut", text: "Kein Logo, keine Stickerei – nur Stoff und Farbe. Das Kissen fügt sich in jeden Raum ein und sitzt sich so angenehm wie sein besticktes Gegenstück.", picture: "sitting" },
+      { title: "Deine Höhe, dein Gefühl", text: "Mit dem Reißverschluss am Innenkissen nimmst du Dinkelspelz heraus oder füllst nach, bis Höhe und Festigkeit für dich stimmen.", picture: "refill" },
+      { title: "Pflegeleicht für jeden Tag", text: "Den Bezug aus Bio-Baumwolle wäschst du bei 30 °C. Danach an der Luft trocknen lassen, wieder aufziehen, fertig.", picture: "wash" },
+    ],
+    reviews: [
+      { name: "Lisa", place: "Mainz, DE", color: "Lavender Fog", stars: 5, days: 1, text: "Die Farbe ist ein Traum und das Kissen fühlt sich sehr hochwertig an. Ohne Stickerei gefällt es mir sogar besser." },
+      { name: "Markus", place: "Bern, CH", color: "Anthrazit", stars: 5, days: 3, text: "Stabil, schlicht, gut verarbeitet. Reißverschluss läuft leicht." },
+      { name: "Anonym", place: "", color: "Natur", stars: 4, days: 7, text: "Schönes Kissen. Für mich war es anfangs zu hoch, mit etwas weniger Füllung passt es jetzt." },
+      { name: "Eva", place: "Wels, AT", color: "Grassland", stars: 5, days: 11, text: "Das Muster ist dezent und lebendig zugleich. Sitze jeden Morgen zehn Minuten darauf." },
+      { name: "Tobias", place: "Rostock, DE", color: "Indigo Dust", stars: 5, days: 16, text: "Habe schon das zweite gekauft, damit auch meine Freundin eins hat. Klare Empfehlung." },
+      { name: "Sophie", place: "Bonn, DE", color: "Light Taupe", stars: 4, days: 24, text: "Bequem und formstabil. Etwas schwerer, als ich erwartet hatte, aber das spricht für die Füllung." },
+    ],
+    related: ["Meditationskissen Lotus (H: 15cm)", "Meditationsmatte Zabuton", "Meditationskissen Lotus KLEIN (H: 10 cm)", "Meditationskissen Lotus HOCH (H: 20cm)"],
+  },
+
+  "meditationskissen-lotus-hoch-h-20cm": {
+    name: "Meditationskissen Lotus HOCH (H: 20cm)",
+    price: 44.95,
+    rating: 4.9,
+    reviewCount: 480,
+    ratingScales: CUSHION_SCALES(4.89, 4.87, 4.79),
+    specs: { shape: "lotusCushion20", seat: 20, size: "Ø 31", dimensions: [31, 31, 20], filling: SPELT_FILLING },
+    facts: [["Material", ORGANIC], ["Füllung", SPELT_FILLING], ["Sitzhöhe", "20 cm (hoch)"], ["Maße (L × B × H)", "31 × 31 × 20 cm"], ["Gewicht", "1,9 kg"], ["Form", "Rund"],
+      ["Oberstoff", `100 % ${ORGANIC}`], ["Innenstoff", `100 % ${ORGANIC}`], ["Öffnung", OPENING("Kordelzug")], ["Herkunft", ORIGIN]],
+    colors: colorsOf("Meditationskissen Lotus HOCH (H: 20cm)"),
+    description: `
+        <p>Die hohe Variante des Lotus-Kissens bringt dich 20 cm über den Boden. Das entlastet Hüften und Knie, wenn sie im Sitzen noch nicht so weit nachgeben – und macht das aufrechte Sitzen leichter.</p>
+        <p>Gefüllt ist es mit Bio-Dinkelspelz, der Bezug aus Bio-Baumwolle schließt mit einem Kordelzug.</p>`,
+    features: [
+      { title: "Mehr Höhe, mehr Entspannung", text: "Je höher du sitzt, desto weniger müssen Hüften und Knie nachgeben. Auf 20 cm findest du leichter eine Haltung, in der du lange ruhig sitzen kannst.", picture: "sitting" },
+      { title: "Hilfe bei steifen Hüften", text: "Wenn deine Knie im Schneidersitz weit über dem Boden schweben, ist das hohe Kissen oft die bessere Wahl als die Standardhöhe von 15 cm.", picture: "heights" },
+      { title: "Anpassbar an deinen Körper", text: "Über den Reißverschluss am Innenkissen nimmst du Dinkelspelz heraus oder füllst nach – für genau die Höhe und Festigkeit, die du brauchst.", picture: "refill" },
+    ],
+    reviews: [
+      { name: "Gerd", place: "Kassel, DE", color: "Anthrazit", stars: 5, days: 2, text: "Mit 1,90 m und unbeweglichen Hüften war jedes andere Kissen zu flach. Dieses passt endlich." },
+      { name: "Anja", place: "Villach, AT", color: "Natur", stars: 5, days: 5, text: "Mein Rücken dankt es mir. Ich sitze aufrechter und ohne Ziehen in den Knien." },
+      { name: "Anonym", place: "", color: "Kurkuma", stars: 5, days: 8, text: "Die neue Farbe bringt richtig Wärme ins Zimmer. Sehr bequem." },
+      { name: "Ralf", place: "Erfurt, DE", color: "Light Taupe", stars: 4, days: 12, text: "Etwas hoch für den Lotussitz, für den Fersensitz ideal. Gut verarbeitet." },
+      { name: "Nadine", place: "Basel, CH", color: "Indigo Dust", stars: 5, days: 17, text: "Habe vorher auf zwei gestapelten Kissen gesessen. Das hier ist viel stabiler." },
+      { name: "Uwe", place: "Augsburg, DE", color: "Balsam Green", stars: 4, days: 26, text: "Fest und hoch, wie beschrieben. Der Kordelzug hält gut, ist beim Abziehen aber etwas fummelig." },
+    ],
+    related: ["Meditationsmatte Zabuton", "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung", "Meditationskissen Lotus (H: 15cm)", "Bezug für Meditationskissen Lotus HOCH (H: 20cm)"],
+  },
+
+  "meditationskissen-lotus-klein-h-10-cm": {
+    name: "Meditationskissen Lotus KLEIN (H: 10 cm)",
+    price: 37.95,
+    rating: 4.9,
+    reviewCount: 247,
+    ratingScales: CUSHION_SCALES(4.89, 4.88, 4.8),
+    specs: { shape: "lotusCushion10", seat: 10, size: "Ø 31", dimensions: [31, 31, 10], filling: SPELT_FILLING },
+    facts: [["Material", ORGANIC], ["Sitzhöhe", "10 cm (niedrig)"], ["Maße (L × B × H)", "31 × 31 × 10 cm"], ["Gewicht", "1,2 kg"], ["Form", "Rund"], ["Herkunft", ORIGIN]],
+    colors: colorsOf("Meditationskissen Lotus KLEIN (H: 10 cm)"),
+    description: `
+        <p>Das niedrige Lotus-Kissen hebt dich nur 10 cm an. Damit sitzt du nah am Boden – ideal, wenn deine Hüften beweglich sind und dir die Standardhöhe zu hoch vorkommt.</p>
+        <p>Auch als Unterlage beim Yoga, etwa im Fersensitz, oder als zweites Kissen für Kinder ist es beliebt. Gefüllt ist es mit Bio-Dinkelspelz.</p>`,
+    features: [
+      { title: "Für eine bodennahe Praxis", text: "Auf 10 cm sitzt du fast so, wie du es vom Boden kennst – nur mit leicht angehobenem Becken. So bleibt der Rücken aufrecht, ohne dass du hoch thronst.", picture: "sitting" },
+      { title: "Ideal bei beweglichen Hüften", text: "Wenn deine Knie im Schneidersitz schon fast den Boden berühren, ist das niedrige Kissen meist die bessere Wahl als 15 oder 20 cm.", picture: "heights" },
+      { title: "Anpassbar und pflegeleicht", text: "Dinkelspelz lässt sich entnehmen oder nachfüllen, den Bezug aus Bio-Baumwolle wäschst du bei 30 °C.", picture: "wash" },
+    ],
+    reviews: [
+      { name: "Mira", place: "Freiburg, DE", color: "Balsam Green", stars: 5, days: 3, text: "Ich bin sehr beweglich und alle anderen Kissen waren mir zu hoch. Das hier ist perfekt." },
+      { name: "Anonym", place: "", color: "Natur", stars: 5, days: 6, text: "Nutze es für den Fersensitz im Yoga, entlastet die Knöchel spürbar." },
+      { name: "Daniel", place: "Graz, AT", color: "Indigo Dust", stars: 4, days: 10, text: "Gut verarbeitet, schöne Farbe. Für längere Meditationen nehme ich doch lieber das 15er." },
+      { name: "Ella", place: "Hannover, DE", color: "Light Taupe", stars: 5, days: 15, text: "Meine Tochter (8) meditiert jetzt mit. Die Größe passt für Kinder richtig gut." },
+      { name: "Robert", place: "Chur, CH", color: "Anthrazit", stars: 5, days: 19, text: "Flach, aber erstaunlich stabil. Genau das, was ich gesucht habe." },
+      { name: "Jana", place: "Würzburg, DE", color: "Kurkuma", stars: 4, days: 28, text: "Tolle Farbe, die Füllung setzt sich anfangs etwas. Mit einer Handvoll Dinkelspelz mehr ist es top." },
+    ],
+    related: ["Yogakissen Halbmond Shanti", "Meditationskissen Lotus (H: 15cm)", "Meditationsmatte Zabuton", "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung"],
+  },
+
+  "zafu-meditationskissen-zen": {
+    name: "Zafu-Meditationskissen Zen",
+    price: 39.95,
+    rating: 4.83,
+    reviewCount: 269,
+    ratingScales: CUSHION_SCALES(4.87, 4.88, 4.75),
+    specs: { shape: "zafu", seat: 15, size: "Ø 35", dimensions: [35, 35, 15], filling: SPELT_FILLING },
+    facts: [["Material", ORGANIC], ["Sitzhöhe", "15 cm (standard)"], ["Maße (L × B × H)", "35 × 35 × 15 cm"], ["Gewicht", "1,7 kg"], ["Form", "Zafu"], ["Herkunft", ORIGIN]],
+    colors: colorsOf("Zafu-Meditationskissen Zen"),
+    description: `
+        <p>Das Zafu ist das klassische Meditationskissen aus der Zen-Tradition: rund, gefaltet und mit einer breiten Sitzfläche von 35 cm. Die Falten am Rand halten das Kissen in Form, auch wenn du lange darauf sitzt.</p>
+        <p>Gefüllt mit Bio-Dinkelspelz, gibt es dir festen Halt und passt sich trotzdem deinem Becken an.</p>`,
+    features: [
+      { title: "Aufrecht und stabil sitzen", text: "Die breite, feste Sitzfläche trägt dich auch in längeren Meditationen. Dein Becken kippt leicht nach vorn, der Rücken richtet sich wie von selbst auf.", picture: "sitting" },
+      { title: "Die klassische Zafu-Form", text: "Rundum gefaltet und 35 cm breit: Das Zafu bietet mehr Platz als ein Lotus-Kissen und bleibt durch die Falten formstabil.", picture: "topView" },
+      { title: "Dinkelspelz oder Kapok?", text: "Dinkelspelz ist fest und formbar, Kapok weich und leicht. Wer gern fest sitzt, nimmt dieses Kissen; wer es weicher mag, die Kapok-Variante.", picture: "fillings" },
+      { title: "Fester Halt durch Dinkelspelz", text: "Die Spelzen verschieben sich beim Hinsetzen und bilden eine Mulde, die dich stützt. Nach dem Aufschütteln ist das Zafu wieder in Form.", picture: "refill" },
+    ],
+    reviews: [
+      { name: "Kai", place: "Lübeck, DE", color: "Natur", stars: 5, days: 2, text: "Klassisches Zafu, sehr stabil. Ich sitze darauf jeden Abend 30 Minuten." },
+      { name: "Anonym", place: "", color: "Anthrazit", stars: 5, days: 5, text: "Die breite Sitzfläche ist für mich der große Unterschied zum runden Kissen." },
+      { name: "Vera", place: "St. Gallen, CH", color: "Balsam Green", stars: 4, days: 9, text: "Schön fest. Das Abziehen des Bezugs ist wegen der Falten etwas aufwendiger." },
+      { name: "Moritz", place: "Bielefeld, DE", color: "Indigo Dust", stars: 5, days: 14, text: "Formstabil auch nach Monaten. Sieht im Zimmer richtig edel aus." },
+      { name: "Ines", place: "Klagenfurt, AT", color: "Light Taupe", stars: 4, days: 21, text: "Gutes Kissen, für mich etwas zu fest – ich habe Füllung herausgenommen." },
+      { name: "Paula", place: "Potsdam, DE", color: "Kurkuma", stars: 5, days: 27, text: "Die Farbe ist kräftig und warm, die Verarbeitung tadellos." },
+    ],
+    related: ["Meditationsmatte Zabuton", "Meditationskissen Lotus KLEIN (H: 10 cm)", "Bezug für Zafu-Meditationskissen Zen", "Yogakissen Halbmond Shanti"],
+  },
+
+  "zafu-meditationskissen-zen-kapok": {
+    name: "Zafu-Meditationskissen Zen Kapok",
+    price: 44.95,
+    rating: 4.86,
+    reviewCount: 49,
+    buyboxCount: 73, // the original counts more reviews up top than in its review list
+    ratingScales: CUSHION_SCALES(4.96, null, 4.95),
+    specs: { shape: "zafu", seat: 15, size: "Ø 35", dimensions: [35, 35, 15], filling: "Kapokwolle" },
+    facts: [["Material", ORGANIC], ["Füllung", "Kapokwolle"], ["Sitzhöhe", "15 cm (standard)"], ["Maße (L × B × H)", "35 × 35 × 15 cm"], ["Gewicht", "0,9 kg"], ["Form", "Zafu"],
+      ["Oberstoff", `100 % ${ORGANIC}`], ["Innenstoff", `100 % ${ORGANIC}`], ["Öffnung", OPENING("Reißverschluss")], ["Herkunft", ORIGIN]],
+    colors: colorsOf("Zafu-Meditationskissen Zen Kapok"),
+    description: `
+        <p>Das Zafu mit Kapokfüllung ist die weiche, leichte Variante des Klassikers. Kapok ist eine pflanzliche Faser aus den Samenkapseln des Kapokbaums – flauschig, luftig und mit 0,9 kg deutlich leichter als Dinkelspelz.</p>
+        <p>Du sitzt etwas tiefer im Kissen, bleibst aber dank der Zafu-Form stabil.</p>`,
+    features: [
+      { title: "Weich sitzen, stabil bleiben", text: "Kapok gibt mehr nach als Dinkelspelz. Das fühlt sich wie ein Polster an, während die gefaltete Form dich trotzdem aufrecht hält.", picture: "sitting" },
+      { title: "Dinkelspelz oder Kapok?", text: "Kapok ist weich, leicht und raschelt nicht. Wenn du lieber fest und formbar sitzt, ist das Zafu mit Dinkelspelz die bessere Wahl.", picture: "fillings" },
+    ],
+    reviews: [
+      { name: "Nora", place: "Ulm, DE", color: "Anthrazit", stars: 5, days: 4, text: "So weich und trotzdem stabil. Und es raschelt nicht – für mich der wichtigste Punkt." },
+      { name: "Anonym", place: "", color: "Anthrazit", stars: 5, days: 9, text: "Viel leichter als mein altes Dinkelkissen, ich nehme es gern mit zum Retreat." },
+      { name: "Florian", place: "Dornbirn, AT", color: "Anthrazit", stars: 4, days: 15, text: "Sehr bequem. Nach ein paar Wochen etwas flacher, Aufschütteln hilft." },
+      { name: "Greta", place: "Göttingen, DE", color: "Anthrazit", stars: 5, days: 22, text: "Perfekt für längere Sitzungen. Leider gerade ausverkauft, sonst hätte ich ein zweites bestellt." },
+      { name: "Henrik", place: "Winterthur, CH", color: "Anthrazit", stars: 5, days: 30, text: "Hochwertiger Stoff, gleichmäßige Falten, angenehm weich." },
+    ],
+    related: ["Zafu-Meditationskissen Zen", "Bezug für Zafu-Meditationskissen Zen", "Meditationsmatte Zabuton", "Yogakissen Halbmond Shanti"],
+  },
+
+  "yogakissen-halbmond-shanti": {
+    name: "Yogakissen Halbmond Shanti",
+    price: 39.95,
+    rating: 4.84,
+    reviewCount: 333,
+    ratingScales: CUSHION_SCALES(4.7, 4.78, 4.59),
+    specs: { shape: "crescent", seat: 15, size: "28 × 40", dimensions: [40, 28, 12], filling: SPELT_FILLING },
+    facts: [["Material", ORGANIC], ["Füllung", SPELT_FILLING], ["Sitzhöhe", "15 cm (standard)"], ["Maße (L × B × H)", "28 × 40 × 12 cm"], ["Gewicht", "1,1 kg"], ["Form", "Halbrund"],
+      ["Oberstoff", `100 % ${ORGANIC}`], ["Innenstoff", `100 % ${ORGANIC}`], ["Öffnung", OPENING("Reißverschluss")], ["Herkunft", ORIGIN]],
+    colors: colorsOf("Yogakissen Halbmond Shanti"),
+    description: `
+        <p>Die Halbmondform lässt vorne Platz für die Beine: Die Oberschenkel liegen nicht auf dem Kissen auf, das Becken kippt sanft nach vorn, und du sitzt lange bequem im Schneidersitz.</p>
+        <p>Mit 12 cm Höhe ist das Kissen etwas niedriger als die runden Lotus-Kissen. Gefüllt ist es mit Bio-Dinkelspelz.</p>`,
+    features: [
+      { title: "Platz für die Beine", text: "Weil die Vorderseite nach innen gewölbt ist, liegen deine Oberschenkel frei. Das entlastet Hüften und Knie, gerade wenn sie im Schneidersitz noch nicht bis zum Boden reichen.", picture: "sitting" },
+      { title: "Die Halbmondform", text: "40 cm breit und 28 cm tief: Das Kissen gibt deinem Becken eine breite Auflage und den Beinen vorne Raum.", picture: "topView" },
+      { title: "Niedrig und nah am Boden", text: "Mit 12 cm Höhe sitzt du etwas tiefer als auf den runden Kissen – angenehm, wenn du dich nicht hoch über dem Boden fühlen möchtest.", picture: "sideView" },
+      { title: "Halt durch Dinkelspelz", text: "Die Spelzen formen sich beim Hinsetzen zu einer Mulde, die dich stützt. Den Bezug wäschst du bei 30 °C.", picture: "refill" },
+    ],
+    reviews: [
+      { name: "Lena", place: "Münster, DE", color: "Indigo Dust", stars: 5, days: 1, text: "Die Halbmondform ist für meine Knie ein Segen. Kein Druck mehr auf den Oberschenkeln." },
+      { name: "Anonym", place: "", color: "Natur", stars: 4, days: 6, text: "Bequem, aber etwas niedriger, als ich erwartet hatte. Mit Zabuton darunter ideal." },
+      { name: "Stefan", place: "Leoben, AT", color: "Anthrazit", stars: 5, days: 10, text: "Nutze es auch beim Yin Yoga als Stütze unter den Knien. Vielseitig." },
+      { name: "Marie", place: "Aachen, DE", color: "Light Taupe", stars: 4, days: 16, text: "Schöne Form, solide Verarbeitung. Der Dinkelspelz verrutscht anfangs etwas nach außen." },
+      { name: "Jan", place: "Thun, CH", color: "Balsam Green", stars: 5, days: 23, text: "Das bequemste Kissen, das ich bisher hatte. Klare Empfehlung bei steifen Hüften." },
+      { name: "Birgit", place: "Trier, DE", color: "Indigo Dust", stars: 3, days: 29, text: "Gutes Kissen, für mich aber zu niedrig. Werde die hohe Lotus-Variante ausprobieren." },
+    ],
+    related: ["Meditationsmatte Zabuton", "Bezug für Halbmond Kissen", "Yogagurt 100% Bio-Baumwolle", "Meditationskissen Lotus HOCH (H: 20cm)"],
+  },
+};
+// Everything a cushion page shares with the others.
+Object.values(cushionDetails).forEach((cushion) => Object.assign(cushion, {
+  gallery: cushionGallery,
+  swatch: "cushionFront",
+  care: cushionCare(cushion.specs.filling),
+  sustainability: CUSHION_SUSTAINABILITY,
+  related: cushion.related.map(relatedCard),
+}));
+
 const productDetails = {
+  ...cushionDetails,
   "yogamatte-pure": {
     name: "Yogamatte PURE",
     subtitle: "Die Dynamische: Rutschfestigkeit und Stabilität in perfekter Balance.",
@@ -799,6 +1047,14 @@ const featurePictures = {
   studio: { label: () => "Figur im Ausfallschritt auf der Matte im Studio", draw: (color) => wideScene(color, "lunge", "#ece8e1", "#c4a886") },
   carry: { label: (specs) => `Aufgerollte Matte am Tragegurt, ca. ${specs.weight}`, draw: carryWidePicture },
   calm: { label: () => "Figur im Sitzen auf der Matte im Studio", draw: (color) => wideScene(color, "seated", "#e6e2dc", "#c4a886") },
+  // Meditation cushions
+  sitting: { label: () => "Figur im Schneidersitz auf dem Kissen", draw: (color, specs) => cushionSittingWide(color, specs) },
+  heights: { label: (specs) => `Die Lotus-Kissen in 10, 15 und 20 cm Höhe, hervorgehoben ${specs.seat} cm`, draw: (color, specs) => cushionHeightsWide(color, specs) },
+  refill: { label: (specs) => `Kissen und ein Beutel ${specs.filling}`, draw: (color, specs) => cushionRefillWide(color, specs) },
+  wash: { label: () => "Kissen und Waschsymbol für 30 °C", draw: (color, specs) => cushionWashWide(color, specs) },
+  fillings: { label: () => "Dinkelspelz und Kapok im Vergleich", draw: () => cushionFillingsWide() },
+  topView: { label: (specs) => `Kissen von oben, ${specs.size} cm`, draw: (color, specs) => cushionTopWide(color, specs) },
+  sideView: { label: (specs) => `Kissen von der Seite, ${specs.dimensions[2]} cm hoch`, draw: (color, specs) => cushionSizeWide(color, specs) },
 };
 
 const galleryPictures = {
@@ -816,7 +1072,220 @@ const galleryPictures = {
   seated: { label: "im Sitzen", draw: (color) => scenePicture(color, "seated", "#e8e1d6", "#b49a7e") },
   studioLunge: { label: "im Ausfallschritt im Studio", draw: (color) => scenePicture(color, "lunge", "#ece8e1", "#c4a886") },
   studioSeated: { label: "im Sitzen im Studio", draw: (color) => scenePicture(color, "seated", "#e6e2dc", "#c4a886") },
+  // Meditation cushions
+  cushionFront: { label: "von vorn", draw: (color, specs) => cushionFrontPicture(color, specs) },
+  cushionSeated: { label: "beim Meditieren", draw: (color, specs) => cushionSeatedPicture(color, specs) },
+  cushionTop: { label: "von oben", draw: (color, specs) => cushionTopPicture(color, specs) },
+  cushionSize: { label: "Maße von der Seite", draw: (color, specs) => cushionSizePicture(color, specs) },
+  cushionInside: { label: "geöffnet mit Füllung", draw: (color, specs) => cushionInsidePicture(color, specs) },
+  cushionFabric: { label: "Stoff aus Bio-Baumwolle", draw: (color) => cushionFabricPicture(color) },
 };
+
+// ---------- Drawn cushion pictures ----------
+// The cushions reuse their card drawings from shared.js (a 180×180 box).
+// `CUSHION_SEAT` is where the seat is in that box, for the sitting figure.
+const CUSHION_SEAT = { lotusCushion10: 94, lotusCushion15: 86, lotusCushion20: 78, plainCushion: 86, zafu: 72, crescent: 58 };
+const LABEL_STYLE = 'font-size="11" fill="#5f5c52" font-family="Hanken Grotesk, sans-serif"';
+const cushion = (color, specs, x, y, scale = 1) =>
+  `<g transform="translate(${x} ${y}) scale(${scale})">${shapes[specs.shape](color.hex)}</g>`;
+
+// A cross-legged figure whose hips sit at (x, y).
+const sittingFigure = (x, y, scale = 1) => `
+      <g transform="translate(${x} ${y}) scale(${scale})" fill="none" stroke="#3a3530" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M0 0V-38M0-33L-15-17L-25-3M0-33L15-17L25-3M-5 2L-34 8L8 15M5 2L34 8L-8 15"/>
+        <circle cx="0" cy="-51" r="8" fill="#3a3530" stroke="none"/>
+      </g>`;
+
+// Spelt husks (little grains) or kapok (soft tufts) as a fill pattern.
+function fillingPattern(specs) {
+  const id = `filling-${++patternCount}`;
+  const kapok = /Kapok/.test(specs.filling);
+  const tile = kapok
+    ? '<rect width="10" height="10" fill="#f3efe6"/><circle cx="3" cy="3" r="2.6" fill="#fff"/><circle cx="8" cy="7" r="2.2" fill="#e9e3d6"/>'
+    : '<rect width="6" height="6" fill="#d9c69e"/><ellipse cx="2" cy="2" rx="1.6" ry=".8" fill="#b89a62" transform="rotate(30 2 2)"/><ellipse cx="4.5" cy="4.6" rx="1.4" ry=".7" fill="#c9ad74" transform="rotate(-40 4.5 4.6)"/>';
+  const size = kapok ? 10 : 6;
+  return { id, defs: `<defs><pattern id="${id}" width="${size}" height="${size}" patternUnits="userSpaceOnUse">${tile}</pattern></defs>` };
+}
+
+function cushionFrontPicture(color, specs) {
+  return `
+    <svg viewBox="0 0 200 250" aria-hidden="true">
+      <rect width="200" height="250" fill="${PHOTO_BG}"/>
+      ${cushion(color, specs, -8, 20, 1.2)}
+    </svg>`;
+}
+
+// Someone sitting on the cushion, on a zabuton in a quiet room.
+function cushionSeatedPicture(color, specs) {
+  const seat = 95 + CUSHION_SEAT[specs.shape];
+  return `
+    <svg viewBox="0 0 200 250" aria-hidden="true">
+      <rect width="200" height="250" fill="#ece6dc"/>
+      <rect y="186" width="200" height="64" fill="#c9b9a3"/>
+      <rect x="22" y="206" width="156" height="20" rx="6" fill="#d9cfc0"/>
+      ${cushion(color, specs, 10, 95)}
+      ${sittingFigure(100, seat - 2)}
+    </svg>`;
+}
+
+// From above: round with a seam, the zafu with its pleats, the half moon as a "D".
+function topOutline(color, specs) {
+  const outline = specs.shape === "crescent"
+    ? `<path d="M30 160C30 92 62 66 100 66S170 92 170 160C150 144 126 138 100 138S50 144 30 160Z" fill="${color.hex}"/>
+       <path d="M44 150C46 100 70 80 100 80S154 100 156 150" fill="none" stroke="rgba(0,0,0,.14)" stroke-dasharray="3 3"/>`
+    : `<circle cx="100" cy="118" r="${specs.shape === "zafu" ? 78 : 72}" fill="${color.hex}"/>
+       <circle cx="100" cy="118" r="${specs.shape === "zafu" ? 70 : 64}" fill="none" stroke="rgba(0,0,0,.14)" stroke-dasharray="3 3"/>`;
+  const pleats = specs.shape === "zafu" ? `<path d="${Array.from({ length: 16 }, (_, i) => {
+    const angle = (i / 16) * Math.PI * 2;
+    return `M${(100 + 14 * Math.cos(angle)).toFixed(1)} ${(118 + 14 * Math.sin(angle)).toFixed(1)}L${(100 + 66 * Math.cos(angle)).toFixed(1)} ${(118 + 66 * Math.sin(angle)).toFixed(1)}`;
+  }).join("")}" stroke="rgba(0,0,0,.12)" stroke-width="1.5"/><circle cx="100" cy="118" r="7" fill="rgba(0,0,0,.18)"/>` : "";
+  return outline + pleats;
+}
+
+function cushionTopPicture(color, specs) {
+  return `
+    <svg viewBox="0 0 200 250" aria-hidden="true">
+      <rect width="200" height="250" fill="${PHOTO_BG}"/>
+      ${topOutline(color, specs)}
+      <text x="100" y="220" text-anchor="middle" ${LABEL_STYLE}>${specs.size} cm</text>
+    </svg>`;
+}
+
+function cushionTopWide(color, specs) {
+  return `
+    <svg viewBox="0 0 330 202" aria-hidden="true">
+      <rect width="330" height="202" fill="${PHOTO_BG}"/>
+      <g transform="translate(165 86) scale(.78) translate(-100 -118)">${topOutline(color, specs)}</g>
+      <text x="165" y="182" text-anchor="middle" ${LABEL_STYLE}>${specs.size} cm</text>
+    </svg>`;
+}
+
+// Side view with the height and the width (4 px per cm), standing on `base`.
+function sideView(color, specs, cx, base) {
+  const [length, , height] = specs.dimensions;
+  const w = Math.round(length * 4);
+  const h = Math.round(height * 4);
+  const x = cx - w / 2;
+  const y = base - h;
+  return `
+      <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${Math.min(18, h / 2)}" fill="${color.hex}"/>
+      <rect x="${x + 6}" y="${y + 4}" width="${w - 12}" height="6" rx="3" fill="rgba(255,255,255,.14)"/>
+      <g stroke="#5f5c52" fill="none">
+        <path d="M${x + w + 10} ${y}V${base}M${x + w + 6} ${y}H${x + w + 14}M${x + w + 6} ${base}H${x + w + 14}"/>
+        <path d="M${x} ${base + 18}H${x + w}M${x} ${base + 14}V${base + 22}M${x + w} ${base + 14}V${base + 22}"/>
+      </g>
+      <text x="${x + w + 12}" y="${y - 8}" text-anchor="middle" ${LABEL_STYLE}>${height} cm</text>
+      <text x="${cx}" y="${base + 38}" text-anchor="middle" ${LABEL_STYLE}>${length} cm</text>`;
+}
+
+function cushionSizePicture(color, specs) {
+  return `
+    <svg viewBox="0 0 200 250" aria-hidden="true">
+      <rect width="200" height="250" fill="${PHOTO_BG}"/>${sideView(color, specs, 100, 150)}
+    </svg>`;
+}
+
+function cushionSizeWide(color, specs) {
+  return `
+    <svg viewBox="0 0 330 202" aria-hidden="true">
+      <rect width="330" height="202" fill="${PHOTO_BG}"/>${sideView(color, specs, 165, 120)}
+    </svg>`;
+}
+
+// Cut open: the cover in colour, the inner cushion with its filling.
+function cushionInsidePicture(color, specs) {
+  const filling = fillingPattern(specs);
+  return `
+    <svg viewBox="0 0 200 250" aria-hidden="true">
+      ${filling.defs}
+      <rect width="200" height="250" fill="${PHOTO_BG}"/>
+      <rect x="26" y="70" width="148" height="92" rx="30" fill="${color.hex}"/>
+      <rect x="36" y="80" width="128" height="72" rx="24" fill="${COTTON}"/>
+      <rect x="44" y="88" width="112" height="56" rx="18" fill="url(#${filling.id})"/>
+      <text x="100" y="196" text-anchor="middle" ${LABEL_STYLE}>Füllung: ${specs.filling}</text>
+    </svg>`;
+}
+
+// The cotton fabric up close.
+function cushionFabricPicture(color) {
+  const id = `weave-${++patternCount}`;
+  return `
+    <svg viewBox="0 0 200 250" aria-hidden="true">
+      <defs><pattern id="${id}" width="6" height="6" patternUnits="userSpaceOnUse"><path d="M0 1.5H6M0 4.5H6" stroke="rgba(255,255,255,.18)" stroke-width="1.4"/><path d="M1.5 0V6M4.5 0V6" stroke="rgba(0,0,0,.1)"/></pattern></defs>
+      <rect width="200" height="250" fill="${color.hex}"/>
+      <rect width="200" height="250" fill="url(#${id})"/>
+      <rect x="40" y="196" width="120" height="26" rx="13" fill="rgba(255,255,255,.85)"/>
+      <text x="100" y="213" text-anchor="middle" ${LABEL_STYLE}>Bio-Baumwolle (kbA)</text>
+    </svg>`;
+}
+
+// Wide pictures for the info rows (330×202, like the mats').
+function cushionSittingWide(color, specs) {
+  const seat = 32 + CUSHION_SEAT[specs.shape] * 0.8;
+  return `
+    <svg viewBox="0 0 330 202" aria-hidden="true">
+      <rect width="330" height="202" fill="#ece6dc"/>
+      <rect y="138" width="330" height="64" fill="#c9b9a3"/>
+      <rect x="92" y="130" width="146" height="16" rx="6" fill="#d9cfc0"/>
+      ${cushion(color, specs, 93, 32, 0.8)}
+      ${sittingFigure(165, seat - 2, 0.8)}
+    </svg>`;
+}
+
+// The three Lotus heights side by side; the cushion's own height in its colour.
+function cushionHeightsWide(color, specs) {
+  const heights = [["lotusCushion10", 10, 14], ["lotusCushion15", 15, 112], ["lotusCushion20", 20, 210]];
+  return `
+    <svg viewBox="0 0 330 202" aria-hidden="true">
+      <rect width="330" height="202" fill="${PHOTO_BG}"/>
+      ${heights.map(([shape, cm, x]) => `
+      <g transform="translate(${x} 34) scale(.6)">${shapes[shape](cm === specs.seat ? color.hex : "#d8d3cb")}</g>
+      <text x="${x + 54}" y="${cm === specs.seat ? 150 : 148}" text-anchor="middle" ${LABEL_STYLE}${cm === specs.seat ? ' font-weight="700"' : ""}>${cm} cm</text>`).join("")}
+    </svg>`;
+}
+
+// Opening the cover to take out or add filling.
+function cushionRefillWide(color, specs) {
+  const filling = fillingPattern(specs);
+  return `
+    <svg viewBox="0 0 330 202" aria-hidden="true">
+      ${filling.defs}
+      <rect width="330" height="202" fill="${PHOTO_BG}"/>
+      ${cushion(color, specs, 20, 18, 0.9)}
+      <path d="M210 70h70l8 76h-86z" fill="url(#${filling.id})"/>
+      <path d="M210 70h70v10h-70z" fill="rgba(0,0,0,.08)"/>
+      <path d="M190 100c-14 0-22 6-26 14" fill="none" stroke="#5f5c52" stroke-dasharray="3 3"/>
+      <text x="165" y="182" text-anchor="middle" ${LABEL_STYLE}>Füllmenge nach Gefühl anpassen</text>
+    </svg>`;
+}
+
+// Cover off and in the wash at 30 °C.
+function cushionWashWide(color, specs) {
+  return `
+    <svg viewBox="0 0 330 202" aria-hidden="true">
+      <rect width="330" height="202" fill="${PHOTO_BG}"/>
+      ${cushion(color, specs, 10, 18, 0.9)}
+      <path d="M200 66h86l-10 74h-66z" fill="none" stroke="#5f5c52" stroke-width="2"/>
+      <path d="M204 84c12 6 22-6 34 0s22 6 34 0" fill="none" stroke="#5f5c52" stroke-width="1.5"/>
+      <text x="243" y="122" text-anchor="middle" font-size="16" fill="#5f5c52" font-family="Hanken Grotesk, sans-serif">30°</text>
+      <text x="165" y="182" text-anchor="middle" ${LABEL_STYLE}>Bezug abnehmbar und waschbar bei 30 °C</text>
+    </svg>`;
+}
+
+// Spelt next to kapok, for choosing a filling.
+function cushionFillingsWide() {
+  const spelt = fillingPattern({ filling: "Dinkelspelz" });
+  const kapok = fillingPattern({ filling: "Kapok" });
+  return `
+    <svg viewBox="0 0 330 202" aria-hidden="true">
+      ${spelt.defs}${kapok.defs}
+      <rect width="330" height="202" fill="${PHOTO_BG}"/>
+      <circle cx="105" cy="92" r="52" fill="url(#${spelt.id})"/>
+      <circle cx="225" cy="92" r="52" fill="url(#${kapok.id})" stroke="rgba(0,0,0,.08)"/>
+      <text x="105" y="172" text-anchor="middle" ${LABEL_STYLE}>Dinkelspelz: fest, formbar</text>
+      <text x="225" y="172" text-anchor="middle" ${LABEL_STYLE}>Kapok: weich, leicht</text>
+    </svg>`;
+}
 
 // ---------- Small line icons for the buy box ----------
 const buyboxIcons = {
@@ -869,18 +1338,28 @@ function detailsMarkup(specs) {
         </dl>`;
 }
 
+// Products with their own list of details (the cushions) show it as is.
+function factsMarkup(facts) {
+  const rows = [...facts, ["Hinweis", "Nachbau für ein Studentenprojekt – kein echtes Produkt, daher keine Hersteller- oder Bestellangaben."]];
+  return `
+        <dl class="facts">${rows.map(([term, value]) => `
+          <dt>${term}</dt><dd>${value}</dd>`).join("")}
+        </dl>`;
+}
+
 function productMarkup(product) {
   const color = product.colors[0];
 
   const swatches = product.colors.map((c, i) => `
               <label class="color-swatch">
                 <input type="radio" name="color" value="${i}" class="visually-hidden"${i === 0 ? " checked" : ""}>
-                <span class="color-swatch__thumb">${rolledPicture(c)}</span>
+                <span class="color-swatch__thumb">${galleryPictures[product.swatch || "rolled"].draw(c, product.specs)}</span>
                 <span class="visually-hidden">${c.name}</span>
               </label>`).join("");
 
-  // Like the original, a product that comes in one version only (WOOL) has no colour choice.
-  const colorPicker = product.colors.length > 1 ? `
+  // Like the original, a product without colours (WOOL) has no colour choice;
+  // a single named colour (the Kapok zafu) still shows its swatch.
+  const colorPicker = product.colors.some((c) => c.name) ? `
 
         <fieldset class="color-picker">
           <legend class="color-picker__legend"><strong>Farbe:</strong> <span class="color-picker__value">${color.name}</span></legend>
@@ -905,7 +1384,7 @@ function productMarkup(product) {
 
   const accordion = [
     ["Beschreibung", product.description],
-    ["Details", detailsMarkup(product.specs)],
+    ["Details", product.facts ? factsMarkup(product.facts) : detailsMarkup(product.specs)],
     ["Pflege", product.care],
     ["Nachhaltigkeit", product.sustainability],
   ].map(([title, body]) => `
@@ -931,9 +1410,9 @@ function productMarkup(product) {
       </div>
 
       <div class="buybox">
-        <h1 class="buybox__title">${product.name}</h1>
-        <p class="buybox__subtitle">${product.subtitle}</p>
-        <a href="#bewertungen" class="buybox__rating">${starRating(product.rating)}<span>(${product.reviewCount})</span></a>
+        <h1 class="buybox__title">${product.name}</h1>${product.subtitle ? `
+        <p class="buybox__subtitle">${product.subtitle}</p>` : ""}
+        <a href="#bewertungen" class="buybox__rating">${starRating(product.rating)}<span>(${product.buyboxCount || product.reviewCount})</span></a>
         <p class="buybox__price">
           <span class="buybox__amount">${formatPrice(product.price)}</span>
           <span class="buybox__tax">inkl. MwSt. zzgl. <a href="#">Versandkosten</a></span>
