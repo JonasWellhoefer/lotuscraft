@@ -782,9 +782,234 @@ Object.values(clothingDetails).forEach((item) => {
   });
 });
 
+// ---------- Bolsters, rolls, zabuton and bench ----------
+// Colours come from the category data in shared.js; ratings, details and
+// related products were read from the original (Oct 2026). `specs` drive the
+// drawings: `dimensions` (L, B, H in cm), `round` for the rolls, `scene` for
+// the picture "beim Üben", `article` for picture texts, and `compare` for the
+// "Rolle oder Bolster?" picture.
+const PROP_GALLERY = ["propFront", "propInUse", "propSize", "propEndView", "cushionInside", "cushionFabric"];
+const COVER_FABRIC = ["Oberstoff", `100 % ${ORGANIC}`];
+const DRAWSTRING = ["Öffnung", "Kordelzug"];
+const ROLL_END = { label: "Rolle: Ø 24 cm", dimensions: [64, 24, 24], round: true };
+const BOLSTER_L_END = { label: "L: 30 × 20 cm", dimensions: [72, 30, 20] };
+const BOLSTER_S_END = { label: "S: 20 × 15 cm", dimensions: [72, 20, 15] };
+const ORGANIC_COVER = ["Bio-Baumwolle", "der Bezug stammt aus kontrolliert biologischem Anbau."];
+const GOTS = ["GOTS-zertifiziert", "der Standard prüft die ganze Lieferkette auf ökologische und faire Herstellung."];
+const PLASTIC_FREE = ["Plastikfreie Verpackung", "ohne PVC und ohne erdölbasierte Kunststoffe."];
+// The zabuton's card data lists every colour twice (4 and 7 cm); its page
+// shows each colour once, in the original's order.
+const zabutonColors = ["Balsam Green", "Light Taupe", "Aubergine", "Indigo Dust", "Natur", "Anthrazit", "Bordeaux", "Schwarz"].map((name) => ({
+  name,
+  hex: CUSHION_TONES[name].hex,
+  soldOut: zabuton.variants.filter((variant) => variant.color.startsWith(`${name} /`)).every((variant) => variant.soldOut),
+}));
+
+const propDetails = {
+  "yogarolle-restorative-o24-cm": {
+    name: "Yogarolle RESTORATIVE Ø24 cm",
+    subtitle: "Runde Rolle mit Bio-Dinkelspelz – für Rückbeugen, unter den Knien und überall, wo du Halt brauchst.",
+    price: 54.95,
+    rating: 4.88,
+    reviewCount: 711,
+    ratingScales: CUSHION_SCALES(4.9, 4.9, 4.82),
+    specs: { shape: "roll", round: true, dimensions: [64, 24, 24], filling: SPELT_FILLING, scene: "knees", article: "der Rolle", compare: [{ ...ROLL_END, self: true }, { ...BOLSTER_L_END, label: "Bolster L: 30 × 20 cm" }] },
+    facts: [["Material", ORGANIC], ["Füllung", SPELT_FILLING], ["Maße (L × B × H)", "64 × 24 × 24 cm"], ["Gewicht", "4,2 kg"], COVER_FABRIC, DRAWSTRING, ["Herkunft", ORIGIN]],
+    colors: colorsOf("Yogarolle RESTORATIVE Ø24 cm"),
+    gallery: PROP_GALLERY,
+    description: `
+        <p>Die Yogarolle RESTORATIVE ist rund, 64 cm lang und 24 cm im Durchmesser. Mit Bio-Dinkelspelz gefüllt, gibt sie unter dir ein wenig nach und behält trotzdem ihre Form – so bleibst du in Yin und Restorative Yoga entspannt in einer Haltung.</p>
+        <p>Der Bezug aus Bio-Baumwolle schließt mit einem Kordelzug und lässt sich zum Waschen abnehmen.</p>`,
+    care: `
+        <p>Den Bezug nimmst du ab und wäschst ihn bei 30 °C. Die Füllung wird nicht gewaschen – lüfte die Rolle ab und zu gut durch.</p>`,
+    sustainability: sustainabilityText(GOTS, ["Wertschöpfung in der EU", "befüllt wird die Rolle in Deutschland."], PLASTIC_FREE, ["Natürliche Rohstoffe", "Baumwolle und Dinkelspelz wachsen nach."]),
+    features: [
+      { title: "Für Yin und Restorative Yoga", text: "Unter den Knien entlastet die Rolle in der Rückenlage den unteren Rücken, unter den Fersen dehnt sie sanft die Beinrückseiten. Mit 24 cm Durchmesser trägt sie dich, ohne dass du nachhelfen musst.", picture: "propKnees" },
+      { title: "Halt in Herzöffnern", text: "Quer unter den Schulterblättern öffnet die Rolle den Brustkorb. Der Kopf darf dabei nach hinten sinken – oder auf eine gefaltete Decke.", picture: "propFish" },
+      { title: "Rolle oder Bolster?", text: "Die runde Rolle ist höher und hebt dich stärker an. Das rechteckige Bolster ist breiter und flacher und liegt ruhiger auf. Viele nutzen beides.", picture: "propCompare" },
+      { title: "Formstabil durch Dinkelspelz", text: "Die Spelzen passen sich deinem Körper an und rutschen nicht weg. Mit gut 4 kg bleibt die Rolle liegen, wo du sie hinlegst.", picture: "propFilling" },
+    ],
+    reviews: [
+      { name: "Sabine", place: "Würzburg, DE", color: "Light Taupe", stars: 5, days: 3, text: "Liegt schwer und stabil, rutscht nicht weg. Unter den Knien in der Schlussentspannung ein Traum." },
+      { name: "Anonym", place: "", color: "Anthrazit", stars: 5, days: 7, text: "Für Yin Yoga genau richtig. Fester, als ich dachte, aber angenehm." },
+      { name: "Florian", place: "Graz, AT", color: "Indigo Dust", stars: 4, days: 12, text: "Sehr gute Rolle, für meine Rückbeugen etwas hoch. Mit einer Decke darunter passt es." },
+      { name: "Petra", place: "Ulm, DE", color: "Natur", stars: 5, days: 18, text: "Der Bezug lässt sich gut abnehmen und waschen. Schöne, ruhige Farbe." },
+      { name: "Anonym", place: "", color: "Grassland", stars: 5, days: 26, text: "Das Muster ist dezent und sieht auch im Wohnzimmer gut aus." },
+      { name: "Leonie", place: "Basel, CH", color: "Dark Cranberry", stars: 5, days: 34, text: "Ich nutze sie jeden Abend für eine gestützte Rückbeuge. Klare Empfehlung." },
+    ],
+    related: ["Yogablock Kork 2er Set", "Yoga Bolster RESTORATIVE S", "Yogagurt 100% Bio-Baumwolle", "Bezug für Yogarolle COVER Ø24 cm"],
+  },
+  "yoga-bolster-restorative-l": {
+    name: "Yoga Bolster RESTORATIVE L",
+    subtitle: "Großes, flaches Bolster mit Kapokfüllung – breite Auflage für Rücken, Schultern und Vorbeugen.",
+    price: 64.95,
+    rating: 4.82,
+    reviewCount: 605,
+    specs: { shape: "bolster", dimensions: [72, 30, 20], filling: KAPOK, scene: "child", article: "dem Bolster", compare: [{ ...BOLSTER_L_END, self: true }, BOLSTER_S_END] },
+    facts: [["Material", ORGANIC], ["Füllung", KAPOK], ["Sitzhöhe", "15 cm (standard)"], ["Maße (L × B × H)", "72 × 30 × 20 cm"], ["Gewicht", "1,6 kg"], COVER_FABRIC, DRAWSTRING, ["Herkunft", "Indien"]],
+    colors: colorsOf("Yoga Bolster RESTORATIVE L"),
+    gallery: PROP_GALLERY,
+    description: `
+        <p>Das RESTORATIVE L ist ein rechteckiges Bolster: 72 cm lang, 30 cm breit und 20 cm hoch. Es liegt flach und ruhig auf der Matte und stützt deinen Oberkörper in Vorbeugen und gestützten Rückbeugen auf ganzer Länge.</p>
+        <p>Gefüllt ist es mit Kapok, einer leichten Pflanzenfaser. Mit 1,6 kg nimmst du es mühelos mit ins Studio.</p>`,
+    care: careList("Bezug bei 30 °C waschen", NO_DRYER),
+    sustainability: sustainabilityText(ORGANIC_COVER, ["Natürliche Rohstoffe", "Kapok ist eine Pflanzenfaser aus den Früchten des Kapokbaums."]),
+    features: [
+      { title: "L oder S?", text: "Beide sind 72 cm lang. Das L ist mit 30 × 20 cm breiter und höher und stützt den ganzen Oberkörper, das S mit 20 × 15 cm hebt dich nur ein wenig an.", picture: "propCompare" },
+      { title: "Stabil in Vorbeugen", text: "In der gestützten Kindhaltung ruht dein Oberkörper auf dem Bolster. Durch die Breite liegst du sicher und kannst den Kopf bequem zur Seite drehen.", picture: "propChild" },
+      { title: "Breite Auflage für Rücken und Schultern", text: "Quer unter den Schulterblättern oder längs unter der Wirbelsäule: Die breite Fläche verteilt dein Gewicht gleichmäßig.", picture: "propFish" },
+      { title: "Weich durch Kapok", text: "Kapok ist leicht, weich und rein pflanzlich. Die Füllung federt angenehm und gibt dem Bolster trotzdem Halt.", picture: "propFilling" },
+    ],
+    reviews: [
+      { name: "Miriam", place: "Freiburg, DE", color: "Light Taupe", stars: 5, days: 2, text: "Breit und flach, liegt ruhig auf der Matte. In der gestützten Kindhaltung komme ich richtig zur Ruhe." },
+      { name: "Anonym", place: "", color: "Anthrazit", stars: 5, days: 9, text: "Angenehm leicht und trotzdem stützend. Kapok fühlt sich weicher an als Dinkelspelz." },
+      { name: "Daniel", place: "Wien, AT", color: "Indigo Dust", stars: 4, days: 15, text: "Gutes Bolster. Für mich dürfte es etwas fester sein, daher ein Stern weniger." },
+      { name: "Ruth", place: "Kiel, DE", color: "Natur", stars: 5, days: 21, text: "Ich nutze es auch zum Sitzen beim Meditieren. Vielseitiger, als ich erwartet hatte." },
+      { name: "Anonym", place: "", color: "Grassland", stars: 5, days: 28, text: "Schöner Stoff, gut verarbeitet, der Kordelzug hält." },
+      { name: "Tim", place: "Bern, CH", color: "Dark Cranberry", stars: 5, days: 40, text: "Mein Lieblingsteil für Restorative Yoga. Würde ich wieder kaufen." },
+    ],
+    // The original shows "ab" on the cork blocks only here.
+    related: ["Yogagurt 100% Bio-Baumwolle", "Yoga Bolster Set Yin Yoga", { ...relatedCard("Yogablock Kork 2er Set"), fromPrice: true }, "Yoga Set Yin Yoga Restorative S"],
+  },
+  "yoga-bolster-restorative-s": {
+    name: "Yoga Bolster RESTORATIVE S",
+    subtitle: "Kompaktes Bolster mit Kapokfüllung – niedrige, sanfte Unterstützung für viele Haltungen.",
+    price: 49.95,
+    rating: 4.81,
+    reviewCount: 409,
+    specs: { shape: "bolsterS", dimensions: [72, 20, 15], filling: KAPOK, scene: "knees", article: "dem Bolster", compare: [BOLSTER_L_END, { ...BOLSTER_S_END, self: true }] },
+    facts: [["Material", ORGANIC], ["Füllung", KAPOK], ["Sitzhöhe", "15 cm (standard)"], ["Maße (L × B × H)", "72 × 20 × 15 cm"], ["Gewicht", "0,9 kg"], COVER_FABRIC, DRAWSTRING, ["Herkunft", "Indien"]],
+    colors: colorsOf("Yoga Bolster RESTORATIVE S"),
+    gallery: PROP_GALLERY,
+    description: `
+        <p>Das RESTORATIVE S ist die kompakte Variante: genauso lang wie das L, aber nur 20 cm breit und 15 cm hoch. Es hebt dich ein wenig an – angenehm unter den Knien, unter dem Becken oder im Sitzen.</p>
+        <p>Die Kapokfüllung ist weich und leicht, das Bolster wiegt nur 0,9 kg.</p>`,
+    care: careList("Bezug bei 30 °C waschen", NO_DRYER),
+    sustainability: sustainabilityText(ORGANIC_COVER, ["Natürliche Rohstoffe", "Kapok ist eine Pflanzenfaser aus den Früchten des Kapokbaums."]),
+    features: [
+      { title: "L oder S?", text: "Beide sind 72 cm lang. Das S ist mit 20 × 15 cm schmaler und niedriger als das L und darum ideal, wenn du nur etwas Unterstützung brauchst.", picture: "propCompare" },
+      { title: "Sanft und niedrig", text: "Mit 15 cm Höhe bleibst du nah am Boden. So eignet sich das S für Haltungen, in denen ein großes Bolster zu viel wäre.", picture: "propSideWide" },
+      { title: "Weich und formstabil", text: "Die Kapokfüllung ist leicht und federt angenehm. Sie gibt nach, ohne dass das Bolster seine Form verliert.", picture: "propFilling" },
+      { title: "Klein genug für vieles", text: "Unter den Knien in der Rückenlage, unter dem Becken in der Brücke oder zum Sitzen: Das S findet überall Platz.", picture: "propKnees" },
+    ],
+    reviews: [
+      { name: "Anna", place: "Lüneburg, DE", color: "Light Taupe", stars: 5, days: 4, text: "Klein und handlich, perfekt unter den Knien oder im Sitzen unter dem Becken." },
+      { name: "Anonym", place: "", color: "Aubergine", stars: 5, days: 10, text: "Die Farbe ist wunderschön, das Bolster angenehm weich." },
+      { name: "Jörg", place: "Linz, AT", color: "Anthrazit", stars: 4, days: 16, text: "Für Rückbeugen etwas niedrig, dafür ideal für sanfte Haltungen." },
+      { name: "Carina", place: "Bremen, DE", color: "Indigo Dust", stars: 5, days: 23, text: "Habe es zum großen L dazugekauft. Die beiden ergänzen sich super." },
+      { name: "Anonym", place: "", color: "Natur", stars: 5, days: 31, text: "Leicht genug, um es mit zum Kurs zu nehmen." },
+      { name: "Nina", place: "Chur, CH", color: "Grassland", stars: 5, days: 45, text: "Gute Qualität und ein weicher Bezug. Sehr zufrieden." },
+    ],
+    related: ["Yogablock Kork 2er Set", "Yogarolle RESTORATIVE Ø24 cm", "Yogagurt 100% Bio-Baumwolle", "Bezug für Yogarolle COVER Ø24 cm"],
+  },
+  "nackenrolle": {
+    name: "Yoga Mini-Rolle (Nackenrolle) Ø12 cm",
+    subtitle: "Kleine Rolle mit Bio-Dinkelspelz für Nacken, Knie und Handgelenke – auch für unterwegs.",
+    price: 34.95,
+    rating: 4.91,
+    reviewCount: 11,
+    specs: { shape: "neckRoll", round: true, dimensions: [40, 13, 13], filling: SPELT_FILLING, scene: "neck", article: "der Rolle" },
+    facts: [["Material", ORGANIC], ["Zusammensetzung", "100 % Baumwolle (kbA)"], ["Füllung", SPELT_FILLING], ["Maße (L × B × H)", "40 × 13 × 13 cm"], ["Gewicht", "830 g"], COVER_FABRIC, DRAWSTRING, ["Herkunft", "Indien"]],
+    colors: colorsOf("Yoga Mini-Rolle (Nackenrolle) Ø12 cm"),
+    gallery: PROP_GALLERY,
+    description: `
+        <p>Die kleine Rolle ist 40 cm lang und gut 13 cm dick. Sie stützt den Nacken in der Rückenlage, polstert Knie und Handgelenke oder liegt beim Lesen im Rücken.</p>
+        <p>Mit Bio-Dinkelspelz gefüllt, passt sie sich an und bleibt in Form. Mit 830 g ist sie leicht genug für jede Reise.</p>`,
+    care: careList("Bei 30 °C waschen", NO_BLEACH, NO_DRYER, "Vorsichtig dämpfen oder bügeln"),
+    sustainability: sustainabilityText(ORGANIC_COVER, GOTS),
+    features: [
+      { title: "Klein und vielseitig", text: "Unter dem Nacken in der Rückenlage, unter den Knien im Sitzen oder unter den Handgelenken im Vierfüßlerstand: Die Mini-Rolle hilft dort, wo es zwickt.", picture: "propNeck" },
+      { title: "Leicht für unterwegs", text: "Mit 830 g und 40 cm Länge passt sie in jede Tasche – für Yoga im Urlaub oder die lange Zugfahrt.", picture: "propTravel" },
+      { title: "Formstabil durch Dinkelspelz", text: "Die Spelzen passen sich an und rutschen nicht weg. So bleibt die Rolle da, wo du sie brauchst.", picture: "propFilling" },
+      { title: "Natürliche Materialien", text: "Bezug aus Bio-Baumwolle, Füllung aus Bio-Dinkelspelz: Die Rolle kommt ohne Kunststoff aus.", picture: "fabricWeave" },
+    ],
+    reviews: [
+      { name: "Clemens", place: "Augsburg, DE", color: "Light Taupe", stars: 5, days: 5, text: "Unter dem Nacken in der Rückenlage genau richtig. Nimmt im Koffer kaum Platz weg." },
+      { name: "Anonym", place: "", color: "Balsam Green", stars: 5, days: 11, text: "Schöne Farbe und angenehm fest. Ich nutze sie auch unter den Handgelenken." },
+      { name: "Ilse", place: "Krems, AT", color: "Light Taupe", stars: 5, days: 19, text: "Klein, aber vielseitig. Liegt beim Lesen jetzt auch auf dem Sofa." },
+      { name: "Anonym", place: "", color: "Balsam Green", stars: 4, days: 27, text: "Gute Rolle, für mich hätte sie etwas länger sein dürfen." },
+      { name: "Marta", place: "Erfurt, DE", color: "Light Taupe", stars: 5, days: 38, text: "Der Dinkelspelz passt sich gut an. Raschelt ein wenig, stört mich aber nicht." },
+      { name: "Paul", place: "Zug, CH", color: "Balsam Green", stars: 5, days: 52, text: "Perfekt für die Schlussentspannung. Klare Empfehlung." },
+    ],
+    related: ["Yoga Handtuch", "Yoga Bolster RESTORATIVE S", "Augenkissen", "Yogarolle RESTORATIVE Ø24 cm"],
+  },
+  "meditationsmatte-zabuton": {
+    name: "Meditationsmatte Zabuton",
+    price: 59.95,
+    rating: 4.86,
+    reviewCount: 470,
+    ratingScales: CLOTHING_SCALES(4.33, 4.33, 5),
+    specs: { shape: "zabuton", dimensions: [80, 75, 4], filling: "Baumwollvlies", scene: "seated" },
+    // Two thicknesses with their own price; the details and drawings follow the choice.
+    choices: { name: "Dicke", values: [
+      { label: "4 cm", price: 59.95 },
+      { label: "7 cm", price: 74.95, specs: { shape: "zabutonThick", dimensions: [80, 75, 7] } },
+    ] },
+    facts: (choice) => [["Material", ORGANIC], ["Maße (L × B × H)", `80 × 75 × ${choice.label}`], ["Dicke", choice.label], ["Gewicht", "2,5 kg"], ["Herkunft", "Indien"]],
+    colors: zabutonColors,
+    gallery: ["propFront", "propInUse", "zabutonTop", "propSize", "cushionInside", "cushionFabric"],
+    description: `
+        <p>Der Zabuton ist eine flache, gepolsterte Unterlage für dein Meditationskissen. Auf 80 × 75 cm liegen Knie, Füße und Knöchel weich – auch wenn du lange sitzt.</p>
+        <p>Es gibt ihn 4 cm dick, wenn du es flach magst, und 7 cm dick für mehr Polster. Der Bezug aus Bio-Baumwolle lässt sich abnehmen und waschen.</p>`,
+    care: careList("Bezug bei 30 °C waschen", NO_DRYER, "Das Innenkissen nicht waschen oder reinigen und immer trocken lagern"),
+    sustainability: sustainabilityText(GOTS),
+    features: [
+      { title: "Eine bequeme Basis für lange Meditationen", text: "Das Kissen liegt auf dem Zabuton, deine Beine ebenfalls. So sitzt du weich und stabil, statt mit Knien und Knöcheln auf dem harten Boden.", picture: "propSeated" },
+      { title: "Platz für Kissen, Knie und Füße", text: "Mit 80 × 75 cm ist die Matte groß genug für den Schneidersitz und den Fersensitz. Zusammen mit dem Kissen wird sie zu deinem festen Meditationsplatz.", picture: "zabutonCushion" },
+    ],
+    reviews: [
+      { name: "Ulrike", place: "Münster, DE", color: "Balsam Green / 4 cm", stars: 5, days: 2, text: "Endlich tun mir die Knöchel beim Sitzen nicht mehr weh. Groß genug für Kissen und Knie." },
+      { name: "Anonym", place: "", color: "Anthrazit / 7 cm", stars: 5, days: 8, text: "Ich habe 7 cm genommen und bereue es nicht – schön weich." },
+      { name: "Klaus", place: "Salzburg, AT", color: "Natur / 4 cm", stars: 4, days: 14, text: "Gute Matte, die 4 cm sind mir auf dem Holzboden etwas dünn." },
+      { name: "Johanna", place: "Dresden, DE", color: "Indigo Dust / 7 cm", stars: 5, days: 22, text: "Passt farblich perfekt zu meinem Lotus-Kissen." },
+      { name: "Anonym", place: "", color: "Light Taupe / 4 cm", stars: 5, days: 30, text: "Der Bezug ist abnehmbar und waschbar, das war mir wichtig." },
+      { name: "Sven", place: "Luzern, CH", color: "Schwarz / 7 cm", stars: 5, days: 41, text: "Schlicht, groß und bequem. Mein fester Meditationsplatz." },
+    ],
+    related: ["Bezug für Zabuton", "Meditationskissen Lotus HOCH (H: 20cm)", "Meditationskissen Lotus (H: 15cm)", "Meditations-Set Lotus 20cm"],
+  },
+  "meditationsbank-dharma-standard": {
+    name: "Meditationsbank DHARMA Standard",
+    price: 74.95,
+    rating: 4.67,
+    reviewCount: 64,
+    specs: { shape: "bench", dimensions: [19.5, 46, 16.5], scene: "kneel" },
+    facts: [["Material", "Europäisches Buchenholz"], ["Sitzhöhe", "15 cm (standard)"], ["Maße (L × B × H)", "19,5 × 46 × 16,5 cm"], ["Gewicht", "2,2 kg"],
+      ["Polster", "Schaumstoffkissen mit Bezug aus 100 % Baumwolle (Bio/kbA)"], ["Herkunft", "Rumänien"]],
+    colors: colorsOf("Meditationsbank DHARMA Standard"),
+    gallery: ["propFront", "propInUse", "benchSide", "benchFront", "benchPad", "benchWood"],
+    description: `
+        <p>Auf der DHARMA sitzt du im Fersensitz, ohne dass Knie und Füße dein Gewicht tragen. Die Bank steht über deinen Unterschenkeln, die Sitzfläche ist leicht geneigt – so richtet sich das Becken auf und der Rücken bleibt von selbst gerade.</p>
+        <p>Gefertigt ist sie aus massivem Buchenholz aus Europa, das Polster ist mit Bio-Baumwolle bezogen.</p>`,
+    sustainability: sustainabilityText(PLASTIC_FREE, ["Gefertigt in der EU", "die Bank entsteht in Rumänien."], ["Nachwachsender Rohstoff", "massives Buchenholz aus europäischen Wäldern."], ["Bio-Baumwolle", "für den Bezug des Polsters."]),
+    features: [
+      { title: "Entspannt im Fersensitz", text: "Die Bank nimmt dein Gewicht auf, Knie und Füße liegen frei auf dem Boden. So kannst du länger knien, ohne dass die Beine einschlafen.", picture: "propKneel" },
+      { title: "Leicht geneigt, aufrecht sitzen", text: "Die Sitzfläche fällt nach vorn leicht ab. Dein Becken kippt dadurch ein wenig nach vorn, und die Wirbelsäule richtet sich ohne Anstrengung auf.", picture: "benchTilt" },
+      { title: "Massives Buchenholz", text: "Buche ist hart, schwer und langlebig. Mit 2,2 kg steht die Bank ruhig und wackelt nicht.", picture: "benchWood" },
+      { title: "Weich gepolstert", text: "Ein Schaumstoffkissen mit Bezug aus Bio-Baumwolle macht die Sitzfläche bequem – auch in längeren Meditationen.", picture: "benchCushion" },
+    ],
+    reviews: [
+      { name: "Helga", place: "Kassel, DE", color: "Natur", stars: 5, days: 6, text: "Im Fersensitz schlafen mir die Füße nicht mehr ein. Solide verarbeitet." },
+      { name: "Anonym", place: "", color: "Anthrazit", stars: 5, days: 12, text: "Schönes Holz, stabil und trotzdem leicht genug zum Tragen." },
+      { name: "Bernd", place: "Villach, AT", color: "Indigo Dust", stars: 4, days: 20, text: "Gute Bank. Mit 1,90 m hätte ich sie gern etwas höher." },
+      { name: "Sophia", place: "Heidelberg, DE", color: "Aubergine", stars: 5, days: 29, text: "Das Polster ist angenehm, und die Farbe passt zu meinem Kissen." },
+      { name: "Anonym", place: "", color: "Natur", stars: 4, days: 37, text: "Ich brauchte ein paar Tage, um mich an die Neigung zu gewöhnen. Jetzt möchte ich sie nicht mehr missen." },
+      { name: "Lars", place: "Winterthur, CH", color: "Anthrazit", stars: 5, days: 48, text: "Ruhig, schlicht, gut gemacht. Steht bei mir direkt neben dem Zabuton." },
+    ],
+    // The original shows "ab" on the cover only here.
+    related: ["Meditationsmatte Zabuton", "Meditations-Set Lotus 15cm inkl. GRATIS Meditationskurs",
+      { ...relatedCard("Bezug für Meditationskissen Lotus (H: 15cm)"), fromPrice: true }, "Meditations-Set Lotus 15cm (Ohne Stick) inkl. GRATIS Meditationskurs"],
+  },
+};
+// Everything these pages share; related products are names or ready cards.
+Object.values(propDetails).forEach((item) => Object.assign(item, {
+  swatch: "propFront",
+  related: item.related.map((entry) => (typeof entry === "string" ? relatedCard(entry) : entry)),
+}));
+
 const productDetails = {
   ...cushionDetails,
   ...clothingDetails,
+  ...propDetails,
   "yogamatte-pure": {
     name: "Yogamatte PURE",
     subtitle: "Die Dynamische: Rutschfestigkeit und Stabilität in perfekter Balance.",
@@ -1120,10 +1345,10 @@ const productDetails = {
     ].map((color) => ({ ...color, underside: color.hex })),
     // A second choice next to the colour. The first length's price is `price`;
     // `without` lists colours not made in that length (hidden, as on the original).
-    lengths: [
+    choices: { name: "Länge", values: [
       { label: "180cm", price: 99.95 },
       { label: "200cm", price: 124.95, without: ["Light Taupe", "Balsam Green"] },
-    ],
+    ] },
     gallery: ["rolled", "top", "standing", "layers", "studioLunge", "studioSeated"],
     description: `
         <p>Die MUDRA PRO ist die robusteste Matte im Sortiment: gemacht für tägliches Üben zu Hause und den Dauereinsatz im Studio. Die geschlossene Oberfläche nimmt keine Feuchtigkeit auf und ist schnell gereinigt, die strukturierte Unterseite hält sie am Platz.</p>
@@ -1546,6 +1771,22 @@ const featurePictures = {
   pair: { label: (specs) => specs.pair.label, draw: (color, specs) => pairWidePicture(color, specs) },
   origin: { label: (specs) => `Garnrolle und Nähnadel – genäht ${specs.madeIn}`, draw: (color, specs) => originWidePicture(color, specs) },
   garmentWash: { label: () => "Kleidungsstück und Waschsymbol für 30 °C", draw: (color, specs) => garmentWashWide(color, specs) },
+  // Bolsters, rolls, zabuton and bench
+  propKnees: { label: (specs) => `Figur in Rückenlage, die Knie auf ${specs.article}`, draw: (color, specs) => propSceneSvg(color, specs, "knees", true) },
+  propFish: { label: (specs) => `Figur in einer gestützten Rückbeuge über ${specs.article}`, draw: (color, specs) => propSceneSvg(color, specs, "fish", true) },
+  propChild: { label: () => "Figur in der gestützten Kindhaltung auf dem Bolster", draw: (color, specs) => propSceneSvg(color, specs, "child", true) },
+  propNeck: { label: () => "Figur in Rückenlage, die Rolle unter dem Nacken", draw: (color, specs) => propSceneSvg(color, specs, "neck", true) },
+  propSeated: { label: () => "Figur im Schneidersitz auf einem Kissen auf dem Zabuton", draw: (color, specs) => propSceneSvg(color, specs, "seated", true) },
+  propKneel: { label: () => "Figur im Fersensitz auf der Meditationsbank", draw: (color, specs) => propSceneSvg(color, specs, "kneel", true) },
+  propCompare: { label: (specs) => `Querschnitte im Vergleich: ${specs.compare.map((item) => item.label).join(" und ")}`, draw: (color, specs) => propCompareWide(color, specs) },
+  propFilling: { label: (specs) => `Querschnitt mit der Füllung aus ${specs.filling}`, draw: (color, specs) => propFillingWide(color, specs) },
+  propSideWide: { label: (specs) => `Von der Seite, ${specs.dimensions[0]} cm lang und ${specs.dimensions[2]} cm hoch`, draw: (color, specs) => widePhoto(propSideView(color, specs, 150, 128, 200, 80)) },
+  propTravel: { label: () => "Die Rolle neben einer Tasche, 830 g", draw: (color, specs) => propTravelWide(color, specs) },
+  fabricWeave: { label: () => "Stoff aus Bio-Baumwolle aus der Nähe", draw: (color) => weaveWidePicture(color) },
+  zabutonCushion: { label: (specs) => `Zabuton von oben, ${specs.dimensions[0]} × ${specs.dimensions[1]} cm, mit einem Meditationskissen`, draw: (color, specs) => widePhoto(zabutonTopView(color, specs, 150, 88, 130, true)) },
+  benchTilt: { label: (specs) => `Meditationsbank von der Seite, ${decimal(specs.dimensions[2])} cm hoch, die Sitzfläche leicht geneigt`, draw: (color, specs) => widePhoto(benchSideView(color, specs, 150, 140, 5)) },
+  benchWood: { label: () => "Buchenholz aus der Nähe", draw: () => widePhoto(woodGrain(330, 202) + woodLabel(165, 88)) },
+  benchCushion: { label: () => "Polster aus Schaumstoff im Bezug aus Bio-Baumwolle", draw: (color) => benchPadWide(color) },
 };
 
 const galleryPictures = {
@@ -1577,6 +1818,16 @@ const galleryPictures = {
   garmentTree: { label: "beim Üben im Baum", draw: (color, specs) => outfitScene(color, specs, "tree", "0 0 100 100") },
   garmentMeasure: { label: "mit den Maßen in Größe M", draw: (color, specs) => garmentMeasurePicture(color, specs) },
   garmentFolded: { label: "zusammengelegt", draw: (color) => garmentFoldedPicture(color) },
+  // Bolsters, rolls, zabuton and bench
+  propFront: { label: "von vorn", draw: (color, specs) => propFrontPicture(color, specs) },
+  propInUse: { label: "beim Üben", draw: (color, specs) => propSceneSvg(color, specs, specs.scene) },
+  propSize: { label: "Maße von der Seite", draw: (color, specs) => propSizePicture(color, specs) },
+  propEndView: { label: "Querschnitt mit Maßen", draw: (color, specs) => propEndPicture(color, specs) },
+  zabutonTop: { label: "von oben mit Maßen", draw: (color, specs) => galleryPhoto(zabutonTopView(color, specs, 92, 118, 140, false)) },
+  benchSide: { label: "von der Seite mit Maßen", draw: (color, specs) => galleryPhoto(benchSideView(color, specs, 90, 150, 6)) },
+  benchFront: { label: "Breite und Höhe", draw: (color, specs) => benchFrontPicture(color, specs) },
+  benchPad: { label: "Polster mit Bezug aus Bio-Baumwolle", draw: (color) => benchPadPicture(color) },
+  benchWood: { label: "Buchenholz aus der Nähe", draw: () => galleryPhoto(woodGrain(200, 250) + woodLabel(100, 200)) },
 };
 
 // ---------- Drawn cushion pictures ----------
@@ -1594,15 +1845,18 @@ const sittingFigure = (x, y, scale = 1) => `
         <circle cx="0" cy="-51" r="8" fill="#3a3530" stroke="none"/>
       </g>`;
 
-// Spelt husks (little grains) or kapok (soft tufts) as a fill pattern.
+// Spelt husks (little grains), kapok (soft tufts) or cotton fleece (soft
+// layers, the zabuton's) as a fill pattern: [width, height, tile].
+const FILLING_TILES = {
+  spelt: [6, 6, '<rect width="6" height="6" fill="#d9c69e"/><ellipse cx="2" cy="2" rx="1.6" ry=".8" fill="#b89a62" transform="rotate(30 2 2)"/><ellipse cx="4.5" cy="4.6" rx="1.4" ry=".7" fill="#c9ad74" transform="rotate(-40 4.5 4.6)"/>'],
+  kapok: [10, 10, '<rect width="10" height="10" fill="#f3efe6"/><circle cx="3" cy="3" r="2.6" fill="#fff"/><circle cx="8" cy="7" r="2.2" fill="#e9e3d6"/>'],
+  fleece: [12, 8, '<rect width="12" height="8" fill="#f6f2ea"/><path d="M0 4c3-3 6 3 12 0" fill="none" stroke="#e2dacb" stroke-width="1.2"/>'],
+};
 function fillingPattern(specs) {
   const id = `filling-${++patternCount}`;
-  const kapok = /Kapok/.test(specs.filling);
-  const tile = kapok
-    ? '<rect width="10" height="10" fill="#f3efe6"/><circle cx="3" cy="3" r="2.6" fill="#fff"/><circle cx="8" cy="7" r="2.2" fill="#e9e3d6"/>'
-    : '<rect width="6" height="6" fill="#d9c69e"/><ellipse cx="2" cy="2" rx="1.6" ry=".8" fill="#b89a62" transform="rotate(30 2 2)"/><ellipse cx="4.5" cy="4.6" rx="1.4" ry=".7" fill="#c9ad74" transform="rotate(-40 4.5 4.6)"/>';
-  const size = kapok ? 10 : 6;
-  return { id, defs: `<defs><pattern id="${id}" width="${size}" height="${size}" patternUnits="userSpaceOnUse">${tile}</pattern></defs>` };
+  const kind = /Kapok/.test(specs.filling) ? "kapok" : /vlies/i.test(specs.filling) ? "fleece" : "spelt";
+  const [width, height, tile] = FILLING_TILES[kind];
+  return { id, defs: `<defs><pattern id="${id}" width="${width}" height="${height}" patternUnits="userSpaceOnUse">${tile}</pattern></defs>` };
 }
 
 function cushionFrontPicture(color, specs) {
@@ -1658,11 +1912,12 @@ function cushionTopWide(color, specs) {
     </svg>`;
 }
 
-// Side view with the height and the width (4 px per cm), standing on `base`.
-function sideView(color, specs, cx, base) {
+// Side view with the height and the width (4 px per cm unless a wide cushion
+// needs less), standing on `base`.
+function sideView(color, specs, cx, base, perCm = 4) {
   const [length, , height] = specs.dimensions;
-  const w = Math.round(length * 4);
-  const h = Math.round(height * 4);
+  const w = Math.round(length * perCm);
+  const h = Math.round(height * perCm);
   const x = cx - w / 2;
   const y = base - h;
   return `
@@ -1679,7 +1934,7 @@ function sideView(color, specs, cx, base) {
 function cushionSizePicture(color, specs) {
   return `
     <svg viewBox="0 0 200 250" aria-hidden="true">
-      <rect width="200" height="250" fill="${PHOTO_BG}"/>${sideView(color, specs, 100, 150)}
+      <rect width="200" height="250" fill="${PHOTO_BG}"/>${sideView(color, specs, 100, 150, Math.min(4, 140 / specs.dimensions[0]))}
     </svg>`;
 }
 
@@ -1787,25 +2042,28 @@ function cushionFillingsWide() {
 
 // ---------- Drawn clothing pictures ----------
 // The garments reuse their card drawings from shared.js (a 180×180 box).
-// `GARMENT_BOX` is the area a garment covers there, so any garment can be
-// fitted into a picture; worn, it colours its part of a stick figure.
-// Worn garments sit on a light wooden figure, so dark colours stand out.
+// `SHAPE_BOX` is the area a drawing covers there (garments, and the props
+// further down), so any of them can be fitted into a picture; worn, a
+// garment colours its part of a stick figure. Worn garments sit on a light
+// wooden figure, so dark colours stand out.
 const MANNEQUIN = "#b39373";
 const GOLD = "#ac8700";
 const isLight = (hex) => {
   const n = parseInt(hex.slice(1), 16);
   return ((n >> 16) * 299 + ((n >> 8) & 255) * 587 + (n & 255) * 114) / 1000 > 180;
 };
-const GARMENT_BOX = {
+const SHAPE_BOX = {
   leggings: [56, 30, 124, 160], pants: [60, 34, 120, 142], culotte: [44, 38, 138, 124],
   top: [56, 34, 124, 136], tee: [44, 34, 136, 138], tankTop: [60, 36, 120, 140], tankTee: [52, 36, 128, 138],
   bralette: [58, 38, 122, 104], wrapTop: [40, 34, 140, 142], sweater: [26, 30, 154, 154], overall: [60, 26, 120, 144],
+  roll: [24, 64, 156, 132], bolster: [20, 74, 160, 130], bolsterS: [34, 80, 146, 130], neckRoll: [42, 84, 138, 125],
+  zabuton: [22, 80, 158, 118], zabutonThick: [22, 68, 158, 118], bench: [24, 66, 156, 143],
 };
 
-// Fits the garment into a box around (cx, cy); `point` maps a spot on the
-// garment (in card coordinates) into the picture.
-function garmentPlacement(specs, cx, cy, maxWidth, maxHeight) {
-  const [x1, y1, x2, y2] = GARMENT_BOX[specs.shape];
+// Fits the drawing into a box around (cx, cy); `point` maps a spot on it
+// (in card coordinates) into the picture.
+function shapePlacement(specs, cx, cy, maxWidth, maxHeight) {
+  const [x1, y1, x2, y2] = SHAPE_BOX[specs.shape];
   const scale = Math.min(maxWidth / (x2 - x1), maxHeight / (y2 - y1), 2);
   const point = (x, y) => [cx + (x - (x1 + x2) / 2) * scale, cy + (y - (y1 + y2) / 2) * scale].map((v) => Math.round(v * 10) / 10);
   const [left, top] = point(0, 0);
@@ -1907,7 +2165,7 @@ function garmentFrontPicture(color, specs) {
   return `
     <svg viewBox="0 0 200 250" aria-hidden="true">
       <rect width="200" height="250" fill="${PHOTO_BG}"/>
-      ${garmentPlacement(specs, 100, 125, 170, 200).draw(color.hex)}
+      ${shapePlacement(specs, 100, 125, 170, 200).draw(color.hex)}
     </svg>`;
 }
 
@@ -1925,7 +2183,7 @@ function garmentFabricPicture(color, specs) {
 // The legend takes the bottom, the garment the space above it.
 function garmentMeasurePicture(color, specs) {
   const top = 250 - specs.chart.columns.length * 14 - 22;
-  const place = garmentPlacement(specs, 100, (top - 4) / 2, 150, top - 32);
+  const place = shapePlacement(specs, 100, (top - 4) / 2, 150, top - 32);
   return `
     <svg viewBox="0 0 200 250" aria-hidden="true">
       <rect width="200" height="250" fill="${PHOTO_BG}"/>
@@ -1961,12 +2219,12 @@ function fabricWidePicture(color, specs) {
 }
 
 function measureWidePicture(color, specs) {
-  const place = garmentPlacement(specs, 110, 101, 170, 172);
+  const place = shapePlacement(specs, 98, 101, 160, 172);
   return `
     <svg viewBox="0 0 330 202" aria-hidden="true">
       <rect width="330" height="202" fill="${PHOTO_BG}"/>
       ${place.draw(color.hex)}${measureMarks(specs, place)}
-      ${measureLegend(specs, 214, 101 - specs.chart.columns.length * 7, "start")}
+      ${measureLegend(specs, 186, 101 - specs.chart.columns.length * 7, "start")}
     </svg>`;
 }
 
@@ -1975,8 +2233,8 @@ function pairWidePicture(color, specs) {
   return `
     <svg viewBox="0 0 330 202" aria-hidden="true">
       <rect width="330" height="202" fill="${PHOTO_BG}"/>
-      ${garmentPlacement(specs, 102, 90, 116, 140).draw(color.hex)}
-      ${garmentPlacement(partner, 228, 90, 116, 140).draw(partner.hex || color.hex)}
+      ${shapePlacement(specs, 102, 90, 116, 140).draw(color.hex)}
+      ${shapePlacement(partner, 228, 90, 116, 140).draw(partner.hex || color.hex)}
       <text x="165" y="186" text-anchor="middle" ${LABEL_STYLE}>${partner.label}</text>
     </svg>`;
 }
@@ -2003,7 +2261,7 @@ function garmentWashWide(color, specs) {
   return `
     <svg viewBox="0 0 330 202" aria-hidden="true">
       <rect width="330" height="202" fill="${PHOTO_BG}"/>
-      ${garmentPlacement(specs, 106, 90, 150, 140).draw(color.hex)}
+      ${shapePlacement(specs, 106, 90, 150, 140).draw(color.hex)}
       <path d="M200 66h86l-10 74h-66z" fill="none" stroke="#5f5c52" stroke-width="2"/>
       <path d="M204 84c12 6 22-6 34 0s22 6 34 0" fill="none" stroke="#5f5c52" stroke-width="1.5"/>
       <text x="243" y="122" text-anchor="middle" font-size="16" fill="#5f5c52" font-family="Hanken Grotesk, sans-serif">30°</text>
@@ -2014,11 +2272,291 @@ function garmentWashWide(color, specs) {
 // The drawing in the size chart: the garment in a neutral tone, so the
 // numbers stay readable whatever colour is picked.
 function sizeChartDrawing(specs) {
-  const place = garmentPlacement(specs, 180, 140, 230, 250);
+  const place = shapePlacement(specs, 180, 140, 230, 250);
   return `
         <svg viewBox="0 0 360 280" aria-hidden="true">
           ${place.draw("#ebe7df")}${measureMarks(specs, place)}
         </svg>`;
+}
+
+// ---------- Drawn pictures for bolsters, rolls, zabuton and bench ----------
+// The front view is the card drawing; scenes, sizes and cross-sections are
+// drawn to scale from `specs.dimensions` (length, width, height in cm).
+const r1 = (value) => Math.round(value * 10) / 10;
+const BEECH = "#dcc09a";
+const BEECH_DARK = "#c9a77e";
+const OTHER_PROP = "#d8d3cb"; // the product it is compared with
+const SCENE_CM = 0.45; // scene units (of 100) per cm
+// Picture sections of the scene: 4:5 for the gallery, and for the info rows
+// one close to the floor (lying poses) or one with room for a sitting figure.
+const SCENE_VIEWS = { gallery: "8 34 84 105", lying: "-2 46 104 64", upright: "-24 24 148 91" };
+const MEASURE_LINE = 'stroke="#5f5c52" fill="none"';
+
+// The prop seen from its end – round for the rolls – standing on `bottom`.
+function propEnd(fill, specs, cx, bottom, perCm) {
+  const [, width, height] = specs.dimensions;
+  const w = r1(width * perCm);
+  const h = r1(height * perCm);
+  return specs.round
+    ? `<circle cx="${cx}" cy="${r1(bottom - h / 2)}" r="${r1(h / 2)}" fill="${fill}" stroke="${GARMENT_LINE}"/>`
+    : `<rect x="${r1(cx - w / 2)}" y="${r1(bottom - h)}" width="${w}" height="${h}" rx="${r1(Math.min(w, h) * 0.35)}" fill="${fill}" stroke="${GARMENT_LINE}"/>`;
+}
+
+// Dimension lines: one below a box (with its label), one to its right.
+const widthMark = (x, right, y, label) => `
+      <path d="M${x} ${y}H${right}M${x} ${y - 4}V${y + 4}M${right} ${y - 4}V${y + 4}" ${MEASURE_LINE}/>
+      <text x="${r1((x + right) / 2)}" y="${y + 18}" text-anchor="middle" ${LABEL_STYLE}>${label}</text>`;
+const heightMark = (x, top, bottom, label) => `
+      <path d="M${x} ${top}V${bottom}M${x - 4} ${top}H${x + 4}M${x - 4} ${bottom}H${x + 4}" ${MEASURE_LINE}/>
+      <text x="${x + 2}" y="${top - 8}" text-anchor="middle" ${LABEL_STYLE}>${label}</text>`;
+
+const limb = (d) => `<path d="${d}" fill="none" stroke="${MANNEQUIN}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>`;
+const headAt = (x, y) => `<circle cx="${x}" cy="${y}" r="5" fill="${MANNEQUIN}"/>`;
+const SCENE_MAT = '<path d="M10 80H90L96 90H4Z" fill="#8b8378"/>';
+
+// Poses with a prop, in the 100×100 scene of the mats' pictures.
+const propScenes = {
+  // On the back, the knees resting on the bolster or roll.
+  knees: (color, specs) => {
+    const top = r1(84 - specs.dimensions[2] * SCENE_CM);
+    return SCENE_MAT + propEnd(color.hex, specs, 58, 84, SCENE_CM) + limb(`M26 82H46L58 ${r1(top - 2.5)}L72 84`) + limb("M29 82L43 86") + headAt(20, 79);
+  },
+  // A supported back bend: the prop across, under the shoulder blades.
+  fish: (color, specs) => {
+    const top = r1(84 - specs.dimensions[2] * SCENE_CM);
+    return SCENE_MAT + propEnd(color.hex, specs, 36, 84, SCENE_CM) + limb(`M27 82L36 ${r1(top - 2.5)}L56 82L86 83`) + limb(`M37 ${r1(top - 1)}L30 87`) + headAt(23, 81);
+  },
+  // Supported child's pose: lying forward along the bolster.
+  child: (color, specs) => {
+    const w = r1(specs.dimensions[0] * SCENE_CM);
+    const h = r1(specs.dimensions[2] * SCENE_CM);
+    const top = r1(84 - h);
+    return `${SCENE_MAT}<rect x="38" y="${top}" width="${w}" height="${h}" rx="${r1(h * 0.4)}" fill="${color.hex}" stroke="${GARMENT_LINE}"/>`
+      + limb(`M18 84H36L25 ${r1(top - 1)}L56 ${r1(top - 2.5)}`) + limb(`M55 ${r1(top - 2)}L60 84`) + headAt(63, r1(top - 5));
+  },
+  // Lying flat, the small roll under the neck.
+  neck: (color, specs) => {
+    const top = r1(84 - specs.dimensions[2] * SCENE_CM);
+    return SCENE_MAT + propEnd(color.hex, specs, 24, 84, SCENE_CM) + limb(`M20 80L24 ${r1(top - 2.5)}L29 82H52L84 83`) + limb("M31 82L45 86") + headAt(16, 80);
+  },
+  // Cross-legged on a cushion on the zabuton; its front shows the thickness.
+  seated: (color, specs) => {
+    const front = `M6 92H94V${r1(92 + specs.dimensions[2] * 0.6)}H6Z`;
+    return `
+        <path d="M12 84H88L94 92H6Z" fill="${color.hex}" stroke="${GARMENT_LINE}"/>
+        <path d="${front}" fill="${color.hex}"/><path d="${front}" fill="rgba(0, 0, 0, .15)"/>
+        <ellipse cx="50" cy="86" rx="18" ry="5" fill="#d9cfc0"/>`
+      + limb("M32 84Q50 74 68 84") + limb("M50 78V52") + limb("M50 56L38 70L34 80M50 56L62 70L66 80") + headAt(50, 44);
+  },
+  // Kneeling on the bench, the shins underneath it.
+  kneel: (color, specs) => {
+    const seat = r1(85 - specs.dimensions[2] * SCENE_CM);
+    return SCENE_MAT + limb("M66 84L34 85") + `
+        <path d="M44 ${r1(seat + 2)}H53L54 85H43Z" fill="${BEECH_DARK}"/>
+        <g transform="rotate(4 48.5 ${seat})">
+          <rect x="43" y="${seat}" width="11" height="2.2" rx=".6" fill="${BEECH}"/>
+          <rect x="43.5" y="${r1(seat - 2.2)}" width="10" height="2.4" rx="1.2" fill="${color.hex}" stroke="${GARMENT_LINE}"/>
+        </g>`
+      + limb(`M48 ${r1(seat - 4)}L66 84`) + limb(`M48 ${r1(seat - 4)}L49 54`) + limb("M49 57L57 68L63 78") + headAt(49, 46);
+  },
+};
+
+// A scene in a room (light colours get a darker one), for the gallery or,
+// `wide`, for an info row.
+function propSceneSvg(color, specs, kind, wide) {
+  const light = isLight(color.hex);
+  const view = wide ? SCENE_VIEWS[["seated", "kneel"].includes(kind) ? "upright" : "lying"] : SCENE_VIEWS.gallery;
+  return `
+      <svg viewBox="${view}" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <rect x="-100" y="-100" width="300" height="172" fill="${light ? "#d3c9bb" : "#ece6dc"}"/>
+        <rect x="-100" y="72" width="300" height="128" fill="${light ? "#a8957d" : "#c9b9a3"}"/>
+        ${propScenes[kind](color, specs)}
+      </svg>`;
+}
+
+// Side view with length and height (Ø for the rolls), standing on `base`.
+function propSideView(color, specs, cx, base, maxWidth, maxHeight) {
+  const [length, , height] = specs.dimensions;
+  const perCm = Math.min(maxWidth / length, maxHeight / height);
+  const w = r1(length * perCm);
+  const h = r1(height * perCm);
+  const x = r1(cx - w / 2);
+  const top = r1(base - h);
+  return `
+      <rect x="${x}" y="${top}" width="${w}" height="${h}" rx="${r1(specs.round ? h / 2 : Math.min(h * 0.35, 12))}" fill="${color.hex}" stroke="${GARMENT_LINE}"/>
+      ${heightMark(r1(x + w + 10), top, base, `${specs.round ? "Ø " : ""}${decimal(height)} cm`)}
+      ${widthMark(x, r1(x + w), base + 16, `${decimal(length)} cm`)}`;
+}
+
+const galleryPhoto = (content, defs = "") => `
+    <svg viewBox="0 0 200 250" aria-hidden="true">${defs}
+      <rect width="200" height="250" fill="${PHOTO_BG}"/>${content}
+    </svg>`;
+const widePhoto = (content, defs = "") => `
+    <svg viewBox="0 0 330 202" aria-hidden="true">${defs}
+      <rect width="330" height="202" fill="${PHOTO_BG}"/>${content}
+    </svg>`;
+
+const propFrontPicture = (color, specs) => galleryPhoto(shapePlacement(specs, 100, 125, 176, 170).draw(color.hex));
+const propSizePicture = (color, specs) => galleryPhoto(propSideView(color, specs, 90, 150, 130, 90));
+
+// The end with its width and height; a roll shows its diameter and the
+// gathered fabric of the drawstring.
+function propEndPicture(color, specs) {
+  const [, width, height] = specs.dimensions;
+  const perCm = 110 / Math.max(width, height);
+  const w = r1(width * perCm);
+  const h = r1(height * perCm);
+  const base = 150;
+  const x = r1(100 - w / 2);
+  const right = r1(100 + w / 2);
+  const middle = r1(base - h / 2);
+  const marks = specs.round
+    ? `${Array.from({ length: 12 }, (_, i) => {
+      const angle = (i / 12) * Math.PI * 2;
+      return `<path d="M${r1(100 + 6 * Math.cos(angle))} ${r1(middle + 6 * Math.sin(angle))}L${r1(100 + h * 0.3 * Math.cos(angle))} ${r1(middle + h * 0.3 * Math.sin(angle))}" stroke="rgba(0, 0, 0, .12)"/>`;
+    }).join("")}<circle cx="100" cy="${middle}" r="5" fill="rgba(0, 0, 0, .18)"/>
+      ${widthMark(x, right, base + 16, `Ø ${decimal(height)} cm`)}`
+    : `${heightMark(r1(right + 10), r1(base - h), base, `${decimal(height)} cm`)}${widthMark(x, right, base + 16, `${decimal(width)} cm`)}`;
+  return galleryPhoto(propEnd(color.hex, specs, 100, base, perCm) + marks);
+}
+
+// From above, the zabuton's length and width; `withCushion` adds a round
+// meditation cushion (Ø 31 cm) on it.
+function zabutonTopView(color, specs, cx, cy, maxSize, withCushion) {
+  const [length, width] = specs.dimensions;
+  const perCm = maxSize / Math.max(length, width);
+  const w = r1(length * perCm);
+  const h = r1(width * perCm);
+  const x = r1(cx - w / 2);
+  const y = r1(cy - h / 2);
+  return `
+      <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="8" fill="${color.hex}" stroke="${GARMENT_LINE}"/>
+      <rect x="${r1(x + 6)}" y="${r1(y + 6)}" width="${r1(w - 12)}" height="${r1(h - 12)}" rx="5" fill="rgba(255, 255, 255, .1)"/>${withCushion ? `
+      <circle cx="${cx}" cy="${r1(cy - h * 0.12)}" r="${r1(15.5 * perCm)}" fill="#d9cfc0" stroke="${GARMENT_LINE}"/>` : ""}
+      ${heightMark(r1(x + w + 10), y, r1(y + h), `${width} cm`)}
+      ${widthMark(x, r1(x + w), r1(y + h + 14), `${length} cm`)}`;
+}
+
+// The bench from the side: the seat (a little lower at the front) on its
+// leg, the cushion on top; the height includes the cushion.
+function benchSideView(color, specs, cx, base, perCm, angle = 4) {
+  const [depth, , height] = specs.dimensions;
+  const d = r1(depth * perCm);
+  const pad = r1(2.4 * perCm);
+  const seat = r1(2.4 * perCm);
+  const x = r1(cx - d / 2);
+  const top = r1(base - height * perCm);
+  return `
+      <path d="M${r1(x + d * 0.1)} ${r1(top + pad + seat)}H${r1(x + d * 0.9)}L${r1(x + d * 0.96)} ${base}H${r1(x + d * 0.04)}Z" fill="${BEECH_DARK}"/>
+      <g transform="rotate(${angle} ${cx} ${r1(top + pad)})">
+        <rect x="${x}" y="${r1(top + pad)}" width="${d}" height="${seat}" rx="2" fill="${BEECH}"/>
+        <rect x="${r1(x + 2)}" y="${top}" width="${r1(d - 4)}" height="${pad}" rx="${r1(pad / 2)}" fill="${color.hex}" stroke="${GARMENT_LINE}"/>
+      </g>
+      ${heightMark(r1(x + d + 16), top, base, `${decimal(height)} cm`)}
+      ${widthMark(x, r1(x + d), base + 16, `${decimal(depth)} cm`)}`;
+}
+
+// The bench from the front: seat and cushion across both legs.
+function benchFrontPicture(color, specs) {
+  const [, width, height] = specs.dimensions;
+  const perCm = 2.8;
+  const w = r1(width * perCm);
+  const x = r1(100 - w / 2);
+  const right = r1(x + w);
+  const base = 150;
+  const top = r1(base - height * perCm);
+  const pad = r1(2.4 * perCm);
+  const seat = r1(2.4 * perCm);
+  const leg = r1(3 * perCm);
+  return galleryPhoto(`
+      <path d="M${x} ${r1(top + pad)}h${leg}V${base}h-${leg}zM${r1(right - leg)} ${r1(top + pad)}h${leg}V${base}h-${leg}z" fill="${BEECH_DARK}"/>
+      <rect x="${x}" y="${r1(top + pad)}" width="${w}" height="${seat}" rx="2" fill="${BEECH}"/>
+      <rect x="${r1(x + 4)}" y="${top}" width="${r1(w - 8)}" height="${pad}" rx="${r1(pad / 2)}" fill="${color.hex}" stroke="${GARMENT_LINE}"/>
+      ${heightMark(r1(right + 10), top, base, `${decimal(height)} cm`)}
+      ${widthMark(x, right, base + 16, `${width} cm`)}`);
+}
+
+// The cushion of the bench cut open: foam in a cotton cover.
+function benchPad(color, x, y, w, h) {
+  const id = `foam-${++patternCount}`;
+  return {
+    defs: `<defs><pattern id="${id}" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#efe3bf"/><circle cx="2" cy="3" r="1" fill="#e2d3a8"/><circle cx="6" cy="6.5" r=".8" fill="#e2d3a8"/></pattern></defs>`,
+    content: `
+      <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r1(h / 2)}" fill="${color.hex}" stroke="${GARMENT_LINE}"/>
+      <rect x="${x + 8}" y="${y + 7}" width="${w - 16}" height="${h - 14}" rx="${r1((h - 14) / 2)}" fill="url(#${id})"/>`,
+  };
+}
+
+function benchPadPicture(color) {
+  const pad = benchPad(color, 30, 90, 140, 56);
+  return galleryPhoto(`${pad.content}
+      <text x="100" y="184" text-anchor="middle" ${LABEL_STYLE}>Schaumstoff im Bezug</text>
+      <text x="100" y="199" text-anchor="middle" ${LABEL_STYLE}>aus Bio-Baumwolle</text>`, pad.defs);
+}
+
+// Beech up close: gently waving grain and the small flecks typical for it.
+function woodGrain(width, height) {
+  const lines = Array.from({ length: Math.ceil(height / 12) }, (_, i) => {
+    const y = 5 + i * 12;
+    return `<path d="M0 ${y}C${r1(width * 0.3)} ${y - 5} ${r1(width * 0.6)} ${y + 6} ${width} ${y - 2}" stroke="rgba(120, 80, 40, .2)" fill="none"/>`;
+  }).join("");
+  const flecks = Array.from({ length: Math.round((width * height) / 900) }, (_, i) => {
+    const x = (i * 53) % width;
+    const y = (i * 29) % height;
+    return `<path d="M${x} ${y}h4" stroke="rgba(150, 90, 40, .28)" stroke-width="1.4" stroke-linecap="round"/>`;
+  }).join("");
+  return `<rect width="${width}" height="${height}" fill="${BEECH}"/>${lines}${flecks}`;
+}
+
+const woodLabel = (cx, y) => `
+      <rect x="${cx - 80}" y="${y}" width="160" height="26" rx="13" fill="rgba(255, 255, 255, .88)"/>
+      <text x="${cx}" y="${y + 17}" text-anchor="middle" ${LABEL_STYLE}>Europäisches Buchenholz</text>`;
+
+// Two ends side by side at the same scale: this product in its colour.
+function propCompareWide(color, specs) {
+  return widePhoto(specs.compare.map((item, i) => {
+    const cx = 105 + i * 120;
+    return `${propEnd(item.self ? color.hex : OTHER_PROP, item, cx, 128, 3.2)}
+      <text x="${cx}" y="154" text-anchor="middle" ${LABEL_STYLE}${item.self ? ' font-weight="700"' : ""}>${item.label}</text>`;
+  }).join(""));
+}
+
+// The end opened up: the cover around its filling.
+function propFillingWide(color, specs) {
+  const filling = fillingPattern(specs);
+  const perCm = 120 / Math.max(specs.dimensions[1], specs.dimensions[2]);
+  const inner = { ...specs, dimensions: specs.dimensions.map((value) => value - 3) };
+  return widePhoto(`
+      ${propEnd(color.hex, specs, 165, 160, perCm)}
+      ${propEnd(`url(#${filling.id})`, inner, 165, r1(160 - 1.5 * perCm), perCm)}
+      <text x="165" y="186" text-anchor="middle" ${LABEL_STYLE}>Füllung: ${specs.filling}</text>`, filling.defs);
+}
+
+// The small roll next to a bag: light enough for every trip.
+function propTravelWide(color, specs) {
+  return widePhoto(`
+      ${shapePlacement(specs, 110, 96, 130, 90).draw(color.hex)}
+      <path d="M206 78c0-22 46-22 46 0" fill="none" stroke="#8c8778" stroke-width="3"/>
+      <rect x="190" y="76" width="78" height="64" rx="10" fill="#d9cfc0" stroke="${GARMENT_LINE}"/>
+      <text x="165" y="176" text-anchor="middle" ${LABEL_STYLE}>Nur 830 g – passt in jede Tasche</text>`);
+}
+
+// Woven cotton up close, wide.
+function weaveWidePicture(color) {
+  const id = `weave-${++patternCount}`;
+  return widePhoto(`
+      <rect width="330" height="202" fill="${color.hex}"/>
+      <rect width="330" height="202" fill="url(#${id})"/>
+      <rect x="85" y="88" width="160" height="26" rx="13" fill="rgba(255, 255, 255, .88)"/>
+      <text x="165" y="105" text-anchor="middle" ${LABEL_STYLE}>Bio-Baumwolle (kbA)</text>`,
+  `<defs><pattern id="${id}" width="6" height="6" patternUnits="userSpaceOnUse"><path d="M0 1.5H6M0 4.5H6" stroke="rgba(255,255,255,.18)" stroke-width="1.4"/><path d="M1.5 0V6M4.5 0V6" stroke="rgba(0,0,0,.1)"/></pattern></defs>`);
+}
+
+function benchPadWide(color) {
+  const pad = benchPad(color, 70, 66, 190, 64);
+  return widePhoto(`${pad.content}
+      <text x="165" y="170" text-anchor="middle" ${LABEL_STYLE}>Schaumstoff im Bezug aus Bio-Baumwolle</text>`, pad.defs);
 }
 
 // ---------- Small line icons for the buy box ----------
@@ -2044,9 +2582,10 @@ const isSoldOut = (color, size) => (size ? !color.stock.includes(size) : Boolean
 const cartLabel = (soldOut) => (soldOut ? "Benachrichtige mich" : "In den Warenkorb");
 const stockText = (soldOut) => (soldOut ? "Nicht auf Lager" : "Auf Lager: In 1-3 Tagen bei dir");
 
-// A length (MUDRA PRO) or a colour (clothing) can bring its own price;
-// reduced clothing colours also show the old price, crossed out.
-const priceOf = (product, color, length) => ({ price: length?.price ?? color.price ?? product.price, compareAt: color.compareAt || null });
+// A choice (MUDRA PRO's length, the zabuton's thickness) or a colour
+// (clothing) can bring its own price; reduced clothing colours also show
+// the old price, crossed out.
+const priceOf = (product, color, choice) => ({ price: choice?.price ?? color.price ?? product.price, compareAt: color.compareAt || null });
 function priceMarkup({ price, compareAt }) {
   return compareAt ? `
           <s class="buybox__compare"><span class="visually-hidden">statt </span>${formatPrice(compareAt)}</s>
@@ -2084,17 +2623,21 @@ function sizeChartMarkup(product) {
 }
 
 // ---------- Page markup ----------
-function galleryItems(product, color) {
+// `specs` are the product's, plus whatever the picked choice changes (the
+// zabuton's thickness), so the drawings follow the choice.
+const specsFor = (product, choice) => ({ ...product.specs, ...choice?.specs });
+
+function galleryItems(product, color, specs = product.specs) {
   return product.gallery.map((key) => {
     const picture = galleryPictures[key];
     return `
-          <div class="gallery__item" role="img" aria-label="${product.name}${color.name ? ` in ${color.name}` : ""}, ${picture.label}">${picture.draw(color, product.specs)}</div>`;
+          <div class="gallery__item" role="img" aria-label="${product.name}${color.name ? ` in ${color.name}` : ""}, ${picture.label}">${picture.draw(color, specs)}</div>`;
   }).join("");
 }
 
-function galleryThumbs(product, color, current = 0) {
+function galleryThumbs(product, color, current = 0, specs = product.specs) {
   return product.gallery.map((key, i) => `
-          <button class="gallery__thumb" data-index="${i}" aria-label="Bild ${i + 1} von ${product.gallery.length} zeigen"${i === current ? ' aria-current="true"' : ""}>${galleryPictures[key].draw(color, product.specs)}</button>`).join("");
+          <button class="gallery__thumb" data-index="${i}" aria-label="Bild ${i + 1} von ${product.gallery.length} zeigen"${i === current ? ' aria-current="true"' : ""}>${galleryPictures[key].draw(color, specs)}</button>`).join("");
 }
 
 // Rows the original leaves out (e.g. the XL's material) are left out here too.
@@ -2113,7 +2656,8 @@ function detailsMarkup(specs) {
         </dl>`;
 }
 
-// Products with their own list of details (the cushions) show it as is.
+// Products with their own list of details (the cushions) show it as is;
+// for the zabuton the list depends on the picked thickness.
 function factsMarkup(facts) {
   const rows = [...facts, ["Hinweis", "Nachbau für ein Studentenprojekt – kein echtes Produkt, daher keine Hersteller- oder Bestellangaben."]];
   return `
@@ -2122,14 +2666,20 @@ function factsMarkup(facts) {
         </dl>`;
 }
 
-// `color` and `size` are the choices the page opens with.
-function productMarkup(product, color, size) {
+function detailsFor(product, choice) {
+  if (!product.facts) return detailsMarkup(product.specs);
+  return factsMarkup(typeof product.facts === "function" ? product.facts(choice) : product.facts);
+}
+
+// `color`, `size` and `choice` are what the page opens with.
+function productMarkup(product, color, size, choice) {
   const soldOut = isSoldOut(color, size);
+  const specs = specsFor(product, choice);
 
   const swatches = product.colors.map((c, i) => `
               <label class="color-swatch">
                 <input type="radio" name="color" value="${i}" class="visually-hidden"${c === color ? " checked" : ""}>
-                <span class="color-swatch__thumb">${galleryPictures[product.swatch || "rolled"].draw(c, product.specs)}</span>
+                <span class="color-swatch__thumb">${galleryPictures[product.swatch || "rolled"].draw(c, specs)}</span>
                 <span class="visually-hidden">${c.name}</span>
               </label>`).join("");
 
@@ -2143,14 +2693,14 @@ function productMarkup(product, color, size) {
           </div>
         </fieldset>` : "";
 
-  const lengths = product.lengths ? `
+  const choices = product.choices ? `
 
-        <fieldset class="option-picker length-picker">
-          <legend class="color-picker__legend"><strong>Länge:</strong> <span class="length-picker__value">${product.lengths[0].label}</span></legend>
-          <div class="option-picker__options">${product.lengths.map((length, i) => `
+        <fieldset class="option-picker choice-picker">
+          <legend class="color-picker__legend"><strong>${product.choices.name}:</strong> <span class="choice-picker__value">${choice.label}</span></legend>
+          <div class="option-picker__options">${product.choices.values.map((value, i) => `
             <label class="option-pill">
-              <input type="radio" name="length" value="${i}" class="visually-hidden"${i === 0 ? " checked" : ""}>
-              <span class="option-pill__label">${length.label}</span>
+              <input type="radio" name="choice" value="${i}" class="visually-hidden"${value === choice ? " checked" : ""}>
+              <span class="option-pill__label">${value.label}</span>
             </label>`).join("")}
           </div>
         </fieldset>` : "";
@@ -2173,30 +2723,34 @@ function productMarkup(product, color, size) {
   const usps = buyboxUsps.map(([icon, text]) => `
             <li><svg class="buybox__usp-icon" viewBox="0 0 24 24" aria-hidden="true">${buyboxIcons[icon]}</svg>${text}</li>`).join("");
 
+  // Like the original, a product without care notes (the bench) has no "Pflege".
   const accordion = [
     ["Beschreibung", product.description],
-    ["Details", product.facts ? factsMarkup(product.facts) : detailsMarkup(product.specs)],
+    ["Details", detailsFor(product, choice), "details"],
     ["Pflege", product.care],
     ["Nachhaltigkeit", product.sustainability],
-  ].map(([title, body]) => `
+  ].filter(([, body]) => body).map(([title, body, key]) => `
           <details class="accordion__item">
             <summary class="accordion__summary">${title}<svg class="accordion__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path class="accordion__icon-v" d="M12 5v14"/></svg></summary>
-            <div class="accordion__content">${body}</div>
+            <div class="accordion__content"${key ? ` data-${key}` : ""}>${body}</div>
           </details>`).join("");
 
-  const scales = product.ratingScales.map(([label, value]) => `
+  // Some products (bolsters, bench) show only the stars, without scales.
+  const scales = product.ratingScales ? `
+        <ul class="rating-scales">${product.ratingScales.map(([label, value]) => `
             <li class="rating-scale">
               <div class="rating-scale__row"><span>${label}</span><span>${value} / 5.00</span></div>
               <div class="rating-scale__bar"><span style="width: ${(value / 5) * 100}%"></span></div>
-            </li>`).join("");
+            </li>`).join("")}
+        </ul>` : "";
 
   return `
     <div class="container product__main">
       <div class="gallery">
         <span class="gallery__badge"${color.matte ? "" : " hidden"}>Matte Oberfläche</span>
-        <div class="gallery__track" tabindex="0" aria-label="Produktbilder">${galleryItems(product, color)}
+        <div class="gallery__track" tabindex="0" aria-label="Produktbilder">${galleryItems(product, color, specs)}
         </div>
-        <div class="gallery__thumbs">${galleryThumbs(product, color)}
+        <div class="gallery__thumbs">${galleryThumbs(product, color, 0, specs)}
         </div>
       </div>
 
@@ -2205,11 +2759,11 @@ function productMarkup(product, color, size) {
         <p class="buybox__subtitle">${product.subtitle}</p>` : ""}
         <a href="#bewertungen" class="buybox__rating">${starRating(product.rating)}<span>(${product.reviewCount})</span></a>
         <p class="buybox__price">
-          <span class="buybox__prices">${priceMarkup(priceOf(product, color, product.lengths?.[0]))}</span>
+          <span class="buybox__prices">${priceMarkup(priceOf(product, color, choice))}</span>
           <span class="buybox__tax">inkl. MwSt. zzgl. <a href="#">Versandkosten</a></span>
         </p>
 
-${colorPicker}${lengths}${sizes}
+${colorPicker}${choices}${sizes}
 
         <button class="btn btn--primary btn--block buybox__cart" type="button">${cartLabel(soldOut)}</button>
         <p class="buybox__note"${soldOut ? "" : " hidden"}>Du erhältst eine Benachrichtigung per E-Mail, sobald der Artikel wieder auf Lager ist.</p>
@@ -2227,14 +2781,12 @@ ${colorPicker}${lengths}${sizes}
       </div>
 
       <div class="rating-summary">
-        <p class="rating-summary__head">${starRating(product.rating)}<span>(${product.reviewCount})</span></p>
-        <ul class="rating-scales">${scales}
-        </ul>
+        <p class="rating-summary__head">${starRating(product.rating)}<span>(${product.reviewCount})</span></p>${scales}
         <a href="#bewertungen" class="btn btn--secondary btn--block">Bewertungen anschauen</a>
       </div>
     </div>
 
-    <section class="container product-features" aria-label="Mehr über die ${product.name}">${featureRows(product, color)}
+    <section class="container product-features" aria-label="Mehr über die ${product.name}">${featureRows(product, color, specs)}
     </section>
 ${reviewsMarkup(product)}
     <section class="section related" aria-labelledby="related-title">
@@ -2248,7 +2800,7 @@ ${reviewsMarkup(product)}
     </section>${product.sizes ? sizeChartMarkup(product) : ""}`;
 }
 
-function featureRows(product, color) {
+function featureRows(product, color, specs = product.specs) {
   return product.features.map((feature, i) => {
     const picture = featurePictures[feature.picture];
     return `
@@ -2257,7 +2809,7 @@ function featureRows(product, color) {
           <h2 class="feature__title">${feature.title}</h2>
           <p>${feature.text}</p>
         </div>
-        <div class="feature__media" role="img" aria-label="${picture.label(product.specs)}" data-picture="${feature.picture}">${picture.draw(color, product.specs)}</div>
+        <div class="feature__media" role="img" aria-label="${picture.label(specs)}" data-picture="${feature.picture}">${picture.draw(color, specs)}</div>
       </div>`;
   }).join("");
 }
@@ -2380,17 +2932,20 @@ const productRoot = document.getElementById("product");
 if (!product) {
   productRoot.innerHTML = missingMarkup();
 } else {
-  // A link can preselect a colour (&farbe=Light Taupe) and a size (&groesse=M),
-  // e.g. from a category card or the cart. Like the original, clothing
-  // otherwise opens on the first colour in stock, in its first size in stock.
-  let color = product.colors.find((c) => c.name === pageParams.get("farbe"))
+  // A link can preselect a colour (&farbe=Light Taupe), with a choice
+  // (&farbe=Light Taupe / 7 cm, as the zabuton's cards name it), and a size
+  // (&groesse=M), e.g. from a category card or the cart. Like the original,
+  // clothing otherwise opens on the first colour in stock, in its first size
+  // in stock.
+  const [wantedColor, wantedChoice] = (pageParams.get("farbe") || "").split(" / ");
+  let color = product.colors.find((c) => c.name === wantedColor)
     || (product.sizes && product.colors.find((c) => !c.soldOut))
     || product.colors[0];
   let size = product.sizes && (product.sizes.find((s) => s === pageParams.get("groesse")) || color.stock[0] || product.sizes[0]);
-  let length = product.lengths?.[0]; // only for products with a length choice
+  let choice = product.choices && (product.choices.values.find((value) => value.label === wantedChoice) || product.choices.values[0]);
 
   document.title = `${product.name} – LotusCraft Student Rebuild`;
-  productRoot.innerHTML = productMarkup(product, color, size);
+  productRoot.innerHTML = productMarkup(product, color, size, choice);
   setupReviews(product);
 
   const track = productRoot.querySelector(".gallery__track");
@@ -2398,7 +2953,7 @@ if (!product) {
   const badge = productRoot.querySelector(".gallery__badge");
   const colorValue = productRoot.querySelector(".color-picker__value");
   const colorInputs = productRoot.querySelectorAll('input[name="color"]');
-  const lengthInputs = productRoot.querySelectorAll('input[name="length"]');
+  const choiceInputs = productRoot.querySelectorAll('input[name="choice"]');
   const sizeInputs = productRoot.querySelectorAll('input[name="size"]');
   const prices = productRoot.querySelector(".buybox__prices");
   const cartButton = productRoot.querySelector(".buybox__cart");
@@ -2429,16 +2984,29 @@ if (!product) {
 
   track.addEventListener("scroll", () => markThumb(currentPicture()), { passive: true });
 
-  // A length can rule out colours (MUDRA PRO: 200 cm only in Anthrazit).
+  // A choice can rule out colours (MUDRA PRO: 200 cm only in Anthrazit).
   // Like the original, such combinations are hidden rather than sold out.
-  const offered = (c, l) => !l?.without?.includes(c.name);
+  const offered = (c, value) => !value?.without?.includes(c.name);
+
+  // Every picture in the picked colour (and the picked choice's specs).
+  function redraw() {
+    const specs = specsFor(product, choice);
+    badge.hidden = !color.matte;
+    track.innerHTML = galleryItems(product, color, specs);
+    thumbs.innerHTML = galleryThumbs(product, color, currentPicture(), specs);
+    productRoot.querySelectorAll(".feature__media").forEach((media) => {
+      const picture = featurePictures[media.dataset.picture];
+      media.innerHTML = picture.draw(color, specs);
+      media.setAttribute("aria-label", picture.label(specs));
+    });
+  }
 
   // Buy box texts, price and offered choices for the picked colour (and
-  // length or size).
+  // choice or size).
   function updateBuybox() {
     const soldOut = isSoldOut(color, size);
     if (colorValue) colorValue.textContent = color.name;
-    prices.innerHTML = priceMarkup(priceOf(product, color, length));
+    prices.innerHTML = priceMarkup(priceOf(product, color, choice));
     cartButton.textContent = cartLabel(soldOut);
     note.hidden = !soldOut;
     stock.textContent = stockText(soldOut);
@@ -2452,27 +3020,26 @@ if (!product) {
         input.nextElementSibling.lastElementChild.textContent = out ? " (ausverkauft)" : "";
       });
     }
-    if (!length) return;
-    productRoot.querySelector(".length-picker__value").textContent = length.label;
-    colorInputs.forEach((input, i) => (input.closest("label").hidden = !offered(product.colors[i], length)));
-    lengthInputs.forEach((input, i) => (input.closest("label").hidden = !offered(color, product.lengths[i])));
+    if (!choice) return;
+    productRoot.querySelector(".choice-picker__value").textContent = choice.label;
+    colorInputs.forEach((input, i) => (input.closest("label").hidden = !offered(product.colors[i], choice)));
+    choiceInputs.forEach((input, i) => (input.closest("label").hidden = !offered(color, product.choices.values[i])));
   }
 
   // Picking a colour redraws every picture in that colour. Clothing keeps
   // the picked size, as on the original, even if it is sold out in the new colour.
   productRoot.querySelector(".color-picker")?.addEventListener("change", (e) => {
     color = product.colors[Number(e.target.value)];
-    badge.hidden = !color.matte;
-    track.innerHTML = galleryItems(product, color);
-    thumbs.innerHTML = galleryThumbs(product, color, currentPicture());
-    productRoot.querySelectorAll(".feature__media").forEach((media) => {
-      media.innerHTML = featurePictures[media.dataset.picture].draw(color, product.specs);
-    });
+    redraw();
     updateBuybox();
   });
 
-  productRoot.querySelector(".length-picker")?.addEventListener("change", (e) => {
-    length = product.lengths[Number(e.target.value)];
+  // A choice can change the price, the details (the zabuton's height) and
+  // the drawings.
+  productRoot.querySelector(".choice-picker")?.addEventListener("change", (e) => {
+    choice = product.choices.values[Number(e.target.value)];
+    productRoot.querySelector("[data-details]").innerHTML = detailsFor(product, choice);
+    if (product.choices.values.some((value) => value.specs)) redraw();
     updateBuybox();
   });
 
@@ -2496,14 +3063,15 @@ if (!product) {
       added.textContent = "Nur eine Demo: In diesem Studentenprojekt gibt es keine Benachrichtigungen, es wird nichts gespeichert.";
       return;
     }
-    const variant = [color.name, length?.label, size].filter(Boolean).join(" / ");
+    const variant = [color.name, choice?.label, size].filter(Boolean).join(" / ");
+    const colorParam = [color.name, choice?.label].filter(Boolean).join(" / ");
     addToCart({
       id: variant ? `${slug}:${variant}` : slug,
       name: product.name,
       variant,
       hex: color.hex,
-      price: priceOf(product, color, length).price,
-      href: `produkt.html?p=${slug}${color.name ? `&farbe=${encodeURIComponent(color.name)}` : ""}${size ? `&groesse=${size}` : ""}`,
+      price: priceOf(product, color, choice).price,
+      href: `produkt.html?p=${slug}${colorParam ? `&farbe=${encodeURIComponent(colorParam)}` : ""}${size ? `&groesse=${size}` : ""}`,
     });
     openCart();
     added.textContent = `${product.name}${variant ? ` (${variant})` : ""} liegt im Warenkorb – nur eine Demo, es wird nichts bestellt.`;

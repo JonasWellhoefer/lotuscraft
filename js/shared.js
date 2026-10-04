@@ -40,7 +40,7 @@ const bestsellers = {
   ],
   meditation: [
     { name: "Meditationskissen Lotus (H: 15cm)", slug: "meditationskissen-lotus-h-15cm", price: 39.95, shape: "lotusCushion15", tint: "#8b7d6b" },
-    { name: "Meditationsmatte Zabuton", price: 59.95, shape: "zabuton", tint: "#6f6a62" },
+    { name: "Meditationsmatte Zabuton", slug: "meditationsmatte-zabuton", price: 59.95, shape: "zabuton", tint: "#6f6a62" },
     { name: "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung", slug: "meditationskissen-lotus-h-15cm-ohne-bestickung", price: 34.95, shape: "plainCushion", tint: "#a39a8c" },
     { name: "Meditationskissen Lotus KLEIN (H: 10 cm)", slug: "meditationskissen-lotus-klein-h-10-cm", price: 37.95, shape: "lotusCushion10", tint: "#5d6b73" },
   ],
@@ -533,7 +533,7 @@ const bolsterColors = (filling) => [
   { color: "Dark Cranberry", hex: "#7a2a3a", family: "Rot" },
   { color: "Grassland", hex: GRASSLAND, family: "Wood Grain" },
 ];
-const yogaRoll = { name: "Yogarolle RESTORATIVE Ø24 cm", price: 54.95, shape: "roll", material: ORGANIC_COTTON, variants: [
+const yogaRoll = { name: "Yogarolle RESTORATIVE Ø24 cm", slug: "yogarolle-restorative-o24-cm", price: 54.95, shape: "roll", material: ORGANIC_COTTON, variants: [
   { color: "Light Taupe", hex: "#c4b6a6", family: "Beige", filling: SPELT },
   { color: "Natur", hex: COTTON, family: "Beige", filling: SPELT },
   { color: "Indigo Dust", hex: "#6b7c95", family: "Blau", filling: SPELT },
@@ -542,16 +542,16 @@ const yogaRoll = { name: "Yogarolle RESTORATIVE Ø24 cm", price: 54.95, shape: "
   { color: "Dark Cranberry", hex: "#7a2a3a", family: "Rot" },
   { color: "Grassland", hex: GRASSLAND, family: "Wood Grain" },
 ] };
-const neckRoll = { name: "Yoga Mini-Rolle (Nackenrolle) Ø12 cm", price: 34.95, shape: "neckRoll", variants: [
+const neckRoll = { name: "Yoga Mini-Rolle (Nackenrolle) Ø12 cm", slug: "nackenrolle", price: 34.95, shape: "neckRoll", variants: [
   { color: "Light Taupe", hex: "#c4b6a6", family: "Beige", filling: SPELT, material: ORGANIC_COTTON },
   { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
 ] };
 const bolsters = [
   yogaRoll,
   // Aubergine has sold out in the large size (as of 4 Oct 2026).
-  { name: "Yoga Bolster RESTORATIVE L", price: 64.95, shape: "bolster", variants: bolsterColors(KAPOK)
+  { name: "Yoga Bolster RESTORATIVE L", slug: "yoga-bolster-restorative-l", price: 64.95, shape: "bolster", variants: bolsterColors(KAPOK)
     .map((variant) => (variant.color === "Aubergine" ? { ...variant, soldOut: true } : variant)) },
-  { name: "Yoga Bolster RESTORATIVE S", price: 49.95, shape: "bolsterS", variants: bolsterColors(KAPOK) },
+  { name: "Yoga Bolster RESTORATIVE S", slug: "yoga-bolster-restorative-s", price: 49.95, shape: "bolsterS", variants: bolsterColors(KAPOK) },
   neckRoll,
 ];
 const rollCover = { name: "Bezug für Yogarolle COVER Ø24 cm", price: 29.95, shape: "rollCover", badge: "NUR BEZUG", material: ORGANIC_COTTON, variants: [
@@ -679,7 +679,7 @@ const zabutonHeights = (color, extra = {}) => [
 ];
 // The older colours are filled with cotton fleece, the newer ones say nothing.
 const fleece = { filling: "Baumwollvlies" };
-const zabuton = { name: "Meditationsmatte Zabuton", price: 59.95, shape: "zabuton", material: ORGANIC_COTTON, variants: [
+const zabuton = { name: "Meditationsmatte Zabuton", slug: "meditationsmatte-zabuton", price: 59.95, shape: "zabuton", material: ORGANIC_COTTON, variants: [
   ...zabutonHeights("Light Taupe", fleece), ...zabutonHeights("Natur", fleece), ...zabutonHeights("Balsam Green"), ...zabutonHeights("Indigo Dust", fleece),
   ...zabutonHeights("Anthrazit", fleece), ...zabutonHeights("Bordeaux", fleece), ...zabutonHeights("Schwarz", { badge: "New in" }),
   ...zabutonHeights("Aubergine", { ...fleece, soldOut: true }),
@@ -739,7 +739,7 @@ const zabutonCover = coverFor("Zabuton", "zabutonCover", { price: 39.95 }, [
   cushionColor("Anthrazit"), cushionColor("Aubergine", coverSoldOut), cushionColor("Bordeaux"), cushionColor("Indigo Dust"),
   cushionColor("Light Taupe"), cushionColor("Natur"), cushionColor("Balsam Green"), cushionColor("Schwarz"),
 ]);
-const meditationBench = { name: "Meditationsbank DHARMA Standard", price: 74.95, shape: "bench", material: "Europäisches Buchenholz", height: "15", variants: [
+const meditationBench = { name: "Meditationsbank DHARMA Standard", slug: "meditationsbank-dharma-standard", price: 74.95, shape: "bench", material: "Europäisches Buchenholz", height: "15", variants: [
   cushionColor("Natur"), cushionColor("Anthrazit"), cushionColor("Indigo Dust", { badge: "New in" }), cushionColor("Aubergine", { badge: "New in" }),
 ] };
 
