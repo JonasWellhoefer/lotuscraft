@@ -95,7 +95,7 @@ lotuscraft/
 │   ├── shared.js   # Gemeinsame Daten & Helfer: Produkte, Kategorien, Menü, Suchindex, Zeichnungen
 │   ├── layout.js   # Header, Menüs (Handy + Desktop), Suche, Footer, Warenkorb (Demo)
 │   ├── home.js     # Startseite: Produkt-Tabs, Community, Bewertungs-Karussell
-│   ├── product.js  # Produktseiten: Daten aller Matten, Kissen, Kleidung, Bolster, Zabuton, Bank, Bezüge und des Zubehörs, Zeichnungen, Galerie, Farb-, Größen- und Optionsauswahl, Warenkorb-Button
+│   ├── product.js  # Produktseiten: Daten aller Matten, „Almost Perfect“-Matten, Kissen, Kleidung, Bolster, Zabuton, Bank, Bezüge und des Zubehörs, Zeichnungen, Galerie, Farb-, Größen- und Optionsauswahl, Warenkorb-Button
 │   └── category.js # Kategorieseite: Filter (Farbe, Sitzhöhe, Form, Material, Füllung, Größe, Verfügbarkeit), Sortierung
 └── README.md
 ```
@@ -148,14 +148,17 @@ die Werte stammen direkt aus dem CSS des Originals.
 - [x] Alle 8 Bezüge (Lotus 15 cm, ohne Bestickung, KLEIN, HOCH, Zafu, Halbmond, Zabuton, Yogarolle): eigene Zeichnungen (Bezug auf dem Kissen, nur der Bezug mit gestricheltem Innenkissen, alter und neuer Bezug, gestickter Lotus) und der Hinweis, dass nur der Bezug geliefert wird
 - [x] Rosenholz-, Tulsi- und Rudraksha-Mala (wie im Original ausverkauft) und Bio-Dinkelspelz 1 kg / 2 kg (Beutel, Spelzen aus der Nähe, beim Nachfüllen)
 - [x] Produkte ohne Bewertungen zeigen wie im Original nur „– Für dieses Produkt wurden noch keine Bewertungen abgegeben –“
-- [x] Bewertungen, Farben und verwandte Produkte aller 61 Produktseiten mit dem Original abgeglichen (Stand 4. Oktober 2026)
+- [x] Alle 8 „Almost Perfect“-Matten (MUDRA PRO, PURE, MUDRA, ARISE Travel, MUDRA XL, ARISE, ARISE Cork, MUDRA PRO XL): die Seite der regulären Matte mit durchgestrichenem Preis (−15 %), den Farben, die das Original zeigt, den eigenen Angaben unter „Details“ (oft nur das Gewicht), eigenen Bewertungen – und einer Zeichnung des kleinen Schönheitsfehlers unter der Lupe
+- [x] Wie im Original: ARISE Travel und MUDRA XL sind ausverkauft (rote Meldung statt Warenkorb-Button, bei MUDRA XL mit „Nicht auf Lager“); ARISE zeigt keine Sterne in der Kaufbox, MUDRA PRO XL Sterne ohne Bewertungsliste; die ausverkaufte ARISE-Travel-Karte steht nicht mehr in den Kategorien und Empfehlungen
+- [x] „Basierend auf 1 Bewertung“ statt „1 Bewertungen“
+- [x] Bewertungen, Farben und verwandte Produkte aller 69 Produktseiten mit dem Original abgeglichen (Stand 4. Oktober 2026)
 
 **Kategorieseiten** (Hero-Button „Yogamatten“, Menü → „Yoga“ oder die Kreise oben):
 
 - [x] Unterkategorien als Kreise, Titel, eine Karte pro Farbe (31 bei „Yogamatten“, wie im Original)
 - [x] Vier Unterkategorien wie im Original: Für Zuhause (24 Karten), Rutschfest (16), Studio (13), Reise (4) – der aktuelle Kreis ist umrandet
 - [x] „Yoga-Sets“ (Menü → „Yogamatten-Set“ oder „Yoga-Sets“): alle 13 Sets mit „Set -10%“ und Farbpunkten; im Header sind wie im Original „Yoga“ und „Geschenke“ hervorgehoben
-- [x] „„Almost Perfect“ Yogamatten“: 17 Matten mit kleinen Schönheitsfehlern zu −15 %, Filter verhalten sich wie im Original
+- [x] „„Almost Perfect“ Yogamatten“: 16 Karten mit kleinen Schönheitsfehlern zu −15 %, Filter verhalten sich wie im Original
 - [x] „Yoga-Zubehör“ (36 Karten: Gurte, Taschen, Blöcke, Decke, Spray, Handtuch, Augenkissen, Sticker) mit den Unterseiten Yogataschen, Yogadecken, Yoga-Handtücher, Yoga-Gurte und Yoga Blöcke
 - [x] „Yoga Bolster“ (23 Karten, mit Filter „Füllung“) und „Yoga Rolle“; „Yogamatten Zubehör“ mit Spray, Stickern, Malas und Dinkelspelz sowie „Bezug Yogarolle“ – damit führt jeder Eintrag der Yoga-Spalte im Menü auf eine Seite
 - [x] „Meditationskissen“ (45 Karten, Filter „Sitzhöhe“ und „Form“: rund, halbrund, Zafu) mit den Unterseiten Rundkissen, Zafu-Kissen und Halbmondkissen – im Header ist dort „Meditation“ hervorgehoben
@@ -163,13 +166,13 @@ die Werte stammen direkt aus dem CSS des Originals.
 - [x] „Meditation Zubehör“ (Augenkissen, Malas, Dinkelspelz) mit den Unterseiten Augenkissen und Dinkelspelz Füllung, „Bezug Meditationskissen“ (43 Bezüge mit Filter „Sitzhöhe“ 10 / 15 / 20 cm), „Bezug Meditationsmatte“ und „Meditationsbänke“ – damit führt jeder Eintrag der Meditation-Spalte im Menü auf eine Seite, auch im Handy-Menü
 - [x] „Yoga-Kleidung“ (Header → „Bekleidung“, 37 Karten) mit „Yogakleidung Damen“ (Hosen, Leggings, Yoga BH, Shirts, Overalls, Pullover) und „Yogakleidung Herren“ (Tanktops, Trainingshosen, Sweatshirts) – der Filter „Größe“ findet wie im Original nur lieferbare Größen
 - [x] „Geschenkideen“ (Header → „Geschenke“, 90 Karten quer durchs Sortiment), „Geschenke unter 50 / 100 / 120 €“, „Gutscheine“ (Gutscheinkarte, nur zum Ansehen) und „Yoga & Meditation Set“ (Menükachel „Spare beim Set-Kauf“) – damit führen auch alle Kreise auf den Set-Seiten auf eine Seite
-- [x] „Yoga“ (109 Karten) und „Meditation“ (133 Karten) hinter den Header-Links sowie „SALE“ (56 Karten, nur reduzierte Artikel) – damit führt jeder Link im Header und im Menü auf eine Seite
+- [x] „Yoga“ (108 Karten) und „Meditation“ (133 Karten) hinter den Header-Links sowie „SALE“ (55 Karten, nur reduzierte Artikel) – damit führt jeder Link im Header und im Menü auf eine Seite
 - [x] Filter Farbe, Material, Größe, Sitzhöhe, Form, Füllung und Verfügbarkeit (kombinierbar) – wie im Original nur mit Werten, die auf der Seite vorkommen
 - [x] Auf dem Handy (unter 780 px) wie im Original nur zwei Buttons: „Filter“ öffnet eine Schublade mit einer Unterseite je Filter (Haken wirken sofort, ein goldener Punkt zählt sie), „Sortierung“ öffnet die Auswahlliste des Handys – per Tastatur bedienbar, Escape geht erst zurück und schließt dann
 - [x] Sortierung wie im Original, voreingestellt „meistverkauft“ (Rangliste des Originals vom 4. Oktober 2026); dazu Relevanz, A–Z, Z–A und Preis. Einige Bekleidungsseiten zeigen wie dort die eigene Reihenfolge des Shops, ohne gewählte Sortierung
 - [x] Alle 52 Kategorieseiten automatisch Karte für Karte mit dem Original abgeglichen (Stand 4. Oktober 2026: Reihenfolge, Farben, Preise, Lagerstand, Filterwerte)
 - [x] Kurzer eigener Text unter dem Raster, mit Links zu den Produktseiten
-- [x] Jede Karte für Matten, Kissen, Kleidung, Bolster, Rollen, Zabuton, Meditationsbank, Bezüge und Zubehör öffnet die passende Produktseite, gleich in der richtigen Farbe oder Option (Kleidung in der ersten lieferbaren Größe); nur die Sets, die „Almost Perfect“-Matten und die Gutscheinkarte haben noch keine eigenen Produktseiten
+- [x] Jede Karte für Matten, Kissen, Kleidung, Bolster, Rollen, Zabuton, Meditationsbank, Bezüge, „Almost Perfect“-Matten und Zubehör öffnet die passende Produktseite, gleich in der richtigen Farbe oder Option (Kleidung in der ersten lieferbaren Größe); nur die Sets und die Gutscheinkarte haben noch keine eigenen Produktseiten
 
 **Warenkorb** (Icon oben rechts oder „In den Warenkorb“ auf der Produktseite):
 

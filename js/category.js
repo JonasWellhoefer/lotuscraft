@@ -122,7 +122,7 @@ const bestSellingRanking = [
   "Bezug für Meditationskissen Lotus KLEIN (H: 10 cm) / Marine Blue", "Bezug für Zabuton / Balsam Green",
   "Bezug für Zafu-Meditationskissen Zen / Balsam Green", "Bezug für Zafu-Meditationskissen Zen / Kurkuma",
   "Meditationskissen Lotus HOCH (H: 20cm) / Aubergine", "Yoga Bolster RESTORATIVE L / Dark Cranberry", "Almost Perfect Yogamatte ARISE / Wild Ginger",
-  "Almost Perfect Yogamatte ARISE Travel / Wild Ginger", "Almost Perfect Yogamatte MUDRA / Bordeaux", "Almost Perfect Yogamatte MUDRA XL / Balsam Green",
+  "Almost Perfect Yogamatte MUDRA / Bordeaux", "Almost Perfect Yogamatte MUDRA XL / Balsam Green",
   "Bezug für Halbmond Kissen / Aubergine", "Bezug für Halbmond Kissen / Indigo Dust", "Bezug für Meditationskissen Lotus (H: 15cm) / Aubergine",
   "Bezug für Meditationskissen Lotus KLEIN (H: 10 cm) / Aubergine", "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Grassland",
   "Meditationskissen Lotus KLEIN (H: 10 cm) / Bordeaux", "Yoga Bolster RESTORATIVE L / Grassland", "Yoga Bolster RESTORATIVE S / Dark Cranberry",

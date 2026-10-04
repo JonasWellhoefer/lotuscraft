@@ -10,12 +10,12 @@
 
 // Cards that show up under "Verwandte Produkte" on several pages (prices from the shop).
 const relatedCards = {
-  towel: { name: "Yoga Handtuch", price: 29.95, shape: "towel", tint: "#8f9a8c" },
-  spray: { name: "Bio Yogamatten Spray", price: 12.95, shape: "spray", tint: "#e6e1d6" },
-  mudraPro: { name: "Yogamatte MUDRA PRO", slug: "yogamatte-mudra-pro", price: 99.95, shape: "mat", tint: "#3d3d3f" },
-  eyePillow: { name: "Augenkissen", price: 27.95, shape: "eyePillow", tint: "#7f93ad" },
-  ariseCork: { name: "Yogamatte ARISE CORK", slug: "yogamatte-arise-cork", price: 99.95, shape: "mat", tint: "#d6a571" },
-  almostPerfectProXl: { name: "„Almost Perfect“ Yogamatte MUDRA PRO XL", price: 106.29, compareAt: 124.95, shape: "mat", tint: "#3d3d3f" },
+  towel: relatedCard("Yoga Handtuch"),
+  spray: relatedCard("Bio Yogamatten Spray"),
+  mudraPro: relatedCard("Yogamatte MUDRA PRO"),
+  eyePillow: relatedCard("Augenkissen"),
+  ariseCork: relatedCard("Yogamatte ARISE CORK"),
+  almostPerfectProXl: relatedCard("„Almost Perfect“ Yogamatte MUDRA PRO XL"),
 };
 
 // The ARISE mats are two-tone: the underside is a lighter shade of the top.
@@ -1771,7 +1771,7 @@ const productDetails = {
     related: [
       relatedCard("Yogatasche PUNE"),
       relatedCard("Yogamatten Tragegurt"),
-      { name: "„Almost Perfect“ Yogamatte PURE", price: 67.95, compareAt: 79.95, shape: "mat", tint: "#7a2a3a" },
+      relatedCard("„Almost Perfect“ Yogamatte PURE"),
       bestsellers.yoga[0], // Yogablock Kork 2er Set
     ],
   },
@@ -1838,7 +1838,7 @@ const productDetails = {
     ],
     related: [
       relatedCard("Yogatasche PUNE"),
-      { name: "„Almost Perfect“ Yogamatte ARISE", price: 76.46, compareAt: 89.95, shape: "mat", tint: "#5d7366" },
+      relatedCard("„Almost Perfect“ Yogamatte ARISE"),
       relatedCard("Yogamatten Tragegurt"),
       { name: "Yogamatte ARISE Travel", slug: "yogamatte-arise-travel", price: 59.95, shape: "mat", tint: "#5d7366" },
     ],
@@ -1907,7 +1907,7 @@ const productDetails = {
       relatedCards.towel,
       bestsellers.yoga[2], // Yogamatte ARISE
       relatedCards.spray,
-      { name: "„Almost Perfect“ Yogamatte ARISE Travel", price: 50.95, compareAt: 59.95, shape: "mat", tint: "#5d7366" },
+      relatedCard("Yogatasche NANDI"),
     ],
   },
 
@@ -2149,7 +2149,7 @@ const productDetails = {
       relatedCard("Yogatasche PUNE"),
       bestsellers.yoga[2], // Yogamatte ARISE
       relatedCard("Yogatasche NANDI"),
-      { name: "„Almost Perfect“ Yogamatte ARISE Cork", price: 84.95, compareAt: 99.95, shape: "mat", tint: "#d6a571" },
+      relatedCard("„Almost Perfect“ Yogamatte ARISE Cork"),
     ],
   },
 
@@ -2212,6 +2212,190 @@ const productDetails = {
     ],
   },
 };
+
+// ---------- "Almost Perfect" mats ----------
+// Returned mats, checked and 15 % cheaper. Each page borrows the drawings,
+// care notes and info rows of its regular mat; price, colours, details,
+// ratings and reviews are the ones the original lists for the second-quality
+// one. `colors` are [name, overrides] pairs: the regular mat's colour,
+// reduced, and without PURE's matte look.
+const AP_INTRO = `
+        <p>„Almost Perfect“ heißt: ein geprüftes Einzelstück aus einer Rücksendung, aufbereitet und ohne Originalverpackung. Ein kleiner Makel – etwa eine leicht abweichende Farbe oder ein winziger Fleck – ändert nichts an der Funktion. Dafür kostet die Matte 15 % weniger als die reguläre.</p>`;
+const AP_STUDIO = "Für Studios und andere Räume geeignet";
+
+function almostPerfectPage(baseSlug, { colors, compareAt, about, ...details }) {
+  const base = productDetails[baseSlug];
+  return {
+    ...base,
+    choices: undefined,
+    gallery: [...base.gallery, "flaw"],
+    colors: colors.map(([name, extra]) => ({ ...base.colors.find((color) => color.name === name), name, compareAt, matte: false, soldOut: false, ...extra })),
+    description: `${AP_INTRO}
+        <p>${about}</p>`,
+    ...details,
+  };
+}
+
+const almostPerfectDetails = {
+  "almost-perfect-yogamatte-mudra-pro": almostPerfectPage("yogamatte-mudra-pro", {
+    name: "„Almost Perfect“ Yogamatte MUDRA PRO",
+    subtitle: "Die Leistungsstarke: Extra robust für Yoga und Workouts - Made in Germany",
+    price: 84.95,
+    compareAt: 99.95,
+    colors: [["Light Taupe"], ["Anthrazit"], ["Balsam Green"]],
+    rating: 4.78,
+    reviewCount: 9,
+    ratingScales: [["Rutschfestigkeit", 5], ["Dämpfung", 5], ["Qualität und Langlebigkeit", 4.5]],
+    about: "Wie die reguläre MUDRA PRO ist sie robust, rutschfest und in Deutschland gefertigt – gemacht für Yoga, Pilates und Workouts, auch im Studio. Aussehen und Oberfläche können von der regulären Matte abweichen.",
+    facts: [["Material", "Polyester"], ["Maße (L × B)", "180 × 65 cm"], ["Dicke", "0,5 cm"], ["Gewicht", "1775 g"], ["Herkunft", "Deutschland"], ["Hinweis Studios", AP_STUDIO]],
+    reviews: [
+      { name: "Katharina", place: "Wiesbaden, DE", color: "Anthrazit", stars: 5, days: 4, text: "Einen Makel habe ich nicht gefunden. Dicke, robuste Matte, die auf dem Parkett nicht wandert." },
+      { name: "Anonym", place: "", color: "Light Taupe", stars: 5, days: 12, text: "Deutlich günstiger als neu und fühlt sich genauso solide an." },
+      { name: "Moritz", place: "Osnabrück, DE", color: "Balsam Green", stars: 5, days: 20, text: "Ich nutze sie für Yoga und Krafttraining. Sie hält beides aus." },
+      { name: "Sandra", place: "Villach, AT", color: "Anthrazit", stars: 4, days: 33, text: "Eine kleine Stelle an der Kante war minimal heller. Sonst top, und nach dem Wischen ist sie sofort wieder sauber." },
+      { name: "Anonym", place: "", color: "Light Taupe", stars: 5, days: 51, text: "Preis und Qualität stimmen." },
+    ],
+    related: ["Augenkissen", "Yogatasche NANDI", "„Almost Perfect“ Yogamatte MUDRA PRO XL", "Meditationskissen Lotus KLEIN (H: 10 cm)"],
+  }),
+  "almost-perfect-yogamatte-pure": almostPerfectPage("yogamatte-pure", {
+    name: "„Almost Perfect“ Yogamatte PURE",
+    subtitle: "Die Dynamische: Dämpfung & Halt vereint. Die „Almost Perfect“ ist voll funktionsfähig, mit kleinen Schönheitsfehlern.",
+    price: 67.95,
+    compareAt: 79.95,
+    colors: [["Light Taupe"], ["Indigo Dust"], ["Balsam Green"]],
+    rating: 4.6,
+    reviewCount: 5,
+    ratingScales: [["Rutschfestigkeit", 5], ["Dämpfung", 5], ["Qualität und Langlebigkeit", 5]],
+    about: "Wie die reguläre PURE hat sie eine griffige PU-Oberfläche und eine Unterseite aus Naturkautschuk – für dynamische Stile, bei denen es ins Schwitzen geht.",
+    facts: [["Gewicht", "2700 g"]],
+    reviews: [
+      { name: "Elisa", place: "Münster, DE", color: "Indigo Dust", stars: 5, days: 6, text: "Mit trockenen Händen rutsche ich auf vielen Matten. Hier sitzt alles. Den Makel suche ich noch." },
+      { name: "Anonym", place: "", color: "Light Taupe", stars: 5, days: 15, text: "Genau wie die reguläre PURE, nur günstiger." },
+      { name: "Tobias", place: "Regensburg, DE", color: "Balsam Green", stars: 5, days: 27, text: "Ein winziger Fleck am Rand, mehr nicht. Grip und Dämpfung sind top." },
+      { name: "Gabi", place: "Steyr, AT", color: "Indigo Dust", stars: 4, days: 38, text: "Gute Matte. Der Gummigeruch war am Anfang deutlich, nach ein paar Tagen Lüften ging es." },
+      { name: "Anonym", place: "", color: "Light Taupe", stars: 4, days: 60, text: "Für den Preis völlig in Ordnung, nur etwas schwer zum Mitnehmen." },
+    ],
+    related: ["Yogamatte PURE", "Yogatasche NANDI", "Zafu-Meditationskissen Zen", "„Almost Perfect“ Yogamatte ARISE"],
+  }),
+  "almost-perfect-yogamatte-mudra": almostPerfectPage("yogamatte-mudra-studio", {
+    name: "„Almost Perfect“ Yogamatte MUDRA",
+    subtitle: "Die Vielseitige: Besonders geeignet für Einsteiger. Die „Almost Perfect“ ist voll funktionsfähig, mit kleinen Schönheitsfehlern.",
+    price: 33.95,
+    compareAt: 39.95,
+    colors: [["Indigo Dust"], ["Aubergine"], ["Light Taupe"], ["Bordeaux", { hex: "#6e2b38", underside: "#6e2b38" }], ["Balsam Green"]],
+    rating: 3.5,
+    reviewCount: 2,
+    ratingScales: [["Rutschfestigkeit", 2.33], ["Dämpfung", 3], ["Qualität und Langlebigkeit", 1.5]],
+    about: "Wie die reguläre MUDRA ist sie gut gepolstert und leicht – eine gute Wahl für den Einstieg und für alle Yogastile.",
+    facts: [["Gewicht", "1350 g"]],
+    reviews: [
+      { name: "Kerstin", place: "Freiburg, DE", color: "Indigo Dust", stars: 4, days: 14, text: "Für den Einstieg völlig in Ordnung. Auf glattem Boden rutscht sie manchmal etwas." },
+      { name: "Anonym", place: "", color: "Light Taupe", stars: 3, days: 45, text: "Etwas dünner als erwartet, und die Oberfläche ist nicht sehr griffig." },
+    ],
+    related: ["„Almost Perfect“ Yogamatte ARISE Cork", "Bezug für Yogarolle COVER Ø24 cm", "„Almost Perfect“ Yogamatte MUDRA PRO XL", "Yogablock Kork 2er Set"],
+  }),
+  // Sold out as a whole: no colour to pick, no cart.
+  "almost-perfect-yogamatte-arise-travel": almostPerfectPage("yogamatte-arise-travel", {
+    name: "„Almost Perfect“ Yogamatte ARISE Travel",
+    subtitle: "Die Faltbare: Rutschfest und leicht für Reisen. Die „Almost Perfect“ ist voll funktionsfähig, mit kleinen Schönheitsfehlern.",
+    price: 50.95,
+    compareAt: 59.95,
+    colors: [[null, { hex: "#8c5769", underside: "#b98a9c", soldOut: true }]],
+    unavailable: true,
+    rating: 4,
+    reviewCount: 2,
+    ratingScales: [["Rutschfestigkeit", 5], ["Dämpfung", 3.5], ["Qualität und Langlebigkeit", 5]],
+    about: "Wie die reguläre ARISE Travel ist sie faltbar und ultraleicht – eine Matte aus Naturkautschuk für unterwegs, die auf jedem Untergrund hält.",
+    facts: [["Material", "Naturkautschuk"], ["Maße (L × B)", "185 × 65 cm"], ["Dicke", "0,13 cm"], ["Gewicht", "1,0 kg"], ["Herkunft", "Spanien"],
+      ["Hinweis Studios", "Nur für die persönliche Praxis. Für Räume empfehlen wir die MUDRA oder die MUDRA PRO."]],
+    features: [
+      ...productDetails["yogamatte-arise-travel"].features.slice(0, 3),
+      {
+        title: "Almost Perfect",
+        text: "Diese Matte stammt aus einer Rücksendung und wurde geprüft. Ein kleiner Schönheitsfehler – ein winziger Fleck oder eine leicht andere Farbe – ändert nichts daran, wie sie hält und wie leicht sie ist.",
+        picture: "flawWide",
+      },
+    ],
+    reviews: [
+      { name: "Judith", place: "Dresden, DE", stars: 5, days: 22, text: "Perfekt für Reisen: kaum Platz im Koffer, und der Grip ist super." },
+      { name: "Anonym", place: "", stars: 3, days: 58, text: "Sehr rutschfest, aber dünn. Für die Knie lege ich eine Decke darunter." },
+    ],
+    related: ["Yogatasche NANDI", "Yogamatte ARISE Travel", "„Almost Perfect“ Yogamatte ARISE", "Yogamatte ARISE Set"],
+  }),
+  // The only colour is sold out, so the page is sold out as well.
+  "almost-perfect-yogamatte-mudra-xl": almostPerfectPage("yogamatte-mudra-studio-xl", {
+    name: "„Almost Perfect“ Yogamatte MUDRA XL",
+    subtitle: "Die Vielseitige: Besonders geeignet für Einsteiger. Die „Almost Perfect“ ist voll funktionsfähig, mit kleinen Schönheitsfehlern.",
+    price: 36.5,
+    compareAt: 42.95,
+    colors: [["Balsam Green", { soldOut: true }]],
+    unavailable: true,
+    rating: 5,
+    reviewCount: 1,
+    ratingScales: [["Rutschfestigkeit", 5], ["Dämpfung", 5], ["Qualität und Langlebigkeit", 5]],
+    about: "Wie die reguläre MUDRA XL ist sie mit 195 cm besonders lang – für große Menschen, die genug Platz brauchen.",
+    facts: [["Gewicht", "1500 g"]],
+    reviews: [
+      { name: "Anneliese", place: "Coburg, DE", color: "Balsam Green", stars: 5, days: 40, text: "Schön lang, auch für mich mit 1,90 m. Den Makel sehe ich nicht." },
+    ],
+    related: ["Yogablock Kork Einzeln", "„Almost Perfect“ Yogamatte MUDRA", "Amina Wrap Top", "„Almost Perfect“ Yogamatte MUDRA PRO XL"],
+  }),
+  // No stars in the buy box, but a review below, as on the original.
+  "almost-perfect-yogamatte-arise": almostPerfectPage("yogamatte-arise", {
+    name: "„Almost Perfect“ Yogamatte ARISE",
+    subtitle: "Die Rutschfeste: Maximaler Grip in allen Posen. Die „Almost Perfect“ ist voll funktionsfähig, mit kleinen Schönheitsfehlern.",
+    price: 76.46,
+    compareAt: 89.95,
+    colors: [["Wild Ginger", { hex: "#8c5769", underside: "#b98a9c" }]],
+    buyboxRating: false,
+    rating: 5,
+    reviewCount: 1,
+    ratingScales: undefined,
+    about: "Wie die reguläre ARISE besteht sie aus Naturkautschuk mit extra Grip, ist beidseitig nutzbar und wird in Spanien gefertigt.",
+    facts: [["Gewicht", "2,0 kg"]],
+    reviews: [
+      { name: "Anonym", place: "", color: "Wild Ginger", stars: 5, days: 75, text: "Griffig auch bei viel Schweiß. Von dem kleinen Makel merke ich nichts." },
+    ],
+    related: ["Yoga Bolster RESTORATIVE L", "Yogamatte ARISE", "Yogamatte ARISE Travel", "Yogamatte ARISE Set"],
+  }),
+  "almost-perfect-yogamatte-arise-cork": almostPerfectPage("yogamatte-arise-cork", {
+    name: "„Almost Perfect“ Yogamatte ARISE Cork",
+    subtitle: "Die Natürliche: Für sehr schweißtreibendes Yoga. Die „Almost Perfect“ ist voll funktionsfähig, mit kleinen Schönheitsfehlern.",
+    price: 84.95,
+    compareAt: 99.95,
+    colors: [["Align"], ["Lotus"]],
+    rating: 5,
+    reviewCount: 1,
+    ratingScales: [["Rutschfestigkeit", 5], ["Dämpfung", 5]],
+    about: "Wie die reguläre ARISE CORK hat sie eine Oberfläche aus Naturkork, die auch bei Schweiß griffig bleibt und von Natur aus Gerüche abweist.",
+    facts: [["Gewicht", "1,8 kg"]],
+    features: productDetails["yogamatte-arise-cork"].features.slice(0, 3),
+    reviews: [
+      { name: "Vera", place: "Erfurt, DE", color: "Lotus", stars: 5, days: 33, text: "Je feuchter die Hände, desto besser der Halt – genau wie beschrieben." },
+    ],
+    related: ["„Almost Perfect“ Yogamatte MUDRA", "„Almost Perfect“ Yogamatte ARISE", "FIONA Womens Pants", "Yogamatte ARISE CORK"],
+  }),
+  // The buy box shows stars (as on the original) though the review list is empty.
+  "almost-perfect-yogamatte-mudra-pro-xl": almostPerfectPage("yogamatte-mudra-pro", {
+    name: "„Almost Perfect“ Yogamatte MUDRA PRO XL",
+    subtitle: "Die Leistungsstarke: Extra robust für Yoga und Workouts - Made in Germany",
+    price: 106.29,
+    compareAt: 124.95,
+    colors: [["Anthrazit"]],
+    rating: 4.67,
+    reviewCount: 6,
+    ratingScales: undefined,
+    about: "Wie die reguläre MUDRA PRO in 200 cm Länge ist sie robust, rutschfest und in Deutschland gefertigt. Aussehen und Oberfläche können von der regulären Matte abweichen.",
+    facts: [["Material", "Polyester"], ["Zusammensetzung", "100 % PVC mit Vinyl-Beschichtung"], ["Maße (L × B)", "200 × 65 cm"], ["Dicke", "0,5 cm"], ["Gewicht", "2,0 kg"],
+      ["Herkunft", "Germany"], ["Hinweis Studios", AP_STUDIO]],
+    reviews: [],
+    related: ["Yogatasche NANDI", "Yogamatte MUDRA PRO", "„Almost Perfect“ Yogamatte MUDRA", "„Almost Perfect“ Yogamatte MUDRA PRO"],
+  }),
+};
+Object.values(almostPerfectDetails).forEach((item) => {
+  item.related = item.related.map((name) => relatedCard(name));
+});
+Object.assign(productDetails, almostPerfectDetails);
 
 // ---------- Drawn product pictures ----------
 // Stand-ins for the original's photos, drawn in the selected colour.
@@ -2499,6 +2683,8 @@ const featurePictures = {
   coverEmbroidery: { label: () => "Der gestickte Lotus aus der Nähe", draw: (color) => coverEmbroideryWide(color) },
   coverWash: { label: () => "Bezug und Waschsymbol für 30 °C", draw: (color, specs) => cushionWashWide(color, specs) },
   coverTopView: { label: (specs) => `Das Kissen von oben, ${specs.size} cm`, draw: (color, specs) => cushionTopWide(color, onCushion(specs)) },
+  // "Almost Perfect" mats
+  flawWide: { label: () => "Matte mit kleinem Schönheitsfehler unter der Lupe", draw: (color, specs) => flawWide(color, specs) },
 };
 
 const galleryPictures = {
@@ -2569,6 +2755,8 @@ const galleryPictures = {
   huskBag: { label: "Nachfüllbeutel", draw: (color, specs) => huskBagPicture(color, specs) },
   huskClose: { label: "Dinkelspelzen aus der Nähe", draw: () => huskClosePicture() },
   huskRefill: { label: "beim Nachfüllen", draw: (color, specs) => huskRefillPicture(color, specs) },
+  // "Almost Perfect" mats
+  flaw: { label: "mit kleinem Schönheitsfehler", draw: (color, specs) => flawPicture(color, specs) },
 };
 
 // ---------- Drawn cushion pictures ----------
@@ -3691,6 +3879,34 @@ function huskRefillPicture(color, specs) {
       <text x="100" y="230" text-anchor="middle" ${LABEL_STYLE}>Zum Nachfüllen deiner Kissen</text>`, filling.defs);
 }
 
+// ---------- Pictures for the "Almost Perfect" mats ----------
+// The flaw, tiny as it is, under a magnifier: a scratch and a speck.
+function flawLens(color, cx, cy, r) {
+  const clip = `lens-${++patternCount}`;
+  const scratch = (dy, stroke, width) => `<path d="M${r1(cx - r * 0.55)} ${r1(cy + dy)}l${r1(r * 0.9)} ${r1(-r * 0.3)}" stroke="${stroke}" stroke-width="${r1(r * width)}"/>`;
+  return `
+      <defs><clipPath id="${clip}"><circle cx="${cx}" cy="${cy}" r="${r}"/></clipPath></defs>
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="${color.hex}"/>
+      <g clip-path="url(#${clip})" fill="none" stroke-linecap="round">
+        ${scratch(r * 0.15, "rgba(0, 0, 0, .3)", 0.1)}
+        ${scratch(r * 0.25, "rgba(255, 255, 255, .55)", 0.06)}
+        <circle cx="${r1(cx + r * 0.35)}" cy="${r1(cy + r * 0.4)}" r="${r1(r * 0.09)}" fill="rgba(0, 0, 0, .25)" stroke="none"/>
+      </g>
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="rgba(255, 255, 255, .12)" stroke="#5f5c52" stroke-width="2.5"/>
+      <path d="M${r1(cx + r * 0.72)} ${r1(cy + r * 0.72)}l${r1(r * 0.7)} ${r1(r * 0.7)}" stroke="#5f5c52" stroke-width="${r1(r * 0.2)}" stroke-linecap="round"/>`;
+}
+const flawPicture = (color, specs) => galleryPhoto(`
+      <rect x="40" y="20" width="96" height="176" rx="3" fill="${color.hex}"/>
+      ${texture(color, specs, "M40 20h96v176H40z")}
+      ${alignPrint(color, 40, 20, 96, 176)}${flawLens(color, 124, 138, 40)}
+      <text x="100" y="226" text-anchor="middle" ${LABEL_STYLE}>Kleiner Schönheitsfehler</text>
+      <text x="100" y="241" text-anchor="middle" ${LABEL_STYLE}>– volle Funktion</text>`);
+const flawWide = (color, specs) => widePhoto(`
+      <rect x="28" y="30" width="226" height="104" rx="3" fill="${color.hex}"/>
+      ${texture(color, specs, "M28 30h226v104H28z")}
+      ${alignPrint(color, 28, 30, 226, 104)}${flawLens(color, 226, 84, 44)}
+      <text x="165" y="184" text-anchor="middle" ${LABEL_STYLE}>Kleiner Schönheitsfehler, volle Funktion</text>`);
+
 // ---------- Small line icons for the buy box ----------
 const buyboxIcons = {
   truck: '<path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>',
@@ -3920,7 +4136,8 @@ function productMarkup(product, color, size, choice) {
 ${colorPicker}${choices}${fixedOptions}${sizes}
 
 ${product.unavailable ? `
-        <p class="buybox__alert"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5v.5"/></svg>Dieser Artikel ist nicht mehr verfügbar, versuche es mit einer anderen Variante.</p>` : `
+        <p class="buybox__alert"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5v.5"/></svg>Dieser Artikel ist nicht mehr verfügbar, versuche es mit einer anderen Variante.</p>${color.name ? `
+        <p class="buybox__stock buybox__stock--out">${stockText(true)}</p>` : ""}` : `
         <button class="btn btn--primary btn--block buybox__cart" type="button">${cartLabel(soldOut)}</button>
         <p class="buybox__note"${soldOut ? "" : " hidden"}>Du erhältst eine Benachrichtigung per E-Mail, sobald der Artikel wieder auf Lager ist.</p>
         <p class="buybox__stock${soldOut ? " buybox__stock--out" : ""}">${stockText(soldOut)}</p>`}
@@ -4024,7 +4241,7 @@ function reviewsMarkup(product) {
         <div class="reviews__summary">
           <h2 class="visually-hidden" id="reviews-title">Bewertungen</h2>
           <p class="reviews__score"><span class="reviews__average">${product.rating.toFixed(2)}</span>${starRating(product.rating)}</p>
-          <p class="reviews__basis">Basierend auf ${product.reviewCount} Bewertungen</p>
+          <p class="reviews__basis">Basierend auf ${product.reviewCount === 1 ? "1 Bewertung" : `${product.reviewCount} Bewertungen`}</p>
           <p class="reviews__note">Beispielbewertungen für dieses Studentenprojekt – keine echten Kund:innen.</p>
         </div>
         <div class="reviews__bar">

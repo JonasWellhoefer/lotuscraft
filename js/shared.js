@@ -840,40 +840,38 @@ const giftCard = { name: "Gutscheinkarte", price: 20, shape: "giftCard", tint: "
 const GIFT_FILTER_COLORS = ["Beige", "Blau", "Rot", "Grün", "Terra", "Schwarz", "Rosa", "Gelb", "Wood Grain"];
 
 // "Almost Perfect" mats: second-quality, 15% off. Only the colours the
-// original shows as cards; like there, only some have a material set.
+// original shows as cards; like there, only some have a material set. The
+// ARISE Travel one is sold out and no collection lists it any more (its page
+// is in product.js).
 const almostPerfectMats = [
-  { name: "„Almost Perfect“ Yogamatte MUDRA PRO", price: 84.95, compareAt: 99.95, material: "Polyester", variants: [
+  { name: "„Almost Perfect“ Yogamatte MUDRA PRO", slug: "almost-perfect-yogamatte-mudra-pro", price: 84.95, compareAt: 99.95, material: "Polyester", variants: [
     { color: "Light Taupe", hex: "#c4b6a6", family: "Beige" },
     { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz" },
     { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
   ] },
-  { name: "„Almost Perfect“ Yogamatte PURE", price: 67.95, compareAt: 79.95, material: null, variants: [
+  { name: "„Almost Perfect“ Yogamatte PURE", slug: "almost-perfect-yogamatte-pure", price: 67.95, compareAt: 79.95, material: null, variants: [
     { color: "Light Taupe", hex: "#c4b6a6", family: "Beige" },
     { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
     { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
   ] },
-  { name: "„Almost Perfect“ Yogamatte MUDRA", price: 33.95, compareAt: 39.95, material: null, variants: [
+  { name: "„Almost Perfect“ Yogamatte MUDRA", slug: "almost-perfect-yogamatte-mudra", price: 33.95, compareAt: 39.95, material: null, variants: [
     { color: "Indigo Dust", hex: "#6b7c95", family: "Blau" },
     { color: "Aubergine", hex: "#8d5a6f", family: "Rot" },
     { color: "Light Taupe", hex: "#c4b6a6", family: "Beige" },
     { color: "Bordeaux", hex: "#6e2b38", family: "Rot" },
     { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
   ] },
-  // The original's photo for this one shows a mauve mat.
-  { name: "„Almost Perfect“ Yogamatte ARISE Travel", price: 50.95, compareAt: 59.95, material: "Naturkautschuk", variants: [
-    { color: "Wild Ginger", hex: "#8c5769", family: "Rot" },
-  ] },
-  { name: "„Almost Perfect“ Yogamatte MUDRA XL", price: 36.5, compareAt: 42.95, material: null, variants: [
+  { name: "„Almost Perfect“ Yogamatte MUDRA XL", slug: "almost-perfect-yogamatte-mudra-xl", price: 36.5, compareAt: 42.95, material: null, variants: [
     { color: "Balsam Green", hex: "#5d7366", family: "Grün", soldOut: true },
   ] },
-  { name: "„Almost Perfect“ Yogamatte ARISE", price: 76.46, compareAt: 89.95, material: null, variants: [
+  { name: "„Almost Perfect“ Yogamatte ARISE", slug: "almost-perfect-yogamatte-arise", price: 76.46, compareAt: 89.95, material: null, variants: [
     { color: "Wild Ginger", hex: "#8c5769", family: "Rot" },
   ] },
-  { name: "„Almost Perfect“ Yogamatte ARISE Cork", price: 84.95, compareAt: 99.95, material: null, variants: [
+  { name: "„Almost Perfect“ Yogamatte ARISE Cork", slug: "almost-perfect-yogamatte-arise-cork", price: 84.95, compareAt: 99.95, material: null, variants: [
     { color: "Align", hex: "#c9a77e", family: "Align" },
     { color: "Lotus", hex: "#b8916a", family: "Braun" },
   ] },
-  { name: "„Almost Perfect“ Yogamatte MUDRA PRO XL", price: 106.29, compareAt: 124.95, material: "Polyester", variants: [
+  { name: "„Almost Perfect“ Yogamatte MUDRA PRO XL", slug: "almost-perfect-yogamatte-mudra-pro-xl", price: 106.29, compareAt: 124.95, material: "Polyester", variants: [
     { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz" },
   ] },
 ];
@@ -1276,7 +1274,7 @@ const categories = {
       "Augenkissen", "Yogamatte MUDRA PRO", "Yogablock Kork Einzeln", "Yoga Mini-Rolle (Nackenrolle) Ø12 cm", "Yogamatten-Sticker „I am enough“",
       "Yogamatte WOOL aus Schurwolle", "Yogamatten-Sticker „einatmen. ausatmen.“", "„Almost Perfect“ Yogamatte MUDRA PRO",
       "Yogamatten-Sticker „Ich bin dankbar“", "„Almost Perfect“ Yogamatte PURE", "„Almost Perfect“ Yogamatte MUDRA", "Bezug für Yogarolle COVER Ø24 cm",
-      "Yogamatten-Sticker „good vibes only“", "„Almost Perfect“ Yogamatte ARISE Travel", "„Almost Perfect“ Yogamatte MUDRA XL",
+      "Yogamatten-Sticker „good vibes only“", "„Almost Perfect“ Yogamatte MUDRA XL",
       "„Almost Perfect“ Yogamatte ARISE", "„Almost Perfect“ Yogamatte ARISE Cork", "„Almost Perfect“ Yogamatte MUDRA PRO XL"),
     // Grey comes from a sold-out product the original hides.
     filterValues: { colors: ["Beige", "Blau", "Rot", "Grün", "Terra", "Schwarz", "Grau", "Rosa", "Braun", "Align", "Wood Grain"] },
@@ -1313,7 +1311,7 @@ const categories = {
       "ELI Womens Tee (Short Sleeve)", "QUINN Mens Pants", "FIONA Womens Pants", "BECCA Leggings", "DANA Overall", "ALA Tank Tee", "MIKO Bralette",
       "Yoga Tasche + Gurt Set", "Meditations-Set Lotus 15cm (Ohne Stick) inkl. GRATIS Meditationskurs", "Travel Essentials Set", "Practice Anywhere Set",
       "Deep Release Set", "Restore Comfort Set", "„Almost Perfect“ Yogamatte PURE", "„Almost Perfect“ Yogamatte ARISE", "„Almost Perfect“ Yogamatte MUDRA",
-      "„Almost Perfect“ Yogamatte MUDRA PRO XL", "„Almost Perfect“ Yogamatte ARISE Travel", "„Almost Perfect“ Yogamatte ARISE Cork").map(reduced),
+      "„Almost Perfect“ Yogamatte MUDRA PRO XL", "„Almost Perfect“ Yogamatte ARISE Cork").map(reduced),
     sort: "standard",
     // Like the original: values of products it hides, which find nothing.
     filterValues: { colors: ["Beige", "Blau", "Rot", "Grün", "Terra", "Schwarz", "Rosa", "Braun", "Gelb", "Align"], heights: ["10", "15"], forms: ["Rund", "Zafu"] },
