@@ -95,7 +95,7 @@ lotuscraft/
 │   ├── shared.js   # Gemeinsame Daten & Helfer: Produkte, Kategorien, Menü, Suchindex, Zeichnungen
 │   ├── layout.js   # Header, Menüs (Handy + Desktop), Suche, Footer, Warenkorb (Demo)
 │   ├── home.js     # Startseite: Produkt-Tabs, Community, Bewertungs-Karussell
-│   ├── product.js  # Produktseiten: Daten aller Matten, Kissen, Kleidungsstücke, Bolster, Zabuton und Bank, Zeichnungen, Galerie, Farb-, Größen- und Dickenauswahl, Warenkorb-Button
+│   ├── product.js  # Produktseiten: Daten von Matten, Kissen, Kleidung, Bolstern, Zabuton, Bank, Taschen, Blöcken und Gurten, Zeichnungen, Galerie, Farb-, Größen- und Optionsauswahl, Warenkorb-Button
 │   └── category.js # Kategorieseite: Filter (Farbe, Sitzhöhe, Form, Material, Füllung, Größe, Verfügbarkeit), Sortierung
 └── README.md
 ```
@@ -142,7 +142,8 @@ die Werte stammen direkt aus dem CSS des Originals.
 - [x] Eigene Zeichnungen für die Kleidung (flach ausgelegt, getragen beim Üben, Stoff mit Zusammensetzung, Maße in Größe M, zusammengelegt) und Beispielbewertungen mit Körpergröße und gekaufter Größe
 - [x] Bolster und Rollen (Yogarolle Ø24 cm, Bolster RESTORATIVE L und S, Nackenrolle), Meditationsmatte Zabuton und Meditationsbank DHARMA: eigene Zeichnungen (beim Üben, Maße, Querschnitt, Füllung, Holz und Polster) und Detailangaben wie im Original – ohne Bewertungsbalken oder Pflegehinweise, wo das Original keine hat
 - [x] Zabuton mit Auswahl „Dicke“ (4 cm / 7 cm) wie im Original: Preis, Detailangaben und Zeichnungen ändern sich mit
-- [x] Bewertungen und verwandte Produkte aller 34 Produktseiten mit dem Original abgeglichen (Stand 4. Oktober 2026)
+- [x] Yogataschen PUNE und NANDI, Yogablock Kork (2er-Set und einzeln), Yogagurt und Matten-Tragegurt: eigene Zeichnungen (unterwegs, was in die Tasche passt, Kork, drei Höhen eines Blocks, Metall-D-Ringe), Optionen wie im Original („Block-Größe“, „Pack: 2er Pack“) – der einzelne Block zeigt wie dort keine Sterne und keine Bewertungsübersicht
+- [x] Bewertungen und verwandte Produkte aller 40 Produktseiten mit dem Original abgeglichen (Stand 4. Oktober 2026)
 
 **Kategorieseiten** (Hero-Button „Yogamatten“, Menü → „Yoga“ oder die Kreise oben):
 
@@ -163,7 +164,7 @@ die Werte stammen direkt aus dem CSS des Originals.
 - [x] Sortierung wie im Original, voreingestellt „meistverkauft“ (Rangliste des Originals vom 4. Oktober 2026); dazu Relevanz, A–Z, Z–A und Preis. Einige Bekleidungsseiten zeigen wie dort die eigene Reihenfolge des Shops, ohne gewählte Sortierung
 - [x] Alle 52 Kategorieseiten automatisch Karte für Karte mit dem Original abgeglichen (Stand 4. Oktober 2026: Reihenfolge, Farben, Preise, Lagerstand, Filterwerte)
 - [x] Kurzer eigener Text unter dem Raster, mit Links zu den Produktseiten
-- [x] Jede Karte für Matten, Kissen, Kleidung, Bolster, Rollen, Zabuton und Meditationsbank öffnet die passende Produktseite, gleich in der richtigen Farbe (Kleidung in der ersten lieferbaren Größe, der Zabuton in der gewählten Dicke); übriges Zubehör und Bezüge haben noch keine eigenen Produktseiten
+- [x] Jede Karte für Matten, Kissen, Kleidung, Bolster, Rollen, Zabuton, Meditationsbank, Taschen, Korkblöcke und Gurte öffnet die passende Produktseite, gleich in der richtigen Farbe oder Option (Kleidung in der ersten lieferbaren Größe); Decke, Handtuch, Augenkissen, Spray, Sticker und Bezüge haben noch keine eigenen Produktseiten
 
 **Warenkorb** (Icon oben rechts oder „In den Warenkorb“ auf der Produktseite):
 

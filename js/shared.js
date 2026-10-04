@@ -33,7 +33,7 @@ const PAYMENT_ICONS = `
 // `shape` picks a placeholder illustration instead of the original photo.
 const bestsellers = {
   yoga: [
-    { name: "Yogablock Kork 2er Set", price: 29.95, shape: "block", tint: CORK },
+    { name: "Yogablock Kork 2er Set", slug: "yogablock-aus-kork-alle", price: 29.95, shape: "block", tint: CORK },
     { name: "Yogamatte PURE", slug: "yogamatte-pure", price: 79.95, shape: "mat", tint: "#7a2a3a", badge: "Matte Oberfläche" },
     { name: "Yogamatte ARISE", slug: "yogamatte-arise", price: 89.95, shape: "mat", tint: "#3f5550" },
     { name: "Yogamatte MUDRA", slug: "yogamatte-mudra-studio", price: 39.95, shape: "mat", tint: "#55695f" },
@@ -198,6 +198,12 @@ const shapes = {
                <rect x="22" y="80" width="136" height="38" rx="19" fill="${c}"/>
                <ellipse cx="141" cy="99" rx="9" ry="19" fill="rgba(0,0,0,.12)"/>
                <rect x="70" y="80" width="6" height="38" fill="rgba(0,0,0,.08)"/>`,
+  // A slim drawstring sack (NANDI), gathered at one end, with its cord.
+  sack: (c) => `<ellipse cx="90" cy="124" rx="62" ry="5" fill="rgba(0,0,0,.06)"/>
+                <path d="M48 82h86l16 10v16l-16 10H48a18 18 0 0 1 0-36z" fill="${c}" stroke="rgba(0,0,0,.1)"/>
+                <path d="M134 82v36M138 86l10 6M138 114l10-6" stroke="rgba(0,0,0,.12)" stroke-width="1.5"/>
+                <path d="M150 100c14-4 10-46-40-46S44 62 38 86" fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round"/>
+                <path d="M150 100c14-4 10-46-40-46S44 62 38 86" fill="none" stroke="rgba(0,0,0,.15)"/>`,
   strap: (c) => `<path d="M44 124C40 52 140 52 136 124" fill="none" stroke="rgba(0,0,0,.08)" stroke-width="13" stroke-linecap="round"/>
                  <path d="M44 124C40 52 140 52 136 124" fill="none" stroke="${c}" stroke-width="10" stroke-linecap="round"/>
                  <rect x="33" y="118" width="22" height="16" rx="3" fill="none" stroke="#8b8b8b" stroke-width="3"/>
@@ -449,7 +455,7 @@ const yogaSets = [
 // with its own price). Like there, the material is set on single colours
 // only, e.g. six of the eight belts count as organic cotton.
 const yogaAccessories = [
-  { name: "Yogagurt 100% Bio-Baumwolle", price: 12.95, shape: "strap", material: null, variants: [
+  { name: "Yogagurt 100% Bio-Baumwolle", slug: "yoga-gurt-bio-baumwolle", price: 12.95, shape: "strap", material: null, variants: [
     { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
     { color: "Indigo Dust", hex: "#6b7c95", family: "Blau", material: ORGANIC_COTTON },
     { color: "Natur", hex: COTTON, family: "Beige", material: ORGANIC_COTTON },
@@ -459,7 +465,7 @@ const yogaAccessories = [
     { color: "Lavender Fog", hex: "#b7a3b6", family: "Rosa" },
     { color: "Kurkuma", hex: "#d4913b", family: "Terra", material: ORGANIC_COTTON, badge: "New in" },
   ] },
-  { name: "Yogatasche PUNE", price: 29.95, shape: "bag", material: null, variants: [
+  { name: "Yogatasche PUNE", slug: "yogatasche-pune", price: 29.95, shape: "bag", material: null, variants: [
     { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
     { color: "Light Taupe", hex: "#c4b6a6", family: "Beige", material: ORGANIC_COTTON },
     { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz", material: ORGANIC_COTTON },
@@ -467,7 +473,7 @@ const yogaAccessories = [
     { color: "Indigo Dust", hex: "#6b7c95", family: "Blau", material: ORGANIC_COTTON },
     { color: "Lavender Fog", hex: "#b7a3b6", family: "Rosa" },
   ] },
-  { name: "Yogablock Kork 2er Set", price: 29.95, shape: "block", material: null, variants: [
+  { name: "Yogablock Kork 2er Set", slug: "yogablock-aus-kork-alle", price: 29.95, shape: "block", material: null, variants: [
     { color: "Klein", hex: CORK },
     { color: "Groß", hex: CORK, price: 34.95 },
   ] },
@@ -487,7 +493,7 @@ const yogaAccessories = [
     { color: "Lavender Fog", hex: "#b7a3b6", family: "Rosa", material: "Polyester" },
     { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz", material: "Polyester" },
   ] },
-  { name: "Yogatasche NANDI", price: 19.95, shape: "bag", material: ORGANIC_COTTON, variants: [
+  { name: "Yogatasche NANDI", slug: "yogatasche-nandi", price: 19.95, shape: "sack", material: ORGANIC_COTTON, variants: [
     { color: "Anthrazit", hex: "#3d3d3f", family: "Schwarz", soldOut: true },
     { color: "Natur", hex: COTTON, family: "Beige" },
   ] },
@@ -506,11 +512,11 @@ const yogaAccessories = [
 const accessoriesNamed = (...names) => yogaAccessories.filter((item) => names.includes(item.name));
 
 // Two products that only show up on a sub-page, not under "Yoga-Zubehör".
-const matCarrier = { name: "Yogamatten Tragegurt", price: 14.95, shape: "strap", material: null, variants: [
+const matCarrier = { name: "Yogamatten Tragegurt", slug: "yogamatten-tragegurt", price: 14.95, shape: "strap", material: null, variants: [
   { color: "Light Taupe", hex: "#c4b6a6", family: "Beige", material: ORGANIC_COTTON },
   { color: "Balsam Green", hex: "#5d7366", family: "Grün" },
 ] };
-const singleCorkBlock = { name: "Yogablock Kork Einzeln", price: 17.95, shape: "singleBlock", material: null, variants: [
+const singleCorkBlock = { name: "Yogablock Kork Einzeln", slug: "yogablock-kork-einzeln", price: 17.95, shape: "singleBlock", material: null, variants: [
   { color: "Klein.", hex: CORK, material: "Naturkork" },
   { color: "Groß.", hex: CORK, price: 19.95 },
 ] };

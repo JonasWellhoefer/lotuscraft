@@ -10,8 +10,6 @@
 
 // Cards that show up under "Verwandte Produkte" on several pages (prices from the shop).
 const relatedCards = {
-  bag: { name: "Yogatasche PUNE", price: 29.95, shape: "bag", tint: "#c9bcae" },
-  strap: { name: "Yogamatten Tragegurt", price: 14.95, shape: "strap", tint: COTTON },
   towel: { name: "Yoga Handtuch", price: 29.95, shape: "towel", tint: "#8f9a8c" },
   spray: { name: "Bio Yogamatten Spray", price: 12.95, shape: "spray", tint: "#e6e1d6" },
   mudraPro: { name: "Yogamatte MUDRA PRO", slug: "yogamatte-mudra-pro", price: 99.95, shape: "mat", tint: "#3d3d3f" },
@@ -1006,10 +1004,215 @@ Object.values(propDetails).forEach((item) => Object.assign(item, {
   related: item.related.map((entry) => (typeof entry === "string" ? relatedCard(entry) : entry)),
 }));
 
+// ---------- Bags, cork blocks and straps ----------
+// Colours come from the category data in shared.js; ratings, details (which
+// for the blocks differ by size, as on the original) and related products
+// were read from the original (Oct 2026).
+const ORGANIC_BAG = ["Bio-Baumwolle", "genäht aus Baumwolle aus kontrolliert biologischem Anbau."];
+const CORK_SOURCE = ["Nachwachsender Rohstoff", "Kork ist die Rinde der Korkeiche. Sie wird geschält und wächst danach wieder nach."];
+const CORK_COLOR = [{ hex: CORK }];
+const CORK_SCALES = [["Material", 4.92], ["Haptik", 4.92], ["Qualität & Verarbeitung", 4.93]];
+const SMALL_BLOCK = [22, 12, 7.5]; // the original only gives the small block's size
+
+const accessoryDetails = {
+  "yogatasche-pune": {
+    name: "Yogatasche PUNE",
+    price: 29.95,
+    rating: 4.79,
+    reviewCount: 579,
+    ratingScales: [["Material & Qualität", 5], ["Länge", 3], ["Passform", 3]],
+    specs: { shape: "bag", scene: "carry" },
+    facts: [["Gewicht", "430 g"]],
+    colors: colorsOf("Yogatasche PUNE"),
+    gallery: ["propFront", "propCarried", "bagPacked", "cushionFabric"],
+    description: `
+        <p>Die PUNE ist eine geräumige Yogatasche aus Bio-Baumwolle. Deine Matte passt hinein, dazu Block, Gurt oder Handtuch – alles, was du für die Stunde brauchst.</p>
+        <p>Den Schultergurt stellst du so ein, wie es für dich bequem ist: über der Schulter oder quer über den Körper.</p>`,
+    care: careList("Bei 30 °C waschen", NO_DRYER),
+    sustainability: sustainabilityText(ORGANIC_BAG, GOTS),
+    features: [
+      { title: "Platz für Matte und Zubehör", text: "In die PUNE packst du deine Matte und das, was sonst noch mit ins Studio soll: Block, Gurt, Handtuch oder eine Trinkflasche.", picture: "bagPacked" },
+      { title: "Bequem zu tragen", text: "Der Schultergurt lässt sich in der Länge verstellen. So sitzt die Tasche an der Hüfte – zu Fuß genauso wie auf dem Fahrrad.", picture: "propCarry" },
+      { title: "Ökologisch genäht", text: "Die Tasche ist aus Bio-Baumwolle genäht und nach GOTS zertifiziert, vom Anbau bis zum fertigen Stück.", picture: "fabricWeave" },
+      { title: "Ein Set in einer Farbe", text: "Den Yogagurt gibt es in denselben Farben. Zusammen mit der Tasche ergibt er ein schlichtes Set für den Weg zur Matte.", picture: "bagSet" },
+    ],
+    reviews: [
+      { name: "Tanja", place: "Koblenz, DE", color: "Balsam Green", stars: 5, days: 4, text: "Meine Matte passt locker hinein, dazu noch Block und Wasserflasche." },
+      { name: "Anonym", place: "", color: "Anthrazit", stars: 5, days: 9, text: "Der verstellbare Gurt ist super, die Tasche sitzt genau richtig." },
+      { name: "Rainer", place: "Bregenz, AT", color: "Indigo Dust", stars: 4, days: 15, text: "Gute Tasche, die Farbe ist etwas dunkler, als ich dachte." },
+      { name: "Elif", place: "Stuttgart, DE", color: "Lavender Fog", stars: 5, days: 22, text: "Die Farbe ist ein Traum und passt zu meinem Gurt." },
+      { name: "Anonym", place: "", color: "Light Taupe", stars: 5, days: 30, text: "Ich nehme sie jeden Tag mit ins Studio. Robust und schlicht." },
+      { name: "Moritz", place: "Aarau, CH", color: "Aubergine", stars: 5, days: 41, text: "Lässt sich gut waschen und sieht danach wieder aus wie neu." },
+    ],
+    related: ["Yogamatte PURE", "Yogatasche NANDI", "Yogamatte ARISE", "Yogamatte MUDRA PRO Set"],
+  },
+  "yogatasche-nandi": {
+    name: "Yogatasche NANDI",
+    price: 19.95,
+    rating: 4.61,
+    reviewCount: 49,
+    specs: { shape: "sack", scene: "carry", dimensions: [78, 24.5, 24.5] },
+    facts: [["Material", ORGANIC], ["Maße (L × B)", "78 × 24,5 cm"], ["Gewicht", "190 g"], ["Öffnung", "Tunnelzug mit Kordel"], ["Herkunft", "Indien"]],
+    colors: colorsOf("Yogatasche NANDI"),
+    gallery: ["propFront", "propCarried", "bagSize", "bagFolded", "cushionFabric"],
+    description: `
+        <p>Die NANDI ist eine schlichte Hülle für deine Yogamatte: ein schmaler Beutel aus Bio-Baumwolle, 78 cm lang, den du oben mit einer Kordel zuziehst.</p>
+        <p>Brauchst du sie gerade nicht, faltest du sie klein zusammen – sie passt in jede Schublade.</p>`,
+    care: careList("Bei 30 °C waschen", NO_DRYER),
+    sustainability: sustainabilityText(ORGANIC_BAG, GOTS),
+    features: [
+      { title: "Schlicht und praktisch", text: "Matte hinein, Kordel zuziehen, fertig: Die NANDI ist eine unaufgeregte Hülle für den Weg ins Studio.", picture: "propCarry" },
+      { title: "Platz für eine Matte", text: "Mit 78 cm Länge und 24,5 cm Breite nimmt sie eine aufgerollte Matte auf.", picture: "bagSize" },
+      { title: "Klein zusammengefaltet", text: "Wenn du sie nicht brauchst, faltest du die Tasche klein zusammen. Sie passt in jede Schublade und in jeden Koffer.", picture: "bagFolded" },
+      { title: "Aus Bio-Baumwolle", text: "Genäht aus GOTS-zertifizierter Bio-Baumwolle, waschbar bei 30 °C.", picture: "fabricWeave" },
+    ],
+    reviews: [
+      { name: "Greta", place: "Lübeck, DE", color: "Natur", stars: 5, days: 6, text: "Einfach und gut. Meine Matte passt genau hinein." },
+      { name: "Anonym", place: "", color: "Natur", stars: 5, days: 13, text: "Leicht, schlicht und schnell zugezogen. Mehr brauche ich nicht." },
+      { name: "Wolfgang", place: "Steyr, AT", color: "Anthrazit", stars: 4, days: 19, text: "Gute Tasche, für dickere Matten wird es aber eng." },
+      { name: "Lisa", place: "Fulda, DE", color: "Natur", stars: 4, days: 27, text: "Hübsch und praktisch. Ich hätte sie gern noch in mehr Farben." },
+      { name: "Anonym", place: "", color: "Natur", stars: 5, days: 35, text: "Im Urlaub immer dabei, sie nimmt kaum Platz weg." },
+      { name: "Jana", place: "Zürich, CH", color: "Anthrazit", stars: 5, days: 50, text: "Schöner Stoff, gut verarbeitet." },
+    ],
+    // The original shows "ab" on these two only here.
+    related: ["Yogamatte ARISE Travel", "Yoga Tasche + Gurt Set", { ...relatedCard("Yogamatte ARISE CORK"), fromPrice: true }, { ...relatedCard("Yogatasche PUNE"), fromPrice: true }],
+  },
+  "yogablock-aus-kork-alle": {
+    name: "Yogablock Kork 2er Set",
+    price: 29.95,
+    rating: 4.9,
+    reviewCount: 1576,
+    ratingScales: CORK_SCALES,
+    specs: { shape: "block", scene: "blockSeat", dimensions: SMALL_BLOCK },
+    colors: CORK_COLOR,
+    choices: { name: "Block-Größe", values: [{ label: "Klein", price: 29.95 }, { label: "Groß", price: 34.95 }] },
+    fixedOptions: [{ name: "Pack", value: "2er Pack" }],
+    // As on the original, the large set states only its weight.
+    facts: (choice) => [["Gewicht", "1,0 kg"], ...(choice.label === "Klein" ? [["Herkunft", "Portugal"]] : [])],
+    gallery: ["propFront", "propInUse", "blockHeights", "cork"],
+    description: `
+        <p>Zwei Yogablöcke aus Naturkork: fest genug, um dein Gewicht zu tragen, und mit einer feinen, griffigen Oberfläche. Kork ist leicht, fühlt sich warm an und gibt dir sicheren Halt.</p>
+        <p>Die Blöcke gibt es in zwei Größen, Klein und Groß. Hergestellt werden sie in Portugal.</p>`,
+    sustainability: sustainabilityText(CORK_SOURCE),
+    features: [
+      { title: "Aus Naturkork", text: "Kork ist die Rinde der Korkeiche. Sie wächst nach dem Schälen wieder nach – ein Rohstoff, der dem Baum nicht schadet.", picture: "cork" },
+      { title: "Griffig und rutschfest", text: "Die feinporige Oberfläche gibt deinen Händen Halt, auch wenn es warm wird, und der Block bleibt auf der Matte stehen.", picture: "propBlockLunge" },
+      { title: "Drei Höhen in einem Block", text: "Flach, auf der Seite oder hochkant: Je nachdem, wie du den Block hinlegst, bekommst du eine andere Höhe.", picture: "blockHeights" },
+    ],
+    reviews: [
+      { name: "Nadine", place: "Bielefeld, DE", color: "Klein", stars: 5, days: 3, text: "Fest, griffig und angenehm schwer. Rutscht auf der Matte nicht." },
+      { name: "Anonym", place: "", color: "Groß", stars: 5, days: 8, text: "Die großen Blöcke geben mir im Dreieck genau die Höhe, die ich brauche." },
+      { name: "Hendrik", place: "Wels, AT", color: "Klein", stars: 5, days: 14, text: "Viel besser als meine alten Schaumstoffblöcke. Kein Wackeln." },
+      { name: "Simone", place: "Trier, DE", color: "Klein", stars: 4, days: 21, text: "Sehr gute Blöcke. Für meine kleinen Hände hätte auch einer gereicht." },
+      { name: "Anonym", place: "", color: "Groß", stars: 5, days: 33, text: "Ich nutze sie auch zum Sitzen beim Meditieren." },
+      { name: "Beat", place: "Thun, CH", color: "Klein", stars: 5, days: 47, text: "Schlicht, nachhaltig und robust. Gerne wieder." },
+    ],
+    related: ["Yogagurt 100% Bio-Baumwolle", "Yogablock Kork Einzeln", "Yogarolle RESTORATIVE Ø24 cm", "Yoga-Zubehör Set"],
+  },
+  "yogablock-kork-einzeln": {
+    name: "Yogablock Kork Einzeln",
+    price: 17.95,
+    // No rating of its own on the original (no stars, no summary); its
+    // review list shows 4.89 from 449 reviews.
+    buyboxRating: false,
+    rating: 4.89,
+    reviewCount: 449,
+    specs: { shape: "singleBlock", scene: "blockSeat", dimensions: SMALL_BLOCK },
+    colors: CORK_COLOR,
+    // The original's labels end with a full stop.
+    choices: { name: "Block-Größe", values: [{ label: "Klein.", price: 17.95 }, { label: "Groß.", price: 19.95 }] },
+    facts: (choice) => (choice.label === "Klein."
+      ? [["Material", "Naturkork"], ["Zusammensetzung", "100 % Naturkork, Polyurethan-Bindemittel"], ["Maße (L × B × H)", "12 × 22 × 7,5 cm"], ["Gewicht", "0,5 kg"], ["Herkunft", "Portugal"]]
+      : [["Gewicht", "0,5 kg"]]),
+    gallery: ["propFront", "propInUse", "blockHeights", "cork"],
+    description: `
+        <p>Ein einzelner Yogablock aus Naturkork – zum Ergänzen oder um erst einmal auszuprobieren, wie viel Unterstützung du brauchst. Er ist fest, griffig und angenehm schwer.</p>
+        <p>Du bekommst ihn in den Größen Klein und Groß.</p>`,
+    sustainability: sustainabilityText(CORK_SOURCE),
+    features: [
+      { title: "Natürlich griffig", text: "Kork hat von Natur aus eine feine, griffige Oberfläche. Der Block liegt gut in der Hand und fühlt sich warm an.", picture: "cork" },
+      { title: "Halt in jeder Haltung", text: "Unter der Hand im Ausfallschritt, unter dem Becken im Sitzen oder zwischen den Knien: Der Block bringt den Boden ein Stück näher.", picture: "propBlockLunge" },
+      { title: "Drei Höhen", text: "Flach, auf der Seite oder hochkant hingelegt, gibt dir ein einziger Block drei verschiedene Höhen.", picture: "blockHeights" },
+    ],
+    reviews: [
+      { name: "Marlene", place: "Hamm, DE", color: "Klein.", stars: 5, days: 5, text: "Ich hatte schon einen und wollte einen zweiten. Genauso gut wie der erste." },
+      { name: "Anonym", place: "", color: "Groß.", stars: 5, days: 11, text: "Schön fest, die große Größe passt gut zu meinen langen Armen." },
+      { name: "Thomas", place: "Leoben, AT", color: "Klein.", stars: 5, days: 18, text: "Griffig und stabil. Für den Preis sehr gut." },
+      { name: "Anonym", place: "", color: "Klein.", stars: 4, days: 26, text: "Guter Block. Zwei wären praktischer, deshalb kaufe ich noch einen." },
+      { name: "Katharina", place: "Zwickau, DE", color: "Groß.", stars: 5, days: 39, text: "Riecht angenehm nach Kork und liegt gut in der Hand." },
+      { name: "Urs", place: "Wil, CH", color: "Klein.", stars: 5, days: 55, text: "Nachhaltig und gut verarbeitet." },
+    ],
+    related: ["Yogarolle RESTORATIVE Ø24 cm", "Yogablock Kork 2er Set", "Yoga Bolster RESTORATIVE S", "Yoga-Zubehör Set"],
+  },
+  "yoga-gurt-bio-baumwolle": {
+    name: "Yogagurt 100% Bio-Baumwolle",
+    price: 12.95,
+    rating: 4.86,
+    reviewCount: 1114,
+    ratingScales: CLOTHING_SCALES(3, 3, 3.5),
+    specs: { shape: "strap", scene: "strapStretch" },
+    facts: [["Gewicht", "175 g"], ["Herkunft", "Indien"]],
+    colors: colorsOf("Yogagurt 100% Bio-Baumwolle"),
+    gallery: ["propFront", "propInUse", "strapRings", "cushionFabric"],
+    description: `
+        <p>Der Yogagurt verlängert deine Arme: In Vorbeugen, Dehnungen und Balancehaltungen erreichst du mit ihm, was sonst noch zu weit weg ist. So übst du entspannt, statt dich in eine Haltung zu ziehen.</p>
+        <p>Gewebt ist er aus Bio-Baumwolle, zwei Metall-D-Ringe halten ihn in jeder Länge fest.</p>`,
+    sustainability: sustainabilityText(["Bio-Baumwolle", "der Gurt ist aus Baumwolle aus kontrolliert biologischem Anbau gewebt."]),
+    features: [
+      { title: "Mehr Reichweite in jeder Haltung", text: "Um die Füße gelegt, hilft dir der Gurt in der Vorbeuge, ohne dass du den Rücken rund machst. Auch in Dehnungen im Liegen leistet er gute Dienste.", picture: "propStretch" },
+      { title: "Aus Bio-Baumwolle", text: "Das feste Gewebe liegt weich in der Hand und schneidet nicht ein.", picture: "fabricWeave" },
+      { title: "Zwei Metall-D-Ringe", text: "Durch die beiden Ringe ziehst du das Ende des Gurts und stellst so jede Länge ein. Er hält, bis du ihn wieder löst.", picture: "strapRings" },
+    ],
+    reviews: [
+      { name: "Vera", place: "Paderborn, DE", color: "Balsam Green", stars: 5, days: 2, text: "Fester Stoff, stabile Ringe. Hilft mir sehr in den Vorbeugen." },
+      { name: "Anonym", place: "", color: "Kurkuma", stars: 5, days: 7, text: "Die Farbe ist toll, der Gurt angenehm weich." },
+      { name: "Martin", place: "Dornbirn, AT", color: "Anthrazit", stars: 4, days: 13, text: "Guter Gurt. Für meine Größe dürfte er etwas länger sein." },
+      { name: "Sarah", place: "Marburg, DE", color: "Lavender Fog", stars: 5, days: 20, text: "Ich trage damit auch meine Matte. Vielseitig." },
+      { name: "Anonym", place: "", color: "Natur", stars: 5, days: 29, text: "Die D-Ringe halten bombenfest." },
+      { name: "Reto", place: "Olten, CH", color: "Indigo Dust", stars: 5, days: 44, text: "Einfach, robust, macht genau, was er soll." },
+    ],
+    // The original shows "ab" on these two only here.
+    related: ["Yogablock Kork 2er Set", "Yoga Tasche + Gurt Set", { ...relatedCard("Yoga Bolster RESTORATIVE L"), fromPrice: true },
+      { ...relatedCard("Yogadecke „Savasana“ 100% Baumwolle (kbA)"), fromPrice: true }],
+  },
+  "yogamatten-tragegurt": {
+    name: "Yogamatten Tragegurt",
+    price: 14.95,
+    rating: 4.89,
+    reviewCount: 18,
+    specs: { shape: "strap", scene: "strapCarry" },
+    facts: [["Material", ORGANIC], ["Maße (L × B)", "210 cm × 3,5 mm"], ["Gewicht", "60 g"], ["Herkunft", "Indien"]],
+    colors: colorsOf("Yogamatten Tragegurt"),
+    gallery: ["propFront", "propCarried", "strapLoops", "cushionFabric"],
+    description: `
+        <p>Mit dem Tragegurt nimmst du deine Matte einfach über die Schulter. Die beiden Schlaufen legst du um die aufgerollte Matte und ziehst sie fest – sie passen sich jeder Mattengröße an.</p>
+        <p>Der Gurt ist aus Bio-Baumwolle, wiegt nur 60 g und hält die Matte auch zu Hause zusammen.</p>`,
+    care: careList("Bei 30 °C waschen", NO_DRYER, NO_BLEACH),
+    features: [
+      { title: "Matte schnappen und los", text: "Schlaufen um die Matte, Gurt über die Schulter: So hast du die Hände frei – auf dem Weg ins Studio, in den Park oder an den See.", picture: "propMatCarry" },
+    ],
+    reviews: [
+      { name: "Lea", place: "Gera, DE", color: "Light Taupe", stars: 5, days: 3, text: "Einfach und genau richtig, um die Matte ins Studio zu tragen." },
+      { name: "Anonym", place: "", color: "Balsam Green", stars: 5, days: 9, text: "Hält auch meine dicke Matte gut zusammen." },
+      { name: "Konstantin", place: "Klagenfurt, AT", color: "Light Taupe", stars: 5, days: 17, text: "Leicht und schnell angelegt." },
+      { name: "Anonym", place: "", color: "Balsam Green", stars: 4, days: 24, text: "Praktisch. Mit den Schlaufen muss man anfangs etwas üben." },
+      { name: "Pia", place: "Speyer, DE", color: "Light Taupe", stars: 5, days: 36, text: "Schöne Farbe, passt zu meiner Matte." },
+      { name: "Nico", place: "Baden, CH", color: "Balsam Green", stars: 5, days: 49, text: "Für den Preis top." },
+    ],
+    // The original shows "ab" on the MUDRA PRO only here.
+    related: ["Yogamatte PURE", "Yogamatte ARISE", "Yoga Tasche + Gurt Set", { ...relatedCard("Yogamatte MUDRA PRO"), fromPrice: true }],
+  },
+};
+Object.values(accessoryDetails).forEach((item) => Object.assign(item, {
+  swatch: "propFront",
+  related: item.related.map((entry) => (typeof entry === "string" ? relatedCard(entry) : entry)),
+}));
+
 const productDetails = {
   ...cushionDetails,
   ...clothingDetails,
   ...propDetails,
+  ...accessoryDetails,
   "yogamatte-pure": {
     name: "Yogamatte PURE",
     subtitle: "Die Dynamische: Rutschfestigkeit und Stabilität in perfekter Balance.",
@@ -1083,8 +1286,8 @@ const productDetails = {
     ],
     // "Verwandte Produkte", as on the original (prices from the shop).
     related: [
-      relatedCards.bag,
-      relatedCards.strap,
+      relatedCard("Yogatasche PUNE"),
+      relatedCard("Yogamatten Tragegurt"),
       { name: "„Almost Perfect“ Yogamatte PURE", price: 67.95, compareAt: 79.95, shape: "mat", tint: "#7a2a3a" },
       bestsellers.yoga[0], // Yogablock Kork 2er Set
     ],
@@ -1151,9 +1354,9 @@ const productDetails = {
       { name: "Nora", place: "Graz, AT", color: "Midnight Blue", stars: 5, days: 26, text: "Liegt flach, rollt sich an den Ecken nicht auf und hält bombenfest. Jeden Cent wert." },
     ],
     related: [
-      relatedCards.bag,
+      relatedCard("Yogatasche PUNE"),
       { name: "„Almost Perfect“ Yogamatte ARISE", price: 76.46, compareAt: 89.95, shape: "mat", tint: "#5d7366" },
-      relatedCards.strap,
+      relatedCard("Yogamatten Tragegurt"),
       { name: "Yogamatte ARISE Travel", slug: "yogamatte-arise-travel", price: 59.95, shape: "mat", tint: "#5d7366" },
     ],
   },
@@ -1272,7 +1475,7 @@ const productDetails = {
     ],
     related: [
       bestsellers.yoga[0], // Yogablock Kork 2er Set
-      relatedCards.bag,
+      relatedCard("Yogatasche PUNE"),
       relatedCards.mudraPro,
       relatedCard("Yogagurt 100% Bio-Baumwolle"),
     ],
@@ -1394,8 +1597,8 @@ const productDetails = {
     ],
     related: [
       relatedCards.almostPerfectProXl,
-      relatedCards.bag,
-      relatedCards.strap,
+      relatedCard("Yogatasche PUNE"),
+      relatedCard("Yogamatten Tragegurt"),
       bestsellers.yoga[3], // Yogamatte MUDRA
     ],
   },
@@ -1460,9 +1663,9 @@ const productDetails = {
       { name: "Hanna", place: "Magdeburg, DE", color: "Align", stars: 5, days: 26, text: "Liegt flach, rutscht nicht und ist schnell abgewischt. Gerne wieder." },
     ],
     related: [
-      relatedCards.bag,
+      relatedCard("Yogatasche PUNE"),
       bestsellers.yoga[2], // Yogamatte ARISE
-      { name: "Yogatasche NANDI", price: 19.95, shape: "bag", tint: "#d5cbbd" },
+      relatedCard("Yogatasche NANDI"),
       { name: "„Almost Perfect“ Yogamatte ARISE Cork", price: 84.95, compareAt: 99.95, shape: "mat", tint: "#d6a571" },
     ],
   },
@@ -1787,6 +1990,18 @@ const featurePictures = {
   benchTilt: { label: (specs) => `Meditationsbank von der Seite, ${decimal(specs.dimensions[2])} cm hoch, die Sitzfläche leicht geneigt`, draw: (color, specs) => widePhoto(benchSideView(color, specs, 150, 140, 5)) },
   benchWood: { label: () => "Buchenholz aus der Nähe", draw: () => widePhoto(woodGrain(330, 202) + woodLabel(165, 88)) },
   benchCushion: { label: () => "Polster aus Schaumstoff im Bezug aus Bio-Baumwolle", draw: (color) => benchPadWide(color) },
+  // Bags, cork blocks and straps
+  propCarry: { label: (specs) => (specs.shape === "sack" ? "Figur mit der Tasche quer über dem Rücken" : "Figur mit der Tasche über der Schulter"), draw: (color, specs) => propSceneSvg(color, specs, "carry", true) },
+  propBlockLunge: { label: () => "Figur im Ausfallschritt, eine Hand auf dem Yogablock", draw: (color, specs) => propSceneSvg(color, specs, "blockLunge", true) },
+  propStretch: { label: () => "Figur in der Vorbeuge im Sitzen, der Gurt um die Füße", draw: (color, specs) => propSceneSvg(color, specs, "strapStretch", true) },
+  propMatCarry: { label: () => "Figur mit der aufgerollten Matte am Tragegurt über der Schulter", draw: (color, specs) => propSceneSvg(color, specs, "strapCarry", true) },
+  bagPacked: { label: () => "Die Tasche neben Matte, Block und Gurt, die hineinpassen", draw: (color, specs) => bagPackedWide(color, specs) },
+  bagSet: { label: () => "Tasche und Yogagurt in derselben Farbe", draw: (color, specs) => bagSetWide(color, specs) },
+  bagSize: { label: (specs) => `Die Tasche von der Seite, ${decimal(specs.dimensions[0])} × ${decimal(specs.dimensions[2])} cm`, draw: (color, specs) => widePhoto(propSideView(color, specs, 150, 128, 220, 80)) },
+  bagFolded: { label: () => "Die Tasche klein zusammengefaltet", draw: (color) => bagFoldedWide(color) },
+  blockHeights: { label: () => "Ein Yogablock flach, auf der Seite und hochkant: 7,5, 12 und 22 cm hoch", draw: (color, specs) => blockHeightsWide(color, specs) },
+  cork: { label: () => "Kork aus der Nähe", draw: (color) => corkWide(color) },
+  strapRings: { label: () => "Das Gurtende durch zwei Metall-D-Ringe gezogen", draw: (color) => strapRingsWide(color) },
 };
 
 const galleryPictures = {
@@ -1828,6 +2043,15 @@ const galleryPictures = {
   benchFront: { label: "Breite und Höhe", draw: (color, specs) => benchFrontPicture(color, specs) },
   benchPad: { label: "Polster mit Bezug aus Bio-Baumwolle", draw: (color) => benchPadPicture(color) },
   benchWood: { label: "Buchenholz aus der Nähe", draw: () => galleryPhoto(woodGrain(200, 250) + woodLabel(100, 200)) },
+  // Bags, cork blocks and straps
+  propCarried: { label: "unterwegs", draw: (color, specs) => propSceneSvg(color, specs, specs.scene) },
+  bagPacked: { label: "mit Matte, Block und Gurt", draw: (color, specs) => bagPackedPicture(color, specs) },
+  bagSize: { label: "Maße von der Seite", draw: (color, specs) => propSizePicture(color, specs) },
+  bagFolded: { label: "klein gefaltet", draw: (color) => bagFoldedPicture(color) },
+  blockHeights: { label: "drei Höhen eines Blocks", draw: (color, specs) => blockHeightsPicture(color, specs) },
+  cork: { label: "Kork aus der Nähe", draw: (color) => corkPicture(color) },
+  strapRings: { label: "Metall-D-Ringe", draw: (color) => strapRingsPicture(color) },
+  strapLoops: { label: "um eine Matte geschlungen", draw: (color) => strapLoopsPicture(color) },
 };
 
 // ---------- Drawn cushion pictures ----------
@@ -2058,6 +2282,7 @@ const SHAPE_BOX = {
   bralette: [58, 38, 122, 104], wrapTop: [40, 34, 140, 142], sweater: [26, 30, 154, 154], overall: [60, 26, 120, 144],
   roll: [24, 64, 156, 132], bolster: [20, 74, 160, 130], bolsterS: [34, 80, 146, 130], neckRoll: [42, 84, 138, 125],
   zabuton: [22, 80, 158, 118], zabutonThick: [22, 68, 158, 118], bench: [24, 66, 156, 143],
+  bag: [22, 46, 158, 118], sack: [30, 52, 160, 129], block: [38, 48, 140, 150], singleBlock: [56, 50, 124, 146], strap: [33, 60, 147, 134],
 };
 
 // Fits the drawing into a box around (cx, cy); `point` maps a spot on it
@@ -2287,9 +2512,12 @@ const BEECH = "#dcc09a";
 const BEECH_DARK = "#c9a77e";
 const OTHER_PROP = "#d8d3cb"; // the product it is compared with
 const SCENE_CM = 0.45; // scene units (of 100) per cm
-// Picture sections of the scene: 4:5 for the gallery, and for the info rows
-// one close to the floor (lying poses) or one with room for a sitting figure.
-const SCENE_VIEWS = { gallery: "8 34 84 105", lying: "-2 46 104 64", upright: "-24 24 148 91" };
+// Picture sections of the scene: 4:5 for the gallery (higher up for standing
+// figures), and for the info rows one close to the floor (lying poses) or
+// one with room for a sitting or standing figure.
+const SCENE_VIEWS = { gallery: "8 34 84 105", galleryStanding: "8 18 84 105", lying: "-2 46 104 64", upright: "-24 24 148 91" };
+const LYING_SCENES = ["knees", "fish", "child", "neck"];
+const STANDING_SCENES = ["carry", "strapCarry"];
 const MEASURE_LINE = 'stroke="#5f5c52" fill="none"';
 
 // The prop seen from its end – round for the rolls – standing on `bottom`.
@@ -2310,8 +2538,10 @@ const heightMark = (x, top, bottom, label) => `
       <path d="M${x} ${top}V${bottom}M${x - 4} ${top}H${x + 4}M${x - 4} ${bottom}H${x + 4}" ${MEASURE_LINE}/>
       <text x="${x + 2}" y="${top - 8}" text-anchor="middle" ${LABEL_STYLE}>${label}</text>`;
 
-const limb = (d) => `<path d="${d}" fill="none" stroke="${MANNEQUIN}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>`;
-const headAt = (x, y) => `<circle cx="${x}" cy="${y}" r="5" fill="${MANNEQUIN}"/>`;
+const limb = (d, tone = MANNEQUIN) => `<path d="${d}" fill="none" stroke="${tone}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>`;
+const headAt = (x, y, tone = MANNEQUIN) => `<circle cx="${x}" cy="${y}" r="5" fill="${tone}"/>`;
+// Next to cork, which has nearly the wooden figure's colour, a dark figure.
+const DARK_FIGURE = "#4a4038";
 const SCENE_MAT = '<path d="M10 80H90L96 90H4Z" fill="#8b8378"/>';
 
 // Poses with a prop, in the 100×100 scene of the mats' pictures.
@@ -2361,11 +2591,37 @@ const propScenes = {
   },
 };
 
+// Bags, cork blocks and straps in use. A standing figure faces right; the
+// mat rolled up for carrying is a neutral green.
+const MAT_ROLL = "#7d8a7f";
+const standingFigure = () => limb("M44 84L48 62L54 84") + limb("M48 62V40") + limb("M48 44L45 62") + limb("M48 44L55 55") + headAt(48, 32);
+const colorLine = (d, hex, width = 2) => `<path d="${d}" fill="none" stroke="rgba(0, 0, 0, .3)" stroke-width="${width + 0.8}" stroke-linecap="round" stroke-linejoin="round"/><path d="${d}" fill="none" stroke="${hex}" stroke-width="${width}" stroke-linecap="round" stroke-linejoin="round"/>`;
+Object.assign(propScenes, {
+  // The bag at the hip on a strap over the shoulder; the slim sack (NANDI)
+  // diagonally across the back.
+  carry: (color, specs) => (specs.shape === "sack"
+    ? `<g transform="rotate(-76 40 57)"><rect x="20" y="52.5" width="40" height="9" rx="4.5" fill="${color.hex}" stroke="${GARMENT_LINE}"/></g>${standingFigure()}${colorLine("M44 38L50 42L57 52", color.hex, 1.4)}`
+    : `${standingFigure()}${colorLine("M54 59L47 41L78 59", color.hex, 1.6)}<rect x="50" y="57" width="31" height="11" rx="5.5" fill="${color.hex}" stroke="${GARMENT_LINE}"/>`),
+  // Sitting cross-legged on a cork block, the legs in front of it.
+  blockSeat: (color) => `${SCENE_MAT}<rect x="38" y="79" width="24" height="10" rx="1.5" fill="${color.hex}" stroke="${GARMENT_LINE}"/>`
+    + limb("M30 90Q50 82 70 90", DARK_FIGURE) + limb("M50 78V53", DARK_FIGURE) + limb("M50 57L38 72L33 86M50 57L62 72L67 86", DARK_FIGURE) + headAt(50, 45, DARK_FIGURE),
+  // A lunge with one hand on the block.
+  blockLunge: (color) => `${SCENE_MAT}<rect x="66" y="74" width="10" height="10" rx="1" fill="${color.hex}" stroke="${GARMENT_LINE}"/>`
+    + limb("M18 84L42 66L60 64L62 84", DARK_FIGURE) + limb("M42 66L58 55", DARK_FIGURE) + limb("M58 55L70 72", DARK_FIGURE) + headAt(63, 49, DARK_FIGURE),
+  // A seated forward bend, the strap around the feet.
+  strapStretch: (color) => SCENE_MAT + limb("M30 83H72") + limb("M30 82L47 63") + limb("M47 63L61 71") + headAt(52, 56) + colorLine("M61 71L76 78V86L61 72", color.hex, 1.8),
+  // The rolled mat across the back, the strap over the shoulder.
+  strapCarry: (color) => `<g transform="rotate(-70 40 57)"><rect x="18" y="52" width="44" height="10" rx="5" fill="${MAT_ROLL}"/></g>`
+    + standingFigure() + colorLine("M34 72L52 42L45 39", color.hex, 1.4),
+});
+
 // A scene in a room (light colours get a darker one), for the gallery or,
 // `wide`, for an info row.
 function propSceneSvg(color, specs, kind, wide) {
   const light = isLight(color.hex);
-  const view = wide ? SCENE_VIEWS[["seated", "kneel"].includes(kind) ? "upright" : "lying"] : SCENE_VIEWS.gallery;
+  const view = wide
+    ? SCENE_VIEWS[LYING_SCENES.includes(kind) ? "lying" : "upright"]
+    : SCENE_VIEWS[STANDING_SCENES.includes(kind) ? "galleryStanding" : "gallery"];
   return `
       <svg viewBox="${view}" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
         <rect x="-100" y="-100" width="300" height="172" fill="${light ? "#d3c9bb" : "#ece6dc"}"/>
@@ -2559,6 +2815,121 @@ function benchPadWide(color) {
       <text x="165" y="170" text-anchor="middle" ${LABEL_STYLE}>Schaumstoff im Bezug aus Bio-Baumwolle</text>`, pad.defs);
 }
 
+// ---------- Drawn pictures for bags, cork blocks and straps ----------
+// What fits into the bag: a rolled mat, a block and a strap.
+function bagPackedWide(color, specs) {
+  return widePhoto(`
+      ${shapePlacement(specs, 96, 96, 150, 110).draw(color.hex)}
+      <path d="M182 96h20m-7-6 7 6-7 6" fill="none" stroke="#5f5c52" stroke-width="1.5"/>
+      <rect x="214" y="58" width="22" height="80" rx="11" fill="${MAT_ROLL}"/>
+      <ellipse cx="225" cy="60" rx="11" ry="4" fill="#6b776d"/>
+      <rect x="246" y="104" width="26" height="34" rx="2" fill="${CORK}" stroke="${GARMENT_LINE}"/>
+      ${colorLine("M296 111a13 13 0 1 0 .1 0", color.hex, 5)}
+      <text x="165" y="176" text-anchor="middle" ${LABEL_STYLE}>Matte, Block und Gurt passen hinein</text>`);
+}
+
+function bagPackedPicture(color, specs) {
+  return galleryPhoto(`
+      ${shapePlacement(specs, 100, 84, 160, 100).draw(color.hex)}
+      <rect x="40" y="150" width="22" height="70" rx="11" fill="${MAT_ROLL}"/>
+      <ellipse cx="51" cy="152" rx="11" ry="4" fill="#6b776d"/>
+      <rect x="84" y="186" width="26" height="34" rx="2" fill="${CORK}" stroke="${GARMENT_LINE}"/>
+      ${colorLine("M146 189a14 14 0 1 0 .1 0", color.hex, 5)}
+      <text x="100" y="242" text-anchor="middle" ${LABEL_STYLE}>Platz für Matte, Block und Gurt</text>`);
+}
+
+// The bag with the strap in the same colour.
+function bagSetWide(color, specs) {
+  return widePhoto(`
+      ${shapePlacement(specs, 110, 92, 150, 110).draw(color.hex)}
+      ${shapePlacement({ shape: "strap" }, 240, 92, 100, 100).draw(color.hex)}
+      <text x="165" y="176" text-anchor="middle" ${LABEL_STYLE}>Mit dem Yogagurt in derselben Farbe</text>`);
+}
+
+// The empty bag folded small, its cord on top.
+const foldedBag = (color, cx, cy) => `
+      <rect x="${cx - 40}" y="${cy - 30}" width="80" height="60" rx="6" fill="${color.hex}" stroke="${GARMENT_LINE}"/>
+      <path d="M${cx - 40} ${cy - 10}H${cx + 40}M${cx - 40} ${cy + 10}H${cx + 40}" stroke="rgba(0, 0, 0, .1)"/>
+      ${colorLine(`M${cx + 28} ${cy - 30}c22 4 22 52-6 60`, color.hex, 2.2)}`;
+const bagFoldedPicture = (color) => galleryPhoto(`${foldedBag(color, 100, 118)}
+      <text x="100" y="184" text-anchor="middle" ${LABEL_STYLE}>Klein gefaltet passt sie</text>
+      <text x="100" y="199" text-anchor="middle" ${LABEL_STYLE}>in jede Schublade</text>`);
+const bagFoldedWide = (color) => widePhoto(`${foldedBag(color, 165, 90)}
+      <text x="165" y="160" text-anchor="middle" ${LABEL_STYLE}>Klein gefaltet passt sie in jede Schublade</text>`);
+
+// One block (small size, 22 × 12 × 7,5 cm) lying flat, on its side and
+// upright: three heights.
+function blockHeights(color, specs, cx, base, perCm) {
+  const [length, width, height] = specs.dimensions;
+  const sizes = [[length, height], [length, width], [width, length]];
+  const gap = 16;
+  const total = sizes.reduce((sum, [w]) => sum + w * perCm, 0) + gap * 2;
+  let x = cx - total / 2;
+  return sizes.map(([w, h]) => {
+    const blockW = r1(w * perCm);
+    const blockH = r1(h * perCm);
+    const left = r1(x);
+    x += blockW + gap;
+    return `
+      <rect x="${left}" y="${r1(base - blockH)}" width="${blockW}" height="${blockH}" rx="2" fill="${color.hex}" stroke="${GARMENT_LINE}"/>
+      <text x="${r1(left + blockW / 2)}" y="${r1(base - blockH - 8)}" text-anchor="middle" ${LABEL_STYLE}>${decimal(h)} cm</text>`;
+  }).join("");
+}
+const blockHeightsPicture = (color, specs) => galleryPhoto(`${blockHeights(color, specs, 100, 160, 2.6)}
+      <text x="100" y="196" text-anchor="middle" ${LABEL_STYLE}>Größe Klein:</text>
+      <text x="100" y="211" text-anchor="middle" ${LABEL_STYLE}>22 × 12 × 7,5 cm</text>`);
+const blockHeightsWide = (color, specs) => widePhoto(`${blockHeights(color, specs, 165, 140, 3.4)}
+      <text x="165" y="172" text-anchor="middle" ${LABEL_STYLE}>Drei Höhen mit einem Block (Größe Klein: 22 × 12 × 7,5 cm)</text>`);
+
+// Cork up close: fine grains in two shades.
+function corkTexture(color, width, height) {
+  const id = `cork-${++patternCount}`;
+  return {
+    defs: `<defs><pattern id="${id}" width="9" height="9" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.1" fill="rgba(110, 70, 30, .35)"/><circle cx="6.5" cy="5" r=".8" fill="rgba(255, 255, 255, .3)"/><circle cx="4" cy="7.5" r=".9" fill="rgba(110, 70, 30, .25)"/></pattern></defs>`,
+    content: `<rect width="${width}" height="${height}" fill="${color.hex}"/><rect width="${width}" height="${height}" fill="url(#${id})"/>`,
+  };
+}
+const corkLabel = (cx, y) => `
+      <rect x="${cx - 70}" y="${y}" width="140" height="26" rx="13" fill="rgba(255, 255, 255, .88)"/>
+      <text x="${cx}" y="${y + 17}" text-anchor="middle" ${LABEL_STYLE}>Naturkork aus Portugal</text>`;
+function corkPicture(color) {
+  const cork = corkTexture(color, 200, 250);
+  return galleryPhoto(cork.content + corkLabel(100, 200), cork.defs);
+}
+function corkWide(color) {
+  const cork = corkTexture(color, 330, 202);
+  return widePhoto(cork.content + corkLabel(165, 88), cork.defs);
+}
+
+// The strap's end through its two metal D-rings.
+const dRings = (x, y, scale) => `
+      <g transform="translate(${x} ${y}) scale(${scale})" fill="none" stroke="#8b8b8b" stroke-width="3.5">
+        <path d="M0 -18h6a18 18 0 0 1 0 36h-6z"/><path d="M10 -18h6a18 18 0 0 1 0 36h-6z"/>
+      </g>`;
+function strapRings(color, x, y, length, scale) {
+  const band = r1(18 * scale);
+  return `
+      <rect x="${x}" y="${r1(y - band / 2)}" width="${length}" height="${band}" fill="${color.hex}" stroke="${GARMENT_LINE}"/>
+      ${dRings(x + length, y, scale)}
+      <path d="M${r1(x + length + 30 * scale)} ${r1(y - band / 2)}c${r1(12 * scale)} 0 ${r1(12 * scale)} ${r1(band + 14 * scale)} 0 ${r1(band + 14 * scale)}H${r1(x + length - 30 * scale)}v-${band}z" fill="${color.hex}" stroke="${GARMENT_LINE}"/>
+      <path d="M${r1(x + length + 30 * scale)} ${r1(y - band / 2)}c${r1(12 * scale)} 0 ${r1(12 * scale)} ${r1(band + 14 * scale)} 0 ${r1(band + 14 * scale)}H${r1(x + length - 30 * scale)}v-${band}z" fill="rgba(0, 0, 0, .12)"/>`;
+}
+const strapRingsPicture = (color) => galleryPhoto(`${strapRings(color, 20, 120, 110, 1)}
+      <text x="100" y="196" text-anchor="middle" ${LABEL_STYLE}>Zwei Metall-D-Ringe</text>`);
+const strapRingsWide = (color) => widePhoto(`${strapRings(color, 40, 92, 170, 1.4)}
+      <text x="165" y="172" text-anchor="middle" ${LABEL_STYLE}>Durch beide Ringe gezogen, hält der Gurt jede Länge</text>`);
+
+// The carrying strap's loops around a rolled mat, the strap arching above.
+function strapLoopsPicture(color) {
+  return galleryPhoto(`
+      <rect x="30" y="130" width="140" height="40" rx="20" fill="${MAT_ROLL}"/>
+      <ellipse cx="160" cy="150" rx="8" ry="20" fill="rgba(255, 255, 255, .15)"/>
+      ${colorLine("M52 130v40M148 130v40", color.hex, 6)}
+      ${colorLine("M52 130C52 52 148 52 148 130", color.hex, 4)}
+      <text x="100" y="206" text-anchor="middle" ${LABEL_STYLE}>Schlaufen um die Matte,</text>
+      <text x="100" y="221" text-anchor="middle" ${LABEL_STYLE}>Gurt über die Schulter</text>`);
+}
+
 // ---------- Small line icons for the buy box ----------
 const buyboxIcons = {
   truck: '<path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>',
@@ -2707,6 +3078,24 @@ function productMarkup(product, color, size, choice) {
 
   // Sizes sold out in the picked colour look like the others (as on the
   // original) but say so to screen readers; picking one offers a reminder.
+  // Products without a rating of their own (the single cork block) show
+  // neither stars in the buy box nor the rating summary, as on the original.
+  const rated = product.buyboxRating !== false;
+
+  // Options with a single value (the cork set's "Pack: 2er Pack") show as
+  // one picked pill, as on the original.
+  const fixedOptions = (product.fixedOptions || []).map(({ name, value }) => `
+
+        <fieldset class="option-picker">
+          <legend class="color-picker__legend"><strong>${name}:</strong> <span>${value}</span></legend>
+          <div class="option-picker__options">
+            <label class="option-pill">
+              <input type="radio" name="${name}" value="${value}" class="visually-hidden" checked>
+              <span class="option-pill__label">${value}</span>
+            </label>
+          </div>
+        </fieldset>`).join("");
+
   const sizes = product.sizes ? `
 
         <fieldset class="option-picker size-picker">
@@ -2756,14 +3145,14 @@ function productMarkup(product, color, size, choice) {
 
       <div class="buybox">
         <h1 class="buybox__title">${product.name}</h1>${product.subtitle ? `
-        <p class="buybox__subtitle">${product.subtitle}</p>` : ""}
-        <a href="#bewertungen" class="buybox__rating">${starRating(product.rating)}<span>(${product.reviewCount})</span></a>
+        <p class="buybox__subtitle">${product.subtitle}</p>` : ""}${rated ? `
+        <a href="#bewertungen" class="buybox__rating">${starRating(product.rating)}<span>(${product.reviewCount})</span></a>` : ""}
         <p class="buybox__price">
           <span class="buybox__prices">${priceMarkup(priceOf(product, color, choice))}</span>
           <span class="buybox__tax">inkl. MwSt. zzgl. <a href="#">Versandkosten</a></span>
         </p>
 
-${colorPicker}${choices}${sizes}
+${colorPicker}${choices}${fixedOptions}${sizes}
 
         <button class="btn btn--primary btn--block buybox__cart" type="button">${cartLabel(soldOut)}</button>
         <p class="buybox__note"${soldOut ? "" : " hidden"}>Du erhältst eine Benachrichtigung per E-Mail, sobald der Artikel wieder auf Lager ist.</p>
@@ -2778,12 +3167,12 @@ ${colorPicker}${choices}${sizes}
 
     <div class="container product__more">
       <div class="accordion">${accordion}
-      </div>
+      </div>${rated ? `
 
       <div class="rating-summary">
         <p class="rating-summary__head">${starRating(product.rating)}<span>(${product.reviewCount})</span></p>${scales}
         <a href="#bewertungen" class="btn btn--secondary btn--block">Bewertungen anschauen</a>
-      </div>
+      </div>` : ""}
     </div>
 
     <section class="container product-features" aria-label="Mehr über die ${product.name}">${featureRows(product, color, specs)}
@@ -2933,16 +3322,16 @@ if (!product) {
   productRoot.innerHTML = missingMarkup();
 } else {
   // A link can preselect a colour (&farbe=Light Taupe), with a choice
-  // (&farbe=Light Taupe / 7 cm, as the zabuton's cards name it), and a size
-  // (&groesse=M), e.g. from a category card or the cart. Like the original,
-  // clothing otherwise opens on the first colour in stock, in its first size
-  // in stock.
+  // (&farbe=Light Taupe / 7 cm, as the zabuton's cards name it; the cork
+  // blocks' cards name only the choice) and a size (&groesse=M), e.g. from a
+  // category card or the cart. Like the original, a page otherwise opens on
+  // the first colour in stock and clothing in its first size in stock.
   const [wantedColor, wantedChoice] = (pageParams.get("farbe") || "").split(" / ");
   let color = product.colors.find((c) => c.name === wantedColor)
-    || (product.sizes && product.colors.find((c) => !c.soldOut))
+    || product.colors.find((c) => !c.soldOut)
     || product.colors[0];
   let size = product.sizes && (product.sizes.find((s) => s === pageParams.get("groesse")) || color.stock[0] || product.sizes[0]);
-  let choice = product.choices && (product.choices.values.find((value) => value.label === wantedChoice) || product.choices.values[0]);
+  let choice = product.choices && (product.choices.values.find((value) => [wantedChoice, wantedColor].includes(value.label)) || product.choices.values[0]);
 
   document.title = `${product.name} – LotusCraft Student Rebuild`;
   productRoot.innerHTML = productMarkup(product, color, size, choice);
@@ -3063,7 +3452,7 @@ if (!product) {
       added.textContent = "Nur eine Demo: In diesem Studentenprojekt gibt es keine Benachrichtigungen, es wird nichts gespeichert.";
       return;
     }
-    const variant = [color.name, choice?.label, size].filter(Boolean).join(" / ");
+    const variant = [color.name, choice?.label, ...(product.fixedOptions || []).map((option) => option.value), size].filter(Boolean).join(" / ");
     const colorParam = [color.name, choice?.label].filter(Boolean).join(" / ");
     addToCart({
       id: variant ? `${slug}:${variant}` : slug,
