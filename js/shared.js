@@ -1461,6 +1461,7 @@ const sitePages = [
   { title: "Rabatt für Yoga-Studios", href: "seite.html?s=rabatt-studios", keywords: "rabatt yoga studios studio ausstattung seite" },
   { title: "Rabatt für B2B & Gewerbekunden", href: "seite.html?s=rabatt-gewerbe", keywords: "rabatt b2b gewerbe gewerbekunden business seite" },
   { title: "Konto", href: "seite.html?s=konto", keywords: "konto account anmelden login seite" },
+  ...blogPosts.map((post) => ({ title: post.title, href: `seite.html?s=blog#${post.id}`, keywords: "blog beitrag artikel" })),
   { title: "Startseite", href: "index.html", keywords: "start home lotuscraft bestseller sets" },
 ];
 

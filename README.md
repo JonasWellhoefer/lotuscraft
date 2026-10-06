@@ -239,6 +239,9 @@ damit Text darauf gut lesbar bleibt: `--gold-text` (Gold als Schrift) und `--new
 - [x] Produktseiten: zwei Spalten (3 : 2) ab 780 px, darunter gestapelt; die Kaufbox hat unter 1060 px 16 statt 24 px Innenabstand
 - [x] Schriftgrößen wie im Original auch auf dem Handy: Kartentitel, Preise, Tags und Bewertungswerte 16 px, Überschriften 25 px
 - [x] Start- und Produktseite bei 375 und 900 px Text für Text mit dem Original abgeglichen (Position, Breite, Schriftgröße), die Kategorieseite Raster für Raster: Die Abstände weichen meist um weniger als 5 px ab; übrig bleiben die breitere Überschriftenschrift (Playfair), die fehlenden Zahlungslogos und das eingebettete Newsletter-Formular des Originals
+- [x] Fenster bei allen Breiten am Original gemessen: Das Suchfenster ist ab 780 px halb so breit wie der Bildschirm (Oberkante bei 15 % der Breite), darunter ein Blatt über die volle Breite am oberen Rand; die vier Ergebnis-Karten laufen unter etwa 1250 px über den Rand, das Fenster scrollt; unter „Seiten und Blog“ findet die Suche auch die vier Beispielbeiträge
+- [x] Größentabelle so breit wie ihre Tabelle (höchstens halber Bildschirm, auf dem Handy 38 px weniger als der Bildschirm), Warenkorb-Überschriften auf dem Handy 20 und 25 px, Cookie-Banner mit 15 px Innenabstand (ab 1280 px 23 px) und denselben Knopfbreiten wie das Original
+- [x] Zeilenhöhe des Fließtexts 1,22 wie bei der Schrift des Originals (Überschriften behalten ihre eigene): Die Abschnitte der Startseite sind bei 375, 900 und 1440 px höchstens 1 % höher oder niedriger als im Original, nur die Bewertungen weichen je nach Textlänge der Karten ab
 - [x] Kein waagerechtes Scrollen bei 320 bis 1440 px (alle Seitentypen); axe ohne Verstoß bei 375 bis 1060 px, auch mit offenem Menü, Warenkorb, Suche, Mega-Menü und Filtern
 
 ## Hinweis

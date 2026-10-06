@@ -518,7 +518,7 @@ function renderSearch() {
       </div>
       <div class="search__grid">${shown.map(productCard).join("")}</div>` : "";
   const pageBlock = pages.length ? `
-      <p class="search__label">Seiten</p>
+      <p class="search__label">Seiten und Blog</p>
       <ul class="search__pages">${pages.map((page) => `<li><a href="${page.href}">${page.title}</a></li>`).join("")}</ul>` : "";
   searchResults.innerHTML = productBlock + pageBlock;
 }
