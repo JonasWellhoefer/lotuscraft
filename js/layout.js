@@ -34,7 +34,7 @@ document.getElementById("site-header").outerHTML = `
       <svg class="icon" viewBox="0 0 24 24"><path d="M12 3.5l2.5 5.3 5.8.7-4.3 4 1.1 5.7L12 16.4l-5.1 2.8 1.1-5.7-4.3-4 5.8-.7z"/></svg>
       <p class="small">Zeitloses Design</p>
     </div>
-    <div class="trustbar__item hide-md">
+    <div class="trustbar__item">
       <svg class="icon" viewBox="0 0 24 24"><path d="M12 3l8 4v10l-8 4-8-4V7zM4 7l8 4 8-4M12 11v10"/></svg>
       <p class="small">Gratis Versand ab 69€</p>
     </div>
@@ -183,7 +183,7 @@ document.getElementById("site-footer").outerHTML = `
   </div>
 </footer>
 
-<!-- Mobile menu (opened by the menu button below 1100px) -->
+<!-- Mobile menu (opened by the menu button below 1060px) -->
 <dialog class="drawer" id="menu-drawer" aria-label="Menü">
   <div class="drawer__top">
     <a href="index.html" class="logo" aria-label="LotusCraft Startseite">
@@ -345,14 +345,20 @@ menuToggle.addEventListener("click", () => {
 });
 
 drawer.querySelector(".drawer__close").addEventListener("click", () => drawer.close());
+// On tablets the menu is a side panel: a click on the dark rest of the page closes it.
+drawer.addEventListener("click", (e) => {
+  if (e.target !== drawer) return;
+  const box = drawer.getBoundingClientRect();
+  if (e.clientX > box.right || e.clientX < box.left || e.clientY > box.bottom || e.clientY < box.top) drawer.close();
+});
 // Safari doesn't focus buttons on click, so hand focus back explicitly.
 drawer.addEventListener("close", () => {
   menuToggle.setAttribute("aria-expanded", "false");
   menuToggle.focus();
 });
 
-// The desktop navigation takes over above 1100px, so close the drawer there.
-window.matchMedia("(min-width: 1101px)").addEventListener("change", (e) => {
+// The desktop navigation takes over from 1060px, so close the drawer there.
+window.matchMedia("(min-width: 1060px)").addEventListener("change", (e) => {
   if (e.matches && drawer.open) drawer.close();
 });
 

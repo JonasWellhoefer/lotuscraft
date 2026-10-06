@@ -230,6 +230,17 @@ damit Text darauf gut lesbar bleibt: `--gold-text` (Gold als Schrift) und `--new
 - [x] Bis 320 Pixel Breite (entspricht 400 % Zoom) ohne waagerechtes Scrollen; zusätzlicher Zeilen- und Buchstabenabstand schneidet nichts ab
 - [x] Mit axe-core geprüft (nur zum Testen geladen, nicht Teil der Seite): Start, 52 Kategorien, 86 Produkte, 23 Info-Seiten bei 1440 und 375 Pixel sowie 18 geöffnete Zustände (Menüs, Fenster, Filter, Quiz …) ohne einen Verstoß
 
+**Tablet- und Handy-Breiten** (am Original gemessen, wie bei der Fehlerseite):
+
+- [x] Zwei Umbruchstellen wie im Original: unter 1060 px ersetzt der Menü-Knopf die Navigation (Tablet), unter 780 px beginnt die Handy-Ansicht; die Seitenränder sind 64 / 32 / 16 px (ab 1060, von 780 bis 1059, darunter)
+- [x] Header: auf dem Tablet 79 px hoch mit Menü-Knopf, Logo und Symbolen, auf dem Handy 63 px; das Menü öffnet als 414 px breites Seitenfenster (auf dem Handy bildschirmfüllend), ein Klick daneben schließt es; die Hinweisleiste zeigt ab 780 px alle vier Hinweise nebeneinander, darunter einen nach dem anderen
+- [x] Startseite: Kacheln, Bestseller, Sets und Verkaufsargumente in vier Spalten ab 780 px, darunter zwei; das Bewertungs-Karussell zeigt je nach Platz vier, drei, zwei oder eine Karte; der Fußbereich hat vier, drei oder eine Spalte
+- [x] Kategorieseiten: vier, drei oder zwei Spalten (ab 1060, ab 780, darunter); die Kreise stehen unter 1060 px links und scrollen seitlich
+- [x] Produktseiten: zwei Spalten (3 : 2) ab 780 px, darunter gestapelt; die Kaufbox hat unter 1060 px 16 statt 24 px Innenabstand
+- [x] Schriftgrößen wie im Original auch auf dem Handy: Kartentitel, Preise, Tags und Bewertungswerte 16 px, Überschriften 25 px
+- [x] Start- und Produktseite bei 375 und 900 px Text für Text mit dem Original abgeglichen (Position, Breite, Schriftgröße), die Kategorieseite Raster für Raster: Die Abstände weichen meist um weniger als 5 px ab; übrig bleiben die breitere Überschriftenschrift (Playfair), die fehlenden Zahlungslogos und das eingebettete Newsletter-Formular des Originals
+- [x] Kein waagerechtes Scrollen bei 320 bis 1440 px (alle Seitentypen); axe ohne Verstoß bei 375 bis 1060 px, auch mit offenem Menü, Warenkorb, Suche, Mega-Menü und Filtern
+
 ## Hinweis
 
 Entstanden im Rahmen eines Studienkurses, ausschließlich zu Lernzwecken.
