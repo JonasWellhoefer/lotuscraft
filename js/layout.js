@@ -4,8 +4,11 @@
 // is opened by double-click (fetch() can't load local files there).
 
 document.getElementById("site-header").outerHTML = `
+<!-- Keyboard users can jump past the header; the link shows up when it gets focus. -->
+<a href="#" class="skip-link">Zum Inhalt springen</a>
+
 <!-- Student project notice: this page is a UI-class rebuild, not the real shop. -->
-<div class="student-note">🎓 Student project – UI class rebuild, not the real Lotuscrafts shop.</div>
+<div class="student-note" role="region" aria-label="Hinweis zum Studentenprojekt" lang="en">🎓 Student project – UI class rebuild, not the real Lotuscrafts shop.</div>
 
 <!-- Trust bar -->
 <div class="trustbar">
@@ -14,7 +17,7 @@ document.getElementById("site-header").outerHTML = `
       <svg class="icon" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
     </button>
     <div class="trustbar__item is-current">
-      <span class="stars" aria-label="4.8 von 5 Sternen">
+      <span class="stars" role="img" aria-label="4,8 von 5 Sternen">
         <svg viewBox="0 0 20 20"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.1 6-5.3-3-5.3 3 1.1-6L1.4 7.7l6-.7z"/></svg>
         <svg viewBox="0 0 20 20"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.1 6-5.3-3-5.3 3 1.1-6L1.4 7.7l6-.7z"/></svg>
         <svg viewBox="0 0 20 20"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.1 6-5.3-3-5.3 3 1.1-6L1.4 7.7l6-.7z"/></svg>
@@ -98,7 +101,7 @@ document.getElementById("site-footer").outerHTML = `
       <p class="newsletter__text">Melde dich für unseren Newsletter an und erhalte 10% Rabatt auf deine Bestellung. Erhalte zusätzlich exklusive Angebote, Produkt-Updates und spannende Beiträge zu Yoga und Meditation.</p>
       <form class="newsletter__form">
         <label class="visually-hidden" for="newsletter-email">E-Mail-Adresse</label>
-        <input class="newsletter__input" type="email" id="newsletter-email" placeholder="Deine E-Mail-Adresse" autocomplete="off" required>
+        <input class="newsletter__input" type="email" id="newsletter-email" placeholder="Deine E-Mail-Adresse" autocomplete="email" required>
         <button class="newsletter__button" type="submit">Jetzt anmelden</button>
         <p class="newsletter__status" role="status"></p>
       </form>
@@ -173,7 +176,7 @@ document.getElementById("site-footer").outerHTML = `
       <label class="visually-hidden" for="language-select">Sprache</label>
       <select class="language__select" id="language-select">
         <option>Deutsch</option>
-        <option>English</option>
+        <option lang="en">English</option>
       </select>
       <svg class="language__chevron" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg>
     </div>
@@ -212,7 +215,7 @@ document.getElementById("site-footer").outerHTML = `
       <label class="visually-hidden" for="drawer-language-select">Sprache</label>
       <select class="language__select" id="drawer-language-select">
         <option>Deutsch</option>
-        <option>English</option>
+        <option lang="en">English</option>
       </select>
       <svg class="language__chevron" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5"/></svg>
     </div>
@@ -261,6 +264,14 @@ function showTrustItem(step) {
 
 document.querySelector(".trustbar__arrow--prev").addEventListener("click", () => showTrustItem(-1));
 document.querySelector(".trustbar__arrow--next").addEventListener("click", () => showTrustItem(1));
+
+// ---------- Skip link ----------
+// The page's <main> gets an id (if it has none) and can take focus, so the
+// link lands there.
+const mainContent = document.querySelector("main");
+mainContent.id ||= "main";
+mainContent.tabIndex = -1;
+document.querySelector(".skip-link").href = `#${mainContent.id}`;
 
 // ---------- Newsletter (demo) ----------
 // This is a student project: the form never sends or stores the address.
@@ -449,7 +460,10 @@ megaItems.forEach((item) => {
 // ---------- Current section ----------
 // A page can name its section, e.g. <body data-nav="Yoga">, to highlight it.
 const currentNav = document.querySelector(`.nav__item[data-menu="${document.body.dataset.nav}"] .nav__link`);
-if (currentNav) currentNav.classList.add("is-current");
+if (currentNav) {
+  currentNav.classList.add("is-current");
+  currentNav.setAttribute("aria-current", "true");
+}
 
 // ---------- Search ----------
 // Shows matching products while you type (first four, like the original).

@@ -294,6 +294,7 @@ function categoryMarkup(category) {
         </label>
       </div>${filterDrawerMarkup(groups)}
 
+      <h2 class="visually-hidden">Produkte</h2>
       <p class="visually-hidden" role="status" id="result-count"></p>
       <div class="product-grid category__grid"></div>
 
@@ -327,9 +328,14 @@ if (!category) {
 
   // The header highlights the category's section(s), as on the original
   // (mats: "Yoga"; the sets also "Geschenke"; "Almost Perfect" none).
-  document.querySelectorAll(".nav__link.is-current").forEach((link) => link.classList.remove("is-current"));
+  document.querySelectorAll(".nav__link.is-current").forEach((link) => {
+    link.classList.remove("is-current");
+    link.removeAttribute("aria-current");
+  });
   (category.nav || ["Yoga"]).forEach((section) => {
-    document.querySelector(`.nav__item:is([data-menu="${section}"], [data-section="${section}"]) .nav__link`)?.classList.add("is-current");
+    const link = document.querySelector(`.nav__item:is([data-menu="${section}"], [data-section="${section}"]) .nav__link`);
+    link?.classList.add("is-current");
+    link?.setAttribute("aria-current", "true");
   });
 
   // One card per colour (or size), keeping the original order for "Am

@@ -108,7 +108,8 @@ Header, Menüs und Footer sind auf allen Seiten gleich. Deshalb stehen sie nur e
 eingesetzt. Wer den Header ändern will, ändert also nur diese eine Datei.
 
 Farben und Schriften sind oben in `styles.css` als Variablen gesammelt (`--gold`, `--text` …) –
-die Werte stammen direkt aus dem CSS des Originals.
+die Werte stammen direkt aus dem CSS des Originals. Zwei Ausnahmen sind mit Absicht etwas dunkler,
+damit Text darauf gut lesbar bleibt: `--gold-text` (Gold als Schrift) und `--newsletter` (blaues Band).
 
 ## ✅ Fortschritt
 
@@ -208,6 +209,17 @@ die Werte stammen direkt aus dem CSS des Originals.
 - [x] Suchfenster wie im Original, Ergebnisse schon beim Tippen (erste vier, „Alle anzeigen“ zeigt alle)
 - [x] Findet Produkte auch über Material, Farbname und Farbgruppe (z. B. „grün“, „kork“), ohne Rücksicht auf Groß-/Kleinschreibung und Umlaute
 - [x] Passende Seiten (z. B. „Yogamatten“, „Versandkosten“, „Quiz“); Escape leert erst das Feld, das zweite Escape schließt
+
+**Tastatur und Barrierefreiheit** (auf allen Seiten):
+
+- [x] „Zum Inhalt springen“: der erste Tabulator-Druck zeigt den Link, er springt hinter Header und Menü
+- [x] Landmarken und Überschriften ohne Sprünge: Kopfbereich, Navigation, Hauptteil und Fußbereich; der Studentenhinweis, die Galerien und die Karussells sind benannte Bereiche, die sich per Tastatur scrollen lassen; die aktuelle Rubrik im Menü trägt `aria-current`
+- [x] Menü, Suche, Warenkorb, Größentabelle, Filter, Cookie-Banner und Newsletter sind echte `<dialog>`-Fenster mit Namen: die Seite dahinter ist gesperrt, Escape schließt, der Fokus kehrt zum Auslöser zurück
+- [x] Sterne sind ein Bild mit Text („4,8 von 5 Sternen“), die Platzhalterzeichnungen in den Produktkarten sind für Screenreader ausgeblendet (Name und Preis stehen im Link), englische Wörter tragen `lang="en"`, E-Mail-Felder `autocomplete="email"`
+- [x] Kontrast: normaler Text erreicht mindestens 4,5 : 1. Dafür ist Gold als Schrift etwas dunkler (`#8a6a00` statt `#ac8700`), ebenso das blaue Newsletter-Band (`#547796` statt `#5e81a2`); der Verlauf über Hero und Community-Kacheln ist kräftiger, der Betrag auf der Gutscheinkarte dunkel
+- [x] Der Fokus verschwindet nie hinter dem festen Header (`scroll-padding`), und jedes bedienbare Element zeigt einen sichtbaren Rahmen
+- [x] Bis 320 Pixel Breite (entspricht 400 % Zoom) ohne waagerechtes Scrollen; zusätzlicher Zeilen- und Buchstabenabstand schneidet nichts ab
+- [x] Mit axe-core geprüft (nur zum Testen geladen, nicht Teil der Seite): Start, 52 Kategorien, 86 Produkte, 23 Info-Seiten bei 1440 und 375 Pixel sowie 18 geöffnete Zustände (Menüs, Fenster, Filter, Quiz …) ohne einen Verstoß
 
 ## Hinweis
 

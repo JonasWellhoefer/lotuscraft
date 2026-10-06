@@ -160,7 +160,7 @@ const popupMarkup = `
     <p class="popup__text">Melde dich an und erhalte Angebote, Produkt-Updates und Beiträge zu Yoga und Meditation.</p>
     <form class="popup__form">
       <label class="visually-hidden" for="popup-email">E-Mail-Adresse</label>
-      <input class="popup__input" type="email" id="popup-email" placeholder="Deine E-Mail-Adresse" autocomplete="off" required>
+      <input class="popup__input" type="email" id="popup-email" placeholder="Deine E-Mail-Adresse" autocomplete="email" required>
       <button class="btn btn--primary" type="submit">Jetzt anmelden</button>
       <p class="popup__status" role="status"></p>
     </form>

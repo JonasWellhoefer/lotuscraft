@@ -347,12 +347,11 @@ function productCard(product) {
   // card's colour (`variant`); the rest are placeholders.
   const colorParam = product.variant ? `&farbe=${encodeURIComponent(product.variant)}` : "";
   const href = product.slug ? `produkt.html?p=${product.slug}${colorParam}` : "#";
-  const label = product.variant ? `${product.name} in ${product.variant}` : product.name;
 
   return `
     <a href="${href}" class="product-card">
       <div class="product-card__media${swatches ? " product-card__media--swatches" : ""}">
-        <svg viewBox="0 0 180 180" role="img" aria-label="Platzhalter: ${label}">
+        <svg viewBox="0 0 180 180" aria-hidden="true">
           ${shapes[product.shape](product.tint, product.accent)}
         </svg>
         ${swatches}

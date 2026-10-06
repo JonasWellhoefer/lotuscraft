@@ -50,7 +50,7 @@ function reviewCard(review) {
     <article class="review">
       <div class="review__head">
         <span class="review__name">${review.name}</span>
-        <span class="review__stars" aria-label="${review.stars} von 5 Sternen">${stars}</span>
+        <span class="review__stars" role="img" aria-label="${review.stars} von 5 Sternen">${stars}</span>
       </div>
       <p class="review__badge">
         <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7"/><path d="M5 8.2l2 2 4-4.4"/></svg>

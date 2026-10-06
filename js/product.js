@@ -3238,7 +3238,7 @@ function cushionFillingsWide() {
 // garment colours its part of a stick figure. Worn garments sit on a light
 // wooden figure, so dark colours stand out.
 const MANNEQUIN = "#b39373";
-const GOLD = "#ac8700";
+const GOLD = "#8a6a00"; // dark enough for the white numbers on the dots
 const isLight = (hex) => {
   const n = parseInt(hex.slice(1), 16);
   return ((n >> 16) * 299 + ((n >> 8) & 255) * 587 + (n & 255) * 114) / 1000 > 180;
@@ -4209,7 +4209,7 @@ const giftFrontPicture = (color, specs) => galleryPhoto(`
       <rect x="22" y="70" width="156" height="98" rx="10" fill="${color.hex}"/>
       <rect x="22" y="70" width="156" height="98" rx="10" fill="rgba(255, 255, 255, .12)"/>
       <path d="M100 86c-5 5-5 11 0 16 5-5 5-11 0-16zm0 16c-7-2-12 1-14 5 5 2 10 1 14-5zm0 0c7-2 12 1 14 5-5 2-10 1-14-5z" fill="rgba(255, 255, 255, .8)"/>
-      <text x="100" y="146" text-anchor="middle" font-size="24" font-weight="700" fill="rgba(255, 255, 255, .95)" font-family="Hanken Grotesk, sans-serif">${specs.value} €</text>
+      <text x="100" y="146" text-anchor="middle" font-size="24" font-weight="700" fill="#181714" font-family="Hanken Grotesk, sans-serif">${specs.value} €</text>
       <text x="100" y="206" text-anchor="middle" ${LABEL_STYLE}>Gutscheinkarte</text>`);
 const giftMailPicture = (color) => galleryPhoto(`
       <rect x="52" y="58" width="96" height="62" rx="6" fill="${color.hex}"/>
@@ -4431,7 +4431,7 @@ function productMarkup(product, color, size, choice) {
     <div class="container product__main">
       <div class="gallery">
         <span class="gallery__badge"${galleryBadge(product, color) ? "" : " hidden"}>${galleryBadge(product, color)}</span>
-        <div class="gallery__track" tabindex="0" aria-label="Produktbilder">${galleryItems(product, color, specs)}
+        <div class="gallery__track" tabindex="0" role="region" aria-label="Produktbilder">${galleryItems(product, color, specs)}
         </div>
         <div class="gallery__thumbs">${galleryThumbs(product, color, 0, specs)}
         </div>
