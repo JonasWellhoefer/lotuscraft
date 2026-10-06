@@ -96,6 +96,7 @@ lotuscraft/
 │   ├── shared.js   # Gemeinsame Daten & Helfer: Produkte, Kategorien, Menü, Suchindex, Zeichnungen
 │   ├── layout.js   # Header, Menüs (Handy + Desktop), Suche, Footer, Warenkorb (Demo)
 │   ├── home.js     # Startseite: Produkt-Tabs, Community, Bewertungs-Karussell
+│   ├── popups.js   # Cookie-Banner und Newsletter-Fenster (Demo), auf allen Seiten
 │   ├── product.js  # Produktseiten: Daten aller Matten, „Almost Perfect“-Matten, Kissen, Kleidung, Bolster, Zabuton, Bank, Bezüge, Sets, Gutschein und des Zubehörs, Zeichnungen, Galerie, Farb-, Größen- und Optionsauswahl, Warenkorb-Button
 │   ├── category.js # Kategorieseite: Filter (Farbe, Sitzhöhe, Form, Material, Füllung, Größe, Verfügbarkeit), Sortierung
 │   └── seite.js    # Info-Seiten: eine Vorlage, alle Texte, Vergleichstabellen aus den Produktdaten, Quiz
@@ -187,6 +188,13 @@ die Werte stammen direkt aus dem CSS des Originals.
 - [x] „Yogamatten im Vergleich“, „Produktguide – Meditationskissen“ und „– Yogabolster“ mit Tabellen, die aus den Produktdaten gebaut werden (auf dem Handy scrollt die Tabelle in ihrem Kasten, die erste Spalte bleibt stehen)
 - [x] Yogamatten-Quiz mit vier Fragen und einem Vorschlag samt Zweitplatziertem im gewählten Budget – läuft nur auf der Seite, nichts wird gespeichert oder gesendet
 - [x] Auch auf der Startseite führen der Hero-Knopf „Yoga-Sets“, die Kategorie-Kacheln und „Jetzt shoppen“ jetzt in den Shop; ohne Ziel bleiben nur die Platzhalter für Community-Beiträge und Social Media
+
+**Banner und Fenster** (beim ersten Besuch, wie im Original – nur als Demo):
+
+- [x] Cookie-Banner mit den Reitern „Zustimmung“, „Details“ und „Über Cookies“, vier Schaltern und den Knöpfen „Ablehnen“, „Auswahl erlauben“ und „Alle zulassen“ – Maße am Original gemessen (900 px breit, Knöpfe 280 px; auf dem Handy ein fast bildschirmfüllendes Blatt mit untereinander gestapelten Knöpfen); Escape zählt als „Ablehnen“
+- [x] Der Banner setzt keine Cookies und verfolgt nichts, egal was man wählt; nur im lokalen Speicher steht, dass geantwortet wurde, damit er nicht auf jeder Seite wiederkommt – auf „Cookie Einstellungen“ lässt er sich wieder öffnen und die Auswahl löschen
+- [x] Newsletter-Fenster: erscheint einmal, 15 Sekunden nach dem Seitenaufruf (nicht solange ein anderes Fenster offen ist), schließt mit dem X, „Nein, danke“, Escape oder einem Klick daneben; „Jetzt anmelden“ sendet und speichert nichts und sagt das
+- [x] Die Seiten „Datenschutz“ und „Cookie Einstellungen“ nennen beide gespeicherten Einträge (`lotuscraft-cart`, `lotuscraft-hinweise`)
 
 **Warenkorb** (Icon oben rechts oder „In den Warenkorb“ auf der Produktseite):
 

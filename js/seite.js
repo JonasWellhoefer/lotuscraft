@@ -144,8 +144,10 @@ function quizResult(answers) {
 
 // ---------- Account (a demo: no sign-in, no password) ----------
 const clearMarkup = () => `
-      <button class="btn btn--secondary" type="button" data-clear-cart>Warenkorb in diesem Browser löschen</button>
+      <button class="btn btn--secondary" type="button" data-clear-cart>Warenkorb und Banner-Auswahl löschen</button>
       <p class="page__status" role="status"></p>`;
+const bannerMarkup = () => `
+      <button class="btn btn--secondary" type="button" data-show-banner>Cookie-Banner anzeigen</button>`;
 const cartMarkup = () => `
       <button class="btn btn--secondary" type="button" data-open-cart>Warenkorb öffnen</button>`;
 
@@ -271,9 +273,9 @@ const pages = {
     lead: "Kurz und ehrlich: was dieses Projekt über dich speichert.",
     blocks: [
       { h: "Kurz gesagt", html: "<p>Dieses Projekt sammelt keine personenbezogenen Daten, setzt keine Cookies und enthält keine Tracker oder Analysewerkzeuge.</p>" },
-      { h: "Was in deinem Browser gespeichert wird", html: `<p>Nur dein Warenkorb: ein Eintrag namens <code>lotuscraft-cart</code> im lokalen Speicher des Browsers. Er enthält Produkt, Auswahl und Preis, bleibt auf deinem Gerät und wird nie übertragen. Auf ${pageLink("cookies", "Cookie Einstellungen")} kannst du ihn löschen.</p>` },
+      { h: "Was in deinem Browser gespeichert wird", html: `<p>Zwei Einträge im lokalen Speicher des Browsers: <code>lotuscraft-cart</code> (dein Warenkorb mit Produkt, Auswahl und Preis) und <code>lotuscraft-hinweise</code> (was du im Cookie-Banner gewählt hast und ob das Newsletter-Fenster schon gezeigt wurde). Beides bleibt auf deinem Gerät und wird nie übertragen. Auf ${pageLink("cookies", "Cookie Einstellungen")} kannst du es löschen.</p>` },
       { h: "Schriften", html: "<p>Die Schriften Hanken Grotesk und Playfair Display lädt dein Browser beim Öffnen der Seite von Google Fonts. Dabei sieht Google technisch deine IP-Adresse. Ohne Internetverbindung zeigt der Browser Ersatzschriften, die Seite funktioniert trotzdem.</p>" },
-      { h: "Formulare", html: "<p>Das Newsletter-Feld im Footer ist eine Demo: Es sendet und speichert nichts. Es gibt kein Kontaktformular, kein Konto und keine Anmeldung.</p>" },
+      { h: "Formulare", html: "<p>Das Newsletter-Feld im Footer und im Pop-up ist eine Demo: Es sendet und speichert nichts. Es gibt kein Kontaktformular, kein Konto und keine Anmeldung.</p>" },
       { h: "Was ein echter Shop hier erklären müsste", list: [
         "Welche Daten bei Bestellung, Versand und Zahlung verarbeitet werden",
         "An wen sie weitergegeben werden",
@@ -287,8 +289,9 @@ const pages = {
     title: "Cookie Einstellungen",
     lead: "Diese Seite setzt keine Cookies.",
     blocks: [
-      { h: "Was gespeichert wird", html: `<p>Nur dein Warenkorb, im lokalen Speicher deines Browsers (<code>lotuscraft-cart</code>). Er hilft nur dabei, dass deine Auswahl beim Wechsel zwischen den Seiten erhalten bleibt. Mehr dazu unter ${pageLink("datenschutz", "Datenschutz")}.</p>` },
-      { h: "Gespeicherte Daten löschen", html: "<p>Mit einem Klick ist der Warenkorb in diesem Browser leer.</p>", clear: true },
+      { h: "Was gespeichert wird", html: `<p>Zwei Einträge im lokalen Speicher deines Browsers, keine Cookies: dein Warenkorb (<code>lotuscraft-cart</code>) und das, was du im Cookie-Banner gewählt hast (<code>lotuscraft-hinweise</code>, dazu ob das Newsletter-Fenster schon gezeigt wurde). So bleibt deine Auswahl beim Wechsel zwischen den Seiten erhalten, und der Banner fragt nicht jedes Mal. Mehr dazu unter ${pageLink("datenschutz", "Datenschutz")}.</p>` },
+      { h: "Der Cookie-Banner", html: "<p>Beim ersten Besuch fragt ein Banner nach deiner Zustimmung, wie in einem echten Shop. Er ist eine Demo: Was du auch wählst, es wird nichts gesetzt, verfolgt oder weitergegeben.</p>", banner: true },
+      { h: "Gespeicherte Daten löschen", html: "<p>Mit einem Klick sind Warenkorb und Banner-Auswahl in diesem Browser gelöscht. Beim nächsten Seitenaufruf fragt der Banner wieder.</p>", clear: true },
     ],
   },
 
@@ -520,6 +523,7 @@ function blockMarkup(block) {
   if (block.table) body = tableMarkup(tables[block.table]());
   if (block.cards) body = cardsMarkup(block.cards);
   if (block.quiz) body = quizMarkup();
+  if (block.banner) body += bannerMarkup();
   if (block.clear) body += clearMarkup();
   if (block.cart) body += cartMarkup();
   if (block.cta) body = ctaMarkup(block.cta);
@@ -550,10 +554,16 @@ pageRoot.innerHTML = `
 // The demo buttons and the quiz
 pageRoot.addEventListener("click", (e) => {
   if (e.target.closest("[data-open-cart]")) openCart();
+  if (e.target.closest("[data-show-banner]")) showCookieBanner();
   if (e.target.closest("[data-clear-cart]")) {
     cartItems = [];
     saveCart();
-    pageRoot.querySelector(".page__status").textContent = "Erledigt: Dein Warenkorb in diesem Browser ist jetzt leer.";
+    try {
+      localStorage.removeItem(NOTICE_KEY);
+    } catch {
+      // Storage can be blocked; there is then nothing to delete.
+    }
+    pageRoot.querySelector(".page__status").textContent = "Erledigt: Warenkorb und Banner-Auswahl in diesem Browser sind gelöscht.";
   }
   if (e.target.closest(".quiz__again")) {
     const form = pageRoot.querySelector(".quiz");
