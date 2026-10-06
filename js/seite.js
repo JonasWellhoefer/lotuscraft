@@ -330,12 +330,7 @@ const pages = {
     title: "Blog",
     lead: "Vier Beispielbeiträge – selbst geschrieben, damit die Seite nicht leer bleibt.",
     blocks: [
-      { cards: [
-        { tag: "Beispielbeitrag", title: "Fünf Minuten Atmen am Morgen", text: "Setz dich bequem hin, auf ein Kissen oder an den Rand eines Stuhls. Atme vier Zähler lang durch die Nase ein und sechs Zähler lang durch den Mund aus. Wiederhole das fünf Minuten und spüre, wie der Atem ruhiger wird. Wer mag, legt eine Hand auf den Bauch." },
-        { tag: "Beispielbeitrag", title: "So pflegst du deine Yogamatte", text: "Wische die Matte nach dem Üben mit einem weichen, leicht feuchten Tuch ab. Gegen Gerüche hilft Wasser mit Apfelessig (1:1). Seife und Waschmaschine sind tabu. Lass die Matte vor dem Aufrollen trocknen und schütze sie vor direkter Sonne." },
-        { tag: "Beispielbeitrag", title: "Welche Sitzhöhe passt zu mir?", text: `Sitzen deine Knie höher als die Hüften, ist das Kissen zu niedrig. Ein höheres Kissen kippt das Becken nach vorn und richtet den Rücken auf. Probiere 10, 15 und 20 cm aus und nimm das Kissen, auf dem du am längsten entspannt bleibst. Mehr im ${pageLink("guide-kissen", "Produktguide")}.` },
-        { tag: "Beispielbeitrag", title: "Yin Yoga am Abend: drei Haltungen", text: "Schmetterling (Fußsohlen aneinander, vorbeugen), Kind (Stirn auf ein Bolster) und Beine an der Wand: je drei bis fünf Minuten, ohne Anstrengung. Bolster und Decke helfen beim Loslassen. Wenn etwas schmerzt, gehst du heraus." },
-      ] },
+      { cards: blogPosts.map((post) => ({ id: post.id, tag: "Beispielbeitrag", title: post.title, text: post.text })) },
     ],
   },
 
@@ -504,7 +499,7 @@ const accordionMarkup = (items) => `
 
 const cardsMarkup = (cards) => `
       <div class="page__cards">${cards.map((card) => `
-        <article class="page-card">${card.tag ? `
+        <article class="page-card"${card.id ? ` id="${card.id}"` : ""}>${card.tag ? `
           <p class="page-card__tag">${card.tag}</p>` : ""}
           <h2 class="page-card__title">${card.title}</h2>
           <p>${card.text}</p>
@@ -535,59 +530,59 @@ function blockMarkup(block) {
 
 const pageName = new URLSearchParams(location.search).get("s") || "";
 const pageRoot = document.getElementById("page");
-const page = pages[pageName] || {
-  title: "Seite nicht gefunden",
-  lead: "Diese Seite gibt es in unserem Studentenprojekt (noch) nicht.",
-  blocks: [{ cta: [["index.html", "Zur Startseite"], ["kategorie.html?k=yoga", "Zum Shop", true]] }],
-};
+const page = pages[pageName];
 
-document.title = `${page.title} – LotusCraft Student Rebuild`;
-pageRoot.innerHTML = `
-    <div class="page__head">
-      <h1 class="page__title">${page.title}</h1>
-      <p class="page__lead">${page.lead}</p>
-      <p class="page__note">${page.note || NOTE}</p>
-    </div>
-    <div class="page__body">${page.blocks.map(blockMarkup).join("")}
-    </div>`;
+if (!page) {
+  showNotFound(pageRoot);
+} else {
+  document.title = `${page.title} – LotusCraft Student Rebuild`;
+  pageRoot.innerHTML = `
+      <div class="page__head">
+        <h1 class="page__title">${page.title}</h1>
+        <p class="page__lead">${page.lead}</p>
+        <p class="page__note">${page.note || NOTE}</p>
+      </div>
+      <div class="page__body">${page.blocks.map(blockMarkup).join("")}
+      </div>`;
 
-// The demo buttons and the quiz
-pageRoot.addEventListener("click", (e) => {
-  if (e.target.closest("[data-open-cart]")) openCart();
-  if (e.target.closest("[data-show-banner]")) showCookieBanner();
-  if (e.target.closest("[data-clear-cart]")) {
-    cartItems = [];
-    saveCart();
-    try {
-      localStorage.removeItem(NOTICE_KEY);
-    } catch {
-      // Storage can be blocked; there is then nothing to delete.
+  // The demo buttons and the quiz
+  pageRoot.addEventListener("click", (e) => {
+    if (e.target.closest("[data-open-cart]")) openCart();
+    if (e.target.closest("[data-show-banner]")) showCookieBanner();
+    if (e.target.closest("[data-clear-cart]")) {
+      cartItems = [];
+      saveCart();
+      try {
+        localStorage.removeItem(NOTICE_KEY);
+      } catch {
+        // Storage can be blocked; there is then nothing to delete.
+      }
+      pageRoot.querySelector(".page__status").textContent = "Erledigt: Warenkorb und Banner-Auswahl in diesem Browser sind gelöscht.";
     }
-    pageRoot.querySelector(".page__status").textContent = "Erledigt: Warenkorb und Banner-Auswahl in diesem Browser sind gelöscht.";
-  }
-  if (e.target.closest(".quiz__again")) {
-    const form = pageRoot.querySelector(".quiz");
-    form.reset();
-    form.querySelector(".quiz__result").hidden = true;
-    form.querySelector(".quiz__status").textContent = "";
-    form.querySelector("input").focus();
-  }
-});
+    if (e.target.closest(".quiz__again")) {
+      const form = pageRoot.querySelector(".quiz");
+      form.reset();
+      form.querySelector(".quiz__result").hidden = true;
+      form.querySelector(".quiz__status").textContent = "";
+      form.querySelector("input").focus();
+    }
+  });
 
-pageRoot.querySelector(".quiz")?.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const form = e.currentTarget;
-  const answers = Object.fromEntries(new FormData(form));
-  const status = form.querySelector(".quiz__status");
-  const result = form.querySelector(".quiz__result");
-  if (QUIZ.some((question) => !answers[question.key])) {
-    status.textContent = "Bitte beantworte alle vier Fragen.";
-    result.hidden = true;
-    return;
-  }
-  status.textContent = "";
-  result.innerHTML = quizResult(answers);
-  result.hidden = false;
-  result.querySelector("h2").tabIndex = -1;
-  result.querySelector("h2").focus();
-});
+  pageRoot.querySelector(".quiz")?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const answers = Object.fromEntries(new FormData(form));
+    const status = form.querySelector(".quiz__status");
+    const result = form.querySelector(".quiz__result");
+    if (QUIZ.some((question) => !answers[question.key])) {
+      status.textContent = "Bitte beantworte alle vier Fragen.";
+      result.hidden = true;
+      return;
+    }
+    status.textContent = "";
+    result.innerHTML = quizResult(answers);
+    result.hidden = false;
+    result.querySelector("h2").tabIndex = -1;
+    result.querySelector("h2").focus();
+  });
+}

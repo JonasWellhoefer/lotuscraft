@@ -882,6 +882,26 @@ const allModels = [
   ...speltHusks, ...meditationCushions, zabuton, meditationBench, ...cushionCovers, zabutonCover, ...yogaSets, ...meditationSets,
 ];
 const modelsNamed = (...names) => names.map((name) => allModels.find((model) => model.name === name));
+// A card for "Verwandte Produkte" from the category data: like the original,
+// it shows the first colour that is in stock, with that colour's price and
+// badge. Sets keep their "Set" tag and "ab" price; mats have no `shape`.
+function relatedCard(name) {
+  const model = allModels.find((candidate) => candidate.name === name);
+  const first = model.variants?.find((variant) => !variant.soldOut) || model.variants?.[0] || {};
+  return {
+    name: model.name,
+    slug: model.slug,
+    price: first.price ?? model.price,
+    compareAt: "compareAt" in first ? first.compareAt : model.compareAt,
+    shape: first.shape || model.shape || "mat",
+    tint: first.hex || model.tint,
+    accent: model.accent,
+    badge: first.badge ?? model.badge,
+    bundle: model.bundle,
+    fromPrice: model.fromPrice,
+    swatches: model.swatches,
+  };
+}
 // On the gift pages the original prices the stickers "ab €2,95", so these
 // copies come first and win the lookup.
 const giftModels = [...stickers.map((sticker) => ({ ...sticker, fromPrice: true })), ...allModels];
@@ -1353,6 +1373,16 @@ const searchIndex = (() => {
   });
   return [...byName.values()];
 })();
+
+// ---------- Blog (example posts) ----------
+// Four short posts written for this project. The blog page lists them all, the
+// 404 page shows the first three as teasers. `text` may hold a link.
+const blogPosts = [
+  { id: "atmen", title: "Fünf Minuten Atmen am Morgen", text: "Setz dich bequem hin, auf ein Kissen oder an den Rand eines Stuhls. Atme vier Zähler lang durch die Nase ein und sechs Zähler lang durch den Mund aus. Wiederhole das fünf Minuten und spüre, wie der Atem ruhiger wird. Wer mag, legt eine Hand auf den Bauch." },
+  { id: "matte-pflegen", title: "So pflegst du deine Yogamatte", text: "Wische die Matte nach dem Üben mit einem weichen, leicht feuchten Tuch ab. Gegen Gerüche hilft Wasser mit Apfelessig (1:1). Seife und Waschmaschine sind tabu. Lass die Matte vor dem Aufrollen trocknen und schütze sie vor direkter Sonne." },
+  { id: "sitzhoehe", title: "Welche Sitzhöhe passt zu mir?", text: `Sitzen deine Knie höher als die Hüften, ist das Kissen zu niedrig. Ein höheres Kissen kippt das Becken nach vorn und richtet den Rücken auf. Probiere 10, 15 und 20 cm aus und nimm das Kissen, auf dem du am längsten entspannt bleibst. Mehr im <a href="seite.html?s=guide-kissen">Produktguide</a>.` },
+  { id: "yin-yoga", title: "Yin Yoga am Abend: drei Haltungen", text: "Schmetterling (Fußsohlen aneinander, vorbeugen), Kind (Stirn auf ein Bolster) und Beine an der Wand: je drei bis fünf Minuten, ohne Anstrengung. Bolster und Decke helfen beim Loslassen. Wenn etwas schmerzt, gehst du heraus." },
+];
 
 // Pages the search can suggest besides products.
 const sitePages = [

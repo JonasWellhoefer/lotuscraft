@@ -93,10 +93,11 @@ lotuscraft/
 ├── seite.html      # Info-Seiten (Footer, Guides, Quiz, Konto), z. B. seite.html?s=faq
 ├── styles.css      # Gestaltung: Farben, Schriften, Layout, Mobilansicht
 ├── js/
-│   ├── shared.js   # Gemeinsame Daten & Helfer: Produkte, Kategorien, Menü, Suchindex, Zeichnungen
+│   ├── shared.js   # Gemeinsame Daten & Helfer: Produkte, Kategorien, Blog-Beiträge, Menü, Suchindex, Zeichnungen
 │   ├── layout.js   # Header, Menüs (Handy + Desktop), Suche, Footer, Warenkorb (Demo)
 │   ├── home.js     # Startseite: Produkt-Tabs, Community, Bewertungs-Karussell
 │   ├── popups.js   # Cookie-Banner und Newsletter-Fenster (Demo), auf allen Seiten
+│   ├── fehler.js   # Fehlerseite 404 für Produkt-, Kategorie- und Info-Seiten, Blog-Teaser mit gezeichneten Bildern
 │   ├── product.js  # Produktseiten: Daten aller Matten, „Almost Perfect“-Matten, Kissen, Kleidung, Bolster, Zabuton, Bank, Bezüge, Sets, Gutschein und des Zubehörs, Zeichnungen, Galerie, Farb-, Größen- und Optionsauswahl, Warenkorb-Button
 │   ├── category.js # Kategorieseite: Filter (Farbe, Sitzhöhe, Form, Material, Füllung, Größe, Verfügbarkeit), Sortierung
 │   └── seite.js    # Info-Seiten: eine Vorlage, alle Texte, Vergleichstabellen aus den Produktdaten, Quiz
@@ -183,12 +184,20 @@ damit Text darauf gut lesbar bleibt: `--gold-text` (Gold als Schrift) und `--new
 
 **Info-Seiten** (Footer, Handy-Menü, Konto-Symbol, „Versandkosten“ in der Kaufbox):
 
-- [x] 23 Seiten über `seite.html?s=…`: Hilfe & Kontakt, FAQ (11 Fragen als Akkordeon), Retouren & Umtausch, Versandkosten, Widerrufsbelehrung, Vertrag widerrufen, AGB, Datenschutz, Cookie Einstellungen, Impressum, Über uns, Blog, Nachhaltigkeit, Store Wien, Jobs, Online Yogakurse, Rabatt für Yoga-Studios und für Gewerbekunden, Konto – dazu eine Seite „nicht gefunden“
+- [x] 23 Seiten über `seite.html?s=…`: Hilfe & Kontakt, FAQ (11 Fragen als Akkordeon), Retouren & Umtausch, Versandkosten, Widerrufsbelehrung, Vertrag widerrufen, AGB, Datenschutz, Cookie Einstellungen, Impressum, Über uns, Blog, Nachhaltigkeit, Store Wien, Jobs, Online Yogakurse, Rabatt für Yoga-Studios und für Gewerbekunden, Konto
 - [x] Alle Texte selbst geschrieben und mit einem Hinweiskasten als Studentenprojekt gekennzeichnet: keine echten Rechtstexte, keine Firmenadresse, keine E-Mail-Adresse, keine Formulare, die Daten sammeln, und beim Konto kein Passwort
 - [x] Datenschutz und „Cookie Einstellungen“ sagen ehrlich, was gespeichert wird (nur der Warenkorb im Browser, dazu Schriften von Google Fonts); ein Knopf löscht den Warenkorb
 - [x] „Yogamatten im Vergleich“, „Produktguide – Meditationskissen“ und „– Yogabolster“ mit Tabellen, die aus den Produktdaten gebaut werden (auf dem Handy scrollt die Tabelle in ihrem Kasten, die erste Spalte bleibt stehen)
 - [x] Yogamatten-Quiz mit vier Fragen und einem Vorschlag samt Zweitplatziertem im gewählten Budget – läuft nur auf der Seite, nichts wird gespeichert oder gesendet
 - [x] Auch auf der Startseite führen der Hero-Knopf „Yoga-Sets“, die Kategorie-Kacheln und „Jetzt shoppen“ jetzt in den Shop; ohne Ziel bleiben nur die Platzhalter für Community-Beiträge und Social Media
+
+**Fehlerseite 404** (bei einer Adresse, die es im Nachbau nicht gibt, z. B. `produkt.html?p=gibts-nicht`, `kategorie.html?k=…` oder `seite.html?s=…`):
+
+- [x] Aufbau und Maße wie die 404-Seite des Originals (bei 1440 und 375 Pixel gemessen, Umbruch bei 780 Pixel): „404“, „Leider finden wir nicht, wonach du suchst“, „Vielleicht hilft das weiter?“ und die Knöpfe „Zur Homepage“ und „Suche ausprobieren“
+- [x] „Suche ausprobieren“ öffnet die Suche; nach dem Schließen landet der Fokus wieder auf dem Knopf (die Suche gibt ihn jetzt immer an den zurück, der sie geöffnet hat)
+- [x] Darunter „Unsere Bestseller“ (die vier Karten des Originals) und „Neueste Blogartikel“: die ersten drei Beispielbeiträge mit selbst gezeichneten Bildern, „Weiterlesen“ springt zum Beitrag auf der Blog-Seite
+- [x] Ein kleiner Zusatz sagt, dass nicht jede Seite des Originals nachgebaut ist; die Adresse bleibt stehen, der Seitentitel heißt „404 Nicht gefunden“
+- [x] Produkt-, Kategorie- und Info-Seiten teilen sich diese eine Seite (`js/fehler.js`); die Beispielbeiträge des Blogs stehen jetzt einmal in `js/shared.js`
 
 **Banner und Fenster** (beim ersten Besuch, wie im Original – nur als Demo):
 

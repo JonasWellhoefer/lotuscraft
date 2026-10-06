@@ -58,27 +58,6 @@ const mudraFeatures = [
 const colorsOf = (name) => allModels.find((model) => model.name === name).variants
   .map((variant) => ({ name: variant.color, hex: variant.hex, soldOut: Boolean(variant.soldOut) }));
 
-// A card for "Verwandte Produkte" from the category data: like the original,
-// it shows the first colour that is in stock, with that colour's price and
-// badge. Sets keep their "Set" tag and "ab" price; mats have no `shape`.
-function relatedCard(name) {
-  const model = allModels.find((candidate) => candidate.name === name);
-  const first = model.variants?.find((variant) => !variant.soldOut) || model.variants?.[0] || {};
-  return {
-    name: model.name,
-    slug: model.slug,
-    price: first.price ?? model.price,
-    compareAt: "compareAt" in first ? first.compareAt : model.compareAt,
-    shape: first.shape || model.shape || "mat",
-    tint: first.hex || model.tint,
-    accent: model.accent,
-    badge: first.badge ?? model.badge,
-    bundle: model.bundle,
-    fromPrice: model.fromPrice,
-    swatches: model.swatches,
-  };
-}
-
 const ORGANIC = "Bio-Baumwolle (kbA)";
 const SPELT_FILLING = "Bio-Dinkelspelz (kbA)";
 const ORIGIN = "Bezug aus Indien, befüllt in Deutschland";
@@ -4714,15 +4693,6 @@ function setupReviews(product) {
   render();
 }
 
-function missingMarkup() {
-  return `
-    <div class="container product-missing">
-      <h1 class="buybox__title">Produkt nicht gefunden</h1>
-      <p>Diese Produktseite gibt es in unserem Studentenprojekt (noch) nicht.</p>
-      <a href="index.html" class="btn btn--primary">Zur Startseite</a>
-    </div>`;
-}
-
 // ---------- Render + behaviour ----------
 const pageParams = new URLSearchParams(location.search);
 const slug = pageParams.get("p") || "yogamatte-pure";
@@ -4732,7 +4702,7 @@ const productRoot = document.getElementById("product");
 if (!productRoot) {
   // Another page (the guides on seite.html) only uses the data above.
 } else if (!product) {
-  productRoot.innerHTML = missingMarkup();
+  showNotFound(productRoot);
 } else {
   // A link can preselect a colour (&farbe=Light Taupe), with a choice
   // (&farbe=Light Taupe / 7 cm, as the zabuton's cards name it; the cork

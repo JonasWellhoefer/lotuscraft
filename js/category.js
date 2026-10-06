@@ -315,12 +315,7 @@ const category = categories[categoryKey];
 const categoryRoot = document.getElementById("category");
 
 if (!category) {
-  categoryRoot.innerHTML = `
-    <div class="container product-missing">
-      <h1 class="buybox__title">Kategorie nicht gefunden</h1>
-      <p>Diese Kategorie gibt es in unserem Studentenprojekt (noch) nicht.</p>
-      <a href="index.html" class="btn btn--primary">Zur Startseite</a>
-    </div>`;
+  showNotFound(categoryRoot);
 } else {
   document.title = `${category.title} – LotusCraft Student Rebuild`;
   categoryRoot.innerHTML = categoryMarkup(category);

@@ -478,6 +478,7 @@ const searchClear = searchDialog.querySelector(".search__clear");
 const searchResults = searchDialog.querySelector(".search__results");
 const searchStatus = searchDialog.querySelector("#search-status");
 let searchTimer = null;
+let searchOpener = null;
 let showAllResults = false;
 
 // The query is typed by the visitor, so escape it before showing it.
@@ -544,6 +545,7 @@ searchResults.addEventListener("click", (e) => {
 });
 
 searchToggle.addEventListener("click", () => {
+  searchOpener = document.activeElement; // the icon, or another button that calls this click (404 page)
   searchDialog.showModal(); // focuses the input (autofocus)
   searchToggle.setAttribute("aria-expanded", "true");
   searchInput.select();
@@ -559,9 +561,12 @@ searchDialog.addEventListener("click", (e) => {
   if (outside) searchDialog.close();
 });
 
+// Give focus back to whatever opened the search (Safari doesn't focus
+// buttons on click, so fall back to the icon).
 searchDialog.addEventListener("close", () => {
   searchToggle.setAttribute("aria-expanded", "false");
-  searchToggle.focus();
+  const opener = searchOpener && searchOpener !== document.body && searchOpener.isConnected ? searchOpener : searchToggle;
+  opener.focus();
 });
 
 // ---------- Cart (demo) ----------
