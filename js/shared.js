@@ -28,6 +28,15 @@ const PAYMENT_ICONS = `
   <svg viewBox="0 0 30 24" aria-hidden="true"><rect x=".5" y=".5" width="29" height="23" rx="3.5"/><rect x="11" y="5" width="8" height="14" rx="1.5"/><path d="M14 16.5h2"/></svg>
   <svg viewBox="0 0 30 24" aria-hidden="true"><rect x=".5" y=".5" width="29" height="23" rx="3.5"/><path d="M10 5h7l3 3v11H10zM13 11h4M13 14h4"/></svg>`;
 
+// Six more tiles for the buy box, which shows eleven like the original (all plain symbols, no brands)
+const PAYMENT_ICONS_MORE = `
+  <svg viewBox="0 0 30 24" aria-hidden="true"><rect x=".5" y=".5" width="29" height="23" rx="3.5"/><circle cx="15" cy="12" r="6"/><path d="M15 9v6M13 10.5h3M13 13.5h3"/></svg>
+  <svg viewBox="0 0 30 24" aria-hidden="true"><rect x=".5" y=".5" width="29" height="23" rx="3.5"/><rect x="10" y="11" width="10" height="7" rx="1.5"/><path d="M12 11V9a3 3 0 0 1 6 0v2"/></svg>
+  <svg viewBox="0 0 30 24" aria-hidden="true"><rect x=".5" y=".5" width="29" height="23" rx="3.5"/><rect x="8" y="7" width="14" height="10" rx="1.5"/><path d="M8 8l7 5 7-5"/></svg>
+  <svg viewBox="0 0 30 24" aria-hidden="true"><rect x=".5" y=".5" width="29" height="23" rx="3.5"/><path d="M9 11h12v7H9zM8 8h14v3H8zM15 8v10M15 8c-1-3-4-3-4-1.5S13 8 15 8zM15 8c1-3 4-3 4-1.5S17 8 15 8z"/></svg>
+  <svg viewBox="0 0 30 24" aria-hidden="true"><rect x=".5" y=".5" width="29" height="23" rx="3.5"/><path d="M15 6l2.1 4.4 4.9.6-3.6 3.3.9 4.8L15 16.7l-4.3 2.4.9-4.8L8 11l4.9-.6z"/></svg>
+  <svg viewBox="0 0 30 24" aria-hidden="true"><rect x=".5" y=".5" width="29" height="23" rx="3.5"/><path d="M8 9h12M17 6l3 3-3 3M22 15H10M13 12l-3 3 3 3"/></svg>`;
+
 // ---------- Bestseller data ----------
 // Product names and prices mirror the original shop (as of Oct 2026).
 // `shape` picks a placeholder illustration instead of the original photo.

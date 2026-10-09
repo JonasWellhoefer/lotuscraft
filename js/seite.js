@@ -492,7 +492,7 @@ const pages = {
 const accordionMarkup = (items) => `
       <div class="accordion">${items.map(([question, answer]) => `
         <details class="accordion__item">
-          <summary class="accordion__summary">${question}<svg class="accordion__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path class="accordion__icon-v" d="M12 5v14"/></svg></summary>
+          <summary class="accordion__summary">${question}<svg class="accordion__icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 7h16v2H0z"/><path class="accordion__icon-v" d="M7 0h2v16H7z"/></svg></summary>
           <div class="accordion__content">${answer}</div>
         </details>`).join("")}
       </div>`;
@@ -506,8 +506,8 @@ const cardsMarkup = (cards) => `
         </article>`).join("")}
       </div>`;
 
-function blockMarkup(block) {
-  const wide = Boolean(block.table);
+// What a block puts on the page, without its heading
+function blockBody(block) {
   let body = block.html || "";
   if (block.list) {
     const items = typeof block.list === "function" ? block.list() : block.list;
@@ -522,10 +522,70 @@ function blockMarkup(block) {
   if (block.clear) body += clearMarkup();
   if (block.cart) body += cartMarkup();
   if (block.cta) body = ctaMarkup(block.cta);
+  return body;
+}
+
+// Like the original's pages: a stack of sections with a centred heading and
+// the content in a narrow column (tables and cards use the full width).
+function sectionMarkup(block) {
+  const wide = Boolean(block.table || block.cards);
   return `
-    <section class="page__section${wide ? " page__section--wide" : ""}">${block.h ? `
-      <h2>${block.h}</h2>` : ""}${body}
+    <section class="section page-section">
+      <div class="container${wide ? "" : " container--narrow"}">${block.h ? `
+        <header class="section-header">
+          <h2 class="section-header__title">${block.h}</h2>
+        </header>` : ""}
+        <div class="page-section__content">${blockBody(block)}
+        </div>
+      </div>
     </section>`;
+}
+
+// Three layouts, as on the original: most pages open with a hero picture, the
+// legal texts are a plain column, and a few pages are just a title and content.
+const POLICY_PAGES = ["widerruf", "agb", "datenschutz", "impressum"];
+const PLAIN_PAGES = ["hilfe-kontakt", "faq", "cookies", "konto", "quiz", "jobs", "vertrag-widerrufen", "blog"];
+const HERO_SCENES = ["placeholder--hero", "placeholder--2", "placeholder--1", "placeholder--4", "placeholder--3"];
+
+const noteMarkup = (page) => `<p class="page__note">${page.note || NOTE}</p>`;
+
+function heroPageMarkup(name, page) {
+  const heroPages = Object.keys(pages).filter((key) => !POLICY_PAGES.includes(key) && !PLAIN_PAGES.includes(key));
+  return `
+    <section class="hero hero--page">
+      <div class="hero__image placeholder ${HERO_SCENES[heroPages.indexOf(name) % HERO_SCENES.length]}" aria-hidden="true"></div>
+      <div class="container hero__content">
+        <h1 class="hero__title">${page.title}</h1>
+        <p class="hero__subtitle">${page.lead}</p>
+      </div>
+    </section>
+    <section class="section page-section page-section--note">
+      <div class="container container--narrow">${noteMarkup(page)}</div>
+    </section>${page.blocks.map(sectionMarkup).join("")}`;
+}
+
+function plainPageMarkup(page) {
+  return `
+    <section class="section page-section">
+      <div class="container container--narrow">
+        <header class="section-header">
+          <h1 class="section-header__title">${page.title}</h1>
+          <p class="section-header__subtitle">${page.lead}</p>
+        </header>
+        ${noteMarkup(page)}
+      </div>
+    </section>${page.blocks.map(sectionMarkup).join("")}`;
+}
+
+function policyPageMarkup(page) {
+  return `
+    <div class="policy">
+      <h1 class="policy__title">${page.title}</h1>
+      <p>${page.lead}</p>
+      ${noteMarkup(page)}${page.blocks.map((block) => `${block.h ? `
+      <h2>${block.h}</h2>` : ""}
+      ${blockBody(block)}`).join("")}
+    </div>`;
 }
 
 const pageName = new URLSearchParams(location.search).get("s") || "";
@@ -536,14 +596,9 @@ if (!page) {
   showNotFound(pageRoot);
 } else {
   document.title = `${page.title} – LotusCraft Student Rebuild`;
-  pageRoot.innerHTML = `
-      <div class="page__head">
-        <h1 class="page__title">${page.title}</h1>
-        <p class="page__lead">${page.lead}</p>
-        <p class="page__note">${page.note || NOTE}</p>
-      </div>
-      <div class="page__body">${page.blocks.map(blockMarkup).join("")}
-      </div>`;
+  pageRoot.innerHTML = POLICY_PAGES.includes(pageName) ? policyPageMarkup(page)
+    : PLAIN_PAGES.includes(pageName) ? plainPageMarkup(page)
+    : heroPageMarkup(pageName, page);
 
   // The demo buttons and the quiz
   pageRoot.addEventListener("click", (e) => {

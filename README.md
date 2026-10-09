@@ -138,8 +138,9 @@ damit Text darauf gut lesbar bleibt: `--gold-text` (Gold als Schrift) und `--new
 - [x] Bild-Zoom wie im Original: Ein Klick auf ein Bild öffnet alle Bilder groß im Vollbild (`js/zoom.js`). Ab 1060 px stehen die Vorschaubilder links (56 × 70 px, das aktuelle mit goldenem Rand) und die Pfeile neben dem Bild, darunter ein Bild im Format 4 : 5 mit Punkten und Pfeilen in einer 76 px hohen Leiste; der Schließen-Knopf sitzt oben rechts. Die Maße (Bild 681,6 × 852 px bei 900 px Höhe, Pfeile 48 px, 32 px Abstand, Punkte 44 px) stimmen bei 1440, 1060, 1059, 900, 780 und 375 px auf 0,2 px mit dem Original überein
 - [x] Der Zoom zeigt immer die Farbe, die gerade gewählt ist; man blättert mit Pfeilen, Vorschaubildern, Punkten, Wischen oder den Tasten ← → Pos1 Ende, Escape schließt und der Fokus kehrt zum Bild zurück; dafür sind die Galerie-Bilder echte Knöpfe mit Beschriftung („… – vergrößern“)
 - [x] Kaufbox: Preis, Bewertung, Farbauswahl (zeichnet die Bilder neu), Warenkorb-Button (Demo)
+- [x] Unter dem Warenkorb-Knopf lässt die Kaufbox den Platz des Originals frei (Lieferdatum-Zeile 21 px, schmal 40,5 px) und zeigt elf neutrale Zahlungs-Kacheln in zwei Reihen; die Zeilen darunter liegen bei 1440, 900 und 375 px auf 0,5 px wie im Original
 - [x] Ausverkaufte Farben wie im Original mit „Benachrichtige mich“ und „Nicht auf Lager“ (Demo, es wird nichts gespeichert)
-- [x] Akkordeon (Beschreibung, Details, Pflege, Nachhaltigkeit) und Bewertungsübersicht
+- [x] Akkordeon (Beschreibung, Details, Pflege, Nachhaltigkeit) und Bewertungsübersicht; wie im Original in normaler Schrift mit 16-px-Plus, dunklem Text und 8 px Abstand (auch auf den Info-Seiten, z. B. in der FAQ)
 - [x] Infobereich zu Material & Grip (4 Zeilen im Zickzack)
 - [x] Bewertungen (Beispieldaten, sortierbar, mit Seiten)
 - [x] Verwandte Produkte
@@ -189,6 +190,8 @@ damit Text darauf gut lesbar bleibt: `--gold-text` (Gold als Schrift) und `--new
 
 **Info-Seiten** (Footer, Handy-Menü, Konto-Symbol, „Versandkosten“ in der Kaufbox):
 
+- [x] Aufbau wie die Seiten des Originals (bei 1440, 900 und 375 Pixel gemessen): Die meisten Seiten beginnen mit einem Bildband (603 px hoch, auf dem Handy 544 px) mit zentriertem Titel, darunter folgen Abschnitte mit zentrierter Überschrift (31,25 px) und schmaler Textspalte (642 px); Tabellen und Karten nutzen die volle Breite. Die Rechtstexte (Widerruf, AGB, Datenschutz, Impressum) stehen wie im Original in einer schlichten 542-px-Spalte mit fetter Überschrift, FAQ, Hilfe, Cookies, Konto, Quiz, Jobs und Blog nur mit Titel und Inhalt
+- [x] Das Bildband ist ein gezeichneter Farbverlauf als Platzhalter (kein Foto des Originals), die Abschnitte stehen 64 px voneinander entfernt (32 px auf dem Handy)
 - [x] 23 Seiten über `seite.html?s=…`: Hilfe & Kontakt, FAQ (11 Fragen als Akkordeon), Retouren & Umtausch, Versandkosten, Widerrufsbelehrung, Vertrag widerrufen, AGB, Datenschutz, Cookie Einstellungen, Impressum, Über uns, Blog, Nachhaltigkeit, Store Wien, Jobs, Online Yogakurse, Rabatt für Yoga-Studios und für Gewerbekunden, Konto
 - [x] Alle Texte selbst geschrieben und mit einem Hinweiskasten als Studentenprojekt gekennzeichnet: keine echten Rechtstexte, keine Firmenadresse, keine E-Mail-Adresse, keine Formulare, die Daten sammeln, und beim Konto kein Passwort
 - [x] Datenschutz und „Cookie Einstellungen“ sagen ehrlich, was gespeichert wird (nur der Warenkorb im Browser, dazu Schriften von Google Fonts); ein Knopf löscht den Warenkorb

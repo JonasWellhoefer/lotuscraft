@@ -4395,7 +4395,7 @@ function productMarkup(product, color, size, choice) {
     ["Nachhaltigkeit", product.sustainability],
   ].filter(([, body]) => body).map(([title, body, key]) => `
           <details class="accordion__item">
-            <summary class="accordion__summary">${title}<svg class="accordion__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/><path class="accordion__icon-v" d="M12 5v14"/></svg></summary>
+            <summary class="accordion__summary">${title}<svg class="accordion__icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 7h16v2H0z"/><path class="accordion__icon-v" d="M7 0h2v16H7z"/></svg></summary>
             <div class="accordion__content"${key ? ` data-${key}` : ""}>${body}</div>
           </details>`).join("");
 
@@ -4436,7 +4436,7 @@ ${product.unavailable ? `
         <p class="buybox__note"${remindable ? "" : " hidden"}>Du erhältst eine Benachrichtigung per E-Mail, sobald der Artikel wieder auf Lager ist.</p>
         <p class="buybox__stock${soldOut ? " buybox__stock--out" : ""}">${stockText(soldOut, product)}</p>`}
         <p class="buybox__added" role="status"></p>
-        <div class="buybox__payments" role="img" aria-label="Zahlungsarten (neutrale Platzhalter-Icons)">${PAYMENT_ICONS}
+        <div class="buybox__payments" role="img" aria-label="Zahlungsarten (neutrale Platzhalter-Icons)">${PAYMENT_ICONS}${PAYMENT_ICONS_MORE}
         </div>
         <ul class="buybox__usps">${usps}
         </ul>

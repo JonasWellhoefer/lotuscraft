@@ -996,7 +996,7 @@ main:focus { outline: none; }
 
 .buybox__cart { margin-top: 32px; border: 0; } /* 52px high like the original's */
 .buybox__note { margin-top: 4px; text-align: center; font-size: 12.8px; line-height: 1.2; color: var(--text-muted); }
-.buybox__stock { margin-top: 16px; text-align: center; color: #028849; }
+.buybox__stock { min-height: 21px; margin-top: 16px; text-align: center; color: #028849; }
 .buybox__stock--out { color: var(--sale); }
 /* A product sold out as a whole: a red notice instead of the button */
 .buybox__alert { display: flex; gap: 8px; margin-top: 32px; line-height: 1.35; color: var(--sale); }
@@ -1008,7 +1008,7 @@ main:focus { outline: none; }
   flex-wrap: wrap;
   justify-content: center;
   gap: 16px;
-  margin-top: 15px;
+  margin-top: 46px; /* the original leaves room for its delivery date line: 21px high, two lines (40.5px) in the narrow buy box */
 }
 .buybox__payments svg {
   width: 30px;
@@ -1046,7 +1046,6 @@ main:focus { outline: none; }
   justify-content: space-between;
   padding: 16px;
   background: var(--background-soft);
-  font-weight: 600;
   cursor: pointer;
   list-style: none;
 }
@@ -1054,16 +1053,13 @@ main:focus { outline: none; }
 .accordion__summary:focus-visible { outline: 2px solid var(--gold); outline-offset: -2px; }
 .accordion__icon {
   flex-shrink: 0;
-  width: 20px;
-  height: 20px;
-  fill: none;
-  stroke: var(--text);
-  stroke-width: 1.5;
-  stroke-linecap: round;
+  width: 16px;
+  height: 16px;
+  fill: var(--text);
 }
 .accordion__icon-v { transform-origin: center; transition: transform .2s ease; }
 .accordion__item[open] .accordion__icon-v { transform: scaleY(0); }
-.accordion__content { padding: 16px; line-height: 1.5; color: var(--text-muted); }
+.accordion__content { padding: 8px 16px 16px; }
 .accordion__content p + p { margin-top: 12px; }
 .accordion__content p + .care-list { margin-top: 12px; }
 .care-list { margin: 0; padding-left: 20px; }
@@ -1808,13 +1804,13 @@ body:has(dialog[open]) { overflow: hidden; }
 .placeholder--4 { background: linear-gradient(160deg, #b99a78, #7d644b); }
 
 /* ---------- Info pages (footer links, guides, quiz) ---------- */
-.page { padding-top: 48px; padding-bottom: 24px; }
-.page__head,
-.page__section { max-width: 760px; }
-.page__title { font-family: var(--font-heading); font-weight: 400; font-size: 39px; line-height: 1.15; }
-.page__lead { margin-top: 12px; font-size: 18px; line-height: 1.5; color: var(--text-muted); }
+/* Built like the original's pages: a hero picture (603px high, 544px on phones), then sections with a centred heading and the content in a narrow column (642px wide on desktop); tables and cards use the full width. The legal texts are a plain 542px column. */
+.hero--page { height: 603px; }
+.hero--page .hero__content { width: 100%; text-align: center; }
+.container--narrow { max-width: 770px; margin-left: auto; margin-right: auto; }
+.page-section--note { padding: 32px 0 0; }
+.page-section:last-child { padding-bottom: 0; } /* the footer's own margin follows */
 .page__note {
-  margin-top: 20px;
   padding: 12px 16px;
   border-left: 3px solid var(--gold);
   border-radius: 0 var(--radius) var(--radius) 0;
@@ -1823,29 +1819,37 @@ body:has(dialog[open]) { overflow: hidden; }
   line-height: 1.5;
   color: var(--text-muted);
 }
-.page__section { margin-top: 40px; }
-.page__section--wide { max-width: none; }
-.page__section h2 { margin-bottom: 12px; font-family: var(--font-heading); font-weight: 400; font-size: 25px; line-height: 34px; }
-.page__section p,
-.page__list { line-height: 1.6; }
-.page__section p + p { margin-top: 12px; }
-.page__section a:not(.btn) { text-decoration: underline; text-underline-offset: 2px; }
-.page__section a:not(.btn):hover { color: var(--gold-text); }
-.page__list { margin: 0; padding-left: 22px; }
+.section-header + .page__note { margin-top: -8px; }
+.page-section__content p + p { margin-top: 16px; }
+.page-section__content a:not(.btn),
+.policy a { text-decoration: underline; text-underline-offset: 2px; }
+.page-section__content a:not(.btn):hover,
+.policy a:hover { color: var(--gold-text); }
+.page__list { margin: 16px 0; padding-left: 40px; }
 ul.page__list { list-style: disc; }
 ol.page__list { list-style: decimal; }
 .page__list li + li { margin-top: 8px; }
 .page code { padding: 1px 5px; border-radius: 4px; background: var(--background-soft); font-size: .9em; }
-.page__cta { display: flex; flex-wrap: wrap; gap: 12px; }
-.page__section .btn { margin-top: 16px; }
+.page__cta { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.page-section__content .btn { margin-top: 16px; }
 .page__cta .btn { margin-top: 0; }
 .page__status { margin-top: 12px; font-size: 14px; color: var(--text-muted); }
 .page__status:empty { display: none; }
 
+/* Legal texts: the original's plain column with a bold heading */
+.policy { max-width: 582.5px; margin: 0 auto; padding: 64px 20px 0; }
+.policy__title { margin-bottom: 16px; font-family: var(--font-heading); font-size: 31.25px; font-weight: 700; line-height: normal; }
+.policy p,
+.policy .page__list { margin: 0 0 16px; }
+.policy .page__note { margin: 0 0 16px; }
+.policy .page__list { padding-left: 16px; }
+.policy h2 { font-size: 24px; font-weight: 700; line-height: 28.5px; }
+.policy .page__cta { justify-content: flex-start; margin-bottom: 16px; }
+
 .page__cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .page-card { padding: 20px; border-radius: var(--radius); box-shadow: 0 0 2px rgba(24, 23, 20, .24); }
 .page-card__tag { margin-bottom: 8px; font-size: 12.8px; letter-spacing: .08em; text-transform: uppercase; color: var(--gold-text); }
-.page__section .page-card__title { margin-bottom: 8px; font-size: 21px; line-height: 28px; }
+.page-section__content .page-card__title { margin-bottom: 8px; font-size: 21px; line-height: 28px; }
 
 /* Tables scroll inside their own box on narrow screens; the first column stays */
 .page__table { overflow-x: auto; border: 1px solid rgba(167, 162, 143, .5); border-radius: var(--radius); }
@@ -2052,6 +2056,7 @@ ol.page__list { list-style: decimal; }
   .shortcut { flex: none; }
   .category__title { margin-top: 63px; }
   .buybox { padding: 16px; }
+  .buybox__stock { min-height: 40.5px; }
 }
 
 @media (max-width: 779px) {
@@ -2106,6 +2111,7 @@ ol.page__list { list-style: decimal; }
   .product__more { grid-template-columns: minmax(0, 1fr); gap: 32px; }
   .product__more { margin-top: 64px; }
   .buybox { position: static; }
+  .buybox__stock { margin-top: 26px; }
   .buybox__title { font-size: 25px; line-height: 34px; }
   .gallery__track {
     display: flex;
@@ -2167,6 +2173,13 @@ ol.page__list { list-style: decimal; }
   .category__title { margin-top: 32px; font-size: 25px; line-height: 34px; }
   .category__title:first-child { margin-top: 0; }
 
+  /* Info pages: the hero is shorter, the legal column and sections are tighter */
+  .hero--page { height: 544px; }
+  .page-section--note { padding: 16px 0 0; }
+  .page-section:last-child { padding-bottom: 8px; }
+  .policy { padding: 32px 20px 8px; }
+  .policy__title { font-size: 25px; }
+
   /* Search results page */
   .search-page { padding: 32px 0 8px; }
   .search-page__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 20px; }
@@ -2176,10 +2189,6 @@ ol.page__list { list-style: decimal; }
 }
 
 @media (max-width: 600px) {
-  .page { padding-top: 32px; }
-  .page__title { font-size: 31px; }
-  .page__lead { font-size: 16px; }
-  .page__section { margin-top: 32px; }
   .page__cards { grid-template-columns: minmax(0, 1fr); }
   .consent__levels { grid-template-columns: minmax(0, 1fr); padding: 4px var(--consent-pad); }
   .consent__level { flex-direction: row; justify-content: space-between; padding: 15px 0; }
