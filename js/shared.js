@@ -363,6 +363,27 @@ function productCard(product) {
     </a>`;
 }
 
+// One card per colour (or size), as the original shows a product on its
+// category pages and in the search. A variant can bring its own price and
+// material; sets and stickers have no variants and get one card each.
+const modelCards = (model) => (model.variants ? model.variants.map((variant) => ({
+  name: model.name,
+  slug: model.slug,
+  price: variant.price ?? model.price,
+  compareAt: "compareAt" in variant ? variant.compareAt : model.compareAt,
+  material: variant.material ?? model.material,
+  filling: variant.filling ?? model.filling,
+  height: variant.height ?? model.height,
+  stock: variant.stock,
+  form: variant.form ?? model.form,
+  shape: variant.shape || model.shape || "mat",
+  variant: variant.color,
+  tint: variant.hex,
+  family: variant.family,
+  soldOut: Boolean(variant.soldOut),
+  badge: variant.badge ?? model.badge,
+})) : [{ ...model, soldOut: Boolean(model.soldOut) }]);
+
 // ---------- Category data ----------
 // Models, prices, colours, materials and which variant is sold out mirror the
 // original "Yogamatten" category (Oct 2026). Every colour gets its own card,
@@ -1345,10 +1366,123 @@ const categories = {
   },
 };
 
+// ---------- Sales ranking ----------
+// The original sorts most pages by "meistverkauft". Its sales ranking (as
+// shown on 4 Oct 2026) is one list across all pages, each page showing the
+// cards it has in that order; cards it doesn't rank (sets, stickers, sprays …)
+// go last in the page's own order.
+const bestSellingRanking = [
+  "Yogamatte MUDRA / Balsam Green", "Yogamatten Tragegurt / Light Taupe", "Yogamatte PURE / Light Taupe", "Yogamatte MUDRA / Light Taupe",
+  "Yogamatte PURE / Aubergine", "Yogamatte MUDRA / Indigo Dust", "Yogarolle RESTORATIVE Ø24 cm / Light Taupe",
+  "Yogamatte ARISE Travel / Balsam Green", "Yoga Handtuch / Balsam Green", "Yogamatte ARISE / Balsam Green", "Yogatasche PUNE / Light Taupe",
+  "Yoga Bolster RESTORATIVE L / Light Taupe", "Yogamatte PURE / Indigo Dust", "Yogatasche PUNE / Balsam Green",
+  "Yogarolle RESTORATIVE Ø24 cm / Indigo Dust", "Yoga Bolster RESTORATIVE L / Indigo Dust", "Yogagurt 100% Bio-Baumwolle / Balsam Green",
+  "Yogatasche PUNE / Indigo Dust", "Yogamatte ARISE Travel / Indigo Dust", "Yogadecke Savasana 100% Baumwolle (kbA) / Natur",
+  "Yoga Mini-Rolle (Nackenrolle) Ø12 cm / Light Taupe", "Yogamatte MUDRA / Dark Cranberry", "Yogagurt 100% Bio-Baumwolle / Indigo Dust",
+  "Yogarolle RESTORATIVE Ø24 cm / Natur", "Heya Culotte / Dark Cranberry", "Yogagurt 100% Bio-Baumwolle / Light Taupe",
+  "Yogamatte MUDRA / Lavender Fog", "Yogamatte ARISE / Indigo Dust", "Heya Culotte / Almond Milk", "Meditationskissen Lotus (H: 15cm) / Balsam Green",
+  "Heya Culotte / Midnight Blue", "Yoga Bolster RESTORATIVE S / Indigo Dust", "Yoga Bolster RESTORATIVE S / Light Taupe",
+  "Yogamatte PURE / Anthrazit", "Yogamatte ARISE CORK / Align", "Meditationskissen Lotus (H: 15cm) / Natur", "Naima Top / Almond Milk",
+  "Yogamatte ARISE CORK / Lotus", "Yogatasche PUNE / Aubergine", "Meditationsmatte Zabuton / Light Taupe / 4 cm",
+  "Meditationsmatte Zabuton / Light Taupe / 7 cm", "Meditationskissen Lotus (H: 15cm) / Light Taupe", "Naima Top / Dark Cranberry",
+  "Yoga Bolster RESTORATIVE L / Natur", "Yoga Mini-Rolle (Nackenrolle) Ø12 cm / Balsam Green", "Yogamatte ARISE Travel / Graphite",
+  "Yoga Handtuch / Light Taupe", "Meditationsmatte Zabuton / Natur / 4 cm", "Meditationsmatte Zabuton / Natur / 7 cm", "Yoga Handtuch / Lavender Fog",
+  "Yogamatte ARISE / Dark Cranberry", "Yogamatte MUDRA / Anthrazit", "Meditationsmatte Zabuton / Balsam Green / 4 cm",
+  "Meditationsmatte Zabuton / Balsam Green / 7 cm", "Yogatasche PUNE / Anthrazit", "Yogagurt 100% Bio-Baumwolle / Natur",
+  "Yogarolle RESTORATIVE Ø24 cm / Aubergine", "Yoga Bolster RESTORATIVE S / Natur", "Meditationsmatte Zabuton / Indigo Dust / 4 cm",
+  "Meditationsmatte Zabuton / Indigo Dust / 7 cm", "Naima Top / Midnight Blue", "Yogagurt 100% Bio-Baumwolle / Aubergine",
+  "Yogakissen Halbmond Shanti / Light Taupe", "Meditationskissen Lotus (H: 15cm) / Indigo Dust", "Yogamatte ARISE Travel / Dark Cranberry",
+  "Yoga Bolster RESTORATIVE L / Anthrazit", "Yogamatte MUDRA PRO / Light Taupe", "Yogadecke Savasana 100% Baumwolle (kbA) / Indigo Dust",
+  "Yogatasche NANDI / Anthrazit", "Augenkissen / Light Taupe", "Augenkissen / Lavender Fog", "Yogamatte PURE / Balsam Green",
+  "Yogamatte MUDRA / Aubergine", "Yogarolle RESTORATIVE Ø24 cm / Anthrazit", "Yogakissen Halbmond Shanti / Balsam Green", "Yoga Handtuch / Anthrazit",
+  "Yogamatte ARISE / Graphite", "Meditationskissen Lotus HOCH (H: 20cm) / Balsam Green", "Amina Wrap Top / Almond Milk",
+  "Yogagurt 100% Bio-Baumwolle / Lavender Fog", "Yogakissen Halbmond Shanti / Indigo Dust", "Yogamatte MUDRA PRO / Anthrazit",
+  "Yogatasche PUNE / Lavender Fog", "Yogagurt 100% Bio-Baumwolle / Anthrazit", "Meditationskissen Lotus HOCH (H: 20cm) / Indigo Dust",
+  "Yoga Handtuch / Indigo Dust", "Yogakissen Halbmond Shanti / Natur", "Yogamatte MUDRA PRO / Balsam Green", "Zafu-Meditationskissen Zen / Natur",
+  "Yogamatte ARISE / Midnight Blue", "Meditationskissen Lotus HOCH (H: 20cm) / Light Taupe", "Yogamatte PURE / Dark Cranberry",
+  "Yogatasche NANDI / Natur", "Zafu-Meditationskissen Zen / Indigo Dust", "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Balsam Green",
+  "Yogadecke Savasana 100% Baumwolle (kbA) / Anthrazit", "Amina Wrap Top / Dark Cranberry", "Meditationsmatte Zabuton / Anthrazit / 4 cm",
+  "Meditationsmatte Zabuton / Anthrazit / 7 cm", "Yoga Bolster RESTORATIVE L / Aubergine", "Amina Wrap Top / Midnight Blue",
+  "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Light Taupe", "MIKO Bralette / Marshmallow", "QUINN Mens Pants / Stone Blue",
+  "REID Mens Tank-Top / Anthrazit", "Zafu-Meditationskissen Zen / Light Taupe", "Meditationskissen Lotus HOCH (H: 20cm) / Natur",
+  "Meditationskissen Lotus KLEIN (H: 10 cm) / Natur", "Yoga Bolster RESTORATIVE S / Anthrazit", "ELI Womens Tee (Short Sleeve) / Violetta",
+  "Meditationskissen Lotus KLEIN (H: 10 cm) / Balsam Green", "REID Mens Tank-Top / Marshmallow", "Meditationskissen Lotus (H: 15cm) / Anthrazit",
+  "Meditationskissen Lotus HOCH (H: 20cm) / Bordeaux", "Meditationskissen Lotus HOCH (H: 20cm) / Anthrazit", "MIKO Bralette / Anthrazit",
+  "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Indigo Dust", "Meditationsmatte Zabuton / Bordeaux / 4 cm",
+  "Meditationsmatte Zabuton / Bordeaux / 7 cm", "ELI Womens Tee (Short Sleeve) / Anthrazit", "Yogakissen Halbmond Shanti / Aubergine",
+  "Yogamatten Tragegurt / Balsam Green", "Zafu-Meditationskissen Zen / Balsam Green", "BECCA Leggings / Anthrazit",
+  "Meditationskissen Lotus KLEIN (H: 10 cm) / Light Taupe", "MIKO Bralette / Violetta", "Augenkissen / Balsam Green",
+  "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Natur", "Meditationskissen Lotus (H: 15cm) / Kurkuma", "REID Mens Tank-Top / Stone Blue",
+  "Yogakissen Halbmond Shanti / Anthrazit", "FIONA Womens Pants / Stone Blue", "Meditationskissen Lotus KLEIN (H: 10 cm) / Indigo Dust",
+  "Augenkissen / Natur", "BECCA Leggings / Marshmallow", "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Lavender Fog",
+  "QUINN Mens Pants / Anthrazit", "ALA Tank Tee / Marshmallow", "DANA Overall / Marshmallow", "ELI Womens Tee (Short Sleeve) / Marshmallow",
+  "Meditationsmatte Zabuton / Schwarz / 4 cm", "Meditationsmatte Zabuton / Schwarz / 7 cm", "Meditationskissen Lotus (H: 15cm) / Schwarz",
+  "Yogakissen Halbmond Shanti / Bordeaux", "Yogagurt 100% Bio-Baumwolle / Kurkuma", "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Anthrazit",
+  "Zafu-Meditationskissen Zen / Anthrazit", "Zafu-Meditationskissen Zen Kapok / Anthrazit", "ALA Tank Tee / Anthrazit",
+  "Meditationskissen Lotus HOCH (H: 20cm) / Kurkuma", "Meditationsmatte Zabuton / Aubergine / 4 cm", "Meditationsmatte Zabuton / Aubergine / 7 cm",
+  "Zafu-Meditationskissen Zen / Kurkuma", "Yogarolle RESTORATIVE Ø24 cm / Grassland", "Almost Perfect Yogamatte MUDRA / Indigo Dust",
+  "NIA Womens Sweater / Anthrazit", "Bezug für Meditationskissen Lotus (H: 15cm) / Light Taupe", "Meditationsbank DHARMA Standard / Indigo Dust",
+  "NIA Womens Sweater / Stone Blue", "ALA Tank Tee / Violetta", "FEND Mens Sweater / Anthrazit", "QUINN Mens Pants / Deep Taupe",
+  "BECCA Leggings / Violetta", "FEND Mens Sweater / Stone Blue", "Meditationskissen Lotus KLEIN (H: 10 cm) / Kurkuma",
+  "Meditationsbank DHARMA Standard / Anthrazit", "FIONA Womens Pants / Anthrazit", "Meditationsbank DHARMA Standard / Natur",
+  "Bezug für Meditationskissen Lotus (H: 15cm) / Natur", "Meditationskissen Lotus KLEIN (H: 10 cm) / Anthrazit", "Yogamatte Mudra XL / Balsam Green",
+  "Bezug für Yogarolle COVER Ø24 cm / Light Taupe", "DANA Overall / Anthrazit", "Bezug für Zafu-Meditationskissen Zen / Light Taupe",
+  "NIA Womens Sweater / Marshmallow", "FEND Mens Sweater / Marshmallow", "Almost Perfect Yogamatte MUDRA / Balsam Green",
+  "Meditationsbank DHARMA Standard / Aubergine", "Almost Perfect Yogamatte MUDRA / Light Taupe", "Bezug für Yogarolle COVER Ø24 cm / Natur",
+  "Almost Perfect Yogamatte MUDRA PRO / Anthrazit", "Bezug für Zabuton / Light Taupe", "Bezug für Zabuton / Natur",
+  "Almost Perfect Yogamatte MUDRA PRO / Light Taupe", "Almost Perfect Yogamatte PURE / Light Taupe",
+  "Bezug für Meditationskissen Lotus (H: 15cm) / Balsam Green", "Yogamatte Mudra XL / Anthrazit", "Almost Perfect Yogamatte MUDRA PRO / Balsam Green",
+  "Bezug für Meditationskissen Lotus (H: 15cm) / Anthrazit", "Bezug für Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Indigo Dust",
+  "Bezug für Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Lavender Fog",
+  "Bezug für Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Balsam Green", "Yogamatte Mudra XL / Indigo Dust",
+  "Bezug für Halbmond Kissen / Light Taupe", "Bezug für Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Light Taupe",
+  "Almost Perfect Yogamatte MUDRA / Aubergine", "Bezug für Meditationskissen Lotus (H: 15cm) / Indigo Dust",
+  "Bezug für Meditationskissen Lotus KLEIN (H: 10 cm) / Light Taupe", "Bezug für Meditationskissen Lotus KLEIN (H: 10 cm) / Natur",
+  "Bezug für Zafu-Meditationskissen Zen / Anthrazit", "Bezug für Zafu-Meditationskissen Zen / Natur", "Bezug für Halbmond Kissen / Natur",
+  "Bezug für Meditationskissen Lotus (H: 15cm) / Kurkuma", "Bezug für Yogarolle COVER Ø24 cm / Anthrazit",
+  "Bezug für Yogarolle COVER Ø24 cm / Indigo Dust", "Bezug für Zafu-Meditationskissen Zen / Indigo Dust",
+  "Yogarolle RESTORATIVE Ø24 cm / Dark Cranberry", "Almost Perfect Yogamatte ARISE Cork / Align", "Almost Perfect Yogamatte PURE / Indigo Dust",
+  "Bezug für Halbmond Kissen / Balsam Green", "Bezug für Meditationskissen Lotus (H: 15cm) / Schwarz",
+  "Bezug für Meditationskissen Lotus HOCH (H: 20cm) / Indigo Dust", "Bezug für Meditationskissen Lotus HOCH (H: 20cm) / Kurkuma",
+  "Bezug für Yogarolle COVER Ø24 cm / Dark Cranberry", "Bezug für Zabuton / Anthrazit", "Bezug für Zabuton / Indigo Dust",
+  "Yoga Bolster RESTORATIVE S / Aubergine", "Bezug für Halbmond Kissen / Anthrazit",
+  "Bezug für Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Anthrazit",
+  "Bezug für Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Natur", "Bezug für Meditationskissen Lotus HOCH (H: 20cm) / Balsam Green",
+  "Bezug für Meditationskissen Lotus HOCH (H: 20cm) / Natur", "Bezug für Meditationskissen Lotus HOCH (H: 20cm) / Anthrazit",
+  "Bezug für Meditationskissen Lotus KLEIN (H: 10 cm) / Anthrazit", "Bezug für Meditationskissen Lotus KLEIN (H: 10 cm) / Indigo Dust",
+  "Bezug für Meditationskissen Lotus KLEIN (H: 10 cm) / Kurkuma", "Bezug für Zabuton / Aubergine", "Bezug für Zabuton / Bordeaux",
+  "Bezug für Zabuton / Schwarz", "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Aubergine",
+  "Meditationskissen Lotus KLEIN (H: 10 cm) / Aubergine", "Almost Perfect Yogamatte ARISE Cork / Lotus",
+  "Almost Perfect Yogamatte MUDRA PRO XL / Anthrazit", "Almost Perfect Yogamatte PURE / Balsam Green", "Bezug für Halbmond Kissen / Midnight Blue",
+  "Bezug für Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Aubergine", "Bezug für Meditationskissen Lotus HOCH (H: 20cm) / Aubergine",
+  "Bezug für Meditationskissen Lotus HOCH (H: 20cm) / Light Taupe", "Bezug für Meditationskissen Lotus KLEIN (H: 10 cm) / Balsam Green",
+  "Bezug für Meditationskissen Lotus KLEIN (H: 10 cm) / Marine Blue", "Bezug für Zabuton / Balsam Green",
+  "Bezug für Zafu-Meditationskissen Zen / Balsam Green", "Bezug für Zafu-Meditationskissen Zen / Kurkuma",
+  "Meditationskissen Lotus HOCH (H: 20cm) / Aubergine", "Yoga Bolster RESTORATIVE L / Dark Cranberry", "Almost Perfect Yogamatte ARISE / Wild Ginger",
+  "Almost Perfect Yogamatte MUDRA / Bordeaux", "Almost Perfect Yogamatte MUDRA XL / Balsam Green",
+  "Bezug für Halbmond Kissen / Aubergine", "Bezug für Halbmond Kissen / Indigo Dust", "Bezug für Meditationskissen Lotus (H: 15cm) / Aubergine",
+  "Bezug für Meditationskissen Lotus KLEIN (H: 10 cm) / Aubergine", "Meditationskissen Lotus (H: 15cm) - Ohne Bestickung / Grassland",
+  "Meditationskissen Lotus KLEIN (H: 10 cm) / Bordeaux", "Yoga Bolster RESTORATIVE L / Grassland", "Yoga Bolster RESTORATIVE S / Dark Cranberry",
+  "Yoga Bolster RESTORATIVE S / Grassland",
+];
+// Card names here use „…“ where the original uses straight quotes: compare without quotes.
+const rankKey = (card) => `${card.name}${card.variant ? ` / ${card.variant}` : ""}`.replace(/[„“"]/g, "");
+const salesRank = new Map(bestSellingRanking.map((key, i) => [key, i]));
+const rankOf = (card) => salesRank.get(rankKey(card)) ?? bestSellingRanking.length;
+
+// The search lists a product by its best-selling colour.
+const bestSellingModel = new Map();
+bestSellingRanking.forEach((key, position) => {
+  const name = key.split(" / ")[0];
+  if (!bestSellingModel.has(name)) bestSellingModel.set(name, position);
+});
+const modelRankOf = (name) => bestSellingModel.get(name.replace(/[„“"]/g, "")) ?? bestSellingRanking.length;
+
 // ---------- Search index ----------
-// Everything the header search can find: one entry per mat model (with its
-// material, colours and colour groups as extra search words) plus the
-// bestsellers and set offers. Same names are merged into one entry.
+// Everything the header search can find: one entry per model (the categories
+// it is in and its material as extra search words, its colours and colour
+// groups too) plus the bestsellers and set offers. Same names are merged into
+// one entry. `model` is kept so the results page can list every colour.
 const searchIndex = (() => {
   const byName = new Map();
   Object.values(categories).forEach((category) => {
@@ -1363,7 +1497,9 @@ const searchIndex = (() => {
         compareAt: model.compareAt,
         shape: model.shape || "mat",
         tint: model.variants[0].hex,
-        keywords: [category.title, model.material, ...model.variants.flatMap((v) => [v.color, v.family])].filter(Boolean).join(" "),
+        keywords: [category.title, model.material].filter(Boolean).join(" "),
+        colors: model.variants.flatMap((v) => [v.color, v.family]).join(" "),
+        model,
       });
     });
   });
@@ -1475,7 +1611,28 @@ function matchesQuery(query, text) {
   return words.length > 0 && words.every((word) => haystack.includes(word));
 }
 
-const searchProducts = (query) => searchIndex.filter((item) => matchesQuery(query, `${item.name} ${item.keywords || ""}`));
+// Products whose name has the most of the query's words come first, then the
+// ones found only through category, material or colour; each group is ordered
+// by sales, like the category pages.
+function searchProducts(query) {
+  const words = searchText(query).split(/\s+/).filter(Boolean);
+  const inName = (item) => words.filter((word) => searchText(item.name).includes(word)).length;
+  return searchIndex
+    .filter((item) => matchesQuery(query, `${item.name} ${item.keywords || ""} ${item.colors || ""}`))
+    .map((item, position) => ({ item, position, named: inName(item), rank: modelRankOf(item.name) }))
+    .sort((a, b) => b.named - a.named || a.rank - b.rank || a.position - b.position)
+    .map(({ item }) => item);
+}
+
+// The cards the results page shows for one product: every colour, or only
+// those that fit when the query names a colour ("kissen natur").
+function searchCards(item, query) {
+  if (!item.model) return [item];
+  const cards = modelCards(item.model);
+  const fitting = cards.filter((card) => matchesQuery(query, `${item.name} ${item.keywords} ${card.variant} ${card.family}`));
+  return fitting.length ? fitting : cards;
+}
+
 const searchPages = (query) => sitePages.filter((page) => matchesQuery(query, `${page.title} ${page.keywords}`));
 
 // Stick-figure poses in a 100×100 scene: `body` is drawn as one thick stroke.

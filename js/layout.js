@@ -473,8 +473,7 @@ if (currentNav) {
 
 // ---------- Search ----------
 // Shows matching products while you type (first four, like the original).
-// "Alle anzeigen" and Enter show every match here, since this rebuild has
-// no separate results page.
+// Enter and "Alle anzeigen" lead to the results page, which lists every match.
 const SEARCH_PREVIEW = 4;
 const searchDialog = document.getElementById("search-dialog");
 const searchToggle = document.querySelector(".search-toggle");
@@ -485,10 +484,12 @@ const searchResults = searchDialog.querySelector(".search__results");
 const searchStatus = searchDialog.querySelector("#search-status");
 let searchTimer = null;
 let searchOpener = null;
-let showAllResults = false;
 
 // The query is typed by the visitor, so escape it before showing it.
 const escapeHtml = (text) => text.replace(/[&<>"']/g, (ch) => `&#${ch.charCodeAt(0)};`);
+
+// "Alle anzeigen" adds `typ=produkt`: products only, as on the original.
+const resultsHref = (query, productsOnly) => `suche.html?q=${encodeURIComponent(query)}${productsOnly ? "&typ=produkt" : ""}`;
 
 function renderSearch() {
   const query = searchInput.value.trim();
@@ -510,11 +511,11 @@ function renderSearch() {
     return;
   }
 
-  const shown = showAllResults ? products : products.slice(0, SEARCH_PREVIEW);
+  const shown = products.slice(0, SEARCH_PREVIEW);
   const productBlock = products.length ? `
       <div class="search__head">
         <p>${countText}</p>
-        ${products.length > shown.length ? `<button type="button" class="search__all">Alle anzeigen</button>` : ""}
+        ${products.length > shown.length ? `<a class="search__all" href="${resultsHref(query, true)}">Alle anzeigen</a>` : ""}
       </div>
       <div class="search__grid">${shown.map(productCard).join("")}</div>` : "";
   const pageBlock = pages.length ? `
@@ -524,30 +525,20 @@ function renderSearch() {
 }
 
 searchInput.addEventListener("input", () => {
-  showAllResults = false;
   clearTimeout(searchTimer);
   searchTimer = setTimeout(renderSearch, 120);
 });
 
 searchForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  showAllResults = true;
-  renderSearch();
+  const query = searchInput.value.trim();
+  if (query) location.href = resultsHref(query, false);
 });
 
 searchClear.addEventListener("click", () => {
   searchInput.value = "";
-  showAllResults = false;
   renderSearch();
   searchInput.focus();
-});
-
-searchResults.addEventListener("click", (e) => {
-  if (!e.target.closest(".search__all")) return;
-  showAllResults = true;
-  renderSearch();
-  // The button is gone now: continue with the first newly shown product.
-  searchResults.querySelectorAll(".product-card")[SEARCH_PREVIEW]?.focus();
 });
 
 searchToggle.addEventListener("click", () => {

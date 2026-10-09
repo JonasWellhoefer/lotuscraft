@@ -91,15 +91,17 @@ lotuscraft/
 ├── produkt.html    # Produktseite, z. B. produkt.html?p=yogamatte-pure
 ├── kategorie.html  # Kategorieseiten mit Filtern, z. B. kategorie.html?k=yogamatten oder ?k=reise-yogamatte
 ├── seite.html      # Info-Seiten (Footer, Guides, Quiz, Konto), z. B. seite.html?s=faq
+├── suche.html      # Suchergebnisse, z. B. suche.html?q=kissen (Enter oder „Alle anzeigen“ in der Suche)
 ├── styles.css      # Gestaltung: Farben, Schriften, Layout, Mobilansicht
 ├── js/
-│   ├── shared.js   # Gemeinsame Daten & Helfer: Produkte, Kategorien, Blog-Beiträge, Menü, Suchindex, Zeichnungen
+│   ├── shared.js   # Gemeinsame Daten & Helfer: Produkte, Kategorien, Karten pro Farbe, Verkaufs-Rangfolge, Blog-Beiträge, Menü, Suchindex, Zeichnungen
 │   ├── layout.js   # Header, Menüs (Handy + Desktop), Suche, Footer, Warenkorb (Demo)
 │   ├── home.js     # Startseite: Produkt-Tabs, Community, Bewertungs-Karussell
 │   ├── popups.js   # Cookie-Banner und Newsletter-Fenster (Demo), auf allen Seiten
 │   ├── fehler.js   # Fehlerseite 404 für Produkt-, Kategorie- und Info-Seiten, Blog-Teaser mit gezeichneten Bildern
 │   ├── product.js  # Produktseiten: Daten aller Matten, „Almost Perfect“-Matten, Kissen, Kleidung, Bolster, Zabuton, Bank, Bezüge, Sets, Gutschein und des Zubehörs, Zeichnungen, Galerie, Farb-, Größen- und Optionsauswahl, Warenkorb-Button
 │   ├── category.js # Kategorieseite: Filter (Farbe, Sitzhöhe, Form, Material, Füllung, Größe, Verfügbarkeit), Sortierung
+│   ├── suche.js    # Ergebnisseite der Suche: eine Karte pro Farbe, darunter passende Seiten und Blog
 │   └── seite.js    # Info-Seiten: eine Vorlage, alle Texte, Vergleichstabellen aus den Produktdaten, Quiz
 └── README.md
 ```
@@ -215,9 +217,19 @@ damit Text darauf gut lesbar bleibt: `--gold-text` (Gold als Schrift) und `--new
 
 **Suche** (Lupe oben rechts):
 
-- [x] Suchfenster wie im Original, Ergebnisse schon beim Tippen (erste vier, „Alle anzeigen“ zeigt alle)
+- [x] Suchfenster wie im Original, Ergebnisse schon beim Tippen (erste vier); Enter und „Alle anzeigen“ führen wie im Original auf eine eigene Ergebnisseite
 - [x] Findet Produkte auch über Material, Farbname und Farbgruppe (z. B. „grün“, „kork“), ohne Rücksicht auf Groß-/Kleinschreibung und Umlaute
 - [x] Passende Seiten (z. B. „Yogamatten“, „Versandkosten“, „Quiz“); Escape leert erst das Feld, das zweite Escape schließt
+
+**Suchergebnisse** (`suche.html?q=kissen`; Enter im Suchfenster, „Alle anzeigen“ hängt `&typ=produkt` an und lässt die Seiten weg):
+
+- [x] Raster wie die Ergebnisseite des Originals (bei 1440 bis 320 Pixel gemessen): vier, drei oder zwei Spalten ab 1060, ab 780 und darunter, Abstände 20 / 80, 20 / 40 und 16 / 20 px, Ränder 64 / 32 / 16 px, die Karten 64 px (Handy 32 px) unter dem Header; Spaltenbreite, Bildhöhe, Kartenhöhe und Zeilenabstand stimmen mit dem Original auf 0,1 px überein
+- [x] Wie im Original eine Karte pro Farbe, mit Farbname, Preis und den Etiketten „Ausverkauft“ oder „NUR BEZUG“ oben rechts
+- [x] Karten Text für Text mit dem Original abgeglichen (Suche „zafu“ bei 1440 und 375 px): Abstände in der Karte und Zeilenhöhen stimmen, Titel und Farbnamen sind höchstens 1,5 px breiter oder schmaler, Preise 2,5 px und Etiketten bis 4 px (andere Schrift)
+- [x] Zusätze, die das Original nicht hat: Wer eine Farbe mitsucht („kissen natur“), sieht nur diese Farbe; die Produkte stehen nach Namenstreffern zuerst, danach nach Verkauf (die „meistverkauft“-Rangfolge der Kategorien liegt dafür jetzt in `js/shared.js`); unter den Karten steht „Seiten und Blog“ als Linkliste
+- [x] Bewusst anders: Das Original zeigt bei „keine Treffer“ eine leere Seite, hier steht eine Meldung mit dem Knopf „Neue Suche“ und ein paar Bereichen zum Weitersuchen; die Seite hat eine unsichtbare Überschrift („17 Suchergebnisse für „kissen““) für Screenreader; die Seiten und Beiträge, die das Original als graue Karten ins Raster setzt, stehen hier als Liste
+- [x] Die Suchanfrage wird nur in den Daten dieses Projekts nachgeschlagen, nicht gesendet und nicht gespeichert; Sonderzeichen in der Anfrage werden maskiert
+- [x] Tastatur und axe: Enter im Suchfenster öffnet die Ergebnisse, „Alle anzeigen“ ist ein echter Link; axe ohne Verstoß bei 375 und 1440 px (mit Treffern, ohne Treffer, ohne Eingabe und mit offenem Suchfenster); kein waagerechtes Scrollen von 320 bis 1440 px
 
 **Tastatur und Barrierefreiheit** (auf allen Seiten):
 
@@ -237,7 +249,8 @@ damit Text darauf gut lesbar bleibt: `--gold-text` (Gold als Schrift) und `--new
 - [x] Startseite: Kacheln, Bestseller, Sets und Verkaufsargumente in vier Spalten ab 780 px, darunter zwei; das Bewertungs-Karussell zeigt je nach Platz vier, drei, zwei oder eine Karte; der Fußbereich hat vier, drei oder eine Spalte
 - [x] Kategorieseiten: vier, drei oder zwei Spalten (ab 1060, ab 780, darunter); die Kreise stehen unter 1060 px links und scrollen seitlich
 - [x] Produktseiten: zwei Spalten (3 : 2) ab 780 px, darunter gestapelt; die Kaufbox hat unter 1060 px 16 statt 24 px Innenabstand
-- [x] Schriftgrößen wie im Original auch auf dem Handy: Kartentitel, Preise, Tags und Bewertungswerte 16 px, Überschriften 25 px
+- [x] Schriftgrößen wie im Original auch auf dem Handy: Kartentitel, Farbnamen, Preise, Tags und Bewertungswerte 16 px, Überschriften 25 px
+- [x] Produktkarten wie im Original: Bild im Format 4 : 5, dann 8 px Abstand und Zeilen von 19,5 px mit 4 px dazwischen (Karte 313 px breit = 441,8 px hoch, mit Farbzeile 465,8 px); die Reihen der Kategorieseiten liegen jetzt bis auf eine Zeile mit Umbruch auf 0,1 px wie im Original
 - [x] Start- und Produktseite bei 375 und 900 px Text für Text mit dem Original abgeglichen (Position, Breite, Schriftgröße), die Kategorieseite Raster für Raster: Die Abstände weichen meist um weniger als 5 px ab; übrig bleiben die breitere Überschriftenschrift (Playfair), die fehlenden Zahlungslogos und das eingebettete Newsletter-Formular des Originals
 - [x] Fenster bei allen Breiten am Original gemessen: Das Suchfenster ist ab 780 px halb so breit wie der Bildschirm (Oberkante bei 15 % der Breite), darunter ein Blatt über die volle Breite am oberen Rand; die vier Ergebnis-Karten laufen unter etwa 1250 px über den Rand, das Fenster scrollt; unter „Seiten und Blog“ findet die Suche auch die vier Beispielbeiträge
 - [x] Größentabelle so breit wie ihre Tabelle (höchstens halber Bildschirm, auf dem Handy 38 px weniger als der Bildschirm), Warenkorb-Überschriften auf dem Handy 20 und 25 px, Cookie-Banner mit 15 px Innenabstand (ab 1280 px 23 px) und denselben Knopfbreiten wie das Original
