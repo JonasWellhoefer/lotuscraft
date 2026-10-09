@@ -100,6 +100,7 @@ lotuscraft/
 │   ├── popups.js   # Cookie-Banner und Newsletter-Fenster (Demo), auf allen Seiten
 │   ├── fehler.js   # Fehlerseite 404 für Produkt-, Kategorie- und Info-Seiten, Blog-Teaser mit gezeichneten Bildern
 │   ├── product.js  # Produktseiten: Daten aller Matten, „Almost Perfect“-Matten, Kissen, Kleidung, Bolster, Zabuton, Bank, Bezüge, Sets, Gutschein und des Zubehörs, Zeichnungen, Galerie, Farb-, Größen- und Optionsauswahl, Warenkorb-Button
+│   ├── zoom.js     # Produktseite: Bild-Zoom als Vollbild-Fenster mit Vorschaubildern, Pfeilen und Punkten
 │   ├── category.js # Kategorieseite: Filter (Farbe, Sitzhöhe, Form, Material, Füllung, Größe, Verfügbarkeit), Sortierung
 │   ├── suche.js    # Ergebnisseite der Suche: eine Karte pro Farbe, darunter passende Seiten und Blog
 │   └── seite.js    # Info-Seiten: eine Vorlage, alle Texte, Vergleichstabellen aus den Produktdaten, Quiz
@@ -134,6 +135,8 @@ damit Text darauf gut lesbar bleibt: `--gold-text` (Gold als Schrift) und `--new
 **Produktseiten** (Klick auf eine Karte bei den Bestsellern oder in einer Kategorie):
 
 - [x] Galerie (Desktop: Raster, Handy: Wisch-Galerie mit Vorschaubildern)
+- [x] Bild-Zoom wie im Original: Ein Klick auf ein Bild öffnet alle Bilder groß im Vollbild (`js/zoom.js`). Ab 1060 px stehen die Vorschaubilder links (56 × 70 px, das aktuelle mit goldenem Rand) und die Pfeile neben dem Bild, darunter ein Bild im Format 4 : 5 mit Punkten und Pfeilen in einer 76 px hohen Leiste; der Schließen-Knopf sitzt oben rechts. Die Maße (Bild 681,6 × 852 px bei 900 px Höhe, Pfeile 48 px, 32 px Abstand, Punkte 44 px) stimmen bei 1440, 1060, 1059, 900, 780 und 375 px auf 0,2 px mit dem Original überein
+- [x] Der Zoom zeigt immer die Farbe, die gerade gewählt ist; man blättert mit Pfeilen, Vorschaubildern, Punkten, Wischen oder den Tasten ← → Pos1 Ende, Escape schließt und der Fokus kehrt zum Bild zurück; dafür sind die Galerie-Bilder echte Knöpfe mit Beschriftung („… – vergrößern“)
 - [x] Kaufbox: Preis, Bewertung, Farbauswahl (zeichnet die Bilder neu), Warenkorb-Button (Demo)
 - [x] Ausverkaufte Farben wie im Original mit „Benachrichtige mich“ und „Nicht auf Lager“ (Demo, es wird nichts gespeichert)
 - [x] Akkordeon (Beschreibung, Details, Pflege, Nachhaltigkeit) und Bewertungsübersicht
@@ -240,6 +243,7 @@ damit Text darauf gut lesbar bleibt: `--gold-text` (Gold als Schrift) und `--new
 - [x] Kontrast: normaler Text erreicht mindestens 4,5 : 1. Dafür ist Gold als Schrift etwas dunkler (`#8a6a00` statt `#ac8700`), ebenso das blaue Newsletter-Band (`#547796` statt `#5e81a2`); der Verlauf über Hero und Community-Kacheln ist kräftiger, der Betrag auf der Gutscheinkarte dunkel
 - [x] Der Fokus verschwindet nie hinter dem festen Header (`scroll-padding`), und jedes bedienbare Element zeigt einen sichtbaren Rahmen
 - [x] Bis 320 Pixel Breite (entspricht 400 % Zoom) ohne waagerechtes Scrollen; zusätzlicher Zeilen- und Buchstabenabstand schneidet nichts ab
+- [x] Seitenkopf: jede Seite hat eine Beschreibung und ein Tab-Symbol (die gezeichnete Lotus-Marke, als SVG direkt im HTML, damit es auch per Doppelklick klappt); ohne JavaScript erklärt ein Hinweis, dass die Seiten im Browser gebaut werden
 - [x] Mit axe-core geprüft (nur zum Testen geladen, nicht Teil der Seite): Start, 52 Kategorien, 86 Produkte, 23 Info-Seiten bei 1440 und 375 Pixel sowie 18 geöffnete Zustände (Menüs, Fenster, Filter, Quiz …) ohne einen Verstoß
 
 **Tablet- und Handy-Breiten** (am Original gemessen, wie bei der Fehlerseite):

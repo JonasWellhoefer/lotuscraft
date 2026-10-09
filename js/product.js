@@ -4269,11 +4269,13 @@ function sizeChartMarkup(product) {
 // zabuton's thickness), so the drawings follow the choice.
 const specsFor = (product, choice) => ({ ...product.specs, ...choice?.specs });
 
+// Every picture is a button that opens the zoom (js/zoom.js).
 function galleryItems(product, color, specs = product.specs) {
-  return product.gallery.map((key) => {
+  return product.gallery.map((key, i) => {
     const picture = galleryPictures[key];
+    const label = escapeHtml(`${product.name}${color.name ? ` in ${color.name}` : ""}, ${picture.label}`);
     return `
-          <div class="gallery__item" role="img" aria-label="${product.name}${color.name ? ` in ${color.name}` : ""}, ${picture.label}">${picture.draw(color, specs)}</div>`;
+          <button class="gallery__item" type="button" data-index="${i}" data-label="${label}" aria-label="${label} – vergrößern">${picture.draw(color, specs)}</button>`;
   }).join("");
 }
 
